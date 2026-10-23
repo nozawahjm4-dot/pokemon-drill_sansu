@@ -254,6 +254,1200 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
 .spin{width:64px;height:64px;border-radius:50%;border:6px solid #222;background:linear-gradient(180deg,var(--red) 0 46%,#222 46% 54%,#fff 54%);animation:sp 1s linear infinite}
 @keyframes sp{to{transform:rotate(360deg)}}
 @media (max-width:560px){.hbtn{font-size:12px;padding:4px 7px}.pt{font-size:14px}}
+
+/* ===== インタラクティブ・ドリル各スタイル ===== */
+/* 紙のドリル手本再現カード（Battle 3 パチリス、Battle 7 アンノーン、Battle 22 ウオノラゴン等） */
+.pd-card{
+  background:#fff;border:3px solid #9db8ec;border-radius:18px;padding:12px;
+  margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;
+  gap:12px;box-shadow:0 3px 0 #9db8ec;flex-wrap:wrap;
+}
+.pd-left{
+  display:flex;flex-direction:column;align-items:center;min-width:105px;
+  background:#f8fbff;border:2px solid #ccd9f0;border-radius:14px;padding:8px;
+}
+.pd-icons{
+  display:flex;flex-wrap:wrap;gap:4px;justify-content:center;max-width:96px;min-height:50px;align-items:center;
+}
+.pd-icons img{
+  width:38px;height:38px;object-fit:contain;filter:drop-shadow(0 2px 3px rgba(0,0,0,.2));
+}
+.pd-label{font-size:13px;font-weight:900;color:var(--blue-d);margin-top:4px;white-space:nowrap}
+
+.pd-mid{
+  display:flex;flex-direction:column;align-items:center;
+  background:#fffdf0;border:2px solid #eedc82;border-radius:14px;padding:6px 10px;
+}
+.pd-mid-title{font-size:11px;font-weight:900;color:#7a6200;margin-bottom:4px}
+.pd-ten-frame{
+  display:grid;grid-template-columns:repeat(5, 1fr);grid-template-rows:repeat(2, 1fr);
+  gap:4px;background:#fff;border:2px solid #222;border-radius:10px;padding:5px;
+}
+.pd-dot{
+  width:18px;height:18px;border-radius:50%;border:2px solid #888;background:#fff;
+  transition:all .15s;cursor:pointer;
+}
+.pd-dot.filled{
+  background:#ff4d5e;border-color:#222;box-shadow:inset 0 1px 3px rgba(0,0,0,.3);
+}
+
+.pd-right{
+  display:flex;align-items:center;gap:12px;flex:1;justify-content:flex-end;flex-wrap:wrap;
+}
+.pd-choices-box{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+}
+.pd-choices-title{font-size:11px;font-weight:900;color:#666}
+.pd-choices{
+  display:flex;gap:6px;flex-wrap:wrap;justify-content:center;
+}
+.pd-btn{
+  width:40px;height:40px;border-radius:12px;background:#fff;border:3px solid #222;
+  font-weight:900;font-size:18px;color:#222;box-shadow:0 3px 0 #222;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:transform .1s, background .1s;
+}
+.pd-btn:active{transform:translateY(2px);box-shadow:0 1px 0 #222}
+.pd-btn.sel{background:var(--blue);color:#fff;border-color:var(--blue-d);box-shadow:0 0 0 2px #fff, 0 3px 0 #1e4fb8}
+
+/* 算数ドリル用十字点線入り書き込みマス */
+.pd-write-box{
+  width:56px;height:56px;border:3px solid var(--red);background:#fff;border-radius:12px;
+  position:relative;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 0 #222;
+}
+.pd-write-box::before{
+  content:"";position:absolute;left:0;right:0;top:50%;height:1px;
+  border-top:1.5px dashed rgba(255,77,94,.4);
+}
+.pd-write-box::after{
+  content:"";position:absolute;top:0;bottom:0;left:50%;width:1px;
+  border-left:1.5px dashed rgba(255,77,94,.4);
+}
+.pd-write-num{
+  font-size:34px;font-weight:900;color:var(--red-d);z-index:2;line-height:1;
+}
+
+/* 3列線結びコンテナ（Battle 4 ピッピ、Battle 8 ケロマツ） */
+.three-col-container{
+  position:relative;display:flex;justify-content:space-between;gap:8px;
+  padding:10px 0;min-height:380px;
+}
+.three-col{
+  display:flex;flex-direction:column;justify-content:space-between;
+  gap:10px;z-index:2;width:31%;
+}
+.tc-node{
+  display:flex;align-items:center;justify-content:center;flex-direction:column;
+  padding:8px 4px;background:#fff;border:3px solid #222;border-radius:16px;
+  cursor:pointer;box-shadow:0 3px 0 #222;transition:all .12s;min-height:62px;position:relative;
+}
+.tc-node:active{transform:scale(.97)}
+.tc-node.selected{border-color:var(--blue);background:#e0f0ff;box-shadow:0 0 0 3px var(--blue)}
+.tc-node.matched{border-color:var(--green);background:#e8fdf0}
+.tc-node.matched::after{
+  content:"✓";position:absolute;top:-6px;right:-6px;width:22px;height:22px;
+  border-radius:50%;background:var(--green);color:#fff;border:2px solid #222;
+  font-size:13px;font-weight:900;display:flex;align-items:center;justify-content:center;
+}
+.tc-poke-row{
+  display:flex;flex-wrap:wrap;gap:2px;justify-content:center;align-items:center;
+}
+.tc-poke-row img{width:32px;height:32px;object-fit:contain}
+.tc-dots{
+  display:flex;flex-wrap:wrap;gap:4px;justify-content:center;align-items:center;max-width:54px;
+}
+.tc-dot{
+  width:14px;height:14px;border-radius:50%;background:#ff4d5e;border:2px solid #222;
+}
+.tc-num{
+  font-size:28px;font-weight:900;color:var(--blue-d);
+}
+.tc-lines-svg{
+  position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;
+}
+
+/* Battle 2 ヨーテリー＆チラーミィ カウントエリア */
+.b2-header{
+  display:flex;justify-content:space-around;background:#fff;border:3px solid #222;
+  border-radius:16px;padding:8px 12px;margin-bottom:12px;font-weight:900;font-size:16px;
+}
+.b2-score{display:flex;align-items:center;gap:6px}
+
+/* りんごの分解（Battle 5, 6） */
+.plate-wrap{
+  display:flex;justify-content:space-around;gap:12px;align-items:center;margin:12px 0;flex-wrap:wrap;
+}
+.plate-box{
+  flex:1;min-width:140px;background:#fff;border:3px solid #222;border-radius:18px;padding:12px;
+  text-align:center;
+}
+.plate-dish{
+  display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:center;
+  min-height:50px;background:#f8f9fa;border-radius:14px;border:2px dashed #bbb;padding:6px;margin:8px 0;
+}
+.plate-apple{font-size:28px;animation:pop .2s}
+.btn-apple-add{
+  background:var(--red);color:#fff;border:2px solid #222;border-radius:10px;
+  padding:4px 10px;font-weight:900;font-size:14px;cursor:pointer;box-shadow:0 2px 0 #222;
+}
+.btn-apple-add:active{transform:translateY(1px);box-shadow:none}
+
+/* すごろく・ぬけている数字（Battle 9, 10） */
+.seq-track{
+  display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;
+  background:#fff;border:3px solid #222;border-radius:18px;padding:12px;margin-bottom:12px;
+}
+.seq-stone{
+  width:46px;height:46px;border-radius:14px;background:#f5f5f5;border:3px solid #777;
+  display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;
+  box-shadow:0 3px 0 #777;
+}
+.seq-stone.fixed{background:#e8f4fd;border-color:var(--blue);color:var(--blue-d);box-shadow:0 3px 0 var(--blue)}
+.seq-stone.blank{
+  background:#fff;border:3px dashed var(--red);color:var(--red-d);cursor:pointer;
+}
+.seq-stone.blank.selected{box-shadow:0 0 0 3px var(--yellow);background:#fffde6}
+.seq-stone.blank.filled{
+  background:#e8fdf0;border:3px solid var(--green);color:var(--green-d);box-shadow:0 3px 0 var(--green);
+}
+.seq-palette{
+  display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:8px;
+}
+.seq-chip{
+  width:44px;height:44px;border-radius:12px;background:#fff;border:3px solid #222;
+  font-weight:900;font-size:20px;box-shadow:0 3px 0 #222;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+}
+.seq-chip:active{transform:translateY(2px);box-shadow:0 1px 0 #222}
+.seq-chip.used{opacity:.35;pointer-events:none}
+
+
+
+/* ==========================================================
+   INTERACTIVE DRILL STYLES & PAPER DRILL REPRODUCTION
+   ========================================================== */
+
+/* 紙のドリル手本再現カード (Battle 3 パチリス, Battle 7 アンノーン, Battle 22, 34等) */
+.pd-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: #ffffff;
+  border: 3px solid #9db8ec;
+  border-radius: 20px;
+  padding: 12px 16px;
+  margin-bottom: 14px;
+  box-shadow: 0 4px 0 #9db8ec;
+  flex-wrap: wrap;
+}
+.pd-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 120px;
+  background: #fffdf0;
+  border: 2px solid #ecd67c;
+  border-radius: 16px;
+  padding: 8px 10px;
+}
+.pd-icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+  min-height: 48px;
+  max-width: 120px;
+}
+.pd-icons img {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.25));
+}
+.pd-label {
+  font-size: 13px;
+  font-weight: 900;
+  color: #725900;
+  margin-top: 4px;
+}
+.pd-ten-frame {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 3px;
+  background: #ffffff;
+  border: 2px solid #333333;
+  border-radius: 8px;
+  padding: 4px 6px;
+  margin-top: 5px;
+}
+.pd-dot {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 1.5px solid #888888;
+  background: #ffffff;
+  transition: all .15s;
+}
+.pd-dot.filled {
+  background: #ff4d5e;
+  border-color: #222222;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
+}
+
+.pd-choices-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  min-width: 150px;
+  padding: 0 8px;
+}
+.pd-choices-title {
+  font-size: 13px;
+  font-weight: 900;
+  color: var(--blue-d);
+}
+.pd-choices {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.pd-btn {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  border: 2.5px solid #222222;
+  background: #ffffff;
+  font-size: 22px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 3px 0 #222222;
+  transition: all .12s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pd-btn:hover, .pd-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #222222;
+}
+.pd-btn.sel {
+  background: #ffd644;
+  border-color: #e07a00;
+  color: #222222;
+  transform: scale(1.1);
+  box-shadow: 0 2px 0 #b36200;
+}
+
+.pd-write-box {
+  width: 62px;
+  height: 62px;
+  border: 3.5px solid #2a6be8;
+  background: #ffffff;
+  border-radius: 14px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 0 #1b49a5;
+  flex-shrink: 0;
+}
+.pd-write-box::before {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 50%; height: 1px;
+  border-top: 1.5px dashed rgba(42, 107, 232, 0.45);
+}
+.pd-write-box::after {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0; left: 50%; width: 1px;
+  border-left: 1.5px dashed rgba(42, 107, 232, 0.45);
+}
+.pd-write-num {
+  font-size: 40px;
+  font-weight: 900;
+  color: #d82b38;
+  z-index: 2;
+  line-height: 1;
+}
+
+/* 3列線結びコンテナ (Battle 4 ピッピ, Battle 8 ケロマツ) */
+.three-col-container {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 0;
+  min-height: 420px;
+}
+.three-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+  z-index: 2;
+  width: 31%;
+}
+.tc-node {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 8px 6px;
+  background: #ffffff;
+  border: 3px solid #222222;
+  border-radius: 16px;
+  box-shadow: 0 3px 0 #222222;
+  cursor: pointer;
+  min-height: 70px;
+  position: relative;
+  transition: all .15s;
+  user-select: none;
+}
+.tc-node:hover {
+  transform: scale(1.03);
+}
+.tc-node.selected {
+  border-color: #ffd644;
+  box-shadow: 0 0 0 4px #ffc107, 0 3px 0 #222222;
+  background: #fffde6;
+}
+.tc-node.matched {
+  border-color: #34c77b;
+  background: #eafff2;
+  box-shadow: 0 3px 0 #1b8a4f;
+  cursor: default;
+}
+.tc-poke-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+  align-items: center;
+}
+.tc-poke-row img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2));
+}
+.tc-dots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+  max-width: 60px;
+}
+.tc-dot {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #ff4d5e;
+  border: 2px solid #222222;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
+}
+.tc-num {
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--blue-d);
+}
+.tc-lines-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Battle 2 ヨーテリー＆チラーミィ カウントエリア */
+.b2-header {
+  display: flex;
+  justify-content: space-around;
+  gap: 12px;
+  background: #ffffff;
+  border: 3px solid #222222;
+  border-radius: 18px;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+}
+.b2-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.b2-score-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 900;
+  font-size: 15px;
+}
+.b2-score-title img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+.b2-dots {
+  display: flex;
+  gap: 3px;
+  background: #f7f7f7;
+  border: 1.5px solid #444444;
+  border-radius: 8px;
+  padding: 4px 6px;
+}
+.b2-dot {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 1.5px solid #888888;
+  background: #ffffff;
+  transition: all .15s;
+}
+.b2-dot.filled-york {
+  background: #e07a30;
+  border-color: #222222;
+}
+.b2-dot.filled-minc {
+  background: #8a859e;
+  border-color: #222222;
+}
+
+/* りんごの分解 (Battle 5, 6) */
+.plate-wrap {
+  display: flex;
+  justify-content: space-around;
+  gap: 12px;
+  align-items: center;
+  margin: 14px 0;
+  flex-wrap: wrap;
+}
+.plate-box {
+  flex: 1;
+  min-width: 140px;
+  background: #ffffff;
+  border: 3px solid #222222;
+  border-radius: 20px;
+  padding: 12px;
+  text-align: center;
+  box-shadow: 0 4px 0 #222222;
+}
+.plate-dish {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  align-items: center;
+  min-height: 52px;
+  background: #fffdf5;
+  border: 2px dashed #eedba4;
+  border-radius: 14px;
+  padding: 8px;
+  margin: 8px 0;
+}
+.plate-apple {
+  font-size: 32px;
+  animation: applePop .25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes applePop {
+  0% { transform: scale(0); }
+  100% { transform: scale(1); }
+}
+.plate-btn {
+  padding: 8px 14px;
+  border-radius: 12px;
+  border: 2.5px solid #222222;
+  background: #ff4d5e;
+  color: #ffffff;
+  font-weight: 900;
+  font-size: 15px;
+  cursor: pointer;
+  box-shadow: 0 3px 0 #222222;
+}
+
+/* すごろく数字埋め (Battle 9, 10, 55) */
+.seq-track {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  padding: 12px;
+  background: #ffffff;
+  border: 3px solid #222222;
+  border-radius: 18px;
+  margin-bottom: 14px;
+}
+.seq-slot {
+  width: 52px;
+  height: 52px;
+  border: 3px solid #222222;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 900;
+  background: #f7faff;
+  box-shadow: 0 3px 0 #222222;
+}
+.seq-slot.empty {
+  background: #fff;
+  border-style: dashed;
+  border-color: #ff9800;
+  color: #ff9800;
+}
+.seq-slot.filled {
+  background: #e8f5e9;
+  border-color: #34c77b;
+  border-style: solid;
+  color: #1b8a4f;
+}
+.seq-palette {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.seq-chip {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  border: 2.5px solid #222222;
+  background: #ffd644;
+  font-size: 24px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 3px 0 #222222;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.seq-chip.used {
+  opacity: .35;
+  pointer-events: none;
+}
+
+/* とけい (Battle 45, 46) */
+.clock-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+}
+.clock-circle {
+  width: 180px;
+  height: 180px;
+  border: 6px solid #222;
+  border-radius: 50%;
+  background: #fff;
+  position: relative;
+  box-shadow: 0 4px 0 #222;
+}
+.clock-center {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #d82b38;
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+}
+.clock-hand-hour {
+  width: 6px;
+  height: 48px;
+  background: #222;
+  border-radius: 4px;
+  position: absolute;
+  top: calc(50% - 48px);
+  left: calc(50% - 3px);
+  transform-origin: bottom center;
+  z-index: 3;
+}
+.clock-hand-min {
+  width: 4px;
+  height: 70px;
+  background: #2a6be8;
+  border-radius: 3px;
+  position: absolute;
+  top: calc(50% - 70px);
+  left: calc(50% - 2px);
+  transform-origin: bottom center;
+  z-index: 4;
+}
+
+/* コレクレーのおかね (Battle 52) */
+.coin-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.coin-chest {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  padding: 12px;
+  background: #fff9e6;
+  border: 3px solid #222;
+  border-radius: 18px;
+  max-width: 360px;
+}
+.coin-btn {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  border: 2.5px solid #222;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 3px 0 #222;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+}
+.coin-10 {
+  background: #d78b53;
+  color: #fff;
+}
+.coin-1 {
+  background: #cfd8dc;
+  color: #37474f;
+}
+.coin-total-box {
+  background: #ffffff;
+  border: 3px solid #222;
+  border-radius: 16px;
+  padding: 8px 18px;
+  font-weight: 900;
+  font-size: 20px;
+  color: var(--blue-d);
+}
+
+
+
+/* ==========================================================
+   INTERACTIVE DRILL STYLES & PAPER DRILL REPRODUCTION
+   ========================================================== */
+
+/* 紙のドリル手本再現カード (Battle 3 パチリス, Battle 7 アンノーン, Battle 22, 34等) */
+.pd-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: #ffffff;
+  border: 3px solid #9db8ec;
+  border-radius: 20px;
+  padding: 12px 16px;
+  margin-bottom: 14px;
+  box-shadow: 0 4px 0 #9db8ec;
+  flex-wrap: wrap;
+}
+.pd-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 120px;
+  background: #fffdf0;
+  border: 2px solid #ecd67c;
+  border-radius: 16px;
+  padding: 8px 10px;
+}
+.pd-icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+  min-height: 48px;
+  max-width: 120px;
+}
+.pd-icons img {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.25));
+}
+.pd-label {
+  font-size: 13px;
+  font-weight: 900;
+  color: #725900;
+  margin-top: 4px;
+}
+.pd-ten-frame {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 3px;
+  background: #ffffff;
+  border: 2px solid #333333;
+  border-radius: 8px;
+  padding: 4px 6px;
+  margin-top: 5px;
+}
+.pd-dot {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 1.5px solid #888888;
+  background: #ffffff;
+  transition: all .15s;
+}
+.pd-dot.filled {
+  background: #ff4d5e;
+  border-color: #222222;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
+}
+
+.pd-choices-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  min-width: 150px;
+  padding: 0 8px;
+}
+.pd-choices-title {
+  font-size: 13px;
+  font-weight: 900;
+  color: var(--blue-d);
+}
+.pd-choices {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.pd-btn {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  border: 2.5px solid #222222;
+  background: #ffffff;
+  font-size: 22px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 3px 0 #222222;
+  transition: all .12s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pd-btn:hover, .pd-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #222222;
+}
+.pd-btn.sel {
+  background: #ffd644;
+  border-color: #e07a00;
+  color: #222222;
+  transform: scale(1.1);
+  box-shadow: 0 2px 0 #b36200;
+}
+
+.pd-write-box {
+  width: 62px;
+  height: 62px;
+  border: 3.5px solid #2a6be8;
+  background: #ffffff;
+  border-radius: 14px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 0 #1b49a5;
+  flex-shrink: 0;
+}
+.pd-write-box::before {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 50%; height: 1px;
+  border-top: 1.5px dashed rgba(42, 107, 232, 0.45);
+}
+.pd-write-box::after {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0; left: 50%; width: 1px;
+  border-left: 1.5px dashed rgba(42, 107, 232, 0.45);
+}
+.pd-write-num {
+  font-size: 40px;
+  font-weight: 900;
+  color: #d82b38;
+  z-index: 2;
+  line-height: 1;
+}
+
+/* 3列線結びコンテナ (Battle 4 ピッピ, Battle 8 ケロマツ) */
+.three-col-container {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 0;
+  min-height: 420px;
+}
+.three-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+  z-index: 2;
+  width: 31%;
+}
+.tc-node {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 8px 6px;
+  background: #ffffff;
+  border: 3px solid #222222;
+  border-radius: 16px;
+  box-shadow: 0 3px 0 #222222;
+  cursor: pointer;
+  min-height: 70px;
+  position: relative;
+  transition: all .15s;
+  user-select: none;
+}
+.tc-node:hover {
+  transform: scale(1.03);
+}
+.tc-node.selected {
+  border-color: #ffd644;
+  box-shadow: 0 0 0 4px #ffc107, 0 3px 0 #222222;
+  background: #fffde6;
+}
+.tc-node.matched {
+  border-color: #34c77b;
+  background: #eafff2;
+  box-shadow: 0 3px 0 #1b8a4f;
+  cursor: default;
+}
+.tc-poke-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+  align-items: center;
+}
+.tc-poke-row img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2));
+}
+.tc-dots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+  max-width: 60px;
+}
+.tc-dot {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #ff4d5e;
+  border: 2px solid #222222;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
+}
+.tc-num {
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--blue-d);
+}
+.tc-lines-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Battle 2 ヨーテリー＆チラーミィ カウントエリア */
+.b2-header {
+  display: flex;
+  justify-content: space-around;
+  gap: 12px;
+  background: #ffffff;
+  border: 3px solid #222222;
+  border-radius: 18px;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+}
+.b2-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.b2-score-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 900;
+  font-size: 15px;
+}
+.b2-score-title img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+.b2-dots {
+  display: flex;
+  gap: 3px;
+  background: #f7f7f7;
+  border: 1.5px solid #444444;
+  border-radius: 8px;
+  padding: 4px 6px;
+}
+.b2-dot {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 1.5px solid #888888;
+  background: #ffffff;
+  transition: all .15s;
+}
+.b2-dot.filled-york {
+  background: #e07a30;
+  border-color: #222222;
+}
+.b2-dot.filled-minc {
+  background: #8a859e;
+  border-color: #222222;
+}
+
+/* りんごの分解 (Battle 5, 6) */
+.plate-wrap {
+  display: flex;
+  justify-content: space-around;
+  gap: 12px;
+  align-items: center;
+  margin: 14px 0;
+  flex-wrap: wrap;
+}
+.plate-box {
+  flex: 1;
+  min-width: 140px;
+  background: #ffffff;
+  border: 3px solid #222222;
+  border-radius: 20px;
+  padding: 12px;
+  text-align: center;
+  box-shadow: 0 4px 0 #222222;
+}
+.plate-dish {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  align-items: center;
+  min-height: 52px;
+  background: #fffdf5;
+  border: 2px dashed #eedba4;
+  border-radius: 14px;
+  padding: 8px;
+  margin: 8px 0;
+}
+.plate-apple {
+  font-size: 32px;
+  animation: applePop .25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes applePop {
+  0% { transform: scale(0); }
+  100% { transform: scale(1); }
+}
+.plate-btn {
+  padding: 8px 14px;
+  border-radius: 12px;
+  border: 2.5px solid #222222;
+  background: #ff4d5e;
+  color: #ffffff;
+  font-weight: 900;
+  font-size: 15px;
+  cursor: pointer;
+  box-shadow: 0 3px 0 #222222;
+}
+
+/* すごろく数字埋め (Battle 9, 10, 55) */
+.seq-track {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  padding: 12px;
+  background: #ffffff;
+  border: 3px solid #222222;
+  border-radius: 18px;
+  margin-bottom: 14px;
+}
+.seq-slot {
+  width: 52px;
+  height: 52px;
+  border: 3px solid #222222;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 900;
+  background: #f7faff;
+  box-shadow: 0 3px 0 #222222;
+}
+.seq-slot.empty {
+  background: #fff;
+  border-style: dashed;
+  border-color: #ff9800;
+  color: #ff9800;
+}
+.seq-slot.filled {
+  background: #e8f5e9;
+  border-color: #34c77b;
+  border-style: solid;
+  color: #1b8a4f;
+}
+.seq-palette {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.seq-chip {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  border: 2.5px solid #222222;
+  background: #ffd644;
+  font-size: 24px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 3px 0 #222222;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.seq-chip.used {
+  opacity: .35;
+  pointer-events: none;
+}
+
+/* とけい (Battle 45, 46) */
+.clock-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+}
+.clock-circle {
+  width: 180px;
+  height: 180px;
+  border: 6px solid #222;
+  border-radius: 50%;
+  background: #fff;
+  position: relative;
+  box-shadow: 0 4px 0 #222;
+}
+.clock-center {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #d82b38;
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+}
+.clock-hand-hour {
+  width: 6px;
+  height: 48px;
+  background: #222;
+  border-radius: 4px;
+  position: absolute;
+  top: calc(50% - 48px);
+  left: calc(50% - 3px);
+  transform-origin: bottom center;
+  z-index: 3;
+}
+.clock-hand-min {
+  width: 4px;
+  height: 70px;
+  background: #2a6be8;
+  border-radius: 3px;
+  position: absolute;
+  top: calc(50% - 70px);
+  left: calc(50% - 2px);
+  transform-origin: bottom center;
+  z-index: 4;
+}
+
+/* コレクレーのおかね (Battle 52) */
+.coin-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.coin-chest {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  padding: 12px;
+  background: #fff9e6;
+  border: 3px solid #222;
+  border-radius: 18px;
+  max-width: 360px;
+}
+.coin-btn {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  border: 2.5px solid #222;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 3px 0 #222;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+}
+.coin-10 {
+  background: #d78b53;
+  color: #fff;
+}
+.coin-1 {
+  background: #cfd8dc;
+  color: #37474f;
+}
+.coin-total-box {
+  background: #ffffff;
+  border: 3px solid #222;
+  border-radius: 16px;
+  padding: 8px 18px;
+  font-weight: 900;
+  font-size: 20px;
+  color: var(--blue-d);
+}
+
 </style>
 </head>
 <body>
@@ -700,35 +1894,191 @@ function scrollToCurrent(){
 /* =========================================================
    要件②＆③：ドリル画面（インタラクティブ再現＆description1〜6分割表示）
    ========================================================= */
-function buildStageQuestions(row){
-  const descs = [row.description1, row.description2, row.description3, row.description4, row.description5, row.description6].filter(Boolean);
-  const correctRaw = toHalf(row.correct || '');
 
-  // 1. 特殊定義（アチャモ、ヨーテリー、時計など）
-  if(row.battle === 'Battle1'){
+
+function buildStageQuestions(row){
+  const bId = row.battle;
+  const descs = [row.description1, row.description2, row.description3, row.description4, row.description5, row.description6].filter(Boolean);
+  const correctRaw = (row.correct || '').replace(/[０-９]/g, c => String.fromCharCode(c.charCodeAt(0)-0xFEE0));
+
+  function numChoices(ans, count=4){
+    const n = parseInt(ans, 10);
+    const set = new Set([n]);
+    const span = n >= 20 ? 5 : 3;
+    while(set.size < count){
+      const d = n + Math.round((Math.random() * 2 - 1) * span);
+      if(d >= 0 && d !== n) set.add(d);
+    }
+    return [...set].sort((a,b)=>a-b).map(String);
+  }
+
+  // Battle 1: アチャモ (線結び + 2問)
+  if(bId === 'Battle1'){
     return [
-      {
-        qNum: 1,
-        desc: row.description1 || 'アチャモと りんごを せんで むすびましょう。',
-        interactive: 'achamo_match',
-        isInteractiveOnly: true
-      },
-      {
-        qNum: 2,
-        desc: row.description2 || 'アチャモと りんごは、どちらが おおいでしょう。おおい ほうを えらびましょう。',
-        ans: 'りんご',
-        choices: ['りんご', 'アチャモ']
-      },
-      {
-        qNum: 3,
-        desc: row.description3 || 'りんごは、たりますか。「たりる」「たりない」を えらびましょう。',
-        ans: 'たりる',
-        choices: ['たりる', 'たりない']
-      }
+      { qNum: 1, desc: row.description1 || 'アチャモとりんごを せんで むすびましょう。', interactive: 'achamo_match', isInteractiveOnly: true },
+      { qNum: 2, desc: row.description2 || 'アチャモと りんごは、どちらが おおいでしょう。おおい ほうを えらびましょう。', ans: 'りんご', choices: ['りんご', 'アチャモ'] },
+      { qNum: 3, desc: row.description3 || 'りんごは、たりますか。「たりる」「たりない」を えらびましょう。', ans: 'たりる', choices: ['たりる', 'たりない'] }
     ];
   }
 
-  // 2. description1〜6が複数あるステージの分割解析
+  // Battle 2: ヨーテリー & チラーミィ (2問の個別選択)
+  if(bId === 'Battle2'){
+    return [
+      { qNum: 1, desc: 'わくの なかの ヨーテリーは なんびき いましたか？', ans: '6', choices: ['4','5','6','7'], poke: 'ヨーテリー', count: 6, pokeId: 506 },
+      { qNum: 2, desc: 'わくの なかの チラーミィは なんびき いましたか？', ans: '7', choices: ['5','6','7','8'], poke: 'チラーミィ', count: 7, pokeId: 572 }
+    ];
+  }
+
+  // Battle 3: パチリス 1から5のすうじ (紙の手本 5問再現)
+  if(bId === 'Battle3'){
+    return [1, 2, 3, 4, 5].map(n => ({
+      qNum: n,
+      desc: n + 'ぴきの パチリス：かずだけ ○を ぬって、すうじを えらびましょう。',
+      ans: String(n),
+      choices: ['1', '2', '3', '4', '5'],
+      isPaperRow: true,
+      pokemon: 'パチリス',
+      count: n,
+      pokeId: 417
+    }));
+  }
+
+  // Battle 4: ピッピ せんでむすぼう (3列マッチング)
+  if(bId === 'Battle4'){
+    return [
+      { qNum: 1, desc: 'かずが おなじに なるように、ピッピと ●と すうじを せんで つなぎましょう。', interactive: 'three_col_match', isInteractiveOnly: true }
+    ];
+  }
+
+  // Battle 5: フシギソウ 5はいくつといくつ (1と4, 2と3)
+  if(bId === 'Battle5'){
+    return [
+      { qNum: 1, desc: '上のおさらに 1こ あります。5にするには 下のおさらに なんこ ひつよう？', ans: '4', choices: ['2','3','4','5'], interactive: 'apple_split' },
+      { qNum: 2, desc: '上のおさらに 2こ あります。5にするには 下のおさらに なんこ ひつよう？', ans: '3', choices: ['1','2','3','4'], interactive: 'apple_split' }
+    ];
+  }
+
+  // Battle 6: ジヘッド 5はいくつといくつ (3と2, 4と1)
+  if(bId === 'Battle6'){
+    return [
+      { qNum: 1, desc: '左のおさらに 3こ あります。5にするには 右のおさらに なんこ ひつよう？', ans: '2', choices: ['1','2','3','4'], interactive: 'apple_split' },
+      { qNum: 2, desc: '左のおさらに 4こ あります。5にするには 右のおさらに なんこ ひつよう？', ans: '1', choices: ['1','2','3','4'], interactive: 'apple_split' }
+    ];
+  }
+
+  // Battle 7: アンノーン 6から10のすうじ (紙の手本 5問再現)
+  if(bId === 'Battle7'){
+    return [6, 7, 8, 9, 10].map((n, idx) => ({
+      qNum: idx + 1,
+      desc: n + 'ぴきの アンノーン：かずだけ ○を ぬって、すうじを えらびましょう。',
+      ans: String(n),
+      choices: ['6', '7', '8', '9', '10'],
+      isPaperRow: true,
+      pokemon: 'アンノーン',
+      count: n,
+      pokeId: 201
+    }));
+  }
+
+  // Battle 8: ケロマツ せんでむすぼう (3列マッチング 6〜10)
+  if(bId === 'Battle8'){
+    return [
+      { qNum: 1, desc: 'かずが おなじに なるように、ケロマツと ●と すうじを せんで つなぎましょう。', interactive: 'three_col_match', isInteractiveOnly: true }
+    ];
+  }
+
+  // Battle 9: エテボース ぬけているすうじをかこう
+  if(bId === 'Battle9'){
+    return [
+      { qNum: 1, desc: 'すうじが 1から 10まで じゅんびんに ならぶように、あいている マスに すうじを いれましょう。', ans: '2', choices: ['2','4','5','7'], interactive: 'seq_fill' }
+    ];
+  }
+
+  // Battle 10: ミミッキュ ぎゃくじゅん 10〜1
+  if(bId === 'Battle10'){
+    return [
+      { qNum: 1, desc: '10から 1まで、すうじを ぎゃくの じゅんばんで ならべましょう。あいている マスを うめてね。', ans: '8', choices: ['8','6','5','3'], interactive: 'seq_fill' }
+    ];
+  }
+
+  // Battle 22: ウオノラゴン 11から15
+  if(bId === 'Battle22'){
+    return [11, 12, 13, 14, 15].map((n, idx) => ({
+      qNum: idx + 1,
+      desc: 'モンスターボール ' + n + 'こ：かずを かぞえて、すうじを えらびましょう。',
+      ans: String(n),
+      choices: ['11', '12', '13', '14', '15'],
+      isPaperRow: true,
+      pokemon: 'モンスターボール',
+      count: n,
+      pokeId: 882
+    }));
+  }
+
+  // Battle 22_2: ウオノラゴン 16から20
+  if(bId === 'Battle22_2'){
+    return [16, 17, 18, 19, 20].map((n, idx) => ({
+      qNum: idx + 1,
+      desc: 'モンスターボール ' + n + 'こ：かずを かぞえて、すうじを えらびましょう。',
+      ans: String(n),
+      choices: ['16', '17', '18', '19', '20'],
+      isPaperRow: true,
+      pokemon: 'モンスターボール',
+      count: n,
+      pokeId: 882
+    }));
+  }
+
+  // Battle 34: ハピナス 21から25
+  if(bId === 'Battle34'){
+    return [21, 22, 23, 24, 25].map((n, idx) => ({
+      qNum: idx + 1,
+      desc: 'ハピナスの たまご ' + n + 'こ：パックと ばらを かぞえて、すうじを えらびましょう。',
+      ans: String(n),
+      choices: ['21', '22', '23', '24', '25'],
+      isPaperRow: true,
+      pokemon: 'たまご',
+      count: n,
+      pokeId: 242
+    }));
+  }
+
+  // Battle 34_2: ハピナス 26から30
+  if(bId === 'Battle34_2'){
+    return [26, 27, 28, 29, 30].map((n, idx) => ({
+      qNum: idx + 1,
+      desc: 'ハピナスの たまご ' + n + 'こ：パックと ばらを かぞえて、すうじを えらびましょう。',
+      ans: String(n),
+      choices: ['26', '27', '28', '29', '30'],
+      isPaperRow: true,
+      pokemon: 'たまご',
+      count: n,
+      pokeId: 242
+    }));
+  }
+
+  // Battle 45: ピカチュウ なんじ
+  if(bId === 'Battle45'){
+    return [
+      { qNum: 1, desc: 'とけいの はりを みて、なんじか えらびましょう。', ans: '3じ', choices: ['1じ', '2じ', '3じ', '4じ'], interactive: 'clock' }
+    ];
+  }
+
+  // Battle 45_2: ピカチュウ なんじはん
+  if(bId === 'Battle45_2'){
+    return [
+      { qNum: 1, desc: 'みじかい はりと ながい はりを みて、なんじはんか えらびましょう。', ans: '4じはん', choices: ['3じはん', '4じはん', '5じはん', '6じはん'], interactive: 'clock' }
+    ];
+  }
+
+  // Battle 52: コレクレー いくらかな
+  if(bId === 'Battle52'){
+    return [
+      { qNum: 1, desc: '10えんだま 3まいと 1えんだま 5まいで、いくらかな？', ans: '35えん', choices: ['25えん', '35えん', '45えん', '50えん'], interactive: 'coin' }
+    ];
+  }
+
+  // 一般のdescription1〜6分割
   if(descs.length > 1){
     let answers = [];
     if(/【[^】]+】/.test(correctRaw)){
@@ -739,307 +2089,578 @@ function buildStageQuestions(row){
       answers = correctRaw.replace(/^順に/,'').split(/[、,\s]+/).map(s => s.replace(/^[①-⑩]/,''));
     }
 
-    answers = answers.map(s => (s || '').replace(/^[【「(（]+|[】」)）]+$/g, '').replace(/[匹ひきびきぴきこ本円つ個]+$/, '').trim());
-
-    return descs.map((d, di) => {
-      let ans = answers[di] || '';
-      let choices = null;
-
-      if(/どちらが\s*おおい/.test(d) || /おおい\s*ほう/.test(d)){
-        const m = d.match(/([ぁ-んァ-ヶーa-zA-Z0-9]+)と\s*([ぁ-んァ-ヶーa-zA-Z0-9]+)/);
-        if(m){
-          choices = [m[1], m[2]];
-          if(!ans || (ans !== m[1] && ans !== m[2])) ans = choices[0];
-        } else if(!ans){
-          ans = 'おおいほう';
-        }
-      } else if(d.includes('たりる')){
+    return descs.map((desc, idx) => {
+      const ans = answers[idx] ? answers[idx].trim() : (answers[0] || '1');
+      let choices = [];
+      if(/^[0-9]+$/.test(ans)){
+        choices = numChoices(ans);
+      } else if(/パン|おさら/.test(desc)){
+        choices = ['パン', 'おさら'];
+      } else if(/ウールー|バイウールー/.test(desc)){
+        choices = ['バイウールー', 'ウールー'];
+      } else if(/ひだり|みぎ/.test(desc)){
+        choices = ['ひだり', 'みぎ'];
+      } else if(/たりる|たりない/.test(desc)){
         choices = ['たりる', 'たりない'];
-        if(!ans) ans = 'たりる';
+      } else {
+        choices = [ans, 'できた！', 'まだ'];
       }
-
-      if(!ans) ans = 'できた！';
-
-      if(!choices){
-        if(/^\d+$/.test(ans)){
-          choices = numChoices(ans);
-        } else {
-          choices = ['できた！', 'まだ'];
-        }
-      }
-
-      return {
-        qNum: di + 1,
-        desc: d,
-        ans: ans,
-        choices: choices
-      };
+      return { qNum: idx + 1, desc, ans, choices };
     });
   }
 
-  // 3. 単一description（従来のフォールバック解析）
-  const desc = descs[0] || row.description || row.title;
-  let ans = 'できた！';
-  let choices = ['できた！', 'まだ'];
-
-  if(/【[^】]+】/.test(correctRaw)){
-    const m = correctRaw.match(/【([^】]+)】/);
-    if(m) ans = m[1].replace(/[匹ひきびきぴきこ本円つ個]+$/,'').trim();
-  } else if(/=/.test(correctRaw)){
-    ans = correctRaw.split('=').pop().replace(/[【】]/g, '').trim();
-  } else if(/\d+/.test(correctRaw)){
-    const m = correctRaw.match(/\d+/);
-    if(m) ans = m[0];
-  }
-  ans = (ans || '').replace(/^[【「(（]+|[】」)）]+$/g, '').replace(/[匹ひきびきぴきこ本円つ個]+$/, '').trim();
-
-  if(/^\d+$/.test(ans)){
-    choices = numChoices(ans);
-  } else if(desc.includes('たりる')){
-    choices = ['たりる', 'たりない'];
-  } else if(ans && ans !== 'できた！'){
-    choices = [ans, 'ちがうよ'];
+  // 単一問題
+  const cleanAns = correctRaw.replace(/^.*?[：:]/,'').replace(/匹|個|まい|本/g,'').trim();
+  let choices = [];
+  if(/^[0-9]+$/.test(cleanAns)){
+    choices = numChoices(cleanAns);
+  } else {
+    choices = [cleanAns || 'できた！', '1', '2', '3'];
   }
 
   return [{
     qNum: 1,
-    desc: desc,
-    ans: ans,
-    choices: choices
+    desc: descs[0] || row.prompt || 'もんだいを といて ポケモンを つかまえよう！',
+    ans: cleanAns || '1',
+    choices
   }];
 }
 
-function numChoices(ans){
-  const n = parseInt(ans, 10);
-  const set = new Set([n]);
-  const span = n >= 20 ? 5 : 3;
-  while(set.size < 4){
-    const d = n + Math.round((Math.random() * 2 - 1) * span);
-    if(d >= 0 && d !== n) set.add(d);
-  }
-  return shuffle([...set]).map(String);
-}
-
-/* ================= バトル画面を開く ================= */
-function openBattle(i){
-  curIdx = i;
-  const row = ROWS[i];
-  $('map').classList.remove('active');
-  $('battle').classList.add('active');
-  window.scrollTo(0, 0);
-
-  // ポケモンステージ
-  const pid = pokeId(row.pokemon_name);
-  const img = $('bPoke');
-  img.classList.remove('caught');
-  img.style.visibility = '';
-  img.src = pid ? ART(pid) : ART(132);
-
-  $('bName').textContent = row.pokemon_name + ' が あらわれた！';
-  $('bTypes').innerHTML = typeList(row.pokemon_type).map(t => {
-    const bFile = TYPE_MAP[t] || 'normal.png';
-    return `<span class="type-chip" style="background:${(TYPES[t]||TYPES['ノーマル'])[1]}"><img src="badges/${bFile}" class="chip-badge-img" alt="${t}"> ${t}</span>`;
-  }).join('');
-  $('bTitle').innerHTML = `<span class="bnum">バトル${i+1}</span>${row.title}`;
-
-  // 原本プリント画像
-  const src = row.battle + '.jpg';
-  $('sheetImg').src = src;
-  $('sheetImg').onclick = () => { $('sheetBig').src = src; openModal('mSheetModal'); };
-  $('promptNote').textContent = row.prompt + ' ' + row.options;
-
-  // 問題データ構築（description1〜6反映）
-  curQs = buildStageQuestions(row);
-
-  // インタラクティブ・ドリルステージの描画
-  renderInteractiveStage(row);
-
-  // 各問題カードの描画
-  renderQuestionCards(row);
-
-  updateThrow();
-
-  // 自動読み上げ
-  setTimeout(() => {
-    const speechText = row.title + '。' + (row.description1 || row.description || '');
-    speak(speechText);
-  }, 350);
-}
 
 /* インタラクティブUIの描画 */
 function renderInteractiveStage(row){
   const card = $('bInteractiveCard');
   card.innerHTML = '';
+  const bId = row.battle;
 
-  if(row.battle === 'Battle1'){
+  if(bId === 'Battle1'){
     // アチャモの線結びUI
-    card.innerHTML = `
-      <div class="card interactive-stage">
-        <h3>✏️ てで せんを むすんでみよう！（アチャモとりんご）</h3>
-        <p style="font-size:15px;color:#555;margin:0 0 10px">アチャモを タップして、そのあと りんごを タップしてね！</p>
-        <div class="match-container" id="matchBox">
-          <div class="match-col" id="colAchamo"></div>
-          <div class="match-col" id="colApple"></div>
-          <svg class="match-svg" id="matchLines"></svg>
-        </div>
-        <div class="match-status" id="matchDoneMsg">🎉 7くみ むすべたよ！ りんごが 1こ あまったね！</div>
-      </div>
-    `;
+    card.innerHTML = 
+      '<div class="card interactive-stage">' +
+        '<h3>✏️ てで せんを むすんでみよう！（アチャモとりんご）</h3>' +
+        '<p style="font-size:15px;color:#555;margin:0 0 10px">アチャモを タップして、そのあと りんごを タップしてね！</p>' +
+        '<div class="match-container" id="matchBox">' +
+          '<div class="match-col" id="colAchamo"></div>' +
+          '<div class="match-col" id="colApple"></div>' +
+          '<svg class="match-svg" id="matchLines"></svg>' +
+        '</div>' +
+        '<div class="match-status" id="matchDoneMsg">🎉 7くみ むすべたよ！ りんごが 1こ あまったね！</div>' +
+      '</div>';
     initAchamoMatch();
-  } else if(row.battle === 'Battle2'){
-    // ヨーテリー＆チラーミィのタップカウント
-    card.innerHTML = `
-      <div class="card interactive-stage">
-        <h3>👆 ポケモンを タップして かぞえよう！</h3>
-        <div class="count-field" id="countArea"></div>
-      </div>
-    `;
-    initCountArea();
-  } else if(row.battle.includes('Battle45') || row.battle.includes('Battle46')){
-    // 時計盤
-    card.innerHTML = `
-      <div class="card interactive-stage">
-        <h3>⏰ とけいを みてみよう！</h3>
-        <div class="clock-wrap">
-          <svg class="clock-svg" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="45" fill="#fff" stroke="#222" stroke-width="4"/>
-            ${[1,2,3,4,5,6,7,8,9,10,11,12].map(n=>{
-              const rad = (n * 30 - 90) * Math.PI / 180;
-              const x = 50 + 34 * Math.cos(rad);
-              const y = 50 + 34 * Math.sin(rad) + 4;
-              return `<text x="${x}" y="${y}" font-size="9" font-weight="900" text-anchor="middle" fill="#222">${n}</text>`;
-            }).join('')}
-            <!-- 短針（7時） -->
-            <line x1="50" y1="50" x2="35" y2="70" stroke="#222" stroke-width="5" stroke-linecap="round"/>
-            <!-- 長針（12時） -->
-            <line x1="50" y1="50" x2="50" y2="18" stroke="#ff4d5e" stroke-width="3.5" stroke-linecap="round"/>
-            <circle cx="50" cy="50" r="4" fill="#222"/>
-          </svg>
-        </div>
-      </div>
-    `;
+  } else if(bId === 'Battle2'){
+    // ヨーテリー＆チラーミィの個別カウント
+    card.innerHTML = 
+      '<div class="card interactive-stage">' +
+        '<h3>👆 ポケモンを タップして かぞえよう！</h3>' +
+        '<div class="b2-header">' +
+          '<div class="b2-col">' +
+            '<div class="b2-score-title"><img src="' + ART(506) + '" alt="ヨーテリー"> ヨーテリー: <span id="cntYork" style="color:#e07a30;font-size:22px">0</span> / 6ひき</div>' +
+            '<div class="b2-dots" id="dotsYork"></div>' +
+          '</div>' +
+          '<div class="b2-col">' +
+            '<div class="b2-score-title"><img src="' + ART(572) + '" alt="チラーミィ"> チラーミィ: <span id="cntMinc" style="color:#6b5bb5;font-size:22px">0</span> / 7ひき</div>' +
+            '<div class="b2-dots" id="dotsMinc"></div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="count-field" id="countArea"></div>' +
+      '</div>';
+    initBattle2Count();
+  } else if(bId === 'Battle4'){
+    // ピッピ 3列線結び (1〜5)
+    card.innerHTML = 
+      '<div class="card interactive-stage">' +
+        '<h3>✏️ ピッピと ●と すうじを せんで つなごう！</h3>' +
+        '<p style="font-size:15px;color:#555;margin:0 0 10px">左のピッピ ➔ 真ん中の● ➔ 右のすうじ を じゅんびんに タップしてね！</p>' +
+        '<div class="three-col-container" id="tcContainer">' +
+          '<div class="three-col" id="tcCol1"></div>' +
+          '<div class="three-col" id="tcCol2"></div>' +
+          '<div class="three-col" id="tcCol3"></div>' +
+          '<svg class="tc-lines-svg" id="tcSvg"></svg>' +
+        '</div>' +
+        '<div class="match-status" id="tcDoneMsg">🎉 5くみ ぜんぶ つながったよ！ ピッピを つかまえよう！</div>' +
+      '</div>';
+    initThreeColMatch([1, 2, 3, 4, 5], 35, 'ピッピ');
+  } else if(bId === 'Battle8'){
+    // ケロマツ 3列線結び (6〜10)
+    card.innerHTML = 
+      '<div class="card interactive-stage">' +
+        '<h3>✏️ ケロマツと ●と すうじを せんで つなごう！</h3>' +
+        '<p style="font-size:15px;color:#555;margin:0 0 10px">左のケロマツ ➔ 真ん中の● ➔ 右のすうじ を じゅんびんに タップしてね！</p>' +
+        '<div class="three-col-container" id="tcContainer">' +
+          '<div class="three-col" id="tcCol1"></div>' +
+          '<div class="three-col" id="tcCol2"></div>' +
+          '<div class="three-col" id="tcCol3"></div>' +
+          '<svg class="tc-lines-svg" id="tcSvg"></svg>' +
+        '</div>' +
+        '<div class="match-status" id="tcDoneMsg">🎉 5くみ ぜんぶ つながったよ！ ケロマツを つかまえよう！</div>' +
+      '</div>';
+    initThreeColMatch([6, 7, 8, 9, 10], 656, 'ケロマツ');
+  } else if(bId === 'Battle5' || bId === 'Battle6'){
+    // りんごの分解 (5はいくつといくつ)
+    card.innerHTML = 
+      '<div class="card interactive-stage">' +
+        '<h3>🍎 おさらに りんごを わけてみよう！ (ぜんぶで 5こ)</h3>' +
+        '<div class="plate-wrap">' +
+          '<div class="plate-box">' +
+            '<div style="font-weight:900;color:var(--blue-d)">うえの おさら</div>' +
+            '<div class="plate-dish" id="plateTop"></div>' +
+          '</div>' +
+          '<div style="font-size:28px;font-weight:900;color:#e07a30">＋</div>' +
+          '<div class="plate-box">' +
+            '<div style="font-weight:900;color:var(--blue-d)">したの おさら</div>' +
+            '<div class="plate-dish" id="plateBottom"></div>' +
+          '</div>' +
+        '</div>' +
+        '<div style="text-align:center;margin-top:8px">' +
+          '<button class="plate-btn" id="btnAddApple">🍎 りんごを おく</button> ' +
+          '<button class="plate-btn" id="btnRemoveApple" style="background:#5c6bc0">↩️ もどす</button>' +
+          '<div style="font-size:16px;font-weight:900;margin-top:8px;color:#333">あわせると: <span id="plateTotal" style="color:#e07a30;font-size:24px">1</span>こ</div>' +
+        '</div>' +
+      '</div>';
+    initAppleSplit(row);
+  } else if(bId === 'Battle9'){
+    // エテボースのすごろく
+    card.innerHTML = 
+      '<div class="card interactive-stage">' +
+        '<h3>🐒 あいている マスに すうじを いれよう！(1〜10)</h3>' +
+        '<div class="seq-track" id="seqTrack"></div>' +
+        '<div class="seq-palette" id="seqPalette"></div>' +
+      '</div>';
+    initSequenceFill([1, null, 3, null, null, 6, null, 8, null, 10], [2, 4, 5, 7, 9]);
+  } else if(bId === 'Battle10'){
+    // ミミッキュのぎゃくじゅん
+    card.innerHTML = 
+      '<div class="card interactive-stage">' +
+        '<h3>👻 10から 1まで ぎゃくに ならべよう！</h3>' +
+        '<div class="seq-track" id="seqTrack"></div>' +
+        '<div class="seq-palette" id="seqPalette"></div>' +
+      '</div>';
+    initSequenceFill([10, 9, null, 7, null, null, 4, null, 2, null], [8, 6, 5, 3, 1]);
+  } else if(bId === 'Battle45' || bId === 'Battle45_2'){
+    // とけい
+    const isHalf = bId === 'Battle45_2';
+    card.innerHTML = 
+      '<div class="card interactive-stage">' +
+        '<h3>⏰ とけいの はりを みてみよう！</h3>' +
+        '<div class="clock-stage">' +
+          '<div class="clock-circle">' +
+            '<div class="clock-center"></div>' +
+            '<div class="clock-hand-hour" style="transform:rotate(' + (isHalf ? '135deg' : '90deg') + ')"></div>' +
+            '<div class="clock-hand-min" style="transform:rotate(' + (isHalf ? '180deg' : '0deg') + ')"></div>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+  } else if(bId === 'Battle52'){
+    // コレクレーのおかね
+    card.innerHTML = 
+      '<div class="card interactive-stage">' +
+        '<h3>🪙 コレクレーの おたからを かぞえよう！</h3>' +
+        '<div class="coin-stage">' +
+          '<div class="coin-chest">' +
+            '<button class="coin-btn coin-10" onclick="addCoin(10)">🪙 10えん</button>' +
+            '<button class="coin-btn coin-10" onclick="addCoin(10)">🪙 10えん</button>' +
+            '<button class="coin-btn coin-10" onclick="addCoin(10)">🪙 10えん</button>' +
+            '<button class="coin-btn coin-1" onclick="addCoin(1)">🪙 1えん</button>' +
+            '<button class="coin-btn coin-1" onclick="addCoin(1)">🪙 1えん</button>' +
+            '<button class="coin-btn coin-1" onclick="addCoin(1)">🪙 1えん</button>' +
+            '<button class="coin-btn coin-1" onclick="addCoin(1)">🪙 1えん</button>' +
+            '<button class="coin-btn coin-1" onclick="addCoin(1)">🪙 1えん</button>' +
+          '</div>' +
+          '<div class="coin-total-box">あつめた おかね: <span id="coinTotal" style="color:#e07a30">0</span> えん</div>' +
+        '</div>' +
+      '</div>';
   }
 }
 
-/* アチャモ線結びの初期化 */
-function initAchamoMatch(){
-  const achamoCol = $('colAchamo');
-  const appleCol = $('colApple');
-  achamoCol.innerHTML = '';
-  appleCol.innerHTML = '';
-
-  for(let i=0; i<7; i++){
-    const d = document.createElement('div');
-    d.className = 'match-node';
-    d.dataset.type = 'achamo';
-    d.dataset.idx = i;
-    d.innerHTML = `<img src="${ART(255)}" alt="アチャモ"><span>アチャモ ${i+1}</span>`;
-    achamoCol.appendChild(d);
-  }
-  for(let i=0; i<8; i++){
-    const d = document.createElement('div');
-    d.className = 'match-node';
-    d.dataset.type = 'apple';
-    d.dataset.idx = i;
-    d.innerHTML = `<span style="font-size:28px">🍎</span><span>りんご ${i+1}</span>`;
-    appleCol.appendChild(d);
-  }
-
-  let selectedAchamo = null;
-  const connections = [];
-
-  function drawLines(){
-    const svg = $('matchLines');
-    const box = $('matchBox').getBoundingClientRect();
-    svg.setAttribute('viewBox', `0 0 ${box.width} ${box.height}`);
-    svg.innerHTML = connections.map(conn => {
-      const a = conn.achamo.getBoundingClientRect();
-      const b = conn.apple.getBoundingClientRect();
-      const x1 = a.right - box.left;
-      const y1 = a.top + a.height/2 - box.top;
-      const x2 = b.left - box.left;
-      const y2 = b.top + b.height/2 - box.top;
-      return `<path d="M ${x1} ${y1} C ${(x1+x2)/2} ${y1}, ${(x1+x2)/2} ${y2}, ${x2} ${y2}" fill="none" stroke="#ff4d5e" stroke-width="4" stroke-linecap="round"/>`;
-    }).join('');
-  }
-
-  $('matchBox').onclick = (e) => {
-    const node = e.target.closest('.match-node');
-    if(!node) return;
-
-    if(node.dataset.type === 'achamo'){
-      document.querySelectorAll('#colAchamo .match-node').forEach(x=>x.classList.remove('selected'));
-      node.classList.add('selected');
-      selectedAchamo = node;
-    } else if(node.dataset.type === 'apple' && selectedAchamo){
-      // 結ぶ
-      if(!connections.some(c=>c.achamo===selectedAchamo || c.apple===node)){
-        connections.push({ achamo: selectedAchamo, apple: node });
-        selectedAchamo.classList.add('connected');
-        node.classList.add('connected');
-        drawLines();
-        if(connections.length >= 7){
-          $('matchDoneMsg').style.display = 'block';
-          speak('7くみ むすべたよ！ りんごが 1こ あまったね！');
-        }
-      }
-      selectedAchamo.classList.remove('selected');
-      selectedAchamo = null;
-    }
-  };
-}
-
-/* タップ数え上げの初期化 */
-function initCountArea(){
+/* Battle 2: ヨーテリー＆チラーミィ カウント */
+function initBattle2Count(){
   const area = $('countArea');
+  const dotsY = $('dotsYork');
+  const dotsM = $('dotsMinc');
   area.innerHTML = '';
-  let count = 0;
-  // ヨーテリー6匹＋チラーミィ7匹
+  dotsY.innerHTML = '';
+  dotsM.innerHTML = '';
+
+  for(let i=0; i<10; i++){
+    dotsY.innerHTML += '<div class="b2-dot" id="dotY_' + i + '"></div>';
+    dotsM.innerHTML += '<div class="b2-dot" id="dotM_' + i + '"></div>';
+  }
+
+  let countYork = 0;
+  let countMinc = 0;
+
   const list = [
-    ...Array(6).fill({ name:'ヨーテリー', id:506 }),
-    ...Array(7).fill({ name:'チラーミィ', id:572 })
+    ...Array(6).fill({ type:'york', name:'ヨーテリー', id:506, tag:'🐶' }),
+    ...Array(7).fill({ type:'minc', name:'チラーミィ', id:572, tag:'🐭' })
   ];
-  shuffle(list).forEach((p, idx) => {
+
+  shuffle(list).forEach(p => {
     const d = document.createElement('div');
     d.className = 'tap-item';
-    d.innerHTML = `<img src="${ART(p.id)}" alt="${p.name}"><div class="count-badge"></div>`;
+    d.innerHTML = '<img src="' + ART(p.id) + '" alt="' + p.name + '"><div class="count-badge"></div>';
+
     d.onclick = () => {
       if(!d.classList.contains('counted')){
-        count++;
         d.classList.add('counted');
-        d.querySelector('.count-badge').textContent = count;
+        const badge = d.querySelector('.count-badge');
+        if(p.type === 'york'){
+          countYork++;
+          badge.textContent = countYork;
+          badge.style.background = '#e07a30';
+          $('cntYork').textContent = countYork;
+          const dot = $('dotY_' + (countYork - 1));
+          if(dot) dot.classList.add('filled-york');
+          if(countYork === 6) toast('🐶 ヨーテリーを 6ぴき ぜんぶ みつけたよ！');
+        } else {
+          countMinc++;
+          badge.textContent = countMinc;
+          badge.style.background = '#8a859e';
+          $('cntMinc').textContent = countMinc;
+          const dot = $('dotM_' + (countMinc - 1));
+          if(dot) dot.classList.add('filled-minc');
+          if(countMinc === 7) toast('🐭 チラーミィを 7ひき ぜんぶ みつけたよ！');
+        }
       }
     };
     area.appendChild(d);
   });
 }
 
-/* 各問題カードの描画（description1〜6対応） */
+/* Battle 4 & 8: 3列線結び（ピッピ、ケロマツ） */
+function initThreeColMatch(nums, pokeId, pokeName){
+  const col1 = $('tcCol1');
+  const col2 = $('tcCol2');
+  const col3 = $('tcCol3');
+  const svg = $('tcSvg');
+  col1.innerHTML = '';
+  col2.innerHTML = '';
+  col3.innerHTML = '';
+  svg.innerHTML = '';
+
+  const order1 = shuffle([...nums]);
+  const order2 = shuffle([...nums]);
+  const order3 = shuffle([...nums]);
+
+  order1.forEach(n => {
+    const d = document.createElement('div');
+    d.className = 'tc-node';
+    d.dataset.num = n;
+    d.dataset.col = '1';
+    let pokes = '';
+    for(let k=0; k<n; k++) pokes += '<img src="' + ART(pokeId) + '" alt="' + pokeName + '">';
+    d.innerHTML = '<div class="tc-poke-row">' + pokes + '</div><span style="font-size:12px;font-weight:900;color:#555;margin-top:3px">' + pokeName + ' ' + n + 'ひき</span>';
+    col1.appendChild(d);
+  });
+
+  order2.forEach(n => {
+    const d = document.createElement('div');
+    d.className = 'tc-node';
+    d.dataset.num = n;
+    d.dataset.col = '2';
+    let dots = '';
+    for(let k=0; k<n; k++) dots += '<div class="tc-dot"></div>';
+    d.innerHTML = '<div class="tc-dots">' + dots + '</div><span style="font-size:12px;font-weight:900;color:#888;margin-top:3px">● ' + n + 'こ</span>';
+    col2.appendChild(d);
+  });
+
+  order3.forEach(n => {
+    const d = document.createElement('div');
+    d.className = 'tc-node';
+    d.dataset.num = n;
+    d.dataset.col = '3';
+    d.innerHTML = '<span class="tc-num">' + n + '</span>';
+    col3.appendChild(d);
+  });
+
+  let sel1 = null;
+  let sel2 = null;
+  const connections = [];
+
+  function drawConnections(){
+    const box = $('tcContainer').getBoundingClientRect();
+    if(!box.width || !box.height) return;
+    svg.setAttribute('viewBox', '0 0 ' + box.width + ' ' + box.height);
+    let lines = '';
+    connections.forEach(conn => {
+      if(conn.n1 && conn.n2){
+        const r1 = conn.n1.getBoundingClientRect();
+        const r2 = conn.n2.getBoundingClientRect();
+        const x1 = r1.right - box.left, y1 = r1.top + r1.height/2 - box.top;
+        const x2 = r2.left - box.left, y2 = r2.top + r2.height/2 - box.top;
+        lines += '<path d="M ' + x1 + ' ' + y1 + ' C ' + ((x1+x2)/2) + ' ' + y1 + ', ' + ((x1+x2)/2) + ' ' + y2 + ', ' + x2 + ' ' + y2 + '" fill="none" stroke="#34c77b" stroke-width="4.5" stroke-linecap="round"/>';
+      }
+      if(conn.n2 && conn.n3){
+        const r2 = conn.n2.getBoundingClientRect();
+        const r3 = conn.n3.getBoundingClientRect();
+        const x1 = r2.right - box.left, y1 = r2.top + r2.height/2 - box.top;
+        const x2 = r3.left - box.left, y2 = r3.top + r3.height/2 - box.top;
+        lines += '<path d="M ' + x1 + ' ' + y1 + ' C ' + ((x1+x2)/2) + ' ' + y1 + ', ' + ((x1+x2)/2) + ' ' + y2 + ', ' + x2 + ' ' + y2 + '" fill="none" stroke="#34c77b" stroke-width="4.5" stroke-linecap="round"/>';
+      }
+    });
+    svg.innerHTML = lines;
+  }
+
+  window.addEventListener('resize', drawConnections);
+
+  $('tcContainer').onclick = (e) => {
+    const node = e.target.closest('.tc-node');
+    if(!node || node.classList.contains('matched')) return;
+
+    const col = node.dataset.col;
+    const num = parseInt(node.dataset.num, 10);
+
+    if(col === '1'){
+      document.querySelectorAll('#tcCol1 .tc-node').forEach(x=>x.classList.remove('selected'));
+      node.classList.add('selected');
+      sel1 = node;
+      toast('[左] ' + pokeName + ' ' + num + 'ひき を えらんだよ！ まんなかの●を えらんでね');
+    } else if(col === '2'){
+      if(!sel1){
+        toast('さきに 左の ポケモンを えらんでね！');
+        return;
+      }
+      if(parseInt(sel1.dataset.num, 10) === num){
+        document.querySelectorAll('#tcCol2 .tc-node').forEach(x=>x.classList.remove('selected'));
+        node.classList.add('selected');
+        sel2 = node;
+        toast('[中] ● ' + num + 'こ と つながったよ！ 右のすうじを えらんでね');
+        let conn = connections.find(c => c.num === num);
+        if(!conn){ conn = { num, n1: sel1, n2: node }; connections.push(conn); }
+        else { conn.n1 = sel1; conn.n2 = node; }
+        drawConnections();
+      } else {
+        toast('かずが ちがうよ！ もういちど かぞえてみよう');
+      }
+    } else if(col === '3'){
+      if(!sel2){
+        toast('まんなかの ●を えらんでから すうじを えらんでね！');
+        return;
+      }
+      if(parseInt(sel2.dataset.num, 10) === num){
+        node.classList.add('matched');
+        sel1.classList.remove('selected'); sel1.classList.add('matched');
+        sel2.classList.remove('selected'); sel2.classList.add('matched');
+
+        let conn = connections.find(c => c.num === num);
+        if(conn) conn.n3 = node;
+        drawConnections();
+
+        toast('✨ ' + num + 'の せんが ぜんぶ つながったよ！');
+        sel1 = null; sel2 = null;
+
+        if(connections.length >= nums.length && connections.every(c => c.n1 && c.n2 && c.n3)){
+          $('tcDoneMsg').style.display = 'block';
+          (S.answers[curIdx] = S.answers[curIdx] || {})._completed = true;
+          save();
+          updateThrow();
+          speak('ぜんぶの せんが つながったよ！ すばらしい！');
+        }
+      } else {
+        toast('かずが ちがうよ！ もういちど かぞえてみよう');
+      }
+    }
+  };
+}
+
+/* Battle 5 & 6: りんごの分解 */
+function initAppleSplit(row){
+  const plateTop = $('plateTop');
+  const plateBottom = $('plateBottom');
+  const btnAdd = $('btnAddApple');
+  const btnRemove = $('btnRemoveApple');
+  const lblTotal = $('plateTotal');
+
+  const topCount = row.battle === 'Battle5' ? 1 : 3;
+  let topHtml = '';
+  for(let k=0; k<topCount; k++) topHtml += '<span class="plate-apple">🍎</span>';
+  plateTop.innerHTML = topHtml;
+
+  let bottomCount = 0;
+
+  function updatePlates(){
+    let apples = '';
+    for(let k=0; k<bottomCount; k++) apples += '<span class="plate-apple">🍎</span>';
+    plateBottom.innerHTML = apples;
+    const total = topCount + bottomCount;
+    lblTotal.textContent = total;
+    if(total === 5){
+      toast('🎉 ぜんぶで 5こに なったよ！ 下のすうじを えらぼう！');
+    }
+  }
+
+  btnAdd.onclick = () => {
+    if(bottomCount < 5){
+      bottomCount++;
+      updatePlates();
+    }
+  };
+
+  btnRemove.onclick = () => {
+    if(bottomCount > 0){
+      bottomCount--;
+      updatePlates();
+    }
+  };
+
+  updatePlates();
+}
+
+/* Battle 9 & 10: すごろく数字埋め */
+function initSequenceFill(board, chips){
+  const track = $('seqTrack');
+  const pal = $('seqPalette');
+  track.innerHTML = '';
+  pal.innerHTML = '';
+
+  let selectedChip = null;
+
+  board.forEach((val, idx) => {
+    const slot = document.createElement('div');
+    slot.className = 'seq-slot ' + (val === null ? 'empty' : '');
+    slot.textContent = val !== null ? val : '?';
+    slot.dataset.idx = idx;
+
+    slot.onclick = () => {
+      if(slot.classList.contains('empty') && selectedChip){
+        slot.textContent = selectedChip.dataset.val;
+        slot.classList.remove('empty');
+        slot.classList.add('filled');
+        selectedChip.classList.add('used');
+        selectedChip = null;
+        toast('マスに すうじが はいったよ！');
+      }
+    };
+    track.appendChild(slot);
+  });
+
+  chips.forEach(val => {
+    const chip = document.createElement('div');
+    chip.className = 'seq-chip';
+    chip.textContent = val;
+    chip.dataset.val = val;
+
+    chip.onclick = () => {
+      document.querySelectorAll('.seq-chip').forEach(c => c.style.transform = '');
+      chip.style.transform = 'scale(1.15)';
+      selectedChip = chip;
+      toast('すうじ ' + val + ' を えらんだよ！ 空いているマスを タップしてね');
+    };
+    pal.appendChild(chip);
+  });
+}
+
+let coinSum = 0;
+function addCoin(val){
+  coinSum += val;
+  const t = $('coinTotal');
+  if(t) t.textContent = coinSum;
+  toast('🪙 ' + val + 'えん いれたよ！ 合計: ' + coinSum + 'えん');
+}
+
+/* 各問題カードの描画 */
 function renderQuestionCards(row){
   const box = $('bQuestionCards');
   box.innerHTML = '';
   const saved = S.answers[curIdx] || {};
 
-  curQs.forEach((q, qi) => {
-    if(q.isInteractiveOnly) return; // 線結びなどの専用操作のみの問題は選択ボタン不要
+  // 1. 紙のドリル手本再現モード（Battle 3 パチリス、Battle 7 アンノーン、Battle 22 ウオノラゴン等）
+  // 左：パチリスの絵 ➔ その隣：選択肢から選ぶ ➔ その隣：一つ数字を書く四角い枠
+  if(curQs[0] && curQs[0].isPaperRow){
+    curQs.forEach((q, qi) => {
+      const card = document.createElement('div');
+      card.className = 'pd-card';
 
+      let pokeHtml = '';
+      for(let k=0; k<q.count; k++) pokeHtml += '<img src="' + ART(q.pokeId) + '" alt="' + q.pokemon + '">';
+
+      let dotsHtml = '';
+      for(let idx=0; idx<10; idx++){
+        dotsHtml += '<div class="pd-dot ' + (idx < q.count ? 'filled' : '') + '"></div>';
+      }
+
+      let choicesHtml = '';
+      q.choices.forEach(ch => {
+        choicesHtml += '<button class="pd-btn ' + (saved[qi] === ch ? 'sel' : '') + '" data-val="' + ch + '">' + ch + '</button>';
+      });
+
+      card.innerHTML = 
+        '<div class="pd-left">' +
+          '<div class="pd-icons">' + pokeHtml + '</div>' +
+          '<div class="pd-label">' + q.pokemon + ' ' + q.count + 'ひき</div>' +
+          '<div class="pd-ten-frame">' + dotsHtml + '</div>' +
+        '</div>' +
+        '<div class="pd-choices-box">' +
+          '<div class="pd-choices-title">すうじを えらぼう</div>' +
+          '<div class="pd-choices">' + choicesHtml + '</div>' +
+        '</div>' +
+        '<div class="pd-write-box">' +
+          '<span class="pd-write-num">' + (saved[qi] || '') + '</span>' +
+        '</div>';
+
+      const choices = card.querySelectorAll('.pd-btn');
+      const writeNum = card.querySelector('.pd-write-num');
+
+      choices.forEach(btn => {
+        btn.onclick = () => {
+          choices.forEach(x => x.classList.remove('sel'));
+          btn.classList.add('sel');
+          const val = btn.dataset.val;
+          writeNum.textContent = val;
+          (S.answers[curIdx] = S.answers[curIdx] || {})[qi] = val;
+          save();
+          updateThrow();
+          speak(val + '！');
+        };
+      });
+
+      box.appendChild(card);
+    });
+    return;
+  }
+
+  // 2. インタラクティブ専用ステージ（Battle 4 ピッピ、Battle 8 ケロマツなど）
+  if(curQs[0] && curQs[0].isInteractiveOnly){
+    const info = document.createElement('div');
+    info.className = 'card';
+    info.style.textAlign = 'center';
+    info.style.fontWeight = '900';
+    info.style.color = 'var(--blue-d)';
+    info.style.fontSize = '16px';
+    info.innerHTML = '✏️ うえの がめんで、せんで むすんで クリアしよう！';
+    box.appendChild(info);
+    return;
+  }
+
+  // 3. 通常の個別問題カード（Battle 2 ヨーテリー＆チラーミィ、description1〜6対応）
+  curQs.forEach((q, qi) => {
     const card = document.createElement('div');
     card.className = 'q-card';
-    card.innerHTML = `
-      <div class="q-header">
-        <span class="q-badge">もんだい ${q.qNum}</span>
-        <div class="q-desc">${q.desc}</div>
-        <button class="q-voice" aria-label="もんだいをよみあげる">🔊</button>
-      </div>
-      <div class="choices"></div>
-    `;
+    
+    // Battle 2 専用のカスタム見出しアイコン
+    let pokeIcon = '';
+    if(q.pokeId){
+      pokeIcon = '<img src="' + ART(q.pokeId) + '" style="width:32px;height:32px;vertical-align:middle;margin-right:6px">';
+    }
 
-    // 個別音声読み上げ
+    card.innerHTML = 
+      '<div class="q-header">' +
+        '<span class="q-badge">もんだい ' + q.qNum + '</span>' +
+        '<div class="q-desc">' + pokeIcon + q.desc + '</div>' +
+        '<button class="q-voice" aria-label="もんだいをよみあげる">🔊</button>' +
+      '</div>' +
+      '<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:10px;flex-wrap:wrap">' +
+        '<div class="choices" style="flex:1"></div>' +
+        '<div class="pd-write-box">' +
+          '<span class="pd-write-num" id="qWrite_' + qi + '">' + (saved[qi] || '') + '</span>' +
+        '</div>' +
+      '</div>';
+
     const vBtn = card.querySelector('.q-voice');
     vBtn.onclick = () => speak(q.desc, vBtn);
 
-    // 選択肢ボタン
     const choicesBox = card.querySelector('.choices');
+    const writeBox = card.querySelector('#qWrite_' + qi);
+
     q.choices.forEach(ch => {
       const b = document.createElement('button');
       b.className = 'choice';
@@ -1049,9 +2670,11 @@ function renderQuestionCards(row){
       b.onclick = () => {
         choicesBox.querySelectorAll('.choice').forEach(x => x.classList.remove('sel'));
         b.classList.add('sel');
+        if(writeBox) writeBox.textContent = ch;
         (S.answers[curIdx] = S.answers[curIdx] || {})[qi] = ch;
         save();
         updateThrow();
+        speak(ch + '！');
       };
       choicesBox.appendChild(b);
     });
@@ -1062,14 +2685,16 @@ function renderQuestionCards(row){
 
 function updateThrow(){
   const a = S.answers[curIdx] || {};
-  // isInteractiveOnly以外の問題が全て回答されているか
+  if(curQs.some(q => q.isInteractiveOnly)){
+    $('btnThrow').disabled = !a._completed;
+    return;
+  }
   const neededQs = curQs.filter(q => !q.isInteractiveOnly);
   $('btnThrow').disabled = !neededQs.every(q => {
     const qi = curQs.indexOf(q);
     return a[qi] != null;
   });
 }
-
 function backToMap(){
   if('speechSynthesis' in window) speechSynthesis.cancel();
   $('battle').classList.remove('active');

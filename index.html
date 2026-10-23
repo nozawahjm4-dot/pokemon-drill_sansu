@@ -1584,6 +1584,75 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
   transform: scale(1.1);
 }
 
+
+/* カード内埋め込み数の分解ツリー */
+.qtree-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px auto;
+  padding: 10px 18px;
+  background: #ffffff;
+  border: 2px dashed #93c5fd;
+  border-radius: 16px;
+  width: fit-content;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.qtree-top {
+  width: 48px;
+  height: 48px;
+  border: 2.5px solid #222222;
+  border-radius: 12px;
+  background: #eff6ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--blue-d);
+  box-shadow: 0 2px 0 #222222;
+}
+.qtree-branch-svg {
+  width: 90px;
+  height: 22px;
+  overflow: visible;
+  margin: 2px 0;
+}
+.qtree-bottom-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.qtree-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 900;
+  box-shadow: 0 2px 0 #222222;
+  transition: all .2s;
+}
+.qtree-box.given {
+  border: 2px solid #222222;
+  background: #f8fafc;
+  color: #334155;
+}
+.qtree-box.target {
+  border: 2.5px dashed #ff4d5e;
+  background: #fff8f8;
+  color: #ff4d5e;
+}
+.qtree-box.target.filled {
+  border-style: solid;
+  border-color: #10b981;
+  background: #ecfdf5;
+  color: #047857;
+  transform: scale(1.05);
+}
+
 /* Battle 11 どちらがおおいかな */
 .b11-section {
   background: #ffffff;
@@ -2162,8 +2231,8 @@ function buildStageQuestions(row){
   // Battle 2: ヨーテリー & チラーミィ (2問の個別選択)
   if(bId === 'Battle2'){
     return [
-      { qNum: 1, desc: 'わくの なかの ヨーテリーは なんびき いましたか？', ans: '6', choices: ['4','5','6','7'], poke: 'ヨーテリー', count: 6, pokeId: 506 },
-      { qNum: 2, desc: 'わくの なかの チラーミィは なんびき いましたか？', ans: '7', choices: ['5','6','7','8'], poke: 'チラーミィ', count: 7, pokeId: 572 }
+      { qNum: 1, desc: 'わくの なかの ヨーテリーは なんびき いましたか？', ans: '6', choices: ['4','5','6','7'], poke: 'ヨーテリー', count: 6, pokeId: 506, hideWriteBox: true },
+      { qNum: 2, desc: 'わくの なかの チラーミィは なんびき いましたか？', ans: '7', choices: ['5','6','7','8'], poke: 'チラーミィ', count: 7, pokeId: 572, hideWriteBox: true }
     ];
   }
 
@@ -2188,19 +2257,19 @@ function buildStageQuestions(row){
     ];
   }
 
-  // Battle 5: フシギソウ 5はいくつといくつ (1と4, 2と3)
+  // Battle 5: フシギソウ 5はいくつといくつ (おさら1とおさら2)
   if(bId === 'Battle5'){
     return [
-      { qNum: 1, desc: '上のおさらに 1こ あります。5にするには 下のおさらに なんこ ひつよう？', ans: '4', choices: ['2','3','4','5'], interactive: 'apple_split' },
-      { qNum: 2, desc: '上のおさらに 2こ あります。5にするには 下のおさらに なんこ ひつよう？', ans: '3', choices: ['1','2','3','4'], interactive: 'apple_split' }
+      { qNum: 1, desc: 'おさら1に 1こ あります。5にするには おさら2に なんこ ひつよう？', ans: '4', choices: ['2','3','4','5'], interactive: 'apple_split' },
+      { qNum: 2, desc: 'おさら1に 2こ あります。5にするには おさら2に なんこ ひつよう？', ans: '3', choices: ['1','2','3','4'], interactive: 'apple_split' }
     ];
   }
 
-  // Battle 6: ジヘッド 5はいくつといくつ (3と2, 4と1)
+  // Battle 6: ジヘッド 5はいくつといくつ (おさら1とおさら2)
   if(bId === 'Battle6'){
     return [
-      { qNum: 1, desc: '左のおさらに 3こ あります。5にするには 右のおさらに なんこ ひつよう？', ans: '2', choices: ['1','2','3','4'], interactive: 'apple_split' },
-      { qNum: 2, desc: '左のおさらに 4こ あります。5にするには 右のおさらに なんこ ひつよう？', ans: '1', choices: ['1','2','3','4'], interactive: 'apple_split' }
+      { qNum: 1, desc: 'おさら1に 3こ あります。5にするには おさら2に なんこ ひつよう？', ans: '2', choices: ['1','2','3','4'], interactive: 'apple_split' },
+      { qNum: 2, desc: 'おさら1に 4こ あります。5にするには おさら2に なんこ ひつよう？', ans: '1', choices: ['1','2','3','4'], interactive: 'apple_split' }
     ];
   }
 
@@ -2225,17 +2294,157 @@ function buildStageQuestions(row){
     ];
   }
 
-  // Battle 9: エテボース ぬけているすうじをかこう
+  // Battle 9: エテボース ぬけているすうじをかこう (すごろく直結・もんだい1重複なし)
   if(bId === 'Battle9'){
     return [
-      { qNum: 1, desc: 'すうじが 1から 10まで じゅんびんに ならぶように、あいている マスに すうじを いれましょう。', ans: '2', choices: ['2','4','5','7'], interactive: 'seq_fill' }
+      { qNum: 1, desc: 'すうじが 1から 10まで じゅんびんに ならぶように、あいている マスに すうじを いれましょう。', interactive: 'seq_fill', isInteractiveOnly: true }
     ];
   }
 
-  // Battle 10: ミミッキュ ぎゃくじゅん 10〜1
+  // Battle 10: ミミッキュ ぎゃくじゅん 10〜1 (すごろく直結・もんだい1重複なし)
   if(bId === 'Battle10'){
     return [
-      { qNum: 1, desc: '10から 1まで、すうじを ぎゃくの じゅんばんで ならべましょう。あいている マスを うめてね。', ans: '8', choices: ['8','6','5','3'], interactive: 'seq_fill' }
+      { qNum: 1, desc: '10から 1まで、すうじを ぎゃくの じゅんばんで ならべましょう。あいている マスを うめてね。', interactive: 'seq_fill', isInteractiveOnly: true }
+    ];
+  }
+
+  // Battle 11: ユキメノコ どちらがおおいかな (2問個別比較)
+  if(bId === 'Battle11'){
+    return [
+      { qNum: 1, desc: 'ユキメノコと マニューラ、どちらが おおいかな？', ans: 'ユキメノコ', choices: ['ユキメノコ', 'マニューラ'], isB11: true },
+      { qNum: 2, desc: 'ユキメノコと ユキカブリ、どちらが おおいかな？', ans: 'ユキカブリ', choices: ['ユキメノコ', 'ユキカブリ'], isB11: true }
+    ];
+  }
+
+  // Battle 12: バタフリー 6はいくつといくつ (5問個別・ツリー表示)
+  if(bId === 'Battle12'){
+    const total = 6;
+    return [1, 2, 3, 4, 5].map(given => ({
+      qNum: given,
+      desc: total + 'は ' + given + 'と いくつかな？',
+      ans: String(total - given),
+      choices: ['1', '2', '3', '4', '5'],
+      isTreeQuestion: true,
+      total,
+      given
+    }));
+  }
+
+  // Battle 13: マリルリ 7はいくつといくつ (6問個別・ツリー表示)
+  if(bId === 'Battle13'){
+    const total = 7;
+    return [1, 2, 3, 4, 5, 6].map(given => ({
+      qNum: given,
+      desc: total + 'は ' + given + 'と いくつかな？',
+      ans: String(total - given),
+      choices: ['1', '2', '3', '4', '5', '6'],
+      isTreeQuestion: true,
+      total,
+      given
+    }));
+  }
+
+  // Battle 14: ヤミラミ 8はいくつといくつ (7問個別・ツリー表示)
+  if(bId === 'Battle14'){
+    const total = 8;
+    return [1, 2, 3, 4, 5, 6, 7].map(given => ({
+      qNum: given,
+      desc: total + 'は ' + given + 'と いくつかな？',
+      ans: String(total - given),
+      choices: ['1', '2', '3', '4', '5', '6', '7'],
+      isTreeQuestion: true,
+      total,
+      given
+    }));
+  }
+
+  // Battle 15: ギガイアス 9はいくつといくつ (8問個別・ツリー表示)
+  if(bId === 'Battle15'){
+    const total = 9;
+    return [1, 2, 3, 4, 5, 6, 7, 8].map(given => ({
+      qNum: given,
+      desc: total + 'は ' + given + 'と いくつかな？',
+      ans: String(total - given),
+      choices: ['1', '2', '3', '4', '5', '6', '7', '8'],
+      isTreeQuestion: true,
+      total,
+      given
+    }));
+  }
+
+  // Battle 16: ゴーゴート 10はいくつといくつ (9問個別・ツリー表示)
+  if(bId === 'Battle16'){
+    const total = 10;
+    return [1, 2, 3, 4, 5, 6, 7, 8, 9].map(given => ({
+      qNum: given,
+      desc: total + 'は ' + given + 'と いくつかな？',
+      ans: String(total - given),
+      choices: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
+      isTreeQuestion: true,
+      total,
+      given
+    }));
+  }
+
+  // Battle 17: トゲピー あといくつで10
+  if(bId === 'Battle17'){
+    return [
+      { qNum: 1, desc: 'たまごが 8こ あります。あと いくつで 10に なるかな？', ans: '2', choices: ['1', '2', '3', '4'] },
+      { qNum: 2, desc: 'たまごが 5こ あります。あと いくつで 10に なるかな？', ans: '5', choices: ['3', '4', '5', '6'] },
+      { qNum: 3, desc: 'たまごが 3こ あります。あと いくつで 10に なるかな？', ans: '7', choices: ['5', '6', '7', '8'] }
+    ];
+  }
+
+  // Battle 18: ヤングース あといくつで10
+  if(bId === 'Battle18'){
+    return [
+      { qNum: 1, desc: 'りんごが 7こ あります。7は あと いくつで 10に なるかな？', ans: '3', choices: ['1', '2', '3', '4'] },
+      { qNum: 2, desc: 'りんごが 9こ あります。9は あと いくつで 10に なるかな？', ans: '1', choices: ['1', '2', '3', '4'] },
+      { qNum: 3, desc: 'りんごが 6こ あります。6は あと いくつで 10に なるかな？', ans: '4', choices: ['2', '3', '4', '5'] }
+    ];
+  }
+
+  // Battle 19: イッカネズミ 0というかず
+  if(bId === 'Battle19'){
+    return [
+      { qNum: 1, desc: 'おさらの なかの りんご：なにも ない おさらの りんごは なんこかな？', ans: '0', choices: ['0', '1', '2', '3'] },
+      { qNum: 2, desc: 'わなげ：ひとつも はいっていない ところの わは なんこかな？', ans: '0', choices: ['0', '1', '2', '3'] }
+    ];
+  }
+
+  // Battle 20: ピカチュウ まとめ (7つの数の木)
+  if(bId === 'Battle20'){
+    const trees = [
+      { total: 6, given: 1, ans: '5', choices: ['3', '4', '5', '6'] },
+      { total: 9, given: 3, ans: '6', choices: ['4', '5', '6', '7'] },
+      { total: 7, given: 5, ans: '2', choices: ['1', '2', '3', '4'] },
+      { total: 10, given: 7, ans: '3', choices: ['2', '3', '4', '5'] },
+      { total: 8, given: 4, ans: '4', choices: ['2', '3', '4', '5'] },
+      { total: 9, given: 5, ans: '4', choices: ['3', '4', '5', '6'] },
+      { total: 10, given: 8, ans: '2', choices: ['1', '2', '3', '4'] }
+    ];
+    return trees.map((t, idx) => ({
+      qNum: idx + 1,
+      desc: t.total + 'は ' + t.given + 'と いくつかな？',
+      ans: t.ans,
+      choices: t.choices,
+      isTreeQuestion: true,
+      total: t.total,
+      given: t.given
+    }));
+  }
+
+  // Battle 20_2: ピカチュウ ぬりえ
+  if(bId === 'Battle20_2'){
+    return [
+      { qNum: 1, desc: 'すうじに あわせて いろを ぬり、ピカチュウを かんせいさせよう！', ans: 'できた！', choices: ['できた！', 'もうすこし'] }
+    ];
+  }
+
+  // Battle 21: アブリボン 10よりおおきいかず
+  if(bId === 'Battle21'){
+    return [
+      { qNum: 1, desc: 'アブリボンは ぜんぶで なんびき いるかな？', ans: '14', choices: ['12', '13', '14', '15'] }
     ];
   }
 
@@ -2267,6 +2476,99 @@ function buildStageQuestions(row){
     }));
   }
 
+  // Battle 23: ドダイトス すうじのじゅん (コースの数字)
+  if(bId === 'Battle23'){
+    return [
+      { qNum: 1, desc: '1の つぎの すうじは なにかな？', ans: '2', choices: ['2', '3', '5', '6'] },
+      { qNum: 2, desc: '7の まえの すうじは なにかな？', ans: '6', choices: ['5', '6', '8', '9'] },
+      { qNum: 3, desc: '13の つぎの すうじは なにかな？', ans: '14', choices: ['12', '14', '15', '16'] },
+      { qNum: 4, desc: '18の つぎの すうじは なにかな？', ans: '19', choices: ['17', '19', '20', '21'] },
+      { qNum: 5, desc: 'ゴールの すうじは なにかな？', ans: '20', choices: ['19', '20', '21', '22'] }
+    ];
+  }
+
+  // Battle 24: アチゲータ どちらがおおいかな
+  if(bId === 'Battle24'){
+    return [
+      { qNum: 1, desc: 'みどりの エリアで パンと おさら、どちらが おおいかな？', ans: 'おさら', choices: ['パン', 'おさら'] },
+      { qNum: 2, desc: 'あおの エリアで パンと おさら、どちらが おおいかな？', ans: 'パン', choices: ['パン', 'おさら'] }
+    ];
+  }
+
+  // Battle 25: ウッウ あわせていくつ
+  if(bId === 'Battle25'){
+    return [
+      { qNum: 1, desc: 'そらを とんで いる ウッウは なんびき かな？', ans: '3', choices: ['2', '3', '4', '5'] },
+      { qNum: 2, desc: 'じめんと そらの ウッウを あわせると、ぜんぶで なんびき かな？', ans: '7', choices: ['5', '6', '7', '8'] }
+    ];
+  }
+
+  // Battle 26: クチート あわせていくつ
+  if(bId === 'Battle26'){
+    return [
+      { qNum: 1, desc: 'まるい クッキーは 4こと 3こ、あわせて なんこ かな？', ans: '7', choices: ['5', '6', '7', '8'] },
+      { qNum: 2, desc: 'しかくい クッキーは 5こと 4こ、あわせて なんこ かな？', ans: '9', choices: ['7', '8', '9', '10'] }
+    ];
+  }
+
+  // Battle 27: ミルタンク ふえるといくつ
+  if(bId === 'Battle27'){
+    return [
+      { qNum: 1, desc: 'あとから ミルタンクが なんびき きたかな？', ans: '3', choices: ['2', '3', '4', '5'] },
+      { qNum: 2, desc: 'ミルタンクは みんなで なんびきに なったかな？', ans: '10', choices: ['8', '9', '10', '11'] }
+    ];
+  }
+
+  // Battle 28: バオップ ふえるといくつ
+  if(bId === 'Battle28'){
+    return [
+      { qNum: 1, desc: 'チョコドーナツが 6こ ありました。2こ ふえると ぜんぶで なんこ？', ans: '8', choices: ['6', '7', '8', '9'] },
+      { qNum: 2, desc: 'フレンチクルーラーが 5こ ありました。3こ ふえると ぜんぶで なんこ？', ans: '8', choices: ['6', '7', '8', '9'] }
+    ];
+  }
+
+  // Battle 29: ニャルマー のこりはいくつ
+  if(bId === 'Battle29'){
+    return [
+      { qNum: 1, desc: 'なんびき かえって いったかな？', ans: '3', choices: ['2', '3', '4', '5'] },
+      { qNum: 2, desc: 'のこって いる ニャルマーは なんびきかな？', ans: '6', choices: ['4', '5', '6', '7'] }
+    ];
+  }
+
+  // Battle 30: ピジョット のこりはいくつ
+  if(bId === 'Battle30'){
+    return [
+      { qNum: 1, desc: 'まるい クッキーが 8こ ありました。3こ たべると のこりは なんこ？', ans: '5', choices: ['4', '5', '6', '7'] },
+      { qNum: 2, desc: 'しかくい クッキーが 10こ ありました。4こ たべると のこりは なんこ？', ans: '6', choices: ['5', '6', '7', '8'] }
+    ];
+  }
+
+  // Battle 31: バイウールー いくつおおい
+  if(bId === 'Battle31'){
+    return [
+      { qNum: 1, desc: 'ウールーは なんびき いるかな？', ans: '9', choices: ['7', '8', '9', '10'] },
+      { qNum: 2, desc: 'バイウールーと ウールー、どちらが おおいかな？', ans: 'ウールー', choices: ['バイウールー', 'ウールー'] },
+      { qNum: 3, desc: 'なんびき おおいかな？', ans: '3', choices: ['1', '2', '3', '4'] }
+    ];
+  }
+
+  // Battle 32: ローブシン ちがいはいくつ (ドーナツの差)
+  if(bId === 'Battle32'){
+    return [
+      { qNum: 1, desc: 'ドテッコツ：きいろの ドーナツ（9こ）と ちゃいろの ドーナツ（7こ）、ちがいは なんこかな？', ans: '2', choices: ['1', '2', '3', '4'] },
+      { qNum: 2, desc: 'ドッコラー：おさらの きいろの ドーナツ（8こ）と ちゃいろの ドーナツ（7こ）、ちがいは なんこかな？', ans: '1', choices: ['1', '2', '3', '4'] }
+    ];
+  }
+
+  // Battle 33: フラージェス 20よりおおきいかず
+  if(bId === 'Battle33'){
+    return [
+      { qNum: 1, desc: '10の まとまりは いくつ あるかな？', ans: '2', choices: ['1', '2', '3', '4'] },
+      { qNum: 2, desc: 'ばらは なんぼん あるかな？', ans: '8', choices: ['6', '7', '8', '9'] },
+      { qNum: 3, desc: 'ぜんぶで なんぼんに なるかな？', ans: '28', choices: ['26', '27', '28', '29'] }
+    ];
+  }
+
   // Battle 34: ハピナス 21から25
   if(bId === 'Battle34'){
     return [21, 22, 23, 24, 25].map((n, idx) => ({
@@ -2295,10 +2597,149 @@ function buildStageQuestions(row){
     }));
   }
 
-  // Battle 45: ピカチュウ なんじ
+  // Battle 35: メグロコ すうじのじゅん (砂漠ルート 11〜30)
+  if(bId === 'Battle35'){
+    return [
+      { qNum: 1, desc: '11の つぎの すうじは なにかな？', ans: '12', choices: ['10', '12', '13', '14'] },
+      { qNum: 2, desc: '15の つぎの すうじは なにかな？', ans: '16', choices: ['14', '16', '17', '18'] },
+      { qNum: 3, desc: '19の つぎの すうじは なにかな？', ans: '20', choices: ['18', '20', '21', '22'] },
+      { qNum: 4, desc: '26の つぎの すうじは なにかな？', ans: '27', choices: ['25', '27', '28', '29'] },
+      { qNum: 5, desc: 'ゴール（ワルビアルの まえ）の すうじは なにかな？', ans: '30', choices: ['28', '29', '30', '31'] }
+    ];
+  }
+
+  // Battle 36: トゲデマル どちらがおおきいかな (6問分岐路)
+  if(bId === 'Battle36'){
+    return [
+      { qNum: 1, desc: '21と 12、どちらが おおきいかな？', ans: '21', choices: ['21', '12'] },
+      { qNum: 2, desc: '25と 23、どちらが おおきいかな？', ans: '25', choices: ['25', '23'] },
+      { qNum: 3, desc: '28と 27、どちらが おおきいかな？', ans: '28', choices: ['28', '27'] },
+      { qNum: 4, desc: '30と 29、どちらが おおきいかな？', ans: '30', choices: ['30', '29'] },
+      { qNum: 5, desc: '29と 26、どちらが おおきいかな？', ans: '29', choices: ['29', '26'] },
+      { qNum: 6, desc: '24と 18、どちらが おおきいかな？', ans: '24', choices: ['24', '18'] }
+    ];
+  }
+
+  // Battle 37: シルヴァディ まとめ (1〜30迷路)
+  if(bId === 'Battle37'){
+    return [
+      { qNum: 1, desc: '15の つぎの すうじは なにかな？', ans: '16', choices: ['14', '16', '17', '18'] },
+      { qNum: 2, desc: '19の つぎの すうじは なにかな？', ans: '20', choices: ['18', '20', '21', '22'] },
+      { qNum: 3, desc: '23の つぎの すうじは なにかな？', ans: '24', choices: ['22', '24', '25', '26'] },
+      { qNum: 4, desc: '28の つぎの すうじは なにかな？', ans: '29', choices: ['27', '29', '30', '31'] },
+      { qNum: 5, desc: 'ゴールの すうじは なにかな？', ans: '30', choices: ['28', '29', '30', '31'] }
+    ];
+  }
+
+  // Battle 37_2: シルヴァディ まとめ (てんつなぎ)
+  if(bId === 'Battle37_2'){
+    return [
+      { qNum: 1, desc: '1から 30までの てんを じゅんばんに つなごう！ ネッコアラが だいているのは なにかな？', ans: 'き', choices: ['き', 'りんご', 'いし', 'ボール'] }
+    ];
+  }
+
+  // Battle 38: インテレオン なんばんめ (前後順序)
+  if(bId === 'Battle38'){
+    return [
+      { qNum: 1, desc: '① まえから 4ばんめの インテレオンは どれかな？', ans: '4ばんめ', choices: ['2ばんめ', '3ばんめ', '4ばんめ', '5ばんめ'] },
+      { qNum: 2, desc: '② うしろから 2ばんめの インテレオンは、まえから なんばんめかな？', ans: '5ばんめ', choices: ['2ばんめ', '4ばんめ', '5ばんめ', '6ばんめ'] },
+      { qNum: 3, desc: '③ まえから 3びきの インテレオンを かこみましょう。なんびきかな？', ans: '3びき', choices: ['1ぴき', '2ひき', '3びき', '4ひき'] },
+      { qNum: 4, desc: '④ うしろから 2ひきの インテレオンを かこみましょう。なんびきかな？', ans: '2ひき', choices: ['1ぴき', '2ひき', '3びき', '4ひき'] }
+    ];
+  }
+
+  // Battle 39: メガヤンマ なんばんめ (上下順序)
+  if(bId === 'Battle39'){
+    return [
+      { qNum: 1, desc: '① うえから 3ばんめの メガヤンマは どれかな？', ans: '3ばんめ', choices: ['1ばんめ', '2ばんめ', '3ばんめ', '4ばんめ'] },
+      { qNum: 2, desc: '② したから 5ばんめの メガヤンマは、うえから なんばんめかな？', ans: '2ばんめ', choices: ['1ばんめ', '2ばんめ', '3ばんめ', '5ばんめ'] },
+      { qNum: 3, desc: '③ うえから 2ひきの メガヤンマを えらぼう。なんびきかな？', ans: '2ひき', choices: ['1ぴき', '2ひき', '3びき', '4ひき'] },
+      { qNum: 4, desc: '④ したから 4ひきの メガヤンマを えらぼう。なんびきかな？', ans: '4ひき', choices: ['2ひき', '3ひき', '4ひき', '5ひき'] }
+    ];
+  }
+
+  // Battle 40: イーブイ なんばんめ (左右順序)
+  if(bId === 'Battle40'){
+    return [
+      { qNum: 1, desc: '① ひだりから 5ばんめの イーブイを えらびましょう。', ans: '5ばんめ', choices: ['3ばんめ', '4ばんめ', '5ばんめ', '6ばんめ'] },
+      { qNum: 2, desc: '② みぎから 4ばんめの イーブイは、ひだりから なんばんめかな？', ans: '3ばんめ', choices: ['2ばんめ', '3ばんめ', '4ばんめ', '5ばんめ'] },
+      { qNum: 3, desc: '③ ひだりから 2ひきの イーブイを かこみましょう。なんびきかな？', ans: '2ひき', choices: ['1ぴき', '2ひき', '3びき', '4ひき'] },
+      { qNum: 4, desc: '④ みぎから 3びきの イーブイを かこみましょう。なんびきかな？', ans: '3びき', choices: ['1ぴき', '2ひき', '3びき', '4ひき'] }
+    ];
+  }
+
+  // Battle 41: イオルブ なんばんめ (教室の座席グリッド)
+  if(bId === 'Battle41'){
+    return [
+      { qNum: 1, desc: '① まえから 2ばんめ、ひだりから 2ばんめの せき：ひだりから なんれつめ？', ans: '2ばんめ', choices: ['1ばんめ', '2ばんめ', '3ばんめ', '4ばんめ'] },
+      { qNum: 2, desc: '② えの おんなのこは、まえから なんばんめかな？', ans: '2ばんめ', choices: ['1ばんめ', '2ばんめ', '3ばんめ', '4ばんめ'] },
+      { qNum: 3, desc: '③ えの おんなのこは、みぎから なんばんめかな？', ans: '2ばんめ', choices: ['1ばんめ', '2ばんめ', '3ばんめ', '4ばんめ'] }
+    ];
+  }
+
+  // Battle 42: タマンチュラ なんばんめ (ロッカーのグリッド)
+  if(bId === 'Battle42'){
+    return [
+      { qNum: 1, desc: '① うえから 2ばんめ、ひだりから 3ばんめの ランドセルは なにいろかな？', ans: 'オレンジ', choices: ['オレンジ', 'あお', 'くろ', 'みどり'] },
+      { qNum: 2, desc: '② みずいろの ランドセルは、したから なんばんめかな？', ans: '2ばんめ', choices: ['1ばんめ', '2ばんめ', '3ばんめ', '4ばんめ'] },
+      { qNum: 3, desc: '③ みずいろの ランドセルは、みぎから なんばんめかな？', ans: '3ばんめ', choices: ['1ばんめ', '2ばんめ', '3ばんめ', '4ばんめ'] }
+    ];
+  }
+
+  // Battle 43: ボーマンダ 31から45のすうじ
+  if(bId === 'Battle43'){
+    return [
+      { qNum: 1, desc: '33の つぎの すうじは なにかな？', ans: '34', choices: ['32', '34', '35', '36'] },
+      { qNum: 2, desc: '37の つぎの すうじは なにかな？', ans: '38', choices: ['36', '38', '39', '40'] },
+      { qNum: 3, desc: '40の つぎの すうじは なにかな？', ans: '41', choices: ['39', '41', '42', '43'] },
+      { qNum: 4, desc: 'ゴールの すうじは なにかな？', ans: '45', choices: ['43', '44', '45', '46'] }
+    ];
+  }
+
+  // Battle 43_2: ボーマンダ 46から60のすうじ
+  if(bId === 'Battle43_2'){
+    return [
+      { qNum: 1, desc: '49の つぎの すうじは なにかな？', ans: '50', choices: ['48', '50', '51', '52'] },
+      { qNum: 2, desc: '53の つぎの すうじは なにかな？', ans: '54', choices: ['52', '54', '55', '56'] },
+      { qNum: 3, desc: '57の つぎの すうじは なにかな？', ans: '58', choices: ['56', '58', '59', '60'] },
+      { qNum: 4, desc: 'ゴールの すうじは なにかな？', ans: '60', choices: ['58', '59', '60', '61'] }
+    ];
+  }
+
+  // Minigame: ギルガルド ちかみちをしよう
+  if(bId === 'Minigame'){
+    return [
+      { qNum: 1, desc: 'モモンのみまで まっすぐ いちばん ちかい（ちかみち）のは だれかな？', ans: 'ニダンギル', choices: ['ヒトツキ', 'ニダンギル', 'ギルガルド'] }
+    ];
+  }
+
+  // Battle 44: ヒヒダルマ あてはまるすうじをかこう
+  if(bId === 'Battle44'){
+    return [
+      { qNum: 1, desc: '31, □, 33, □, 35 の 31の つぎの すうじは？', ans: '32', choices: ['30', '32', '33', '34'] },
+      { qNum: 2, desc: '42, □, □, 45 の 42の つぎの すうじは？', ans: '43', choices: ['41', '43', '44', '45'] },
+      { qNum: 3, desc: '48, □, □, 51, 52 の 48の つぎの すうじは？', ans: '49', choices: ['47', '49', '50', '51'] },
+      { qNum: 4, desc: '56, □, 58 の あいだの すうじは？', ans: '57', choices: ['55', '57', '59', '60'] },
+      { qNum: 5, desc: 'ぎゃくじゅん：37, □, 35 の 37の つぎ（へるほう）は？', ans: '36', choices: ['34', '36', '38', '39'] }
+    ];
+  }
+
+  // Battle 44_2: ヒヒダルマ あてはまるすうじをかこう(2) (とび数え)
+  if(bId === 'Battle44_2'){
+    return [
+      { qNum: 1, desc: '5とび：5, 10, □, □, 25 の 10の つぎは？', ans: '15', choices: ['12', '15', '20', '22'] },
+      { qNum: 2, desc: '5とび：20, 25, □, 35 の 25の つぎは？', ans: '30', choices: ['28', '30', '32', '35'] },
+      { qNum: 3, desc: '2とび：14, 16, □, □, 22 の 16の つぎは？', ans: '18', choices: ['17', '18', '19', '20'] },
+      { qNum: 4, desc: '2とび：52, □, 56 の 52の つぎは？', ans: '54', choices: ['53', '54', '55', '58'] },
+      { qNum: 5, desc: '10とび：20, 30, 40, □, 60 の 40の つぎは？', ans: '50', choices: ['45', '50', '55', '60'] }
+    ];
+  }
+
+  // Battle 45: ホーホー とけい
   if(bId === 'Battle45'){
     return [
-      { qNum: 1, desc: 'とけいの はりを みて、なんじか えらびましょう。', ans: '3じ', choices: ['1じ', '2じ', '3じ', '4じ'], interactive: 'clock' }
+      { qNum: 1, desc: 'みじかい はりが 7、ながい はりが 12を さしています。なんじかな？', ans: '7じ', choices: ['6じ', '7じ', '8じ', '9じ'], interactive: 'clock' },
+      { qNum: 2, desc: 'みじかい はりが 1と2の あいだ、ながい はりが 6を さしています。なんじはんかな？', ans: '1じはん', choices: ['12じはん', '1じはん', '2じはん', '3じはん'], interactive: 'clock' }
     ];
   }
 
@@ -2309,10 +2750,167 @@ function buildStageQuestions(row){
     ];
   }
 
+  // Battle 46: ギギギアル とけい
+  if(bId === 'Battle46'){
+    return [
+      { qNum: 1, desc: 'とけいを みて、なんじ なんふんか えらびましょう。', ans: '11じ25ふん', choices: ['11じ25ふん', '12じ25ふん', '11じ5ふん', '10じ25ふん'], interactive: 'clock' }
+    ];
+  }
+
+  // Battle 46_2: ギギギアル とけい(2) (6個の時計)
+  if(bId === 'Battle46_2'){
+    return [
+      { qNum: 1, desc: '① 1つめの とけい：なんじ なんふんかな？', ans: '3じ45ふん', choices: ['3じ45ふん', '4じ45ふん', '3じ15ふん', '4じ15ふん'] },
+      { qNum: 2, desc: '② 2つめの とけい：なんじ なんふんかな？', ans: '10じ10ふん', choices: ['10じ10ふん', '10じ5ふん', '11じ10ふん', '9じ10ふん'] },
+      { qNum: 3, desc: '③ 3つめの とけい：なんじ なんふんかな？', ans: '7じ15ふん', choices: ['7じ15ふん', '8じ15ふん', '7じ45ふん', '6じ15ふん'] },
+      { qNum: 4, desc: '④ 4つめの とけい：なんじ なんふんかな？', ans: '5じ45ふん', choices: ['5じ45ふん', '6じ45ふん', '5じ15ふん', '4じ45ふん'] },
+      { qNum: 5, desc: '⑤ 5つめの とけい：なんじ なんふんかな？', ans: '10じ20ふん', choices: ['10じ20ふん', '10じ25ふん', '11じ20ふん', '9じ20ふん'] },
+      { qNum: 6, desc: '⑥ 6つめの とけい：なんじ なんふんかな？', ans: '1じ35ふん', choices: ['1じ35ふん', '1じ40ふん', '2じ35ふん', '12じ35ふん'] }
+    ];
+  }
+
+  // Battle 47: サーナイト くらべっこ (えんぴつの長さ)
+  if(bId === 'Battle47'){
+    return [
+      { qNum: 1, desc: '① あかと あお、どちらの えんぴつが ながいかな？', ans: 'あお', choices: ['あか', 'あお'] },
+      { qNum: 2, desc: '② マス目を かぞえて、いちばん ながい いろえんぴつは どれかな？', ans: 'みどり', choices: ['みどり', 'みずいろ', 'あか', 'ピンク'] }
+    ];
+  }
+
+  // Battle 47_2: サーナイト くらべっこ(かさ)
+  if(bId === 'Battle47_2'){
+    return [
+      { qNum: 1, desc: 'コップで なんばい はいるか かぞえよう。', ans: 'できた！', choices: ['できた！', 'もうすこし'] },
+      { qNum: 2, desc: 'あかと あおの ようき、どちらが おおいかな？', ans: 'あか', choices: ['あか', 'あお'] }
+    ];
+  }
+
+  // Battle 47_3: サーナイト くらべっこ(ひろさ)
+  if(bId === 'Battle47_3'){
+    return [
+      { qNum: 1, desc: 'かさねて みて、どちらが ひろいか えらびましょう。', ans: 'あお', choices: ['あお', 'きいろ'] },
+      { qNum: 2, desc: 'マス目を かぞえて、どちらが ひろいか えらびましょう。', ans: 'みどり', choices: ['みどり', 'ピンク'] }
+    ];
+  }
+
+  // Battle 48: グラードン まとめ
+  if(bId === 'Battle48'){
+    return [
+      { qNum: 1, desc: 'ナックラーの 10の まとまりは いくつ あるかな？', ans: '5', choices: ['3', '4', '5', '6'] },
+      { qNum: 2, desc: 'ナックラーは ぜんぶで なんびき いるかな？', ans: '54', choices: ['52', '53', '54', '55'] }
+    ];
+  }
+
+  // Battle 48_2: グラードン てんつなぎ
+  if(bId === 'Battle48_2'){
+    return [
+      { qNum: 1, desc: '1から 60までの てんを じゅんばんに つなごう！', ans: 'できた！', choices: ['できた！', 'もうすこし'] }
+    ];
+  }
+
+  // Battle 49: カモネギ かたち
+  if(bId === 'Battle49'){
+    return [
+      { qNum: 1, desc: 'さいころの かたちと おなじ ものは どれかな？', ans: 'さいころ', choices: ['さいころ', 'ボール', 'つつ'] },
+      { qNum: 2, desc: 'はこ（ちょくほうたい）の かたちと おなじ ものは どれかな？', ans: 'はこ', choices: ['はこ', 'つつ', 'ボール'] },
+      { qNum: 3, desc: 'つつ（えんとう）の かたちと おなじ ものは どれかな？', ans: 'かんづめ', choices: ['かんづめ', 'さいころ', 'ボール'] },
+      { qNum: 4, desc: 'ボール（きゅう）の かたちと おなじ ものは どれかな？', ans: 'ボール', choices: ['ボール', 'はこ', 'さいころ'] }
+    ];
+  }
+
+  // Battle 49_2: カモネギ かたち(2)
+  if(bId === 'Battle49_2'){
+    return [
+      { qNum: 1, desc: 'つみきは かくれている ぶんも あわせて なんこ あるかな？', ans: '8', choices: ['6', '7', '8', '9'] }
+    ];
+  }
+
+  // Battle 50: オオスバメ せいりしよう
+  if(bId === 'Battle50'){
+    return [
+      { qNum: 1, desc: 'くだものは ぜんぶで なんこ あるかな？', ans: '5', choices: ['4', '5', '6', '7'] },
+      { qNum: 2, desc: 'のりものは ぜんぶで なんこ あるかな？', ans: '4', choices: ['3', '4', '5', '6'] }
+    ];
+  }
+
+  // Battle 50_2: オオスバメ せいりしよう(2)
+  if(bId === 'Battle50_2'){
+    return [
+      { qNum: 1, desc: 'グラフの マスが おおいのは どちらかな？', ans: 'くだもの', choices: ['くだもの', 'のりもの'] },
+      { qNum: 2, desc: 'どちらが なんこ おおいかな？', ans: '1', choices: ['1', '2', '3', '4'] }
+    ];
+  }
+
+  // Battle 51: リククラゲ 61から120までのすうじ
+  if(bId === 'Battle51'){
+    return [
+      { qNum: 1, desc: '99の つぎの すうじは なにかな？', ans: '100', choices: ['90', '100', '101', '110'] },
+      { qNum: 2, desc: '109の つぎの すうじは なにかな？', ans: '110', choices: ['100', '110', '111', '120'] },
+      { qNum: 3, desc: 'さいごの ゴールの すうじは なにかな？', ans: '120', choices: ['100', '110', '119', '120'] }
+    ];
+  }
+
   // Battle 52: コレクレー いくらかな
   if(bId === 'Battle52'){
     return [
       { qNum: 1, desc: '10えんだま 3まいと 1えんだま 5まいで、いくらかな？', ans: '35えん', choices: ['25えん', '35えん', '45えん', '50えん'], interactive: 'coin' }
+    ];
+  }
+
+  // Battle 53: ポリゴン2 たしざん
+  if(bId === 'Battle53'){
+    return [
+      { qNum: 1, desc: '1と 2を あわせると いくつかな？（1 ＋ 2 ＝ ？）', ans: '3', choices: ['2', '3', '4', '5'] },
+      { qNum: 2, desc: '2に 1 ふえると いくつかな？（2 ＋ 1 ＝ ？）', ans: '3', choices: ['2', '3', '4', '5'] }
+    ];
+  }
+
+  // Battle 53_2: ポリゴン2 たしざん(けいさん)
+  if(bId === 'Battle53_2'){
+    return [
+      { qNum: 1, desc: '① 2 ＋ 3 ＝ ？', ans: '5', choices: ['4', '5', '6', '7'] },
+      { qNum: 2, desc: '② 5 ＋ 2 ＝ ？', ans: '7', choices: ['6', '7', '8', '9'] },
+      { qNum: 3, desc: '③ 3 ＋ 6 ＝ ？', ans: '9', choices: ['7', '8', '9', '10'] },
+      { qNum: 4, desc: '④ 4 ＋ 3 ＝ ？', ans: '7', choices: ['5', '6', '7', '8'] }
+    ];
+  }
+
+  // Battle 54: カイリキー ひきざん
+  if(bId === 'Battle54'){
+    return [
+      { qNum: 1, desc: '3から 1を とると のこりは いくつかな？（3 － 1 ＝ ？）', ans: '2', choices: ['1', '2', '3', '4'] },
+      { qNum: 2, desc: '5と 3の かずの ちがいは いくつかな？（5 － 3 ＝ ？）', ans: '2', choices: ['1', '2', '3', '4'] }
+    ];
+  }
+
+  // Battle 54_2: カイリキー ひきざん(けいさん)
+  if(bId === 'Battle54_2'){
+    return [
+      { qNum: 1, desc: '① 4 － 2 ＝ ？', ans: '2', choices: ['1', '2', '3', '4'] },
+      { qNum: 2, desc: '② 6 － 1 ＝ ？', ans: '5', choices: ['4', '5', '6', '7'] },
+      { qNum: 3, desc: '③ 5 － 2 ＝ ？', ans: '3', choices: ['2', '3', '4', '5'] },
+      { qNum: 4, desc: '④ 10 － 3 ＝ ？', ans: '7', choices: ['5', '6', '7', '8'] }
+    ];
+  }
+
+  // Battle 55: ミュウ すごろく前編(0〜30)
+  if(bId === 'Battle55'){
+    return [
+      { qNum: 1, desc: '0の つぎの すうじは なにかな？', ans: '1', choices: ['1', '2', '3', '4'] },
+      { qNum: 2, desc: '6の つぎの すうじは なにかな？', ans: '7', choices: ['5', '7', '8', '9'] },
+      { qNum: 3, desc: '14の つぎの すうじは なにかな？', ans: '15', choices: ['13', '15', '16', '17'] },
+      { qNum: 4, desc: '22の つぎの すうじは なにかな？', ans: '23', choices: ['21', '23', '24', '25'] },
+      { qNum: 5, desc: '28の つぎの すうじは なにかな？', ans: '29', choices: ['27', '29', '30', '31'] }
+    ];
+  }
+
+  // Battle 55_2: ミュウ すごろく後編(31〜62)
+  if(bId === 'Battle55_2'){
+    return [
+      { qNum: 1, desc: '32の つぎの すうじは なにかな？', ans: '33', choices: ['31', '33', '34', '35'] },
+      { qNum: 2, desc: '42の つぎの すうじは なにかな？', ans: '43', choices: ['41', '43', '44', '45'] },
+      { qNum: 3, desc: '46の つぎの すうじは なにかな？', ans: '47', choices: ['45', '47', '48', '49'] },
+      { qNum: 4, desc: '55の つぎの すうじは なにかな？', ans: '56', choices: ['54', '56', '57', '58'] }
     ];
   }
 
@@ -2363,7 +2961,6 @@ function buildStageQuestions(row){
     choices
   }];
 }
-
 
 
 function openBattle(i){
@@ -2624,16 +3221,21 @@ function renderInteractiveStage(row){
       '</div>';
     initBattle11Compare();
   } else if(['Battle12','Battle13','Battle14','Battle15','Battle16'].includes(bId)){
-    // 数の分解ツリー（紙の手本完全再現：シールの代わりに数字選択）
     const totalNum = bId === 'Battle12' ? 6 : bId === 'Battle13' ? 7 : bId === 'Battle14' ? 8 : bId === 'Battle15' ? 9 : 10;
     card.innerHTML = 
-      '<div class="card interactive-stage">' +
-        '<h3>🌳 ' + totalNum + 'は いくつと いくつかな？</h3>' +
-        '<p style="font-size:14px;color:#555;margin:0 0 10px">あいている [ ? ] のマスにあてはまる すうじを えらんでね！</p>' +
-        '<div class="bond-grid" id="bondGrid"></div>' +
+      '<div class="card interactive-stage" style="text-align:center;padding:16px">' +
+        '<div style="font-size:32px">🌳</div>' +
+        '<h3 style="margin:6px 0;color:#2c3e50">' + totalNum + 'は いくつと いくつかな？</h3>' +
+        '<p style="font-size:14px;color:#555;margin:0">したの ' + (totalNum - 1) + 'つの もんだいカードで、あいている [ ? ] の すうじを えらんでね！</p>' +
       '</div>';
-    initBondTrees(row, totalNum);
-  } else if(bId === 'Battle45' || bId === 'Battle45_2'){
+  } else if(bId === 'Battle20'){
+    card.innerHTML = 
+      '<div class="card interactive-stage" style="text-align:center;padding:16px">' +
+        '<div style="font-size:32px">⚡</div>' +
+        '<h3 style="margin:6px 0;color:#2c3e50">ピカチュウと かずの 木の もんだい！</h3>' +
+        '<p style="font-size:14px;color:#555;margin:0">したの 7つの もんだいカードで、あいている [ ? ] の すうじを えらんでね！</p>' +
+      '</div>';
+} else if(bId === 'Battle45' || bId === 'Battle45_2'){
     // とけい
     const isHalf = bId === 'Battle45_2';
     card.innerHTML = 
@@ -3189,12 +3791,12 @@ function renderQuestionCards(row){
     return;
   }
 
-  // 2. インタラクティブ専用ステージ（Battle 4 ピッピ、Battle 8 ケロマツ、Battle 9・10、Battle 11、Battle 12〜16など）
-  if(curQs[0] && (curQs[0].isInteractiveOnly || curQs[0].isB11 || curQs[0].isBondRow)){
+  // 2. インタラクティブ専用ステージ（Battle 1, 4, 8, 9, 10, 11など）
+  if(curQs[0] && (curQs[0].isInteractiveOnly || curQs[0].isB11)){
     return; // インタラクティブステージが問題そのもののUIなので下の重複カードは表示しない
   }
 
-  // 3. 通常の個別問題カード（Battle 2 ヨーテリー＆チラーミィ、その他）
+  // 3. 通常の個別問題カード（Battle 2 ヨーテリー＆チラーミィ、Battle 12〜16の分解ツリー、その他）
   curQs.forEach((q, qi) => {
     const card = document.createElement('div');
     card.className = 'q-card';
@@ -3204,8 +3806,24 @@ function renderQuestionCards(row){
       pokeIcon = '<img src="' + ART(q.pokeId) + '" style="width:32px;height:32px;vertical-align:middle;margin-right:6px">';
     }
 
-    // Battle 2等では答えバレ防止のため右下の数字表示（pd-write-box）は出さない
-    const writeBoxHtml = q.hideWriteBox ? '' : 
+    let treeHtml = '';
+    if(q.isTreeQuestion){
+      treeHtml = 
+        '<div class="qtree-container">' +
+          '<div class="qtree-top">' + q.total + '</div>' +
+          '<svg class="qtree-branch-svg" viewBox="0 0 90 22">' +
+            '<line x1="45" y1="0" x2="22" y2="22" stroke="#222" stroke-width="2.5" stroke-linecap="round"/>' +
+            '<line x1="45" y1="0" x2="68" y2="22" stroke="#222" stroke-width="2.5" stroke-linecap="round"/>' +
+          '</svg>' +
+          '<div class="qtree-bottom-row">' +
+            '<div class="qtree-box given">' + q.given + '</div>' +
+            '<div class="qtree-box target ' + (saved[qi] ? 'filled' : '') + '" id="qtreeTarget_' + qi + '">' + (saved[qi] || '?') + '</div>' +
+          '</div>' +
+        '</div>';
+    }
+
+    // Battle 2やツリー問題等では右下の数字表示（pd-write-box）は出さない
+    const writeBoxHtml = (q.hideWriteBox || q.isTreeQuestion) ? '' : 
       '<div class="pd-write-box">' +
         '<span class="pd-write-num" id="qWrite_' + qi + '">' + (saved[qi] || '') + '</span>' +
       '</div>';
@@ -3216,6 +3834,7 @@ function renderQuestionCards(row){
         '<div class="q-desc">' + pokeIcon + q.desc + '</div>' +
         '<button class="q-voice" aria-label="もんだいをよみあげる">🔊</button>' +
       '</div>' +
+      treeHtml +
       '<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:10px;flex-wrap:wrap">' +
         '<div class="choices" style="flex:1"></div>' +
         writeBoxHtml +
@@ -3226,6 +3845,7 @@ function renderQuestionCards(row){
 
     const choicesBox = card.querySelector('.choices');
     const writeBox = card.querySelector('#qWrite_' + qi);
+    const qtreeTarget = card.querySelector('#qtreeTarget_' + qi);
 
     q.choices.forEach(ch => {
       const b = document.createElement('button');
@@ -3237,6 +3857,10 @@ function renderQuestionCards(row){
         choicesBox.querySelectorAll('.choice').forEach(x => x.classList.remove('sel'));
         b.classList.add('sel');
         if(writeBox) writeBox.textContent = ch;
+        if(qtreeTarget){
+          qtreeTarget.textContent = ch;
+          qtreeTarget.classList.add('filled');
+        }
         (S.answers[curIdx] = S.answers[curIdx] || {})[qi] = ch;
         save();
         updateThrow();

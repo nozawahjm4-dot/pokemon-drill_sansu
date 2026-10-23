@@ -12,7 +12,8 @@
 :root{
   --red:#ff4d5e;--red-d:#c9283a;--yellow:#ffd23f;--yellow-d:#e0a800;
   --blue:#3b82f6;--blue-d:#1e4fb8;--green:#34c77b;--green-d:#1f9257;
-  --ink:#1f2544;--card:rgba(255,255,255,.95);--shadow:0 6px 0 rgba(0,0,0,.18),0 12px 24px rgba(0,0,0,.18);
+  --purple:#9d5bfe;--ink:#1f2544;--card:rgba(255,255,255,.96);
+  --shadow:0 6px 0 rgba(0,0,0,.18),0 12px 24px rgba(0,0,0,.18);
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;padding:0;width:100%;height:100%;font-family:'M PLUS Rounded 1c',sans-serif;color:var(--ink);overscroll-behavior:none;touch-action:manipulation;-webkit-user-select:none;user-select:none}
@@ -20,11 +21,11 @@ body{background:#2a757e}
 button{font-family:inherit;cursor:pointer;border:none}
 img{-webkit-user-drag:none}
 
-/* ===== random background ===== */
+/* ランダム背景写真 */
 #bg-image-layer{position:fixed;inset:0;z-index:-2;background-size:cover;background-position:center;transition:opacity 1s}
-#bg-image-layer::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.15),rgba(20,35,50,.45))}
+#bg-image-layer::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(20,35,50,.5))}
 
-/* ===== header ===== */
+/* ヘッダー */
 header{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;gap:8px;flex-wrap:wrap;
   padding:8px 12px;background:linear-gradient(180deg,var(--red),var(--red-d));box-shadow:0 4px 0 #222,0 8px 18px rgba(0,0,0,.3);border-bottom:4px solid #222}
 header h1{margin:0;font-size:clamp(15px,3.6vw,22px);font-weight:900;color:#fff;text-shadow:2px 2px 0 #222;letter-spacing:.03em;white-space:nowrap}
@@ -36,34 +37,50 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
 .hbtn{background:#fff;border:3px solid #222;border-radius:14px;padding:5px 10px;font-weight:800;font-size:14px;box-shadow:0 3px 0 #222;transition:transform .1s}
 .hbtn:active{transform:translateY(3px);box-shadow:0 0 0 #222}
 
-/* ===== screens ===== */
+/* 画面コンテナ */
 .screen{display:none;padding-top:var(--hdr,64px)}
 .screen.active{display:block}
 
-/* ===== map (完全左右フルスクリーン・余白なし) ===== */
-#map{width:100vw;max-width:100vw;height:calc(100vh - var(--hdr, 64px));overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
-#map-wrapper{position:relative;width:100vw;max-width:100vw;height:2800px;overflow:hidden;background:#358088}
-#map-img{position:absolute;top:0;left:0;width:calc(100vw * 2048 / 1480);height:2800px;object-fit:fill;pointer-events:none}
+/* ===== マップ画面（完全フルスクリーン 100vw、余白なし） ===== */
+#map{width:100vw;max-width:100vw;height:calc(100vh - var(--hdr, 64px));overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;position:relative}
+#map-wrapper{position:relative;width:100vw;max-width:100vw;height:2800px;overflow:hidden;
+  background:linear-gradient(180deg,
+    #2c1654 0%, /* ミュウの天空神殿 */
+    #3c2f82 12%,
+    #5f72be 25%, /* こおり・雪山 */
+    #69a297 38%,
+    #a88950 50%, /* いわやま・荒野 */
+    #4a8c54 65%, /* もり・水辺 */
+    #68b257 82%, /* はじまりの草原 */
+    #5aa648 100%
+  );
+}
+#map-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 
 /* バトルマス */
 .tile{position:absolute;width:56px;height:56px;border-radius:16px;transform:translate(-50%,-50%);
   background:#fff;border:4px solid var(--blue);display:flex;align-items:center;justify-content:center;
-  font-weight:900;font-size:20px;color:var(--blue-d);box-shadow:0 5px 0 rgba(0,0,0,.4);transition:transform .12s;z-index:2}
-.tile:active{transform:translate(-50%,-45%) scale(.95)}
+  font-weight:900;font-size:20px;color:var(--blue-d);box-shadow:0 6px 0 rgba(0,0,0,.35),0 8px 16px rgba(0,0,0,.2);
+  transition:transform .12s, box-shadow .12s;z-index:10}
+.tile:active{transform:translate(-50%,-46%) scale(.95);box-shadow:0 2px 0 rgba(0,0,0,.35)}
 .tile.cleared{background:var(--green);border-color:var(--green-d);color:#fff}
 .tile.cleared::after{content:"✓";position:absolute;right:-8px;bottom:-8px;background:#fff;color:var(--green-d);border:3px solid var(--green-d);
-  width:24px;height:24px;border-radius:50%;font-size:14px;display:flex;align-items:center;justify-content:center;font-weight:900}
-.tile.current{background:var(--yellow);border-color:var(--yellow-d);color:#6b4a00;animation:pulse 1.2s infinite;z-index:3}
-.tile.locked{filter:saturate(.5) brightness(.92)}
-@keyframes pulse{0%,100%{box-shadow:0 5px 0 rgba(0,0,0,.4),0 0 0 0 rgba(255,210,63,.9)}50%{box-shadow:0 5px 0 rgba(0,0,0,.4),0 0 0 16px rgba(255,210,63,0)}}
-.badge{position:absolute;top:-38px;left:50%;width:32px;height:32px;margin-left:-16px;border-radius:50%;border:3px solid #fff;
-  display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 3px 6px rgba(0,0,0,.4);animation:float 2s ease-in-out infinite}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+  width:24px;height:24px;border-radius:50%;font-size:14px;display:flex;align-items:center;justify-content:center;font-weight:900;box-shadow:0 2px 4px rgba(0,0,0,.2)}
+.tile.current{background:var(--yellow);border-color:var(--yellow-d);color:#6b4a00;animation:pulse 1.3s infinite;z-index:15}
+.tile.locked{filter:saturate(.4) brightness(.9);opacity:.85}
+@keyframes pulse{
+  0%,100%{box-shadow:0 6px 0 rgba(0,0,0,.35),0 0 0 0 rgba(255,210,63,.95)}
+  50%{box-shadow:0 6px 0 rgba(0,0,0,.35),0 0 0 16px rgba(255,210,63,0)}
+}
+.badge{position:absolute;top:-38px;left:50%;width:34px;height:34px;margin-left:-17px;border-radius:50%;border:3px solid #fff;
+  display:flex;align-items:center;justify-content:center;font-size:17px;box-shadow:0 4px 8px rgba(0,0,0,.35);animation:float 2.2s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.map-flag{position:absolute;left:50%;transform:translateX(-50%);background:#fff;border:4px solid #222;border-radius:18px;padding:8px 22px;font-weight:900;font-size:18px;box-shadow:0 5px 0 #222;z-index:12}
 
-/* ===== battle ===== */
+/* ===== バトル画面 ===== */
 #battle{min-height:100vh}
-.battle-wrap{max-width:820px;margin:0 auto;padding:12px 12px 140px}
-.card{background:var(--card);border:4px solid #222;border-radius:24px;box-shadow:var(--shadow);padding:16px;margin-bottom:14px;backdrop-filter:blur(6px)}
+.battle-wrap{max-width:840px;margin:0 auto;padding:12px 14px 140px}
+.card{background:var(--card);border:4px solid #222;border-radius:24px;box-shadow:var(--shadow);padding:16px;margin-bottom:16px;backdrop-filter:blur(6px)}
 .poke-stage{position:relative;text-align:center;padding:12px 0 6px;background:radial-gradient(ellipse at 50% 85%,rgba(0,0,0,.18) 0 22%,transparent 23%),linear-gradient(180deg,#bfe6ff,#e8ffe0)}
 .poke-stage img{width:min(48vw,230px);height:min(48vw,230px);object-fit:contain;animation:idle 2.4s ease-in-out infinite;filter:drop-shadow(0 6px 8px rgba(0,0,0,.25))}
 .poke-stage img.caught{animation:shrink .5s forwards}
@@ -73,30 +90,68 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
 .type-chip{display:inline-block;padding:2px 12px;border-radius:999px;color:#fff;font-size:13px;font-weight:800;margin:3px;border:2px solid rgba(0,0,0,.2)}
 .btitle{font-size:clamp(20px,5vw,28px);font-weight:900;margin:6px 0;text-align:center}
 .bnum{display:inline-block;background:var(--red);color:#fff;border-radius:10px;padding:0 10px;margin-right:6px;font-size:.7em;vertical-align:middle}
-.desc-row{display:flex;gap:10px;align-items:flex-start}
-.desc{flex:1;font-size:18px;line-height:1.7;font-weight:700}
-.voice{flex:none;width:52px;height:52px;border-radius:50%;background:var(--blue);color:#fff;font-size:24px;border:3px solid #222;box-shadow:0 4px 0 #222}
-.voice:active{transform:translateY(3px);box-shadow:none}
-.voice.speaking{animation:pulse 1s infinite}
-.sheet{width:100%;border-radius:14px;border:3px solid #222;display:block;cursor:zoom-in}
-.sheet-err{padding:20px;text-align:center;color:#777;font-weight:700}
-.q{padding:14px;border-radius:18px;background:#f4f8ff;border:3px dashed #9db8ec;margin:12px 0}
-.q-label{font-weight:900;font-size:20px;margin-bottom:10px;line-height:1.5}
-.q-label .box{display:inline-block;min-width:48px;padding:0 8px;border:3px solid var(--ink);border-radius:10px;text-align:center;background:#fff;color:var(--red-d)}
-.choices{display:flex;flex-wrap:wrap;gap:10px}
-.choice{min-width:68px;padding:12px 16px;font-size:22px;font-weight:900;background:#fff;border:3px solid #222;border-radius:16px;box-shadow:0 4px 0 #222;transition:transform .08s}
+
+/* インタラクティブ・ドリルステージ */
+.interactive-stage{background:#fdfcf7;border:3px solid #222;border-radius:20px;padding:16px;margin-bottom:14px;position:relative}
+.interactive-stage h3{margin:0 0 10px;font-size:18px;font-weight:900;color:var(--blue-d);display:flex;align-items:center;gap:6px}
+
+/* 線結びキャンバス（アチャモなど） */
+.match-container{display:flex;justify-content:space-between;align-items:center;position:relative;padding:10px 0;min-height:220px}
+.match-col{display:flex;flex-direction:column;gap:12px;z-index:2;width:42%}
+.match-node{display:flex;align-items:center;gap:8px;padding:8px 12px;background:#fff;border:3px solid #222;border-radius:16px;
+  font-weight:900;font-size:17px;cursor:pointer;box-shadow:0 3px 0 #222;transition:transform .1s, border-color .1s, background .1s}
+.match-node:active{transform:scale(.97)}
+.match-node.selected{border-color:var(--blue);background:#e0f0ff;box-shadow:0 0 0 3px var(--blue)}
+.match-node.connected{border-color:var(--green);background:#e8fdf0}
+.match-node img{width:38px;height:38px;object-fit:contain}
+.match-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.match-status{margin-top:10px;padding:8px 12px;background:#e8fdf0;border:2px solid var(--green);border-radius:12px;font-weight:900;color:var(--green-d);text-align:center;display:none}
+
+/* カウントタップ枠（ヨーテリーなど） */
+.count-field{background:#edf6f9;border:3px dashed #83c5be;border-radius:18px;padding:16px;min-height:160px;display:flex;flex-wrap:wrap;gap:14px;justify-content:center;align-items:center}
+.tap-item{position:relative;cursor:pointer;transition:transform .1s}
+.tap-item:active{transform:scale(.9)}
+.tap-item img{width:56px;height:56px;object-fit:contain;filter:drop-shadow(0 3px 4px rgba(0,0,0,.2))}
+.tap-item .count-badge{position:absolute;top:-8px;right:-8px;width:26px;height:26px;background:var(--red);color:#fff;border:2px solid #fff;
+  border-radius:50%;font-size:14px;font-weight:900;display:none;align-items:center;justify-content:center;box-shadow:0 2px 4px rgba(0,0,0,.3)}
+.tap-item.counted .count-badge{display:flex;animation:pop .2s}
+
+/* 10フレーム（パチリスなど） */
+.ten-frame-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;max-width:320px;margin:12px auto;background:#fff;border:3px solid #222;border-radius:16px;padding:8px}
+.ten-dot{aspect-ratio:1;border:3px solid #999;border-radius:50%;cursor:pointer;background:#f5f5f5;transition:background .15s}
+.ten-dot.filled{background:var(--red);border-color:#222;box-shadow:inset 0 0 6px rgba(0,0,0,.3)}
+
+/* アナログ時計 */
+.clock-wrap{display:flex;justify-content:center;padding:10px}
+.clock-svg{width:180px;height:180px;filter:drop-shadow(0 4px 8px rgba(0,0,0,.2))}
+
+/* 問題カード（description1〜6分割表示） */
+.q-card{padding:16px;border-radius:20px;background:#f5f8ff;border:3px solid #9db8ec;margin:14px 0;box-shadow:0 3px 0 #9db8ec}
+.q-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.q-badge{background:var(--blue);color:#fff;padding:3px 12px;border-radius:10px;font-weight:900;font-size:15px;white-space:nowrap;border:2px solid #222}
+.q-desc{flex:1;font-weight:900;font-size:18px;line-height:1.6}
+.q-voice{flex:none;width:44px;height:44px;border-radius:50%;background:#fff;color:var(--blue);font-size:20px;border:3px solid #222;box-shadow:0 3px 0 #222;display:flex;align-items:center;justify-content:center}
+.q-voice:active{transform:translateY(2px);box-shadow:none}
+.q-voice.speaking{animation:pulse 1s infinite}
+.choices{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+.choice{min-width:72px;padding:12px 18px;font-size:22px;font-weight:900;background:#fff;border:3px solid #222;border-radius:16px;box-shadow:0 4px 0 #222;transition:transform .08s}
 .choice:active{transform:translateY(3px);box-shadow:0 1px 0 #222}
 .choice.sel{background:var(--yellow);transform:translateY(2px);box-shadow:0 2px 0 #222}
-.prompt-note{font-size:13px;color:#555;background:#fffbe6;border-radius:12px;padding:8px 12px;margin-top:8px}
-.prompt-note summary{font-weight:800;cursor:pointer}
-.bottom-bar{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;gap:12px;justify-content:center;padding:12px;background:linear-gradient(0deg,rgba(0,0,0,.4),transparent)}
-.big{font-size:20px;font-weight:900;padding:14px 24px;border-radius:999px;border:4px solid #222;box-shadow:0 6px 0 #222;color:#fff}
+
+/* 原本プリントの折りたたみ確認 */
+.sheet-accordion{margin-top:14px;background:#fff;border:3px dashed #999;border-radius:16px;padding:8px 14px}
+.sheet-accordion summary{font-weight:900;font-size:15px;cursor:pointer;color:#555}
+.sheet-img{width:100%;border-radius:12px;border:2px solid #222;margin-top:10px;display:block;cursor:zoom-in}
+
+/* 下部固定バー */
+.bottom-bar{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;gap:12px;justify-content:center;padding:12px;background:linear-gradient(0deg,rgba(0,0,0,.45),transparent)}
+.big{font-size:20px;font-weight:900;padding:14px 26px;border-radius:999px;border:4px solid #222;box-shadow:0 6px 0 #222;color:#fff}
 .big:active:not(:disabled){transform:translateY(5px);box-shadow:0 1px 0 #222}
 .big.throw{background:linear-gradient(180deg,#ff6b6b 0 48%,#222 48% 54%,#fff 54%);color:#222;text-shadow:0 0 6px #fff,0 0 6px #fff;min-width:240px}
 .big.back{background:var(--blue)}
 .big:disabled{filter:grayscale(1) opacity(.55);cursor:not-allowed}
 
-/* pokeball throw */
+/* ボール投げアニメーション */
 .ball{position:fixed;width:56px;height:56px;z-index:200;border-radius:50%;border:4px solid #222;
   background:linear-gradient(180deg,#ff4d5e 0 46%,#222 46% 54%,#fff 54%);pointer-events:none}
 .ball::after{content:"";position:absolute;left:50%;top:50%;width:16px;height:16px;margin:-8px;border-radius:50%;background:#fff;border:3px solid #222}
@@ -105,7 +160,7 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
 .stars{position:fixed;pointer-events:none;z-index:210;font-size:32px;animation:star 1s forwards}
 @keyframes star{to{transform:translate(var(--dx),var(--dy)) scale(.3);opacity:0}}
 
-/* ===== modals ===== */
+/* モーダル */
 .modal{position:fixed;inset:0;z-index:300;background:rgba(10,15,40,.65);display:none;align-items:center;justify-content:center;padding:14px}
 .modal.open{display:flex;animation:fade .2s}
 @keyframes fade{from{opacity:0}}
@@ -155,7 +210,10 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
   <!-- マップ画面 -->
   <section id="map" class="screen active" aria-label="バトルマップ">
     <div id="map-wrapper">
-      <img id="map-img" src="image_0b9ff5.jpg" alt="バトルマップ">
+      <svg id="map-svg"></svg>
+      <div id="tiles-container"></div>
+      <div class="map-flag" style="bottom:40px">🚩 スタート（はじまりのそうげん）</div>
+      <div class="map-flag" style="top:30px">🏆 ゴール（ミュウのしんでん）</div>
     </div>
   </section>
 
@@ -169,14 +227,25 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
       </div>
       <div class="card">
         <h2 class="btitle" id="bTitle"></h2>
-        <div class="desc-row">
-          <p class="desc" id="bDesc"></p>
-          <button class="voice" id="btnVoice" aria-label="よみあげ">🔊</button>
-        </div>
       </div>
-      <div class="card" id="bSheetCard"></div>
-      <div class="card" id="bQuestions"></div>
+
+      <!-- アプリ上で直感的に遊べるインタラクティブステージ -->
+      <div id="bInteractiveCard"></div>
+
+      <!-- 各問題カード（description1〜6分割表示） -->
+      <div id="bQuestionCards"></div>
+
+      <!-- 原本ドリル確認（折りたたみ） -->
+      <div class="card">
+        <details class="sheet-accordion">
+          <summary>📄 おてほんの プリントを みる（原本）</summary>
+          <img class="sheet-img" id="sheetImg" alt="原本プリント">
+          <p id="promptNote" style="font-size:13px;color:#555;margin-top:6px"></p>
+        </details>
+      </div>
     </div>
+
+    <!-- 下部ボタン -->
     <div class="bottom-bar">
       <button class="big back" id="btnBack">🗺️ マップにもどる</button>
       <button class="big throw" id="btnThrow" disabled>ボールを なげる！</button>
@@ -218,96 +287,115 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
   <button class="mbtn" data-close>やったー！</button>
 </div></div>
 
-<!-- プリント拡大モーダル -->
-<div class="modal" id="mSheet"><div class="mbox" style="width:min(1000px,100%)">
+<!-- 画像拡大モーダル -->
+<div class="modal" id="mSheetModal"><div class="mbox" style="width:min(1000px,100%)">
   <button class="mclose" data-close>✕</button>
-  <img id="sheetBig" style="width:100%" alt="ドリル">
+  <img id="sheetBig" style="width:100%" alt="拡大">
 </div></div>
 
 <div class="toast" id="toast"></div>
 <div class="loading" id="loading"><div class="spin"></div>よみこみちゅう…</div>
 
-<!-- 埋め込みドリルデータ -->
+<!-- 埋め込みCSVデータ（最新） -->
 <script type="text/plain" id="csv-data">
-battle,pokemon_name,pokemon_type,title,prompt,description,options,correct,image_link
-hyoushi,ミュウ,エスパー,ポケモンずかんボード・表紙,【ポケモンずかんボード】獲得したポケモンシールを収集・一覧できるコレクションダッシュボード。全55種類のポケモンスロットがグリッド配置され、各バトルクリアでシールが貼られ図鑑が完成していくUI。,バトルを クリアして、あつめた ポケモンの シールを ずかんに はっていこう！ ぜんぶの ポケモンを あつめられるかな？,【UI構成】図鑑グリッド一覧、タイプ別フィルタ、ポケモン詳細モーダル、進捗バー,全55問クリアでマスターボール＆ミュウ解放,ずかんボード画像
-Battle1,アチャモ,ほのお,たりるかな,【たりるかな（1対1対応）】アチャモ7匹とりんご8個を画面に表示。①アチャモとりんごをタップで線結び対応。②どちらが多いかを2択で選択。③「りんごはたりますか？」を「たりる」「たりない」ボタンで回答。,アチャモと りんごを せんで むすびましょう。どちらが おおいかな？ りんごは たりますか？,【選択肢】アチャモ / りんご、【判定ボタン】たりる / たりない,②りんご、③たりる,Battle1画像
-Battle2,ヨーデリー,ノーマル,ポケモンをかぞえよう,【ポケモンをかぞえよう】枠内に散らばったヨーデリー(6匹)とチラーミィ(7匹)をタップしてカウント。数えた数だけゲージの○を点灯させ、最終的な匹数を数字ボタンで答える。,わくの なかの ヨーテリーと チラーミィを タップして かぞえましょう。なんびき いるか すうじを えらんでね。,【UI要素】タップで印が付くカウントエリア、1〜10の数字ボタン,ヨーデリー: 6匹、チラーミィ: 7匹,Battle2画像
-Battle3,パチリス,でんき,1から 5の すうじを かこう,【1から5のすうじ】表示されたパチリスの数（1〜5匹）に合わせて、10フレームの○をタップして塗り、対応する数字（1〜5）を選択または手書き入力する。,パチリスの かずだけ ○を タップして ぬりましょう。そのあと、あてはまる すうじを えらんでね。,【UI要素】10フレーム（タップで点灯）、1〜5の数字選択ボタン,"1匹=1, 2匹=2, 3匹=3, 4匹=4, 5匹=5",Battle3画像
-Battle4,ピッピ,フェアリー,せんでむすぼう,【せんでむすぼう(1〜5)】「ピッピの絵（1〜5匹）」「赤丸カード（●1〜5個）」「数字（1〜5）」の3列をタップまたはスワイプで結ぶ3者対応マッチングUI。,かずが おなじに なるように、ピッピと ●と すうじを せんで つなぎましょう。,【UI要素】ピッピ列(1〜5)、赤丸列(●1〜5)、数字列(1〜5)のマッチングノード,"ピッピ1=●1=1, ピッピ2=●2=2, ピッピ3=●3=3, ピッピ4=●4=4, ピッピ5=●5=5",Battle4画像
-Battle5,フシギソウ,くさ,5はいくつといくつ,【5の分解(1)】5個のりんごを2枚の皿に分ける。上皿にあるりんご（1個、2個）を見て、下皿に必要な個数をドラッグして置き、空欄に数字を入力。,ぜんぶで 5この りんごが あります。したの おさらに りんごを わけて、あてはまる すうじを かきましょう。,【UI要素】りんごドラッグ可能パレット、数字キーパッド(1〜5),1と【4】、2と【3】,Battle5画像
-Battle6,ジヘッド,あく・ドラゴン,5は いくつと いくつ,【5の分解(2)】5個のりんごを分ける。左皿に3個あるとき右皿は何個？左皿に4個あるとき右皿は何個？空皿にりんごを配分し数字を選択。,5は いくつと いくつかな？ からの おさらに りんごを おいて、□に すうじを いれましょう。,【UI要素】りんごシール配置、数字ボタン(1〜5),3と【2】、4と【1】,Battle6画像
-Battle7,アンノーン,エスパー,6から 10の すうじを かこう,【6から10のすうじ】表示されたアンノーンの数（6〜10匹）を数え、10フレームの○をタップして埋め、対応する数字（6〜10）を選択。,アンノーンの かずを かぞえて、おなじ かずだけ ○を タップしましょう。すうじも えらんでね。,"【UI要素】10フレームグリッド、数字ボタン(6, 7, 8, 9, 10)","6匹=6, 7匹=7, 8匹=8, 9匹=9, 10匹=10",Battle7画像
-Battle8,ケロマツ,みず,せんでむすぼう,【せんでむすぼう(6〜10)】「ケロマツの群れ(6〜10匹)」「赤丸10フレーム(6〜10)」「数字(6〜10)」をタップまたはスワイプで結ぶ3者対応マッチングUI。,かずが おなじに なるように、ケロマツと ●と すうじを せんで つなぎましょう。,【UI要素】ケロマツカード、赤丸カード、数字ブロック(6〜10),"6匹=●6=6, 7匹=●7=7, 8匹=●8=8, 9匹=●9=9, 10匹=●10=10",Battle8画像
-Battle9,エテボース,ノーマル,ぬけているすうじをかこう,【すうじの順番(1〜10)】エテボースの進む道に並ぶ数字。空欄になっているマスに、数字カードから正しい数字をドラッグ＆ドロップして1〜10を完成させる。,すうじが 1から 10まで じゅんびんに ならぶように、あいている マスに すうじを いれましょう。,"【UI要素】すごろくコース、数字チップ(2, 4, 5, 7, 9, 10)","順に 2, 4, 5, 7, 9, 10",Battle9画像
-Battle10,ミミッキュ,ゴースト・フェアリー,ぬけているすうじをかこう,【ぎゃくじゅん(10〜1)】ミミッキュが洞窟を進む10から1への逆順コース。空欄マスに正しい数字を当てはめてカウントダウンを完成させる。,10から 1まで、すうじを ぎゃくの じゅんばんで ならべましょう。あいている マスを うめてね。,"【UI要素】逆順コースマス、数字チップ(8, 6, 5, 3, 1)",10→9→【8】→7→【6】→【5】→4→【3】→2→【1】,Battle10画像
-Battle11,ユキメノコ,こおり・ゴースト,どちらがおおいかな,【かずくらべ(1〜10)】左右に配置された2つのポケモングループを数えて、どちらが多いかをタップして選択する2択クイズ。,ひだりと みぎの ポケモンを かぞえて、どちらが おおいか タップして えらびましょう。,【選択肢】左のグループ / 右のグループ、大小比較カード,数の多い方のグループカードを選択,Battle11画像
-Battle12,バタフリー,むし・ひこう,6はいくつといくつ,【6の分解・合成】6匹のバタフリーを2つの花に分ける。「1と5」「2と4」「3と3」など、一方の数を見て相方の数を数字ボタンから選ぶ。,6ぴきの バタフリーが います。6は いくつと いくつかな？ あいている すうじを えらびましょう。,【UI要素】花畑グラフィック、数字選択ボタン(1〜5),"1と5, 2と4, 3と3, 4と2, 5と1",Battle12画像
-Battle13,マリルリ,みず・フェアリー,7はいくつといくつ,【7の分解・合成】7匹のマリルリを2つの池に分ける。「7は○と□」の空欄に当てはまる数を直感的にドラッグ配置または選択。,7ひきの マリルリが います。7は いくつと いくつかな？ いけに わけて すうじを えらびましょう。,【UI要素】2つの水たまりエリア、数字選択ボタン(1〜6),"1と6, 2と5, 3と4, 4と3, 5と2, 6と1",Battle13画像
-Battle14,ヤミラミ,あく・ゴースト,8はいくつといくつ,【8の分解・合成】8個の宝石を2つの宝箱に配分。「8は3と【5】」「8は6と【2】」等の欠落した数をキーパッドまたは選択肢から回答。,8この ほうせきを 2つの はこに わけます。8は いくつと いくつになるか、すうじを こたえましょう。,【UI要素】宝石アイテム、数字選択ボタン(1〜7),"1と7, 2と6, 3と5, 4と4, 5と3, 6と2, 7と1",Battle14画像
-Battle15,ギガイアス,いわ,9は いくつと いくつ,【9の分解ツリー】「9」から2本に枝分かれしたツリー構造。一方に提示された数字（1〜8）に対し、空欄の四角にペアとなる数字シールをドラッグ＆ドロップ。,あわせて 9に なるように、あいている しかくに すうじの シールを はりましょう。,【UI要素】9の分解ツリー分岐図、数字シール(1〜8),"1と【8】, 2と【7】, 3と【6】, 4と【5】, 5と【4】, 6と【3】, 7と【2】, 8と【1】",Battle15画像
-Battle16,ゴーゴート,くさ,10は いくつと いくつ,【10の合成・分解（補数）】10の分解ツリーUI。提示された数（1〜9）を見て、足して10になるペアの数字をシールパレットから選んで貼り付ける。,あわせて 10に なるように、ペアに なる すうじを えらんで はりましょう。,【UI要素】10の分岐ボックス、数字チップ(1〜9),"1と【9】, 2と【8】, 3と【7】, 4と【6】, 5と【5】, 6と【4】, 7と【3】, 8と【2】, 9と【1】",Battle16画像
-Battle17,トゲピー,フェアリー,あと いくつで 10に なるかな,【10の補数(1)】10個並ぶ枠のうち、一部にトゲピーが置かれている。「あといくつで10になるかな？」空いている枠を数えてタップ入力。,あと いくつで 10に なるかな？ あいている マスを かぞえて、すうじを えらびましょう。,【UI要素】10個のスロット、1〜9の数字ボタン,10から現在の個数を引いた不足数（例: 8個あればあと2）,Battle17画像
-Battle18,ヤングース,ノーマル,あと いくつで 10に なるかな,【あといくつで10】りんごの列（7個、9個、6個）を見て、10個にするために不足しているりんごをタップ追加し、「○はあと【□】で10になります」の空欄に数字を入力。,りんごが 10こに なるように たりない ぶんを たしましょう。あと いくつで 10に なるかな？,【UI要素】りんご追加タップエリア、数字キー(1〜9),7はあと【3】、9はあと【1】、6はあと【4】,Battle18画像
-Battle19,イッカネズミ,ノーマル,0というかず,【0の概念】お皿に乗っている木の実の数を数える。3個、1個、そして「何もないお皿」。「なにもないときは【0】」を学ぶ選択クイズ。,おさらの なかの きのみを かぞえましょう。なにも ない ときは、どんな すうじを かくかな？,"【UI要素】お皿グラフィック、数字ボタン(0, 1, 2, 3)",なにもない皿＝0,Battle19画像
-Battle20,ピカチュウ,でんき,バトル1〜19の まとめ,【前半総まとめテスト】1〜10の数え、数の大小、5と10の分解・合成からランダムに出題される総合テストクイズ。,バトル1から 19までの まとめもんだいだよ！ いままで おぼえたことを おもいだして ちょうせんしよう。,【UI要素】4択問題カード、タイマー、スコア表示,全問正解でピカチュウバッジ獲得,Battle20画像
-Battle20_2,ピカチュウ,でんき,バトル1〜19の まとめ(ぬりえ),【すうじパズルぬりえ】番号で色分けされたピカチュウの絵。「0=ピンク」「1〜4=みずいろ」「5=くろ」「5より大きい=きいろ」のパレットを選んでタップ塗りし、ピカチュウを完成させる。,すうじに あわせて いろを ぬりましょう。きれいに ぬって ピカチュウを かんせいさせてね！,【パレット】ピンク(0)、みずいろ(1〜4)、くろ(5)、きいろ(6〜10),全エリアを条件通り着色してピカチュウ完成,Battle20_2画像
-Battle21,アブリボン,むし・フェアリー,10よりおおきいかず,【10より大きい数】10個のまとまりと、バラの数を数える。「10と3で【13】」のように、10の束を意識して11〜19の数を構成する。,10の まとまりと、ばらの かずを かぞえましょう。あわせて いくつに なるかな？,【UI要素】10個パック＋バラブロック、数字入力/選択,10とバラの合計値（11〜19）,Battle21画像
-Battle22,ウオノラゴン,みず・ドラゴン,11から 20の すうじを かこう,【11から15のすうじ】10個のまとまり＋端数のモンスターボールを数え、11〜15の数字カードを選択してマッチング。,モンスターボールの かずを かぞえましょう。あてはまる 11から 15までの すうじを えらんでね。,"【UI要素】モンスターボール表示エリア、数字ボタン(11, 12, 13, 14, 15)","11, 12, 13, 14, 15",Battle22画像
-Battle22_2,ウオノラゴン,みず・ドラゴン,11から 20の すうじを かこう(16〜20),【16から20のすうじ】モンスターボールの群れ（16〜20個）を数え、10のまとまり2つで20になる構造を理解しながら対応する数字を選択。,モンスターボールの かずを かぞえましょう。10が 2つで 20だよ。あてはまる すうじを えらんでね。,"【UI要素】モンスターボール表示、数字ボタン(16, 17, 18, 19, 20)","16, 17, 18, 19, 20",Battle22_2画像
-Battle23,ドダイトス,くさ・じめん,すうじのじゅん,【すうじの順番(11〜20)】11から20までの数字並べ替え。バラバラになった数字カードを小さい順にスワイプして整列させる。,ばらばらに なった すうじカードを、11から 20まで ちいさい じゅんに ならべかえましょう。,【UI要素】ドラッグ可能な数字カード(11〜20),"11, 12, 13, 14, 15, 16, 17, 18, 19, 20の昇順",Battle23画像
-Battle24,アチゲータ,ほのお,どちらが おおいかな,【10のまとまりと数比べ】散らばったパンとお皿をタップして「10個のグループ」を作り、残りのバラを数えて総数を入力。どちらが多いか2択で判定。,10こずつ まとまりを つくって かぞえましょう。パンと おさら、どちらが おおいかな？,【UI要素】10個囲みツール、数値入力ボックス、左右選択ボタン,パンとお皿の総数を入力し、多い方を選択,Battle24画像
-Battle25,ウッウ,ひこう・みず,あわせて いくつ,【たし算の基礎（合併）】地面にいるウッウ（4匹）と空を飛んでいるウッウ（3匹）を数え、「あわせて何匹？」の空欄に数字を入力して足し算の概念を学ぶ。,じめんに いる ウッウと、そらを とんでいる ウッウを あわせると、ぜんぶで なんびきに なるかな？,【UI要素】地面/空のタップカウント、数字選択キーパッド,とんでいるのは【3】ひき、あわせて【7】ひき,Battle25画像
-Battle26,クチート,はがね・フェアリー,あわせて いくつ,【たし算（合併の練習）】2つのグループ（木の実やポケモン）を合わせていくつになるか、絵をタップして合わせて数え、式「○＋□＝△」を完成させる。,2つの グループを あわせると いくつかな？ えを タップして かぞえて、しきを かんせいさせよう。,【UI要素】グループ結合アニメーション、数字選択ボタン,2つのグループの合計数,Battle26画像
-Battle27,ミルタンク,ノーマル,ふえると いくつ,【たし算の基礎（増加）】草原にいるミルタンク（7匹）に、後から歩いてくるミルタンク（3匹）が合流するアニメーション。「みんなで何匹になった？」を回答。,はじめに いた ミルタンクに、あとから なかまが やってきたよ。みんなで なんびきに なったかな？,【UI要素】合流アニメーション、数字入力キーパッド,あとから【3】びき、みんなで【10】ぴき,Battle27画像
-Battle28,バオップ,ほのお,ふえると いくつ,【たし算（増加の練習）】はじめの数に対して、追加でやってきたポケモンを足す。「はじめに○匹、あとから□匹、あわせて△匹」の増加計算ドリル。,あとから ポケモンが ふえたよ！ はじめの かずに たして、ぜんぶで なんびきに なるか こたえよう。,【UI要素】追加アニメーション、数字ボタン,はじめの数＋追加の数の合計,Battle28画像
-Battle29,ニャルマー,ノーマル,のこりは いくつ,【ひき算の基礎（求残）】草原に9匹いたニャルマーから、3匹が走って去っていくアニメーション。「のこりは何匹？」をタップして回答。,ニャルマーが はしって かえっていったよ。のこりは なんびきに なったかな？,【UI要素】立ち去るアニメーション、数字キーパッド,【3】びきかえっていきました、のこりは【6】ぴき,Battle29画像
-Battle30,ピジョット,ノーマル・ひこう,のこりは いくつ,【ひき算の練習（食べる・減る）】お皿にあるクッキーをタップして「食べる（消去）」操作をし、残りの個数を数えて式と答えを完成させる。,クッキーを パクッと たべると、のこりは いくつに なるかな？ たべて へった かずを ひいてみよう。,【UI要素】タップでかじられるクッキー、数字入力枠,上: 8-3=【5】、下: 10-4=【6】,Battle30画像
-Battle31,バイウールー,ノーマル,いくつ おおい,【ひき算の基礎（求差・いくつ多い）】バイウールー(6匹)とウールー(9匹)を1対1対応で並べ、「どちらが何匹多いか？」を比べるインタラクティブUI。,バイウールーと ウールーを ならべて くらべよう。どちらが なんびき おおいかな？,【UI要素】1対1ペア結びライン、数字ボタン(1〜5)、ポケモン選択,ウールーが【9】匹、多いのは【ウールー】、【3】匹多い,Battle31画像
-Battle32,ローブシン,かくとう,ちがいはいくつ,【ひき算（ちがいはいくつ）】2種類のブロックの高さを比べ、「ちがいは何個分？」を差分タップで確認して引き算の式（A－B＝差）を導く。,ブロックの たかさを くらべてみよう。たかい ほうと ひくい ほうの ちがいは なんこぶんかな？,【UI要素】高さ比較グリッド、差分ハイライト、数字ボタン,2つの数量の差分値,Battle32画像
-Battle33,フラージェス(あおいはな),フェアリー,20より おおきい かず,【20より大きい数（十の位と一の位）】花畑のチューリップをドラッグで10本ずつ束ね、「10のまとまりが○個とバラが□個で全部で△本」の空欄を埋める。,チューリップを 10ぽんずつ たばねてみよう。10の まとまりと ばらの かずで、ぜんぶで なんぼんかな？,【UI要素】投げ縄（囲み）ツール、位取り入力ボックス(十の位/一の位),10のまとまりが【2】、バラが【8】、ぜんぶで【28】本,Battle33画像
-Battle34,ハピナス,ノーマル,21から 30の すうじを かこう,【21から25のすうじ】卵パック（10個入り2パック＝20個）＋バラの卵（1〜5個）を数え、21〜25の数を認識・選択する。,たまごの パックと ばらの たまごを かぞえましょう。21から 25までの すうじを えらんでね。,【UI要素】卵パックグラフィック、数字ボタン(21〜25),"21, 22, 23, 24, 25",Battle34画像
-Battle34_2,ハピナス,ノーマル,21から 30の すうじを かこう(26〜30),【26から30のすうじ】卵の数（26〜30個）を数え、10のまとまり3つで30になる構造を学びながら26〜30の数字を答える。,たまごの かずを かぞえましょう。10が 3つで 30だよ。26から 30までの すうじを えらんでね。,"【UI要素】10個パック×3スロット、数字ボタン(26, 27, 28, 29, 30)","26, 27, 28, 29, 30",Battle34_2画像
-Battle35,メグロコ,じめん・あく,すうじの じゅん,【11から30の数列迷路】11から30まで続く砂漠のルート。空欄になっているマスに、抜けている数字を順番に入力またはドラッグしてゴール（ワルビアル）を目指す。,11から 30まで すうじが じゅんばんに ならぶように、ぬけている マスに すうじを いれて ゴールを めざそう！,【UI要素】砂漠迷路マス、数字パレット(12〜30),11から30までの連続した正しい整数並び,Battle35画像
-Battle36,トゲデマル,でんき・はがね,どちらが おおきいかな,【数の大小分岐迷路】分かれ道で2つの2桁数字が表示される。「十の位を比べ、同じなら一の位を比べる」ルールで、常に【大きい方の数】をタップして正しいルートを進む迷路アプリ。,わかれみちで おおきい すうじの ほうを えらんで すすもう。めいろを ぬけて ゴールできるかな？,"【分岐選択肢】12 vs 21, 23 vs 25, 24 vs 18, 26 vs 29, 27 vs 28, 29 vs 30",21 → 25 → 24 → 29 → 28 → 30,Battle36画像
-Battle37,シルヴァディ(タイプ:ノーマル),ノーマル,バトル21〜36の まとめ,"【1〜30の順番グリッド迷路】数字が散らばった格子状マップ。1からスタートし、隣接するマスを2, 3, 4…と順番にタップして線を繋ぎ、30のゴールまで進む。",1から 30まで、すうじの じゅんばんに マスを タップして せんを つなぎ、ゴールへ すすもう！,【UI要素】タップ連鎖式ナンバーグリッド(1〜30),1→2→3→…→30の順に正しく全マスを連結,Battle37画像
-Battle37_2,シルヴァディ(タイプ:ノーマル),ノーマル,バトル21〜36の まとめ(てんつなぎ),【1〜30の点つなぎ】画面上の点（1〜30）を番号順にスワイプして繋げていくと、木を抱いたネッコアラのイラストが現れるインタラクティブドローイングUI。,1から 30までの てんを じゅんばんに せんで つなごう！ どんな えが でてくるかな？,【UI要素】1〜30のドットノード、ライン描画キャンバス,1から30まで順番に全ての点を接続,Battle37_2画像
-Battle38,インテレオン,みず,なんばんめ,【なんばんめ（順序数と集合数）】横一列に並んだ6匹のインテレオン。「○番目（単体指定）」と「○匹（範囲・個数指定）」の違いを、タップ選択とドラッグ範囲選択で解き分ける。,まえから ○ばんめの ポケモンと、まえから ○ぴきの ポケモンを、まちがえないように えらぼう。,【UI要素】6匹の並びライン（前/後ろ表記）、赤/青マーカーツール,①前4番目(単体)、②後2番目(単体)、③前3匹(集合)、④後2匹(集合),Battle38画像
-Battle39,メガヤンマ,むし・ひこう,なんばんめ,【なんばんめ（縦の並び・上下）】縦に並んだポケモンたち。「上から○番目」「下から○匹」など、上下方向の順序数と集合数を識別して正解のポケモンを選択する。,うえから ○ばんめや、したから ○びきを えらぼう。うえと したを よく みて こたえてね。,【UI要素】縦並びキャラリスト、単体選択・複数選択モード切替,指定された位置・範囲のポケモン,Battle39画像
-Battle40,イーブイ,ノーマル,なんばんめ,【左右のなんばんめ】左右に並んだ6匹のイーブイ。「左から○番目」「右から○匹」の指示に従い、指定のポケモンをタップまたは枠で囲む。,ひだりから ○ばんめや、みぎから ○びきを えらぼう。ひだりと みぎを よく たしかめてね。,【UI要素】左右反転対応キャラ列、ピンポイントタップ、囲みツール,①左から5番目(単体)、②右から4番目(単体)、③左から2匹(範囲)、④右から3匹(範囲),Battle40画像
-Battle41,イオルブ,むし・エスパー,なんばんめ,【前後・左右・上下の総合順序】グリッド上に配置されたポケモンから、「前から○番目、右から○番目」の交差位置を特定してタップする2次元座標導入ドリル。,「まえから ○ばんめ、みぎから □ばんめ」の ポケモンは だれかな？ ぴったり あう ところを タップしよう。,【UI要素】マトリクスグリッド、座標ハイライト,指定された行・列の交点セル,Battle41画像
-Battle42,タマンチュラ,むし,なんばんめ,【2次元グリッドロッカーの順序】3列×4段のロッカーUI。「上から○番目、左から□番目」の指定位置にあるランドセルをタップ、または指定位置にランドセルをドラッグ配置。,ロッカーの「うえから ○ばんめ、ひだりから □ばんめ」を さがして、ランドセルを おいてみよう。,【UI要素】3×4マスロッカー、ランドセルドラッグアイテム、位置入力枠,①指定座標のタップ、②位置の数字入力、③指定マスへの配置,Battle42画像
-Battle43,ボーマンダ,ドラゴン・ひこう,31から 60の すうじを かこう,【31から45のすうじ】ボーマンダの飛行ルートに沿って並ぶ31〜45の数字。各マスをタップして正しい読み音声を確認し、欠けている数字を選択。,みちに ならぶ 31から 45までの すうじを よんでみよう。あいている マスに すうじを いれてね。,【UI要素】ワインディングコース、数字選択ボタン(31〜45),31から45までの昇順整列,Battle43画像
-Battle43_2,ボーマンダ,ドラゴン・ひこう,31から 60の すうじを かこう(46〜60),【46から60のすうじ】46から60までの大きな数。十の位が4から5、6へと変わる規則性を理解しながら、コース上の数字をタップして完成させる。,46から 60までの おおきな すうじだよ。じゅんばんに ならぶように マスを うめていこう！,【UI要素】コースマス、数字パレット(46〜60),46から60までの昇順整列,Battle43_2画像
-Minigame,ギルガルド,はがね・ゴースト,ちかみちをしよう,【最短ルート・長さの直感比較】3匹のポケモン（ヒトツキ、ニダンギル、ギルガルド）から目的地の木の実まで、枝分かれした道の中から「一番の近道（最短経路）」を選んで進むミニゲーム。,きのみまでの いちばん ちかい みち（ちかみち）は どれかな？ せんを ひいて すすんでみよう！,【UI要素】迷路分岐タップ選択、道のり測定ルーラー,各ポケモンからの直線的・最短経路,Minigame画像
-Battle44,ヒヒダルマ,ほのお,あてはまるすうじをかこう,【数列の規則性と数直線】5とび、10とび等の規則的な並びや、前後関係（ある数の前後の数）を答えるステップアップドリル。,すうじの ならびかたの きまりを みつけよう。□に あてはまる すうじは なにかな？,【UI要素】数直線スライダー、数字入力パッド,規則に沿った正しい数字,Battle44画像
-Battle44_2,ヒヒダルマ,ほのお,あてはまるすうじをかこう(2),【大小関係と不等号の直感】大小関係の穴埋め問題。「○より大きくて□より小さい数」などを選択肢から選ぶ。,○より おおきくて、□より ちいさい すうじは どれかな？ あてはまる すうじを えらぼう。,【UI要素】天秤UI、数字チップ,条件に適合する数字,Battle44_2画像
-Battle45,ホーホー,ノーマル・ひこう,とけい,【時計の読み（何時・何時半）】アナログ時計が表示され、長い針と短い針の位置関係から「何時」「何時半」を読み取って回答する知育時計アプリ。,みじかい はりと ながい はりを みて、いま なんじ なんじはんか を こたえましょう。,【UI要素】インタラクティブアナログ時計、時間セレクター(1〜12)、分セレクター(00分/30分),例: 短針7・長針12→7時、短針1と2の間・長針6→1時半,Battle45画像
-Battle45_2,ホーホー,ノーマル・ひこう,とけい(2),【時計の針合わせ（何時・何時半）】「3じ」「8じはん」などの時刻の指示に合わせて、時計の針をドラッグして指定の時刻に合わせるシミュレーターUI。,もんだいに でている じかんに なるように、とけいの はりを うごかして あわせましょう。,【UI要素】回転操作可能な時計の短針・長針,指示された時刻の位置に長針・短針が合致,Battle45_2画像
-Battle46,ギギギアル,はがね,とけい,"【時計の読み（何分・5分刻み）】時計の外側に書かれた分（5, 10, 15…55分）の目盛りを参考に、何時何分を正確に読み取るドリル。",とけいの めもりを みて、なんじ なんふんかを よみとりましょう。5ふんきざみで かぞえてね。,【UI要素】分目盛り付き時計、時間・分選択ホイール,時計の指す正確な時刻（例: 2時15分）,Battle46画像
-Battle46_2,ギギギアル,はがね,とけい(2),【時計の時刻読み取りテスト】6つのアナログ時計盤が表示される。それぞれの時計の「○じ□ふん」を読み取り、空欄に数字を正しく入力する。,6つの とけいは それぞれ なんじ なんふんかな？ すうじを いれて ぜんぶ こたえよう。,【UI要素】6つの時計カード、テンキー入力枠,各時計の正しい時刻（例: 10時10分、4時45分等）,Battle46_2画像
-Battle47,サーナイト,エスパー・フェアリー,くらべっこ,【ながさくらべ（直接比較と間接比較）】長さや高さの違う鉛筆やリボンを端を揃えて並べ、「どちらが長いか」をタップ判定、またはマス目を数えて比べる。,はしっこを そろえて くらべてみよう。どちらが ながいかな？ （たかいかな？）,【UI要素】ドラッグして端を揃えるアイテム、長い/短いボタン,より長い（高い）アイテムの選択,Battle47画像
-Battle47_2,サーナイト,エスパー・フェアリー,くらべっこ(かさ),【かさくらべ（コップ何杯分）】異なる形の水筒やペットボトルから、同じ大きさのコップに注ぎ分け、「コップ○杯分」と数えてどちらが多いかを判定する体験型UI。,コップ なんばいぶん あるか かぞえよう。のみものが おおく はいるのは どちらかな？」,【UI要素】注ぎアニメーション、コップカウントボタン、2択選択,コップの杯数が多い方の容器を選択,Battle47_2画像
-Battle47_3,サーナイト,エスパー・フェアリー,くらべっこ(ひろさ),【ひろさくらべ（重ね合わせとマス目数え）】2枚のシートをドラッグして重ねてはみ出しを確認する「直接比較」と、マス目を数えて面積を比べる「マス目カウント」の2問構成アプリ。,かさねて はみだしを みたり、マス目を かぞえたりして、どちらが ひろいか くらべましょう。,【UI要素】重ね合わせレイヤー、マス目タッピングカウンター、広さ判定ボタン,⑤はみ出している青い方、⑥16マスある緑のタイル,Battle47_3画像
-Battle48,グラードン,じめん,バトル38〜47の まとめ,【大きな数の数え方（10のまとまり）】大量のナックラー（約40〜50匹）を画面上でタップして10匹ずつサークルで囲み、十の位と一の位を特定して正確にカウントする。,ナックラーを 10ぴきずつ まるで かこんで かぞえよう。ぜんぶで なんびき いるかな？,【UI要素】10匹自動結束サークル、総数入力キーパッド,10のまとまり数と総数,Battle48画像
-Battle48_2,グラードン,じめん,バトル38〜47の まとめ(てんつなぎ),【1〜60の大型点つなぎ】1から60までの番号付きドットを指先やマウスで順番に繋いでいくと、巨大なグラードンが出現する爽快な点つなぎアプリ。,1から 60までの てんを じゅんばんに せんで つなごう！ おおきな グラードンが でてくるよ！,【UI要素】1〜60の連続ドット、自動スナップペンツール,1から60までの連続接続完了,Battle48_2画像
-Battle49,カモネギ,ノーマル・ひこう,かたち,【立体のなかま分け（形の特徴）】「さいころのかたち」「はこのかたち」「つつのかたち」「ボールのかたち」の実物写真とその特徴文を線で結ぶマッチングUI。,「はこのかたち」や「ボールのかたち」など、にている かたちどうしを せんで つなぎましょう。,【UI要素】立体モデルカード、特徴ラベル、ドラッグ接続コネクタ,各立体の正しい名称・特徴・実物写真のペアリング,Battle49画像
-Battle49_2,カモネギ,ノーマル・ひこう,かたち(2),【つみきのかずとかたち】積み上げられた積み木の数を数える（見えない奥にあるブロックも意識する空間認識ドリル）。,つみきは ぜんぶで なんこ あるかな？ うしろに かくれている つみきも わすれずに かぞえてね。,【UI要素】3D回転可能な積み木ビューアー、個数選択ボタン,隠れたブロックを含めた正しい個数,Battle49_2画像
-Battle50,オオスバメ,ノーマル・ひこう,せいりしよう,【分類となかま分け】散らばった様々なアイテム（くだもの、文房具、乗り物等）を、それぞれのカゴにドラッグして正しく仕分ける。,くだものや のりものなど、おなじ なかまの ものを それぞれの カゴに わけましょう。,【UI要素】カテゴリ別ボックス、ドラッグ＆ドロップ対象アイテム,全アイテムの正しいカテゴリ分類,Battle50画像
-Battle50_2,オオスバメ,ノーマル・ひこう,せいりしよう(2),【表とグラフの基礎】仕分けたアイテムの個数分だけグラフのマス目を下からタップして塗りつぶし、どちらが何個多いかを視覚的に読み取る。,アイテムの かずだけ グラフの マスを ぬりましょう。どちらが なんこ おおいかも わかるかな？,【UI要素】棒グラフ状マス目グリッド、個数集計表,正しいマス目着色と個数入力,Battle50_2画像
-Battle51,リククラゲ,じめん・くさ,61から 120までの すうじ,【100を超える大きな数】10のまとまりが10個で「100」。61から120までの100マス表（百数表）で、隠されたポケモンのマスの数字を当てる。,10が 10こで 100だよ！ ひゃくすうひょうの ポケモンが かくれている マスの すうじを あててね。,【UI要素】百数表グリッド、数字テンキー,"指定位置の数字（例: 75, 100, 115等）",Battle51画像
-Battle52,コレクレー,ゴースト,いくらかな,【おかねのけいさん（10円と1円）】コレクレーの宝箱にある硬貨。「10円玉が○枚と1円玉が□枚でいくら？」硬貨をタップして合計金額を計算。,10えんだまが ○まいと、1えんだまが □まいで いくらかな？ おかねを かぞえてみよう！,【UI要素】10円玉/1円玉パレット、金額表示・入力キー,硬貨の合計金額（例: 10円玉3枚＋1円玉5枚＝35円）,Battle52画像
-Battle53,ポリゴン2,ノーマル,たしざん,【たし算の記号（＋と＝の意味）】「あわせると」「ふえると」を算数の式「＋」「＝」で表す導入。絵を見ながら式「3＋2＝5」を組み立てる。,「＋」や「＝」の きごうを つかって、たしざんの しきを つくってみよう！,【UI要素】数字・記号ブロック（＋、＝、数字）,場面に合致する正しい足し算の式,Battle53画像
-Battle53_2,ポリゴン2,ノーマル,たしざん(けいさん),"【たし算の計算練習】イラストの助けを見ながら、1桁の足し算（2+3, 5+2, 3+6, 4+3）を解くスピード計算ドリルUI。",えを みながら たしざんを けいさんしよう！ □に あてはまる すうじを いれてね。,【UI要素】計算式表示、数字キーパッド(1〜10),"2+3=【5】, 5+2=【7】, 3+6=【9】, 4+3=【7】",Battle53_2画像
-Battle54,カイリキー,かくとう,ひきざん,【ひき算の記号（－と＝の意味）】「とると」「のこりは」を表す「－」「＝」の記号の意味をアニメーションで理解し、式を組み立てる導入ドリル。,へったときや ちがいを みるときは「－」を つかうよ。ひきざんの しきを つくってみよう！,"【UI要素】引き算アニメーション、式ビルダー(－, ＝)",求残の式: 3-1=2、求差の式: 5-3=2,Battle54画像
-Battle54_2,カイリキー,かくとう,ひきざん(けいさん),"【ひき算の計算練習】イラストを消し込みながら、1桁の引き算（4-2, 6-1, 5-2, 10-3）を解く計算ドリルアプリ。",えを けしながら ひきざんを けいさんしよう！ のこりは いくつに なるかな？,【UI要素】計算式表示、テンキー、タップ消去対応イラスト,"4-2=【2】, 6-1=【5】, 5-2=【3】, 10-3=【7】",Battle54_2画像
-Battle55,ミュウ,エスパー,バトル1～54のまとめ,【総まとめすごろく前編(0〜30)】ケーシィから始まる大すごろく。コース上に抜けている数字マスに正しい数字を当てはめながら30まで進む。,0から 30までの だいすごろくだよ！ ぬけている マスに すうじを いれながら ゴールを めざそう！,【UI要素】大マップすごろくコース、数字チップパレット,コース上の空欄に入る正しい連続数字,Battle55画像
-Battle55_2,ミュウ,エスパー,バトル1～54のまとめ(2),【総まとめすごろく後編(31〜62)】スリープからゴール（ミュウ）までのすごろく後半戦。31から62までの数字の抜けを埋めて全問クリアし、ミュウをゲットする。,31から 62までの すごろく こうはんせん！ すうじを うめて ぜんぶ クリアし、ミュウを ゲットしよう！,【UI要素】ゴール直前すごろく盤、数字チップパレット、クリア演出,31から62までの空欄に入る正しい数字、ミュウ捕獲,Battle55_2画像
+battle,pokemon_name,pokemon_type,title,prompt,description1,description2,description3,description4,description5,description6,options,correct,image_link
+hyoushi,ミュウ,エスパー,ポケモンずかんボード・表紙,【ポケモンずかんボード】獲得したポケモンシールを収集・一覧できるコレクションダッシュボード。全55種類のポケモンスロットがグリッド配置され、各バトルクリアでシールが貼られ図鑑が完成していくUI。,バトルを クリアして、あつめた ポケモンの シールを ずかんに はっていこう！ ぜんぶの ポケモンを あつめられるかな？,,,,,,【UI構成】図鑑グリッド一覧、タイプ別フィルタ、ポケモン詳細モーダル、進捗バー,全55問クリアでマスターボール＆ミュウ解放,ずかんボード画像
+Battle1,アチャモ,ほのお,たりるかな,【たりるかな（1対1対応）】アチャモ7匹とりんご8個を画面に表示。①アチャモとりんごをタップで線結び対応。②どちらが多いかを2択で選択。③「りんごはたりますか？」を「たりる」「たりない」ボタンで回答。,アチャモと りんごを せんで むすびましょう。,アチャモと りんごは、どちらが おおいでしょう。おおい ほうを えらびましょう。,りんごは、たりますか。「たりる」「たりない」を えらびましょう。,,,,【選択肢】アチャモ / りんご、【判定ボタン】たりる / たりない,②りんご、③たりる,Battle1画像
+Battle2,ヨーデリー,ノーマル,ポケモンをかぞえよう,【ポケモンをかぞえよう】枠内に散らばったヨーデリー(6匹)とチラーミィ(7匹)をタップしてカウント。数えた数だけゲージの○を点灯させ、最終的な匹数を数字ボタンで答える。,わくの なかの ヨーテリーと チラーミィを タップして かぞえましょう。なんびき いるか すうじを えらんでね。,,,,,,【UI要素】タップで印が付くカウントエリア、1〜10の数字ボタン,ヨーデリー: 6匹、チラーミィ: 7匹,Battle2画像
+Battle3,パチリス,でんき,1から 5の すうじを かこう,【1から5のすうじ】表示されたパチリスの数（1〜5匹）に合わせて、10フレームの○をタップして塗り、対応する数字（1〜5）を選択または手書き入力する。,① パチリス 1ぴき：かずだけ ○を ぬって、すうじを かきましょう。,② パチリス 2ひき：かずだけ ○を ぬって、すうじを かきましょう。,③ パチリス 3びき：かずだけ ○を ぬって、すうじを かきましょう。,④ パチリス 4ひき：かずだけ ○を ぬって、すうじを かきましょう。,⑤ パチリス 5ひき：かずだけ ○を ぬって、すうじを かきましょう。,,【UI要素】10フレーム（タップで点灯）、1〜5の数字選択ボタン,"1匹=1, 2匹=2, 3匹=3, 4匹=4, 5匹=5",Battle3画像
+Battle4,ピッピ,フェアリー,せんでむすぼう,【せんでむすぼう(1〜5)】「ピッピの絵（1〜5匹）」「赤丸カード（●1〜5個）」「数字（1〜5）」の3列をタップまたはスワイプで結ぶ3者対応マッチングUI。,かずが おなじに なるように、ピッピと ●と すうじを せんで つなぎましょう。,,,,,,【UI要素】ピッピ列(1〜5)、赤丸列(●1〜5)、数字列(1〜5)のマッチングノード,"ピッピ1=●1=1, ピッピ2=●2=2, ピッピ3=●3=3, ピッピ4=●4=4, ピッピ5=●5=5",Battle4画像
+Battle5,フシギソウ,くさ,5はいくつといくつ,【5の分解(1)】5個のりんごを2枚の皿に分ける。上皿にあるりんご（1個、2個）を見て、下皿に必要な個数をドラッグして置き、空欄に数字を入力。,ぜんぶで 5この りんごが あります。したの おさらに りんごを わけて、あてはまる すうじを かきましょう。,,,,,,【UI要素】りんごドラッグ可能パレット、数字キーパッド(1〜5),1と【4】、2と【3】,Battle5画像
+Battle6,ジヘッド,あく・ドラゴン,5は いくつと いくつ,【5の分解(2)】5個のりんごを分ける。左皿に3個あるとき右皿は何個？左皿に4個あるとき右皿は何個？空皿にりんごを配分し数字を選択。,5は いくつと いくつかな？ からの おさらに りんごを おいて、□に すうじを いれましょう。,,,,,,【UI要素】りんごシール配置、数字ボタン(1〜5),3と【2】、4と【1】,Battle6画像
+Battle7,アンノーン,エスパー,6から 10の すうじを かこう,【6から10のすうじ】表示されたアンノーンの数（6〜10匹）を数え、10フレームの○をタップして埋め、対応する数字（6〜10）を選択。,① アンノーン 6ぴき：かずだけ ○を ぬって、すうじを かきましょう。,② アンノーン 7ひき：かずだけ ○を ぬって、すうじを かきましょう。,③ アンノーン 8ぴき：かずだけ ○を ぬって、すうじを かきましょう。,④ アンノーン 9ひき：かずだけ ○を ぬって、すうじを かきましょう。,⑤ アンノーン 10ぴき：かずだけ ○を ぬって、すうじを かきましょう。,,"【UI要素】10フレームグリッド、数字ボタン(6, 7, 8, 9, 10)","6匹=6, 7匹=7, 8匹=8, 9匹=9, 10匹=10",Battle7画像
+Battle8,ケロマツ,みず,せんでむすぼう,【せんでむすぼう(6〜10)】「ケロマツの群れ(6〜10匹)」「赤丸10フレーム(6〜10)」「数字(6〜10)」をタップまたはスワイプで結ぶ3者対応マッチングUI。,かずが おなじに なるように、ケロマツと ●と すうじを せんで つなぎましょう。,,,,,,【UI要素】ケロマツカード、赤丸カード、数字ブロック(6〜10),"6匹=●6=6, 7匹=●7=7, 8匹=●8=8, 9匹=●9=9, 10匹=●10=10",Battle8画像
+Battle9,エテボース,ノーマル,ぬけているすうじをかこう,【すうじの順番(1〜10)】エテボースの進む道に並ぶ数字。空欄になっているマスに、数字カードから正しい数字をドラッグ＆ドロップして1〜10を完成させる。,すうじが 1から 10まで じゅんびんに ならぶように、あいている マスに すうじを いれましょう。,,,,,,"【UI要素】すごろくコース、数字チップ(2, 4, 5, 7, 9, 10)","順に 2, 4, 5, 7, 9, 10",Battle9画像
+Battle10,ミミッキュ,ゴースト・フェアリー,ぬけているすうじをかこう,【ぎゃくじゅん(10〜1)】ミミッキュが洞窟を進む10から1への逆順コース。空欄マスに正しい数字を当てはめてカウントダウンを完成させる。,10から 1まで、すうじを ぎゃくの じゅんばんで ならべましょう。あいている マスを うめてね。,,,,,,"【UI要素】逆順コースマス、数字チップ(8, 6, 5, 3, 1)",10→9→【8】→7→【6】→【5】→4→【3】→2→【1】,Battle10画像
+Battle11,ユキメノコ,こおり・ゴースト,どちらがおおいかな,【かずくらべ(1〜10)】左右に配置された2つのポケモングループを数えて、どちらが多いかをタップして選択する2択クイズ。,ひだりと みぎの ポケモンを かぞえて、どちらが おおいか タップして えらびましょう。,,,,,,【選択肢】左のグループ / 右のグループ、大小比較カード,数の多い方のグループカードを選択,Battle11画像
+Battle12,バタフリー,むし・ひこう,6はいくつといくつ,【6の分解・合成】6匹のバタフリーを2つの花に分ける。「1と5」「2と4」「3と3」など、一方の数を見て相方の数を数字ボタンから選ぶ。,6ぴきの バタフリーが います。6は いくつと いくつかな？ あいている すうじを えらびましょう。,,,,,,【UI要素】花畑グラフィック、数字選択ボタン(1〜5),"1と5, 2と4, 3と3, 4と2, 5と1",Battle12画像
+Battle13,マリルリ,みず・フェアリー,7はいくつといくつ,【7の分解・合成】7匹のマリルリを2つの池に分ける。「7は○と□」の空欄に当てはまる数を直感的にドラッグ配置または選択。,7ひきの マリルリが います。7は いくつと いくつかな？ いけに わけて すうじを えらびましょう。,,,,,,【UI要素】2つの水たまりエリア、数字選択ボタン(1〜6),"1と6, 2と5, 3と4, 4と3, 5と2, 6と1",Battle13画像
+Battle14,ヤミラミ,あく・ゴースト,8はいくつといくつ,【8の分解・合成】8個の宝石を2つの宝箱に配分。「8は3と【5】」「8は6と【2】」等の欠落した数をキーパッドまたは選択肢から回答。,8この ほうせきを 2つの はこに わけます。8は いくつと いくつになるか、すうじを こたえましょう。,,,,,,【UI要素】宝石アイテム、数字選択ボタン(1〜7),"1と7, 2と6, 3と5, 4と4, 5と3, 6と2, 7と1",Battle14画像
+Battle15,ギガイアス,いわ,9は いくつと いくつ,【9の分解ツリー】「9」から2本に枝分かれしたツリー構造。一方に提示された数字（1〜8）に対し、空欄の四角にペアとなる数字シールをドラッグ＆ドロップ。,あわせて 9に なるように、あいている しかくに すうじの シールを はりましょう。,,,,,,【UI要素】9の分解ツリー分岐図、数字シール(1〜8),"1と【8】, 2と【7】, 3と【6】, 4と【5】, 5と【4】, 6と【3】, 7と【2】, 8と【1】",Battle15画像
+Battle16,ゴーゴート,くさ,10は いくつと いくつ,【10の合成・分解（補数）】10の分解ツリーUI。提示された数（1〜9）を見て、足して10になるペアの数字をシールパレットから選んで貼り付ける。,あわせて 10に なるように、ペアに なる すうじを えらんで はりましょう。,,,,,,【UI要素】10の分岐ボックス、数字チップ(1〜9),"1と【9】, 2と【8】, 3と【7】, 4と【6】, 5と【5】, 6と【4】, 7と【3】, 8と【2】, 9と【1】",Battle16画像
+Battle17,トゲピー,フェアリー,あと いくつで 10に なるかな,【10の補数(1)】10個並ぶ枠のうち、一部にトゲピーが置かれている。「あといくつで10になるかな？」空いている枠を数えてタップ入力。,あと いくつで 10に なるかな？ あいている マスを かぞえて、すうじを えらびましょう。,,,,,,【UI要素】10個のスロット、1〜9の数字ボタン,10から現在の個数を引いた不足数（例: 8個あればあと2）,Battle17画像
+Battle18,ヤングース,ノーマル,あと いくつで 10に なるかな,【あといくつで10】りんごの列（7個、9個、6個）を見て、10個にするために不足しているりんごをタップ追加し、「○はあと【□】で10になります」の空欄に数字を入力。,りんごが 10こに なるように たりない ぶんを たしましょう。あと いくつで 10に なるかな？,,,,,,【UI要素】りんご追加タップエリア、数字キー(1〜9),7はあと【3】、9はあと【1】、6はあと【4】,Battle18画像
+Battle19,イッカネズミ,ノーマル,0というかず,【0の概念】お皿に乗っている木の実の数を数える。3個、1個、そして「何もないお皿」。「なにもないときは【0】」を学ぶ選択クイズ。,おさらの なかの きのみを かぞえましょう。なにも ない ときは、どんな すうじを かくかな？,,,,,,"【UI要素】お皿グラフィック、数字ボタン(0, 1, 2, 3)",なにもない皿＝0,Battle19画像
+Battle20,ピカチュウ,でんき,バトル1〜19の まとめ,【前半総まとめテスト】1〜10の数え、数の大小、5と10の分解・合成からランダムに出題される総合テストクイズ。,バトル1から 19までの まとめもんだいだよ！ いままで おぼえたことを おもいだして ちょうせんしよう。,,,,,,【UI要素】4択問題カード、タイマー、スコア表示,全問正解でピカチュウバッジ獲得,Battle20画像
+Battle20_2,ピカチュウ,でんき,バトル1〜19の まとめ(ぬりえ),【すうじパズルぬりえ】番号で色分けされたピカチュウの絵。「0=ピンク」「1〜4=みずいろ」「5=くろ」「5より大きい=きいろ」のパレットを選んでタップ塗りし、ピカチュウを完成させる。,すうじに あわせて いろを ぬりましょう。きれいに ぬって ピカチュウを かんせいさせてね！,,,,,,【パレット】ピンク(0)、みずいろ(1〜4)、くろ(5)、きいろ(6〜10),全エリアを条件通り着色してピカチュウ完成,Battle20_2画像
+Battle21,アブリボン,むし・フェアリー,10よりおおきいかず,【10より大きい数】10個のまとまりと、バラの数を数える。「10と3で【13】」のように、10の束を意識して11〜19の数を構成する。,10の まとまりと、ばらの かずを かぞえましょう。あわせて いくつに なるかな？,,,,,,【UI要素】10個パック＋バラブロック、数字入力/選択,10とバラの合計値（11〜19）,Battle21画像
+Battle22,ウオノラゴン,みず・ドラゴン,11から 20の すうじを かこう,【11から15のすうじ】10個のまとまり＋端数のモンスターボールを数え、11〜15の数字カードを選択してマッチング。,① モンスターボール 11こ：かずを かぞえて、すうじを かきましょう。,② モンスターボール 12こ：かずを かぞえて、すうじを かきましょう。,③ モンスターボール 13こ：かずを かぞえて、すうじを かきましょう。,④ モンスターボール 14こ：かずを かぞえて、すうじを かきましょう。,⑤ モンスターボール 15こ：かずを かぞえて、すうじを かきましょう。,,"【UI要素】モンスターボール表示エリア、数字ボタン(11, 12, 13, 14, 15)","11, 12, 13, 14, 15",Battle22画像
+Battle22_2,ウオノラゴン,みず・ドラゴン,11から 20の すうじを かこう(16〜20),【16から20のすうじ】モンスターボールの群れ（16〜20個）を数え、10のまとまり2つで20になる構造を理解しながら対応する数字を選択。,① モンスターボール 16こ：かずを かぞえて、すうじを かきましょう。,② モンスターボール 17こ：かずを かぞえて、すうじを かきましょう。,③ モンスターボール 18こ：かずを かぞえて、すうじを かきましょう。,④ モンスターボール 19こ：かずを かぞえて、すうじを かきましょう。,⑤ モンスターボール 20こ：かずを かぞえて、すうじを かきましょう。,,"【UI要素】モンスターボール表示、数字ボタン(16, 17, 18, 19, 20)","16, 17, 18, 19, 20",Battle22_2画像
+Battle23,ドダイトス,くさ・じめん,すうじのじゅん,【すうじの順番(11〜20)】11から20までの数字並べ替え。バラバラになった数字カードを小さい順にスワイプして整列させる。,ばらばらに なった すうじカードを、11から 20まで ちいさい じゅんに ならべかえましょう。,,,,,,【UI要素】ドラッグ可能な数字カード(11〜20),"11, 12, 13, 14, 15, 16, 17, 18, 19, 20の昇順",Battle23画像
+Battle24,アチゲータ,ほのお,どちらが おおいかな,【10のまとまりと数比べ】散らばったパンとお皿をタップして「10個のグループ」を作り、残りのバラを数えて総数を入力。どちらが多いか2択で判定。,10こずつ まとまりを つくって かぞえましょう。,パンと おさら、どちらが おおいか えらびましょう。,,,,,【UI要素】10個囲みツール、数値入力ボックス、左右選択ボタン,パンとお皿の総数を入力し、多い方を選択,Battle24画像
+Battle25,ウッウ,ひこう・みず,あわせて いくつ,【たし算の基礎（合併）】地面にいるウッウ（4匹）と空を飛んでいるウッウ（3匹）を数え、「あわせて何匹？」の空欄に数字を入力して足し算の概念を学ぶ。,そらを とんで いる ウッウは なんびき いるかな？,じめんと そらの ウッウを あわせると、ぜんぶで なんびきに なるかな？,,,,,【UI要素】地面/空のタップカウント、数字選択キーパッド,とんでいるのは【3】ひき、あわせて【7】ひき,Battle25画像
+Battle26,クチート,はがね・フェアリー,あわせて いくつ,【たし算（合併の練習）】2つのグループ（木の実やポケモン）を合わせていくつになるか、絵をタップして合わせて数え、式「○＋□＝△」を完成させる。,2つの グループを あわせると いくつかな？ えを タップして かぞえて、しきを かんせいさせよう。,,,,,,【UI要素】グループ結合アニメーション、数字選択ボタン,2つのグループの合計数,Battle26画像
+Battle27,ミルタンク,ノーマル,ふえると いくつ,【たし算の基礎（増加）】草原にいるミルタンク（7匹）に、後から歩いてくるミルタンク（3匹）が合流するアニメーション。「みんなで何匹になった？」を回答。,あとから やってきた ミルタンクは なんびきかな？,ミルタンクは みんなで なんびきに なったかな？,,,,,【UI要素】合流アニメーション、数字入力キーパッド,あとから【3】びき、みんなで【10】ぴき,Battle27画像
+Battle28,バオップ,ほのお,ふえると いくつ,【たし算（増加の練習）】はじめの数に対して、追加でやってきたポケモンを足す。「はじめに○匹、あとから□匹、あわせて△匹」の増加計算ドリル。,あとから ポケモンが ふえたよ！ はじめの かずに たして、ぜんぶで なんびきに なるか こたえよう。,,,,,,【UI要素】追加アニメーション、数字ボタン,はじめの数＋追加の数の合計,Battle28画像
+Battle29,ニャルマー,ノーマル,のこりは いくつ,【ひき算の基礎（求残）】草原に9匹いたニャルマーから、3匹が走って去っていくアニメーション。「のこりは何匹？」をタップして回答。,なんびきの ニャルマーが かえって いったかな？,のこって いる ニャルマーは なんびきに なったかな？,,,,,【UI要素】立ち去るアニメーション、数字キーパッド,【3】びきかえっていきました、のこりは【6】ぴき,Battle29画像
+Battle30,ピジョット,ノーマル・ひこう,のこりは いくつ,【ひき算の練習（食べる・減る）】お皿にあるクッキーをタップして「食べる（消去）」操作をし、残りの個数を数えて式と答えを完成させる。,うえの おさらの クッキーを たべると、のこりは いくつに なるかな？,したの おさらの クッキーを たべると、のこりは いくつに なるかな？,,,,,【UI要素】タップでかじられるクッキー、数字入力枠,上: 8-3=【5】、下: 10-4=【6】,Battle30画像
+Battle31,バイウールー,ノーマル,いくつ おおい,【ひき算の基礎（求差・いくつ多い）】バイウールー(6匹)とウールー(9匹)を1対1対応で並べ、「どちらが何匹多いか？」を比べるインタラクティブUI。,ウールーは なんびき いるかな？ かずを かぞえよう。,バイウールーと ウールー、どちらが おおいかな？,おおい ほうの ポケモンは、なんびき おおいかな？,,,,【UI要素】1対1ペア結びライン、数字ボタン(1〜5)、ポケモン選択,ウールーが【9】匹、多いのは【ウールー】、【3】匹多い,Battle31画像
+Battle32,ローブシン,かくとう,ちがいはいくつ,【ひき算（ちがいはいくつ）】2種類のブロックの高さを比べ、「ちがいは何個分？」を差分タップで確認して引き算の式（A－B＝差）を導く。,ブロックの たかさを くらべてみよう。たかい ほうと ひくい ほうの ちがいは なんこぶんかな？,,,,,,【UI要素】高さ比較グリッド、差分ハイライト、数字ボタン,2つの数量の差分値,Battle32画像
+Battle33,フラージェス(あおいはな),フェアリー,20より おおきい かず,【20より大きい数（十の位と一の位）】花畑のチューリップをドラッグで10本ずつ束ね、「10のまとまりが○個とバラが□個で全部で△本」の空欄を埋める。,チューリップを 10ぽんずつ たばねて、10の まとまりと ばらの かずを かぞえましょう。,10の まとまりと ばらの かずで、ぜんぶで なんぼんに なるかな？,,,,,【UI要素】投げ縄（囲み）ツール、位取り入力ボックス(十の位/一の位),10のまとまりが【2】、バラが【8】、ぜんぶで【28】本,Battle33画像
+Battle34,ハピナス,ノーマル,21から 30の すうじを かこう,【21から25のすうじ】卵パック（10個入り2パック＝20個）＋バラの卵（1〜5個）を数え、21〜25の数を認識・選択する。,たまごの パックと ばらの たまごを かぞえましょう。21から 25までの すうじを えらんでね。,,,,,,【UI要素】卵パックグラフィック、数字ボタン(21〜25),"21, 22, 23, 24, 25",Battle34画像
+Battle34_2,ハピナス,ノーマル,21から 30の すうじを かこう(26〜30),【26から30のすうじ】卵の数（26〜30個）を数え、10のまとまり3つで30になる構造を学びながら26〜30の数字を答える。,① たまご 26こ：かずを かぞえて、すうじを かきましょう。,② たまご 27こ：かずを かぞえて、すうじを かきましょう。,③ たまご 28こ：かずを かぞえて、すうじを かきましょう。,④ たまご 29こ：かずを かぞえて、すうじを かきましょう。,⑤ たまご 30こ：かずを かぞえて、すうじを かきましょう。,,"【UI要素】10個パック×3スロット、数字ボタン(26, 27, 28, 29, 30)","26, 27, 28, 29, 30",Battle34_2画像
+Battle35,メグロコ,じめん・あく,すうじの じゅん,【11から30の数列迷路】11から30まで続く砂漠のルート。空欄になっているマスに、抜けている数字を順番に入力またはドラッグしてゴール（ワルビアル）を目指す。,11から 30まで すうじが じゅんばんに ならぶように、ぬけている マスに すうじを いれて ゴールを めざそう！,,,,,,【UI要素】砂漠迷路マス、数字パレット(12〜30),11から30までの連続した正しい整数並び,Battle35画像
+Battle36,トゲデマル,でんき・はがね,どちらが おおきいかな,【数の大小分岐迷路】分かれ道で2つの2桁数字が表示される。「十の位を比べ、同じなら一の位を比べる」ルールで、常に【大きい方の数】をタップして正しいルートを進む迷路アプリ。,わかれみちで おおきい すうじの ほうを えらんで すすもう。めいろを ぬけて ゴールできるかな？,,,,,,"【分岐選択肢】12 vs 21, 23 vs 25, 24 vs 18, 26 vs 29, 27 vs 28, 29 vs 30",21 → 25 → 24 → 29 → 28 → 30,Battle36画像
+Battle37,シルヴァディ(タイプ:ノーマル),ノーマル,バトル21〜36の まとめ,"【1〜30の順番グリッド迷路】数字が散らばった格子状マップ。1からスタートし、隣接するマスを2, 3, 4…と順番にタップして線を繋ぎ、30のゴールまで進む。",1から 30まで、すうじの じゅんばんに マスを タップして せんを つなぎ、ゴールへ すすもう！,,,,,,【UI要素】タップ連鎖式ナンバーグリッド(1〜30),1→2→3→…→30の順に正しく全マスを連結,Battle37画像
+Battle37_2,シルヴァディ(タイプ:ノーマル),ノーマル,バトル21〜36の まとめ(てんつなぎ),【1〜30の点つなぎ】画面上の点（1〜30）を番号順にスワイプして繋げていくと、木を抱いたネッコアラのイラストが現れるインタラクティブドローイングUI。,1から 30までの てんを じゅんばんに せんで つなごう！ どんな えが でてくるかな？,,,,,,【UI要素】1〜30のドットノード、ライン描画キャンバス,1から30まで順番に全ての点を接続,Battle37_2画像
+Battle38,インテレオン,みず,なんばんめ,【なんばんめ（順序数と集合数）】横一列に並んだ6匹のインテレオン。「○番目（単体指定）」と「○匹（範囲・個数指定）」の違いを、タップ選択とドラッグ範囲選択で解き分ける。,① まえから 4ばんめの インテレオンを えらびましょう。,② うしろから 2ばんめの インテレオンを えらびましょう。,③ まえから 3びきの インテレオンを かこみましょう。,④ うしろから 2ひきの インテレオンを かこみましょう。,,,【UI要素】6匹の並びライン（前/後ろ表記）、赤/青マーカーツール,①前4番目(単体)、②後2番目(単体)、③前3匹(集合)、④後2匹(集合),Battle38画像
+Battle39,メガヤンマ,むし・ひこう,なんばんめ,【なんばんめ（縦の並び・上下）】縦に並んだポケモンたち。「上から○番目」「下から○匹」など、上下方向の順序数と集合数を識別して正解のポケモンを選択する。,うえから ○ばんめの ポケモンを えらぼう。,したから ○びきの ポケモンを えらぼう。,,,,,【UI要素】縦並びキャラリスト、単体選択・複数選択モード切替,指定された位置・範囲のポケモン,Battle39画像
+Battle40,イーブイ,ノーマル,なんばんめ,【左右のなんばんめ】左右に並んだ6匹のイーブイ。「左から○番目」「右から○匹」の指示に従い、指定のポケモンをタップまたは枠で囲む。,① ひだりから 5ばんめの イーブイを えらびましょう。,② みぎから 4ばんめの イーブイを えらびましょう。,③ ひだりから 2ひきの イーブイを かこみましょう。,④ みぎから 3びきの イーブイを かこみましょう。,,,【UI要素】左右反転対応キャラ列、ピンポイントタップ、囲みツール,①左から5番目(単体)、②右から4番目(単体)、③左から2匹(範囲)、④右から3匹(範囲),Battle40画像
+Battle41,イオルブ,むし・エスパー,なんばんめ,【前後・左右・上下の総合順序】グリッド上に配置されたポケモンから、「前から○番目、右から○番目」の交差位置を特定してタップする2次元座標導入ドリル。,「まえから ○ばんめ、みぎから □ばんめ」の ポケモンは だれかな？ ぴったり あう ところを タップしよう。,,,,,,【UI要素】マトリクスグリッド、座標ハイライト,指定された行・列の交点セル,Battle41画像
+Battle42,タマンチュラ,むし,なんばんめ,【2次元グリッドロッカーの順序】3列×4段のロッカーUI。「上から○番目、左から□番目」の指定位置にあるランドセルをタップ、または指定位置にランドセルをドラッグ配置。,① うえから 2ばんめ、ひだりから 3ばんめの ランドセルを えらびましょう。,② あおい ランドセルは、したから なんばんめ、みぎから なんばんめか こたえましょう。,③ うえから 3ばんめ、みぎから 3ばんめの ロッカーに ランドセルを おきましょう。,,,,【UI要素】3×4マスロッカー、ランドセルドラッグアイテム、位置入力枠,①指定座標のタップ、②位置の数字入力、③指定マスへの配置,Battle42画像
+Battle43,ボーマンダ,ドラゴン・ひこう,31から 60の すうじを かこう,【31から45のすうじ】ボーマンダの飛行ルートに沿って並ぶ31〜45の数字。各マスをタップして正しい読み音声を確認し、欠けている数字を選択。,みちに ならぶ 31から 45までの すうじを よんでみよう。あいている マスに すうじを いれてね。,,,,,,【UI要素】ワインディングコース、数字選択ボタン(31〜45),31から45までの昇順整列,Battle43画像
+Battle43_2,ボーマンダ,ドラゴン・ひこう,31から 60の すうじを かこう(46〜60),【46から60のすうじ】46から60までの大きな数。十の位が4から5、6へと変わる規則性を理解しながら、コース上の数字をタップして完成させる。,46から 60までの おおきな すうじだよ。じゅんばんに ならぶように マスを うめていこう！,,,,,,【UI要素】コースマス、数字パレット(46〜60),46から60までの昇順整列,Battle43_2画像
+Minigame,ギルガルド,はがね・ゴースト,ちかみちをしよう,【最短ルート・長さの直感比較】3匹のポケモン（ヒトツキ、ニダンギル、ギルガルド）から目的地の木の実まで、枝分かれした道の中から「一番の近道（最短経路）」を選んで進むミニゲーム。,きのみまでの いちばん ちかい みち（ちかみち）は どれかな？ せんを ひいて すすんでみよう！,,,,,,【UI要素】迷路分岐タップ選択、道のり測定ルーラー,各ポケモンからの直線的・最短経路,Minigame画像
+Battle44,ヒヒダルマ,ほのお,あてはまるすうじをかこう,【数列の規則性と数直線】5とび、10とび等の規則的な並びや、前後関係（ある数の前後の数）を答えるステップアップドリル。,すうじの ならびかたの きまりを みつけよう。□に あてはまる すうじは なにかな？,,,,,,【UI要素】数直線スライダー、数字入力パッド,規則に沿った正しい数字,Battle44画像
+Battle44_2,ヒヒダルマ,ほのお,あてはまるすうじをかこう(2),【大小関係と不等号の直感】大小関係の穴埋め問題。「○より大きくて□より小さい数」などを選択肢から選ぶ。,○より おおきくて、□より ちいさい すうじは どれかな？ あてはまる すうじを えらぼう。,,,,,,【UI要素】天秤UI、数字チップ,条件に適合する数字,Battle44_2画像
+Battle45,ホーホー,ノーマル・ひこう,とけい,【時計の読み（何時・何時半）】アナログ時計が表示され、長い針と短い針の位置関係から「何時」「何時半」を読み取って回答する知育時計アプリ。,【なんじ】みじかい はりと ながい はりを みて、なんじかを こたえましょう。,【なんじはん】みじかい はりと ながい はりを みて、なんじはんかを こたえましょう。,,,,,【UI要素】インタラクティブアナログ時計、時間セレクター(1〜12)、分セレクター(00分/30分),例: 短針7・長針12→7時、短針1と2の間・長針6→1時半,Battle45画像
+Battle45_2,ホーホー,ノーマル・ひこう,とけい(2),【時計の針合わせ（何時・何時半）】「3じ」「8じはん」などの時刻の指示に合わせて、時計の針をドラッグして指定の時刻に合わせるシミュレーターUI。,もんだいに でている じかんに なるように、とけいの はりを うごかして あわせましょう。,,,,,,【UI要素】回転操作可能な時計の短針・長針,指示された時刻の位置に長針・短針が合致,Battle45_2画像
+Battle46,ギギギアル,はがね,とけい,"【時計の読み（何分・5分刻み）】時計の外側に書かれた分（5, 10, 15…55分）の目盛りを参考に、何時何分を正確に読み取るドリル。",とけいの めもりを みて、なんじ なんふんかを よみとりましょう。5ふんきざみで かぞえてね。,,,,,,【UI要素】分目盛り付き時計、時間・分選択ホイール,時計の指す正確な時刻（例: 2時15分）,Battle46画像
+Battle46_2,ギギギアル,はがね,とけい(2),【時計の時刻読み取りテスト】6つのアナログ時計盤が表示される。それぞれの時計の「○じ□ふん」を読み取り、空欄に数字を正しく入力する。,① 1つめの とけい：なんじ なんふんか よんで、すうじを いれましょう。,② 2つめの とけい：なんじ なんふんか よんで、すうじを いれましょう。,③ 3つめの とけい：なんじ なんふんか よんで、すうじを いれましょう。,④ 4つめの とけい：なんじ なんふんか よんで、すうじを いれましょう。,⑤ 5つめの とけい：なんじ なんふんか よんで、すうじを いれましょう。,⑥ 6つめの とけい：なんじ なんふんか よんで、すうじを いれましょう。,【UI要素】6つの時計カード、テンキー入力枠,各時計の正しい時刻（例: 10時10分、4時45分等）,Battle46_2画像
+Battle47,サーナイト,エスパー・フェアリー,くらべっこ,【ながさくらべ（直接比較と間接比較）】長さや高さの違う鉛筆やリボンを端を揃えて並べ、「どちらが長いか」をタップ判定、またはマス目を数えて比べる。,はしっこを そろえて くらべてみよう。どちらが ながいかな？ （たかいかな？）,,,,,,【UI要素】ドラッグして端を揃えるアイテム、長い/短いボタン,より長い（高い）アイテムの選択,Battle47画像
+Battle47_2,サーナイト,エスパー・フェアリー,くらべっこ(かさ),【かさくらべ（コップ何杯分）】異なる形の水筒やペットボトルから、同じ大きさのコップに注ぎ分け、「コップ○杯分」と数えてどちらが多いかを判定する体験型UI。,③ コップに いれて くらべよう。どちらの いれものに のみものが おおく はいって いるかな？,④ コップに いれて くらべよう。どちらの いれものに のみものが おおく はいって いるかな？,,,,,【UI要素】注ぎアニメーション、コップカウントボタン、2択選択,コップの杯数が多い方の容器を選択,Battle47_2画像
+Battle47_3,サーナイト,エスパー・フェアリー,くらべっこ(ひろさ),【ひろさくらべ（重ね合わせとマス目数え）】2枚のシートをドラッグして重ねてはみ出しを確認する「直接比較」と、マス目を数えて面積を比べる「マス目カウント」の2問構成アプリ。,⑤ かさねて はみだしを みて、どちらが ひろいか えらびましょう。,⑥ マス目を かぞえて、どちらが ひろいか えらびましょう。,,,,,【UI要素】重ね合わせレイヤー、マス目タッピングカウンター、広さ判定ボタン,⑤はみ出している青い方、⑥16マスある緑のタイル,Battle47_3画像
+Battle48,グラードン,じめん,バトル38〜47の まとめ,【大きな数の数え方（10のまとまり）】大量のナックラー（約40〜50匹）を画面上でタップして10匹ずつサークルで囲み、十の位と一の位を特定して正確にカウントする。,ナックラーを 10ぴきずつ まるで かこんで かぞえよう。ぜんぶで なんびき いるかな？,,,,,,【UI要素】10匹自動結束サークル、総数入力キーパッド,10のまとまり数と総数,Battle48画像
+Battle48_2,グラードン,じめん,バトル38〜47の まとめ(てんつなぎ),【1〜60の大型点つなぎ】1から60までの番号付きドットを指先やマウスで順番に繋いでいくと、巨大なグラードンが出現する爽快な点つなぎアプリ。,1から 60までの てんを じゅんばんに せんで つなごう！ おおきな グラードンが でてくるよ！,,,,,,【UI要素】1〜60の連続ドット、自動スナップペンツール,1から60までの連続接続完了,Battle48_2画像
+Battle49,カモネギ,ノーマル・ひこう,かたち,【立体のなかま分け（形の特徴）】「さいころのかたち」「はこのかたち」「つつのかたち」「ボールのかたち」の実物写真とその特徴文を線で結ぶマッチングUI。,① さいころの かたち：おなじ なかまの かたちを せんで つなぎましょう。,② はこの かたち：おなじ なかまの かたちを せんで つなぎましょう。,③ つつの かたち：おなじ なかまの かたちを せんで つなぎましょう。,④ ボールの かたち：おなじ なかまの かたちを せんで つなぎましょう。,,,【UI要素】立体モデルカード、特徴ラベル、ドラッグ接続コネクタ,各立体の正しい名称・特徴・実物写真のペアリング,Battle49画像
+Battle49_2,カモネギ,ノーマル・ひこう,かたち(2),【つみきのかずとかたち】積み上げられた積み木の数を数える（見えない奥にあるブロックも意識する空間認識ドリル）。,つみきは ぜんぶで なんこ あるかな？ うしろに かくれている つみきも わすれずに かぞえてね。,,,,,,【UI要素】3D回転可能な積み木ビューアー、個数選択ボタン,隠れたブロックを含めた正しい個数,Battle49_2画像
+Battle50,オオスバメ,ノーマル・ひこう,せいりしよう,【分類となかま分け】散らばった様々なアイテム（くだもの、文房具、乗り物等）を、それぞれのカゴにドラッグして正しく仕分ける。,くだものや のりものなど、おなじ なかまの ものを それぞれの カゴに わけましょう。,,,,,,【UI要素】カテゴリ別ボックス、ドラッグ＆ドロップ対象アイテム,全アイテムの正しいカテゴリ分類,Battle50画像
+Battle50_2,オオスバメ,ノーマル・ひこう,せいりしよう(2),【表とグラフの基礎】仕分けたアイテムの個数分だけグラフのマス目を下からタップして塗りつぶし、どちらが何個多いかを視覚的に読み取る。,アイテムの かずだけ グラフの マスを ぬりましょう。,グラフを みて、どちらが なんこ おおいかも こたえましょう。,,,,,【UI要素】棒グラフ状マス目グリッド、個数集計表,正しいマス目着色と個数入力,Battle50_2画像
+Battle51,リククラゲ,じめん・くさ,61から 120までの すうじ,【100を超える大きな数】10のまとまりが10個で「100」。61から120までの100マス表（百数表）で、隠されたポケモンのマスの数字を当てる。,10が 10こで 100だよ！ ひゃくすうひょうの ポケモンが かくれている マスの すうじを あててね。,,,,,,【UI要素】百数表グリッド、数字テンキー,"指定位置の数字（例: 75, 100, 115等）",Battle51画像
+Battle52,コレクレー,ゴースト,いくらかな,【おかねのけいさん（10円と1円）】コレクレーの宝箱にある硬貨。「10円玉が○枚と1円玉が□枚でいくら？」硬貨をタップして合計金額を計算。,10えんだまが ○まいと、1えんだまが □まいで いくらかな？ おかねを かぞえてみよう！,,,,,,【UI要素】10円玉/1円玉パレット、金額表示・入力キー,硬貨の合計金額（例: 10円玉3枚＋1円玉5枚＝35円）,Battle52画像
+Battle53,ポリゴン2,ノーマル,たしざん,【たし算の記号（＋と＝の意味）】「あわせると」「ふえると」を算数の式「＋」「＝」で表す導入。絵を見ながら式「3＋2＝5」を組み立てる。,「＋」や「＝」の きごうを つかって、たしざんの しきを つくってみよう！,,,,,,【UI要素】数字・記号ブロック（＋、＝、数字）,場面に合致する正しい足し算の式,Battle53画像
+Battle53_2,ポリゴン2,ノーマル,たしざん(けいさん),"【たし算の計算練習】イラストの助けを見ながら、1桁の足し算（2+3, 5+2, 3+6, 4+3）を解くスピード計算ドリルUI。",① 2＋3の たしざんを けいさんしましょう。,② 5＋2の たしざんを けいさんしましょう。,③ 3＋6の たしざんを けいさんしましょう。,④ 4＋3の たしざんを けいさんしましょう。,,,【UI要素】計算式表示、数字キーパッド(1〜10),"2+3=【5】, 5+2=【7】, 3+6=【9】, 4+3=【7】",Battle53_2画像
+Battle54,カイリキー,かくとう,ひきざん,【ひき算の記号（－と＝の意味）】「とると」「のこりは」を表す「－」「＝」の記号の意味をアニメーションで理解し、式を組み立てる導入ドリル。,【のこりは いくつ】へった ときの ひきざんの しきを つくってみよう。,【ちがいは いくつ】ちがいを みる ときの ひきざんの しきを つくってみよう。,,,,,"【UI要素】引き算アニメーション、式ビルダー(－, ＝)",求残の式: 3-1=2、求差の式: 5-3=2,Battle54画像
+Battle54_2,カイリキー,かくとう,ひきざん(けいさん),"【ひき算の計算練習】イラストを消し込みながら、1桁の引き算（4-2, 6-1, 5-2, 10-3）を解く計算ドリルアプリ。",① 4－2の ひきざんを けいさんしましょう。,② 6－1の ひきざんを けいさんしましょう。,③ 5－2の ひきざんを けいさんしましょう。,④ 10－3の ひきざんを けいさんしましょう。,,,【UI要素】計算式表示、テンキー、タップ消去対応イラスト,"4-2=【2】, 6-1=【5】, 5-2=【3】, 10-3=【7】",Battle54_2画像
+Battle55,ミュウ,エスパー,バトル1～54のまとめ,【総まとめすごろく前編(0〜30)】ケーシィから始まる大すごろく。コース上に抜けている数字マスに正しい数字を当てはめながら30まで進む。,0から 30までの だいすごろくだよ！ ぬけている マスに すうじを いれながら ゴールを めざそう！,,,,,,【UI要素】大マップすごろくコース、数字チップパレット,コース上の空欄に入る正しい連続数字,Battle55画像
+Battle55_2,ミュウ,エスパー,バトル1～54のまとめ(2),【総まとめすごろく後編(31〜62)】スリープからゴール（ミュウ）までのすごろく後半戦。31から62までの数字の抜けを埋めて全問クリアし、ミュウをゲットする。,31から 62までの すごろく こうはんせん！ すうじを うめて ぜんぶ クリアし、ミュウを ゲットしよう！,,,,,,【UI要素】ゴール直前すごろく盤、数字チップパレット、クリア演出,31から62までの空欄に入る正しい数字、ミュウ捕獲,Battle55_2画像
 </script>
 
 <script>
 /* =========================================================
-   設定・定数
+   フェイルセーフ＆安全なストレージ
+   ========================================================= */
+window.addEventListener('error', function(e) {
+  console.error('Captured error:', e);
+  const ld = document.getElementById('loading');
+  if(ld) ld.style.display = 'none';
+});
+
+function safeGetStorage(key, def){
+  try {
+    const v = localStorage.getItem(key);
+    return v ? JSON.parse(v) : def;
+  } catch(e) { return def; }
+}
+function safeSetStorage(key, val){
+  try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) {}
+}
+
+/* =========================================================
+   定数・設定
    ========================================================= */
 const BG_LIST = Array.from({length:9},(_,i)=>`pokemon field${i+1}.jpeg`);
 const ART = id => `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
@@ -330,31 +418,13 @@ const MONCOLLE = [
 ];
 const moncolleImg = m => `${MONCOLLE_BASE}${m.slug}/images/img00.png`;
 
-/* マップ画像 image_0b9ff5.jpg（ボード有効幅1480px, 高さ2048px）上の全72マス精密座標 */
-const MAP_COORDS = [
-  /* Battle1〜10 (下部スタート〜池の手前) */
-  [710,1995],[775,1995],[840,1965],[890,1920],[895,1850],[955,1785],[815,1740],[805,1665],[765,1665],[705,1610],
-  /* Battle11〜20 (池の左側〜横通り) */
-  [705,1545],[705,1485],[705,1425],[705,1370],[745,1330],[805,1330],[855,1330],[905,1330],[955,1330],[985,1270],
-  /* Battle20_2〜30 (中央市街地ルート) */
-  [985,1220],[985,1160],[1015,1220],[1075,1180],[1075,1120],[1035,1070],[955,1070],[885,1070],[835,1070],[775,1070],[725,1070],
-  /* Battle31〜37_2 (左の砦〜ループ道) */
-  [675,1070],[625,1120],[625,1220],[685,1220],[745,1220],[805,1220],[805,1170],[905,1020],[905,960],[965,930],
-  /* Battle38〜43_2 (中段右・砂漠・森) */
-  [1005,870],[1005,810],[1065,810],[1125,810],[1175,810],[1145,740],[1065,710],[1085,620],[1145,580],[1205,580],
-  /* Minigame, Battle44〜47_3 (分岐・中腹) */
-  [955,810],[885,810],[845,770],[815,710],[780,650],[820,610],[870,580],
-  /* Battle48〜55_2 (雪山〜頂上ゴール・ミュウ) */
-  [910,570],[910,525],[910,480],[910,440],[910,400],[910,340],[910,280],[910,220],[910,155],[910,110],[910,75],[910,45],[910,20],[910,5]
-];
-
 const POKEDEX = {アチャモ:255,ヨーテリー:506,ヨーデリー:506,パチリス:417,ピッピ:35,フシギソウ:2,ジヘッド:634,アンノーン:201,ケロマツ:656,
  エテボース:424,ミミッキュ:778,ユキメノコ:478,バタフリー:12,マリルリ:184,ヤミラミ:302,ギガイアス:526,ゴーゴート:673,トゲピー:175,
  ヤングース:734,イッカネズミ:925,ピカチュウ:25,アブリボン:743,ウオノラゴン:882,ドダイトス:389,アチゲータ:910,ウッウ:845,クチート:303,
  ミルタンク:241,バオップ:513,ニャルマー:431,ピジョット:18,バイウールー:832,ローブシン:534,フラージェス:671,ハピナス:242,メグロコ:551,
  トゲデマル:777,シルヴァディ:773,インテレオン:818,メガヤンマ:469,イーブイ:133,イオルブ:826,タマンチュラ:917,ボーマンダ:373,ギルガルド:681,
  ヒヒダルマ:555,ホーホー:163,ギギギアル:601,サーナイト:282,グラードン:383,カモネギ:83,オオスバメ:277,リククラゲ:948,コレクレー:999,
- ポリゴン2:233,カイリキー:68,ミュウ:151,ビクティニ:494,ピカチュウ2:25};
+ ポリゴン2:233,カイリキー:68,ミュウ:151,ビクティニ:494,チラーミィ:572,ウールー:831};
 
 const TYPES = {ほのお:['🔥','#ff7a3d'],みず:['💧','#3d9bff'],でんき:['⚡','#f5c400'],くさ:['🌿','#3fbf5a'],こおり:['❄️','#62d4e8'],
  かくとう:['🥊','#c9433a'],どく:['☠️','#a24fc9'],じめん:['⛰️','#c99a4a'],ひこう:['🪶','#8aa8ff'],エスパー:['🔮','#ff5b9a'],
@@ -364,58 +434,30 @@ const TYPES = {ほのお:['🔥','#ff7a3d'],みず:['💧','#3d9bff'],でんき:
 const pokeId = n => { const k=(n||'').replace(/[(（].*$/,'').trim(); return POKEDEX[k] || 0; };
 const typeList = t => (t||'ノーマル').split(/[・/、]/).map(s=>s.trim()).filter(Boolean);
 
-/* ================= state ================= */
-const LS_KEY = 'pokeZukanDrill_v2';
-
-/* ===== フェイルセーフ：エラーハンドラ＆安全なストレージ ===== */
-window.addEventListener('error', function(e) {
-  console.error('Captured error:', e);
-  const ld = document.getElementById('loading');
-  if(ld) ld.style.display = 'none';
-});
-
-function safeGetStorage(key, def){
-  try {
-    const v = localStorage.getItem(key);
-    return v ? JSON.parse(v) : def;
-  } catch(e) {
-    return def;
-  }
-}
-function safeSetStorage(key, val){
-  try {
-    localStorage.setItem(key, JSON.stringify(val));
-  } catch(e) {}
-}
-
+/* ================= 状態管理 ================= */
+const LS_KEY = 'pokeZukanDrill_v3';
 let S = safeGetStorage(LS_KEY, null) || { name:'', points:0, rewardsGiven:0, currentBattleIndex:0, answers:{}, cleared:[], caught:[], allClearRewarded:false };
 const save = () => safeSetStorage(LS_KEY, S);
 
 let ROWS = [], curIdx = -1, curQs = [];
 const $ = id => document.getElementById(id);
 
-/* ================= utils ================= */
+/* ================= ユーティリティ ================= */
 function parseCSV(text){
   text = text.replace(/^\uFEFF/,'').trim();
   const rows=[]; let row=[], f='', q=false;
   for(let i=0; i<text.length; i++){
     const c=text[i];
     if(q){
-      if(c=='"'){
-        if(text[i+1]=='"'){ f+='"'; i++; }
-        else { q=false; }
-      } else { f+=c; }
+      if(c=='"'){ if(text[i+1]=='"'){ f+='"'; i++; } else q=false; }
+      else { f+=c; }
     } else {
       if(c=='"'){ q=true; }
       else if(c==','){ row.push(f); f=''; }
       else if(c=='\n'||c=='\r'){
         if(c=='\r' && text[i+1]=='\n') i++;
-        row.push(f);
-        if(row.some(x=>x.trim())) rows.push(row);
-        row=[]; f='';
-      } else {
-        f+=c;
-      }
+        row.push(f); if(row.some(x=>x.trim())) rows.push(row); row=[]; f='';
+      } else { f+=c; }
     }
   }
   if(f || row.length){ row.push(f); if(row.some(x=>x.trim())) rows.push(row); }
@@ -437,19 +479,15 @@ const toHalf = s => (s||'').replace(/[０-９]/g, c => String.fromCharCode(c.cha
 
 function toast(msg, ms=1600){
   const t=$('toast');
-  t.innerHTML=msg;
-  t.classList.add('show');
-  clearTimeout(t._t);
-  t._t=setTimeout(()=>t.classList.remove('show'), ms);
+  t.innerHTML=msg; t.classList.add('show');
+  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'), ms);
 }
 
 function speak(text, btn){
   if(!('speechSynthesis' in window)) return;
   speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
-  u.lang = 'ja-JP';
-  u.rate = 0.9;
-  u.pitch = 1.15;
+  u.lang = 'ja-JP'; u.rate = 0.9; u.pitch = 1.15;
   const v = speechSynthesis.getVoices().find(v=>v.lang.startsWith('ja'));
   if(v) u.voice = v;
   if(btn){
@@ -466,142 +504,57 @@ document.addEventListener('click', e => {
   else if(e.target.classList.contains('modal') && e.target.id!=='mWelcome') e.target.classList.remove('open');
 });
 
-/* ================= 全72問の完全問題パーサー ================= */
-const SPECIAL_DRILLS = {
-  Battle11: [{ label: 'ひだりと みぎの ポケモン、どちらが おおいかな？', ans: 'みぎ', choices: ['ひだり', 'みぎ'] }],
-  Battle12: [{ label: 'バタフリーが 6ぴき。6は 2と いくつかな？ <span class="box">？</span>', ans: '4', choices: ['4', '3', '5', '2'] }],
-  Battle13: [{ label: 'マリルリが 7ひき。7は 3と いくつかな？ <span class="box">？</span>', ans: '4', choices: ['4', '5', '3', '2'] }],
-  Battle14: [{ label: 'ほうせきが 8こ。8は 3と いくつかな？ <span class="box">？</span>', ans: '5', choices: ['5', '4', '6', '3'] }],
-  Battle19: [{ label: 'おさらに なにも ない ときは、どんな すうじを かくかな？ <span class="box">？</span>', ans: '0', choices: ['0', '1', '2', '3'] }],
-  Battle20: [{ label: 'まとめもんだい！ 5と 5を あわせると いくつ？ <span class="box">？</span>', ans: '10', choices: ['10', '8', '9', '7'] }],
-  Battle20_2: [{ label: 'ピカチュウを ぬろう！ 5より おおきい すうじの いろは？', ans: 'きいろ', choices: ['きいろ', 'ピンク', 'みずいろ', 'くろ'] }],
-  Battle21: [{ label: '10の まとまりと ばら3こ。あわせて いくつ？ <span class="box">？</span>', ans: '13', choices: ['13', '12', '14', '15'] }],
-  Battle23: [{ label: '11の つぎの すうじは なあに？ <span class="box">？</span>', ans: '12', choices: ['12', '13', '10', '14'] }],
-  Battle24: [{ label: 'パンと おさら、どちらが おおいかな？', ans: 'パン', choices: ['パン', 'おさら'] }],
-  Battle25: [{ label: 'じめんに 4ひき、そらに 3びき。あわせて なんびき？ <span class="box">？</span>', ans: '7', choices: ['7', '6', '8', '5'] }],
-  Battle26: [{ label: '2ひきと 3びきを あわせると ぜんぶで いくつ？ <span class="box">？</span>', ans: '5', choices: ['5', '4', '6', '7'] }],
-  Battle27: [{ label: 'はじめに 7ひき、あとから 3びき きたよ。みんなで なんびき？ <span class="box">？</span>', ans: '10', choices: ['10', '9', '8', '11'] }],
-  Battle28: [{ label: 'はじめに 4ひき、あとから 2ひき きたよ。ぜんぶで なんびき？ <span class="box">？</span>', ans: '6', choices: ['6', '5', '7', '8'] }],
-  Battle32: [{ label: 'たかいブロック7こと ひくいブロック4こ。ちがいは なんこ？ <span class="box">？</span>', ans: '3', choices: ['3', '2', '4', '5'] }],
-  Battle35: [{ label: '14の つぎの すうじは なあに？ <span class="box">？</span>', ans: '15', choices: ['15', '16', '13', '17'] }],
-  Battle37: [{ label: '19の つぎの すうじは なあに？ <span class="box">？</span>', ans: '20', choices: ['20', '18', '21', '29'] }],
-  Battle37_2: [{ label: '29の つぎの てんは なあに？ <span class="box">？</span>', ans: '30', choices: ['30', '28', '31', '20'] }],
-  Battle38: [{ label: 'まえから 4ばんめの インテレオンを えらぼう！', ans: '4ばんめ', choices: ['4ばんめ', '3ばんめ', '5ばんめ'] }],
-  Battle39: [{ label: 'うえから 2ばんめの メガヤンマは だれ？', ans: '2ばんめ', choices: ['2ばんめ', '1ばんめ', '3ばんめ'] }],
-  Battle40: [{ label: 'ひだりから 5ばんめの イーブイを えらぼう！', ans: '5ばんめ', choices: ['5ばんめ', '4ばんめ', '6ばんめ'] }],
-  Battle41: [{ label: 'まえから 2ばんめ、みぎから 3ばんめの ポケモンは？', ans: 'ぴったりあう！', choices: ['ぴったりあう！', 'ちがうよ'] }],
-  Battle42: [{ label: 'うえから 2だんめ、ひだりから 3れつめの ロッカーは？', ans: 'ここ！', choices: ['ここ！', 'ちがうよ'] }],
-  Battle43: [{ label: '39の つぎの すうじは なあに？ <span class="box">？</span>', ans: '40', choices: ['40', '38', '41', '50'] }],
-  Battle43_2: [{ label: '49の つぎの すうじは なあに？ <span class="box">？</span>', ans: '50', choices: ['50', '48', '51', '60'] }],
-  Minigame: [{ label: 'きのみまでの いちばん ちかい みち（ちかみち）は どれ？', ans: 'まっすぐなみち', choices: ['まっすぐなみち', 'まがりくねったみち'] }],
-  Battle44: [{ label: '5, 10, 15, □, 25。□に はいる すうじは？ <span class="box">？</span>', ans: '20', choices: ['20', '16', '18', '30'] }],
-  Battle44_2: [{ label: '20より おおきくて 22より ちいさい すうじは？ <span class="box">？</span>', ans: '21', choices: ['21', '19', '23', '20'] }],
-  Battle45: [{ label: 'みじかい はりが 7、ながい はりが 12。いま なんじ？', ans: '7じ', choices: ['7じ', '8じ', '6じ', '12じ'] }],
-  Battle45_2: [{ label: 'みじかい はりが 1と2のあいだ、ながい はりが 6。いま なんじ？', ans: '1じはん', choices: ['1じはん', '2じはん', '12じはん', '1じ'] }],
-  Battle46: [{ label: 'みじかい はりが 2をすぎて、ながい はりが 3。いま なんじ なんふん？', ans: '2じ15ふん', choices: ['2じ15ふん', '2じ3ふん', '3じ15ふん', '2じ30ふん'] }],
-  Battle46_2: [{ label: 'とけいの ながい はりが 9の ところ。なんふんかな？', ans: '45ふん', choices: ['45ふん', '9ふん', '40ふん', '50ふん'] }],
-  Battle47: [{ label: 'えんぴつを くらべてみよう。どちらが ながいかな？', ans: 'あかいえんぴつ', choices: ['あかいえんぴつ', 'あおいえんぴつ'] }],
-  Battle47_2: [{ label: 'コップ 5はいぶんと 3ばいぶん。のみものが おおいのは どちら？', ans: '5はいぶん', choices: ['5はいぶん', '3ばいぶん'] }],
-  Battle47_3: [{ label: '16マスと 12マス。ひろい タイルは どちら？', ans: '16マス', choices: ['16マス', '12マス'] }],
-  Battle48: [{ label: 'ナックラーを 10ぴきずつ まとめたよ。ぜんぶで なんびき？ <span class="box">？</span>', ans: '45', choices: ['45', '54', '40', '50'] }],
-  Battle48_2: [{ label: '59の つぎの てんは なあに？ <span class="box">？</span>', ans: '60', choices: ['60', '58', '61', '70'] }],
-  Battle49: [{ label: 'さいころの かたちは どれかな？', ans: 'はこのかたち', choices: ['はこのかたち', 'ボールのかたち', 'つつのかたち'] }],
-  Battle49_2: [{ label: 'したに 3こ、うえに 1こ。つみきは ぜんぶで なんこ？ <span class="box">？</span>', ans: '4', choices: ['4', '3', '5', '6'] }],
-  Battle50: [{ label: 'りんごや みかんは なんの なかまかな？', ans: 'くだもの', choices: ['くだもの', 'のりもの', 'ぶんぼうぐ'] }],
-  Battle50_2: [{ label: 'バナナが 5こ、りんごが 3こ。どちらが なんこ おおい？', ans: 'バナナが2こおおい', choices: ['バナナが2こおおい', 'りんごが2こおおい'] }],
-  Battle51: [{ label: '10が 10こ あつまると、いくつに なるかな？ <span class="box">？</span>', ans: '100', choices: ['100', '90', '110', '1000'] }],
-  Battle52: [{ label: '10えんだま 3まいと 1えんだま 5まい。いくらかな？ <span class="box">？</span>', ans: '35えん', choices: ['35えん', '53えん', '30えん', '25えん'] }],
-  Battle53: [{ label: '「あわせる」「ふえる」ときの たしざんの きごうは どれ？', ans: '＋', choices: ['＋', '－', '＝', '×'] }],
-  Battle54: [{ label: '「へる」「のこり」のときの ひきざんの きごうは どれ？', ans: '－', choices: ['－', '＋', '＝', '÷'] }],
-  Battle55: [{ label: '29の つぎの すうじを いれて ゴールしよう！ <span class="box">？</span>', ans: '30', choices: ['30', '28', '31', '20'] }],
-  Battle55_2: [{ label: 'さいごの もんだい！ 61の つぎの すうじは なあに？ <span class="box">？</span>', ans: '62', choices: ['62', '60', '63', '70'] }]
-};
-
-function numChoices(ans){
-  const n = parseInt(ans, 10);
-  const set = new Set([n]);
-  const span = n >= 20 ? 5 : 3;
-  while(set.size < 4){
-    const d = n + Math.round((Math.random() * 2 - 1) * span);
-    if(d >= 0 && d !== n) set.add(d);
+/* =========================================================
+   要件①：マップ画面（全72マスの完全一体化＆美ルート描画）
+   ========================================================= */
+function computeMapTiles(total){
+  const pts = [];
+  const startY = 2680, endY = 120;
+  for(let i=0; i<total; i++){
+    const t = i / (total - 1);
+    const y = startY - t * (startY - endY);
+    /* 画面横幅100vw（16%〜84%）をゆったりS字カーブで蛇行 */
+    const x = 50 + 32 * Math.sin(t * Math.PI * 7) + 6 * Math.sin(t * Math.PI * 14);
+    pts.push({ x: Math.round(x * 10) / 10, y: Math.round(y) });
   }
-  return shuffle([...set]).map(String);
+  return pts;
 }
 
-function textChoices(ans, row){
-  for(const g of row.options.split(/[、]/)){
-    const parts = g.replace(/^.*】/, '').split(/\s*\/\s*/).map(s=>s.trim()).filter(Boolean);
-    if(parts.length > 1 && parts.some(p => p.includes(ans) || ans.includes(p))) return shuffle(parts);
-  }
-  const words = [...new Set((row.prompt + row.description).match(/[ァ-ヶー]{2,}/g) || [])].filter(w => w !== ans).slice(0, 2);
-  return shuffle([ans, ...words]);
-}
-
-function buildQuestions(row){
-  if(SPECIAL_DRILLS[row.battle]) return SPECIAL_DRILLS[row.battle];
-
-  const c = toHalf(row.correct || '');
-  const qs = [];
-  const isNum = s => /^\d+$/.test(s);
-  const add = (label, ans) => {
-    ans = ans.trim();
-    qs.push({ label, ans, choices: isNum(ans) ? numChoices(ans) : textChoices(ans, row) });
-  };
-  const segs = c.split(/[、,]/).map(s=>s.trim()).filter(Boolean);
-
-  if(/【[^】]+】/.test(c)){
-    segs.forEach(seg => {
-      const ms = [...seg.matchAll(/【([^】]+)】/g)];
-      ms.forEach((m, k) => {
-        let lbl = seg;
-        ms.forEach((m2, k2) => {
-          lbl = lbl.replace(m2[0], k2 === k ? '<span class="box">？</span>' : `<span class="box">${m2[1]}</span>`);
-        });
-        add(lbl.replace(/^[①-⑩]/, ''), m[1].replace(/[匹ひきびきぴきこ本円]+$/, ''));
-      });
-    });
-  } else if(/[①-⑩]/.test(c) && !/\d/.test(c.replace(/[①-⑩]/g, ''))){
-    segs.forEach((seg, i) => add(`もんだい ${seg.match(/[①-⑩]/)?.[0] || i + 1}`, seg.replace(/[①-⑩]/g, '')));
-  } else if(/:\s*\d+/.test(c)){
-    segs.forEach(seg => {
-      const m = seg.match(/(.+?):\s*(\d+)/);
-      if(m) add(`${m[1]}は なんびき？ <span class="box">？</span>`, m[2]);
-    });
-  } else if(/→/.test(c) && /^[\d\s→]+$/.test(c)){
-    c.split('→').forEach((n, i) => add(`わかれみち ${i + 1}：おおきい ほうは？ <span class="box">？</span>`, n));
-  } else if(/=/.test(c) && segs.every(s => /=\s*\d+\s*$/.test(s))){
-    segs.forEach(seg => {
-      const p = seg.split('=');
-      const a = p.pop();
-      add(`${p.join(' = ')} = <span class="box">？</span>`, a);
-    });
-  } else {
-    const nums = c.replace(/^順に/, '').split(/[、,\s]+/).filter(Boolean);
-    if(nums.length > 1 && nums.every(isNum)){
-      nums.forEach((n, i) => add(`${i + 1}つめの □ に はいる すうじ <span class="box">？</span>`, n));
-    }
-  }
-
-  if(!qs.length){
-    qs.push({ label: 'もんだいを といて ポケモンを ゲットしよう！', ans: 'できた！', choices: ['できた！', 'まだ'] });
-  }
-  return qs.slice(0, 8);
-}
-
-/* ================= マップ描画 ================= */
 function layoutMap(){
-  const n = ROWS.length, wrap = $('map-wrapper');
+  const n = ROWS.length;
   if(!n) return;
-  wrap.querySelectorAll('.tile').forEach(e => e.remove());
+  const wrap = $('map-wrapper');
+  const tilesBox = $('tiles-container');
+  tilesBox.innerHTML = '';
 
-  ROWS.forEach((row, i) => {
-    const pos = MAP_COORDS[i] || MAP_COORDS[MAP_COORDS.length - 1];
+  const pts = computeMapTiles(n);
+
+  /* SVGで美しい石畳の道を描画 */
+  const svg = $('map-svg');
+  const W = wrap.clientWidth || window.innerWidth;
+  const H = 2800;
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+
+  const d = pts.map((p, i) => {
+    const px = (p.x / 100) * W;
+    return `${i === 0 ? 'M' : 'L'} ${px} ${p.y}`;
+  }).join(' ');
+
+  svg.innerHTML = `
+    <!-- 背景の道（影＋石畳＋光の飛び石） -->
+    <path d="${d}" fill="none" stroke="rgba(0,0,0,0.35)" stroke-width="84" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="${d}" fill="none" stroke="#d5c48b" stroke-width="70" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="${d}" fill="none" stroke="#fff8dc" stroke-width="56" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="14 18"/>
+  `;
+
+  /* 全72個のマスを道の真上に完璧に配置 */
+  pts.forEach((p, i) => {
+    const row = ROWS[i];
     const t = document.createElement('button');
     t.className = 'tile';
     t.id = 'tile-' + (i + 1);
-    /* ボード有効幅1480px, 高さ2048px に対応するパーセンテージで配置 */
-    t.style.left = ((pos[0] / 1480) * 100) + '%';
-    t.style.top = ((pos[1] / 2048) * 2800) + 'px';
+    t.style.left = p.x + '%';
+    t.style.top = p.y + 'px';
     t.textContent = i + 1;
 
     if(S.cleared.includes(i)) t.classList.add('cleared');
@@ -624,7 +577,7 @@ function layoutMap(){
       }
       openBattle(i);
     };
-    wrap.appendChild(t);
+    tilesBox.appendChild(t);
   });
 }
 
@@ -637,7 +590,130 @@ function scrollToCurrent(){
   }
 }
 
-/* ================= バトル画面 ================= */
+/* =========================================================
+   要件②＆③：ドリル画面（インタラクティブ再現＆description1〜6分割表示）
+   ========================================================= */
+function buildStageQuestions(row){
+  const descs = [row.description1, row.description2, row.description3, row.description4, row.description5, row.description6].filter(Boolean);
+  const correctRaw = toHalf(row.correct || '');
+
+  // 1. 特殊定義（アチャモ、ヨーテリー、時計など）
+  if(row.battle === 'Battle1'){
+    return [
+      {
+        qNum: 1,
+        desc: row.description1 || 'アチャモと りんごを せんで むすびましょう。',
+        interactive: 'achamo_match',
+        isInteractiveOnly: true
+      },
+      {
+        qNum: 2,
+        desc: row.description2 || 'アチャモと りんごは、どちらが おおいでしょう。おおい ほうを えらびましょう。',
+        ans: 'りんご',
+        choices: ['りんご', 'アチャモ']
+      },
+      {
+        qNum: 3,
+        desc: row.description3 || 'りんごは、たりますか。「たりる」「たりない」を えらびましょう。',
+        ans: 'たりる',
+        choices: ['たりる', 'たりない']
+      }
+    ];
+  }
+
+  // 2. description1〜6が複数あるステージの分割解析
+  if(descs.length > 1){
+    let answers = [];
+    if(/【[^】]+】/.test(correctRaw)){
+      answers = [...correctRaw.matchAll(/【([^】]+)】/g)].map(m => m[1]);
+    } else if(/=/.test(correctRaw)){
+      answers = correctRaw.split(/[、,]+/).map(s => s.split('=').pop());
+    } else {
+      answers = correctRaw.replace(/^順に/,'').split(/[、,\s]+/).map(s => s.replace(/^[①-⑩]/,''));
+    }
+
+    answers = answers.map(s => (s || '').replace(/^[【「(（]+|[】」)）]+$/g, '').replace(/[匹ひきびきぴきこ本円つ個]+$/, '').trim());
+
+    return descs.map((d, di) => {
+      let ans = answers[di] || '';
+      let choices = null;
+
+      if(/どちらが\s*おおい/.test(d) || /おおい\s*ほう/.test(d)){
+        const m = d.match(/([ぁ-んァ-ヶーa-zA-Z0-9]+)と\s*([ぁ-んァ-ヶーa-zA-Z0-9]+)/);
+        if(m){
+          choices = [m[1], m[2]];
+          if(!ans || (ans !== m[1] && ans !== m[2])) ans = choices[0];
+        } else if(!ans){
+          ans = 'おおいほう';
+        }
+      } else if(d.includes('たりる')){
+        choices = ['たりる', 'たりない'];
+        if(!ans) ans = 'たりる';
+      }
+
+      if(!ans) ans = 'できた！';
+
+      if(!choices){
+        if(/^\d+$/.test(ans)){
+          choices = numChoices(ans);
+        } else {
+          choices = ['できた！', 'まだ'];
+        }
+      }
+
+      return {
+        qNum: di + 1,
+        desc: d,
+        ans: ans,
+        choices: choices
+      };
+    });
+  }
+
+  // 3. 単一description（従来のフォールバック解析）
+  const desc = descs[0] || row.description || row.title;
+  let ans = 'できた！';
+  let choices = ['できた！', 'まだ'];
+
+  if(/【[^】]+】/.test(correctRaw)){
+    const m = correctRaw.match(/【([^】]+)】/);
+    if(m) ans = m[1].replace(/[匹ひきびきぴきこ本円つ個]+$/,'').trim();
+  } else if(/=/.test(correctRaw)){
+    ans = correctRaw.split('=').pop().replace(/[【】]/g, '').trim();
+  } else if(/\d+/.test(correctRaw)){
+    const m = correctRaw.match(/\d+/);
+    if(m) ans = m[0];
+  }
+  ans = (ans || '').replace(/^[【「(（]+|[】」)）]+$/g, '').replace(/[匹ひきびきぴきこ本円つ個]+$/, '').trim();
+
+  if(/^\d+$/.test(ans)){
+    choices = numChoices(ans);
+  } else if(desc.includes('たりる')){
+    choices = ['たりる', 'たりない'];
+  } else if(ans && ans !== 'できた！'){
+    choices = [ans, 'ちがうよ'];
+  }
+
+  return [{
+    qNum: 1,
+    desc: desc,
+    ans: ans,
+    choices: choices
+  }];
+}
+
+function numChoices(ans){
+  const n = parseInt(ans, 10);
+  const set = new Set([n]);
+  const span = n >= 20 ? 5 : 3;
+  while(set.size < 4){
+    const d = n + Math.round((Math.random() * 2 - 1) * span);
+    if(d >= 0 && d !== n) set.add(d);
+  }
+  return shuffle([...set]).map(String);
+}
+
+/* ================= バトル画面を開く ================= */
 function openBattle(i){
   curIdx = i;
   const row = ROWS[i];
@@ -645,6 +721,7 @@ function openBattle(i){
   $('battle').classList.add('active');
   window.scrollTo(0, 0);
 
+  // ポケモンステージ
   const pid = pokeId(row.pokemon_name);
   const img = $('bPoke');
   img.classList.remove('caught');
@@ -654,49 +731,233 @@ function openBattle(i){
   $('bName').textContent = row.pokemon_name + ' が あらわれた！';
   $('bTypes').innerHTML = typeList(row.pokemon_type).map(t => `<span class="type-chip" style="background:${(TYPES[t]||TYPES['ノーマル'])[1]}">${(TYPES[t]||['⭐'])[0]} ${t}</span>`).join('');
   $('bTitle').innerHTML = `<span class="bnum">バトル${i+1}</span>${row.title}`;
-  $('bDesc').textContent = row.description;
 
+  // 原本プリント画像
   const src = row.battle + '.jpg';
-  $('bSheetCard').innerHTML = `<img class="sheet" src="${src}" alt="${row.title}" onerror="this.outerHTML='<div class=sheet-err>📄 ${src} が みつかりません</div>'">
-    <details class="prompt-note"><summary>📝 おうちの方へ（このバトルの内容）</summary><p>${row.prompt}</p><p>${row.options}</p></details>`;
+  $('sheetImg').src = src;
+  $('sheetImg').onclick = () => { $('sheetBig').src = src; openModal('mSheetModal'); };
+  $('promptNote').textContent = row.prompt + ' ' + row.options;
 
-  const im = $('bSheetCard').querySelector('img');
-  if(im) im.onclick = () => { $('sheetBig').src = src; openModal('mSheet'); };
+  // 問題データ構築（description1〜6反映）
+  curQs = buildStageQuestions(row);
 
-  // 問題作成
-  curQs = buildQuestions(row);
-  const saved = S.answers[i] || {};
-  const box = $('bQuestions');
-  box.innerHTML = '<h3 style="margin:0 0 8px;font-size:22px">✏️ こたえを えらぼう</h3>';
+  // インタラクティブ・ドリルステージの描画
+  renderInteractiveStage(row);
+
+  // 各問題カードの描画
+  renderQuestionCards(row);
+
+  updateThrow();
+
+  // 自動読み上げ
+  setTimeout(() => {
+    const speechText = row.title + '。' + (row.description1 || row.description || '');
+    speak(speechText);
+  }, 350);
+}
+
+/* インタラクティブUIの描画 */
+function renderInteractiveStage(row){
+  const card = $('bInteractiveCard');
+  card.innerHTML = '';
+
+  if(row.battle === 'Battle1'){
+    // アチャモの線結びUI
+    card.innerHTML = `
+      <div class="card interactive-stage">
+        <h3>✏️ てで せんを むすんでみよう！（アチャモとりんご）</h3>
+        <p style="font-size:15px;color:#555;margin:0 0 10px">アチャモを タップして、そのあと りんごを タップしてね！</p>
+        <div class="match-container" id="matchBox">
+          <div class="match-col" id="colAchamo"></div>
+          <div class="match-col" id="colApple"></div>
+          <svg class="match-svg" id="matchLines"></svg>
+        </div>
+        <div class="match-status" id="matchDoneMsg">🎉 7くみ むすべたよ！ りんごが 1こ あまったね！</div>
+      </div>
+    `;
+    initAchamoMatch();
+  } else if(row.battle === 'Battle2'){
+    // ヨーテリー＆チラーミィのタップカウント
+    card.innerHTML = `
+      <div class="card interactive-stage">
+        <h3>👆 ポケモンを タップして かぞえよう！</h3>
+        <div class="count-field" id="countArea"></div>
+      </div>
+    `;
+    initCountArea();
+  } else if(row.battle.includes('Battle45') || row.battle.includes('Battle46')){
+    // 時計盤
+    card.innerHTML = `
+      <div class="card interactive-stage">
+        <h3>⏰ とけいを みてみよう！</h3>
+        <div class="clock-wrap">
+          <svg class="clock-svg" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="45" fill="#fff" stroke="#222" stroke-width="4"/>
+            ${[1,2,3,4,5,6,7,8,9,10,11,12].map(n=>{
+              const rad = (n * 30 - 90) * Math.PI / 180;
+              const x = 50 + 34 * Math.cos(rad);
+              const y = 50 + 34 * Math.sin(rad) + 4;
+              return `<text x="${x}" y="${y}" font-size="9" font-weight="900" text-anchor="middle" fill="#222">${n}</text>`;
+            }).join('')}
+            <!-- 短針（7時） -->
+            <line x1="50" y1="50" x2="35" y2="70" stroke="#222" stroke-width="5" stroke-linecap="round"/>
+            <!-- 長針（12時） -->
+            <line x1="50" y1="50" x2="50" y2="18" stroke="#ff4d5e" stroke-width="3.5" stroke-linecap="round"/>
+            <circle cx="50" cy="50" r="4" fill="#222"/>
+          </svg>
+        </div>
+      </div>
+    `;
+  }
+}
+
+/* アチャモ線結びの初期化 */
+function initAchamoMatch(){
+  const achamoCol = $('colAchamo');
+  const appleCol = $('colApple');
+  achamoCol.innerHTML = '';
+  appleCol.innerHTML = '';
+
+  for(let i=0; i<7; i++){
+    const d = document.createElement('div');
+    d.className = 'match-node';
+    d.dataset.type = 'achamo';
+    d.dataset.idx = i;
+    d.innerHTML = `<img src="${ART(255)}" alt="アチャモ"><span>アチャモ ${i+1}</span>`;
+    achamoCol.appendChild(d);
+  }
+  for(let i=0; i<8; i++){
+    const d = document.createElement('div');
+    d.className = 'match-node';
+    d.dataset.type = 'apple';
+    d.dataset.idx = i;
+    d.innerHTML = `<span style="font-size:28px">🍎</span><span>りんご ${i+1}</span>`;
+    appleCol.appendChild(d);
+  }
+
+  let selectedAchamo = null;
+  const connections = [];
+
+  function drawLines(){
+    const svg = $('matchLines');
+    const box = $('matchBox').getBoundingClientRect();
+    svg.setAttribute('viewBox', `0 0 ${box.width} ${box.height}`);
+    svg.innerHTML = connections.map(conn => {
+      const a = conn.achamo.getBoundingClientRect();
+      const b = conn.apple.getBoundingClientRect();
+      const x1 = a.right - box.left;
+      const y1 = a.top + a.height/2 - box.top;
+      const x2 = b.left - box.left;
+      const y2 = b.top + b.height/2 - box.top;
+      return `<path d="M ${x1} ${y1} C ${(x1+x2)/2} ${y1}, ${(x1+x2)/2} ${y2}, ${x2} ${y2}" fill="none" stroke="#ff4d5e" stroke-width="4" stroke-linecap="round"/>`;
+    }).join('');
+  }
+
+  $('matchBox').onclick = (e) => {
+    const node = e.target.closest('.match-node');
+    if(!node) return;
+
+    if(node.dataset.type === 'achamo'){
+      document.querySelectorAll('#colAchamo .match-node').forEach(x=>x.classList.remove('selected'));
+      node.classList.add('selected');
+      selectedAchamo = node;
+    } else if(node.dataset.type === 'apple' && selectedAchamo){
+      // 結ぶ
+      if(!connections.some(c=>c.achamo===selectedAchamo || c.apple===node)){
+        connections.push({ achamo: selectedAchamo, apple: node });
+        selectedAchamo.classList.add('connected');
+        node.classList.add('connected');
+        drawLines();
+        if(connections.length >= 7){
+          $('matchDoneMsg').style.display = 'block';
+          speak('7くみ むすべたよ！ りんごが 1こ あまったね！');
+        }
+      }
+      selectedAchamo.classList.remove('selected');
+      selectedAchamo = null;
+    }
+  };
+}
+
+/* タップ数え上げの初期化 */
+function initCountArea(){
+  const area = $('countArea');
+  area.innerHTML = '';
+  let count = 0;
+  // ヨーテリー6匹＋チラーミィ7匹
+  const list = [
+    ...Array(6).fill({ name:'ヨーテリー', id:506 }),
+    ...Array(7).fill({ name:'チラーミィ', id:572 })
+  ];
+  shuffle(list).forEach((p, idx) => {
+    const d = document.createElement('div');
+    d.className = 'tap-item';
+    d.innerHTML = `<img src="${ART(p.id)}" alt="${p.name}"><div class="count-badge"></div>`;
+    d.onclick = () => {
+      if(!d.classList.contains('counted')){
+        count++;
+        d.classList.add('counted');
+        d.querySelector('.count-badge').textContent = count;
+      }
+    };
+    area.appendChild(d);
+  });
+}
+
+/* 各問題カードの描画（description1〜6対応） */
+function renderQuestionCards(row){
+  const box = $('bQuestionCards');
+  box.innerHTML = '';
+  const saved = S.answers[curIdx] || {};
 
   curQs.forEach((q, qi) => {
-    const d = document.createElement('div');
-    d.className = 'q';
-    d.innerHTML = `<div class="q-label">${q.label}</div><div class="choices"></div>`;
+    if(q.isInteractiveOnly) return; // 線結びなどの専用操作のみの問題は選択ボタン不要
+
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.innerHTML = `
+      <div class="q-header">
+        <span class="q-badge">もんだい ${q.qNum}</span>
+        <div class="q-desc">${q.desc}</div>
+        <button class="q-voice" aria-label="もんだいをよみあげる">🔊</button>
+      </div>
+      <div class="choices"></div>
+    `;
+
+    // 個別音声読み上げ
+    const vBtn = card.querySelector('.q-voice');
+    vBtn.onclick = () => speak(q.desc, vBtn);
+
+    // 選択肢ボタン
+    const choicesBox = card.querySelector('.choices');
     q.choices.forEach(ch => {
       const b = document.createElement('button');
       b.className = 'choice';
       b.textContent = ch;
       if(saved[qi] === ch) b.classList.add('sel');
+
       b.onclick = () => {
-        d.querySelectorAll('.choice').forEach(x => x.classList.remove('sel'));
+        choicesBox.querySelectorAll('.choice').forEach(x => x.classList.remove('sel'));
         b.classList.add('sel');
-        (S.answers[i] = S.answers[i] || {})[qi] = ch;
+        (S.answers[curIdx] = S.answers[curIdx] || {})[qi] = ch;
         save();
         updateThrow();
       };
-      d.querySelector('.choices').appendChild(b);
+      choicesBox.appendChild(b);
     });
-    box.appendChild(d);
-  });
 
-  updateThrow();
-  setTimeout(() => speak(row.title + '。' + row.description, $('btnVoice')), 400);
+    box.appendChild(card);
+  });
 }
 
 function updateThrow(){
   const a = S.answers[curIdx] || {};
-  $('btnThrow').disabled = !curQs.every((q, i) => a[i] != null);
+  // isInteractiveOnly以外の問題が全て回答されているか
+  const neededQs = curQs.filter(q => !q.isInteractiveOnly);
+  $('btnThrow').disabled = !neededQs.every(q => {
+    const qi = curQs.indexOf(q);
+    return a[qi] != null;
+  });
 }
 
 function backToMap(){
@@ -709,8 +970,10 @@ function backToMap(){
 
 function throwBall(){
   const a = S.answers[curIdx] || {};
-  if(!curQs.every((q, i) => a[i] != null)) return;
-  const wrong = curQs.some((q, i) => a[i] !== q.ans);
+  const neededQs = curQs.filter(q => !q.isInteractiveOnly);
+  if(!neededQs.every(q => a[curQs.indexOf(q)] != null)) return;
+
+  const wrong = neededQs.some(q => a[curQs.indexOf(q)] !== q.ans);
   if(wrong){
     alert('おしい！もう一度考えてみて！');
     return;
@@ -839,47 +1102,48 @@ function updatePoints(bump){
 /* ================= 初期化 ================= */
 function init(){
   try {
-  $('bg-image-layer').style.backgroundImage = `url("${BG_LIST[Math.random() * BG_LIST.length | 0]}")`;
-  const setH = () => document.documentElement.style.setProperty('--hdr', $('hdr').offsetHeight + 'px');
-  setH();
-  window.addEventListener('resize', () => { setH(); if($('map').classList.contains('active')) layoutMap(); });
+    $('bg-image-layer').style.backgroundImage = `url("${BG_LIST[Math.random() * BG_LIST.length | 0]}")`;
+    const setH = () => document.documentElement.style.setProperty('--hdr', $('hdr').offsetHeight + 'px');
+    setH();
+    window.addEventListener('resize', () => {
+      setH();
+      if($('map').classList.contains('active')) layoutMap();
+    });
 
-  updatePoints();
-  buildKana();
+    updatePoints();
+    buildKana();
 
-  $('btnKana').onclick = () => openModal('mKana');
-  $('btnZukan').onclick = () => { buildZukan(); openModal('mZukan'); };
-  $('btnQuit').onclick = () => {
-    if(confirm('きょうは ここまでに する？\n（きろくは ほぞん されているよ）')){
-      if('speechSynthesis' in window) speechSynthesis.cancel();
-      document.body.innerHTML = `<div class="loading" style="background:#fff"><img src="${ART(151)}" style="width:200px"><div>${S.name || ''}さん、またね！👋</div><button class="mbtn" onclick="location.reload()">もういちど あそぶ</button></div>`;
-    }
-  };
-  $('btnBack').onclick = backToMap;
-  $('btnThrow').onclick = throwBall;
-  $('btnVoice').onclick = () => { const r = ROWS[curIdx]; if(r) speak(r.description, $('btnVoice')); };
+    $('btnKana').onclick = () => openModal('mKana');
+    $('btnZukan').onclick = () => { buildZukan(); openModal('mZukan'); };
+    $('btnQuit').onclick = () => {
+      if(confirm('きょうは ここまでに する？\n（きろくは ほぞん されているよ）')){
+        if('speechSynthesis' in window) speechSynthesis.cancel();
+        document.body.innerHTML = `<div class="loading" style="background:#fff"><img src="${ART(151)}" style="width:200px"><div>${S.name || ''}さん、またね！👋</div><button class="mbtn" onclick="location.reload()">もういちど あそぶ</button></div>`;
+      }
+    };
+    $('btnBack').onclick = backToMap;
+    $('btnThrow').onclick = throwBall;
 
-  $('btnStart').onclick = () => {
-    const n = $('nameInput').value.trim();
-    if(!n){ toast('おなまえを いれてね'); return; }
-    S.name = n;
-    save();
-    $('mWelcome').classList.remove('open');
-    speak(`みゅう！ ${n}さん、いっしょに ぼうけんに でかけよう！`);
-    toast(`🌟 ${n}さん、ぼうけんの はじまりだ！`);
-  };
+    $('btnStart').onclick = () => {
+      const n = $('nameInput').value.trim();
+      if(!n){ toast('おなまえを いれてね'); return; }
+      S.name = n;
+      save();
+      $('mWelcome').classList.remove('open');
+      speak(`みゅう！ ${n}さん、いっしょに ぼうけんに でかけよう！`);
+      toast(`🌟 ${n}さん、ぼうけんの はじまりだ！`);
+    };
 
-  if('speechSynthesis' in window) speechSynthesis.getVoices();
+    if('speechSynthesis' in window) speechSynthesis.getVoices();
 
-  // CSVパース＆起動
-  const rawCsv = $('csv-data').textContent;
-  ROWS = parseCSV(rawCsv).filter(r => /^(Battle|Minigame)/i.test(r.battle));
-  $('loading').style.display = 'none';
+    // CSVパース＆全72バトル起動
+    const rawCsv = $('csv-data').textContent;
+    ROWS = parseCSV(rawCsv).filter(r => /^(Battle|Minigame)/i.test(r.battle));
 
-  layoutMap();
-  setTimeout(scrollToCurrent, 100);
+    layoutMap();
+    setTimeout(scrollToCurrent, 100);
 
-  if(!S.name) openModal('mWelcome');
+    if(!S.name) openModal('mWelcome');
   } catch(err) {
     console.error('Init error:', err);
   } finally {

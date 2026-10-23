@@ -42,9 +42,9 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
 .screen.active{display:block}
 
 /* ===== map ===== */
-#map{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch}
-#map-wrapper{position:relative;min-width:100vw;height:2800px;overflow:hidden;background:#2f7f86}
-#map-img{position:absolute;object-fit:cover;max-width:none}
+#map{width:100vw;max-width:100%;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch}
+#map-wrapper{position:relative;width:100vw;max-width:100%;height:2800px;overflow:hidden;background:#358088}
+#map-img{position:absolute;top:0;left:0;width:calc(100vw * 2048 / 1480);height:2800px;object-fit:fill;pointer-events:none}
 .tile{position:absolute;width:56px;height:56px;border-radius:16px;transform:translate(-50%,-50%);
   background:#fff;border:4px solid var(--blue);display:flex;align-items:center;justify-content:center;
   font-weight:900;font-size:20px;color:var(--blue-d);box-shadow:0 5px 0 rgba(0,0,0,.35);transition:transform .15s;z-index:2}
@@ -186,9 +186,9 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
 
 <!-- modals -->
 <div class="modal" id="mWelcome"><div class="mbox center legend">
-  <h2>でんせつの ポケモンが あらわれた！</h2>
-  <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/494.png" alt="ビクティニ">
-  <p style="font-size:18px;font-weight:800">ビクティニ「ようこそ！<br>きみの おなまえを おしえてね！」</p>
+  <h2>でんせつの ポケモン ミュウが あらわれた！</h2>
+  <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/151.png" alt="ミュウ">
+  <p style="font-size:18px;font-weight:800">ミュウ「みゅう！ ようこそ！<br>きみの おなまえを おしえてね！」</p>
   <input class="input" id="nameInput" maxlength="10" placeholder="おなまえ">
   <button class="mbtn" id="btnStart">ぼうけんに でる！</button>
 </div></div>
@@ -333,166 +333,67 @@ const MONCOLLE = [
      ['ピカチュウ(キョダイマックス)','kyodaimax_pikachu'],['リザードン(キョダイマックス)','kyodaimax_lizardon']].map(([name,slug])=>({name,slug}))
 ];
 const moncolleImg = m => `${MONCOLLE_BASE}${m.slug}/images/img00.png`;
-/* マップ画像 image_0b9ff5.jpg（1932×1932px）上のマス中心座標（画像ピクセル）。スタート(下)→ゴール(上)の順 */
-const MAP_IMG = { w:1932, h:1932, cropL:540, cropR:1395 };
-const MAP_COORDS = { sansu: [
-  [838,1924],[906,1924],[975,1812],[975,1735],[1057,1693],[864,1668],[888,1592],[818,1592],[756,1532],[756,1475],
-  [756,1417],[756,1365],[756,1320],[796,1290],[853,1279],[900,1279],[947,1286],[995,1279],[1036,1215],[1036,1153],
-  [1015,1112],[985,1075],[978,1032],[953,1014],[1046,1014],[1106,1014],[1158,1058],[1158,1113],[1086,1184],[950,1184],
-  [846,1184],[777,1184],[684,1184],[684,1064],[736,1014],[785,1014],[850,1014],[890,986],[890,918],[1046,952],
-  [1093,885],[1094,832],[1160,832],[1230,832],[1292,832],[1255,745],[1297,620],[1228,574],[1152,617],[1129,713],
-  [953,832],[823,832],[778,792],[737,731],[953,600],[953,465],[953,369],[953,307],[953,238],[953,174],
-  [953,119],[953,71],[953,38]
-]};
+/* マップ画像 image_0b9ff5.jpg（ボード有効幅1480px, 高さ2048px）上の全72マス精密座標 */
+const MAP_COORDS = [
+  /* Battle1〜10 (下部スタート〜池の手前) */
+  [710,1995],[775,1995],[840,1965],[890,1920],[895,1850],[955,1785],[815,1740],[805,1665],[765,1665],[705,1610],
+  /* Battle11〜20 (池の左側〜横通り) */
+  [705,1545],[705,1485],[705,1425],[705,1370],[745,1330],[805,1330],[855,1330],[905,1330],[955,1330],[985,1270],
+  /* Battle20_2〜30 (中央市街地ルート) */
+  [985,1220],[985,1160],[1015,1220],[1075,1180],[1075,1120],[1035,1070],[955,1070],[885,1070],[835,1070],[775,1070],[725,1070],
+  /* Battle31〜37_2 (左の砦〜ループ道) */
+  [675,1070],[625,1120],[625,1220],[685,1220],[745,1220],[805,1220],[805,1170],[905,1020],[905,960],[965,930],
+  /* Battle38〜43_2 (中段右・砂漠・森) */
+  [1005,870],[1005,810],[1065,810],[1125,810],[1175,810],[1145,740],[1065,710],[1085,620],[1145,580],[1205,580],
+  /* Minigame, Battle44〜47_3 (分岐・中腹) */
+  [955,810],[885,810],[845,770],[815,710],[780,650],[820,610],[870,580],
+  /* Battle48〜55_2 (雪山〜頂上ゴール・ミュウ) */
+  [910,570],[910,525],[910,480],[910,440],[910,400],[910,340],[910,280],[910,220],[910,155],[910,110],[910,75],[910,45],[910,20],[910,5]
+];
 
-const POKEDEX = {アチャモ:255,ヨーテリー:506,ヨーデリー:506,パチリス:417,ピッピ:35,フシギソウ:2,ジヘッド:634,アンノーン:201,ケロマツ:656,
- エテボース:424,ミミッキュ:778,ユキメノコ:478,バタフリー:12,マリルリ:184,ヤミラミ:302,ギガイアス:526,ゴーゴート:673,トゲピー:175,
- ヤングース:734,イッカネズミ:925,ピカチュウ:25,アブリボン:743,ウオノラゴン:882,ドダイトス:389,アチゲータ:910,ウッウ:845,クチート:303,
- ミルタンク:241,バオップ:513,ニャルマー:431,ピジョット:18,バイウールー:832,ローブシン:534,フラージェス:671,ハピナス:242,メグロコ:551,
- トゲデマル:777,シルヴァディ:773,インテレオン:818,メガヤンマ:469,イーブイ:133,イオルブ:826,タマンチュラ:917,ボーマンダ:373,ギルガルド:681,
- ヒヒダルマ:555,ホーホー:163,ギギギアル:601,サーナイト:282,グラードン:383,カモネギ:83,オオスバメ:277,リククラゲ:948,コレクレー:999,
- ポリゴン2:233,カイリキー:68,ミュウ:151,ビクティニ:494,ピカチュウ2:25};
-const TYPES = {ほのお:['🔥','#ff7a3d'],みず:['💧','#3d9bff'],でんき:['⚡','#f5c400'],くさ:['🌿','#3fbf5a'],こおり:['❄️','#62d4e8'],
- かくとう:['🥊','#c9433a'],どく:['☠️','#a24fc9'],じめん:['⛰️','#c99a4a'],ひこう:['🪶','#8aa8ff'],エスパー:['🔮','#ff5b9a'],
- むし:['🐛','#9bbd22'],いわ:['🪨','#b39b55'],ゴースト:['👻','#6b5bb5'],ドラゴン:['🐉','#5a5ff0'],あく:['🌙','#5a4a42'],
- はがね:['⚙️','#8aa0b5'],フェアリー:['✨','#f08ad0'],ノーマル:['⭐','#a8a878']};
-const pokeId = n => { const k=(n||'').replace(/[(（].*$/,'').trim(); return POKEDEX[k] || 0; };
-const typeList = t => (t||'ノーマル').split(/[・\/、]/).map(s=>s.trim()).filter(Boolean);
-
-/* ================= state ================= */
-const LS_KEY = 'pokeZukanDrill_v1';
-let S = JSON.parse(localStorage.getItem(LS_KEY) || 'null') || { name:'', points:0, rewardsGiven:0, drillId:DRILLS[0].id, drills:{}, caught:[] };
-const save = () => localStorage.setItem(LS_KEY, JSON.stringify(S));
-const D = () => { if(!S.drills[S.drillId]) S.drills[S.drillId]={currentBattleIndex:0,answers:{},cleared:[],allClearRewarded:false}; return S.drills[S.drillId]; };
-let ROWS = [], curIdx = -1, curQs = [];
-const $ = id => document.getElementById(id);
-
-/* ================= utils ================= */
-function parseCSV(text){
-  const rows=[];let row=[],f='',q=false;
-  text=text.replace(/^\uFEFF/,'');
-  for(let i=0;i<text.length;i++){const c=text[i];
-    if(q){ if(c=='"'){ if(text[i+1]=='"'){f+='"';i++;} else q=false; } else f+=c; }
-    else if(c=='"') q=true; else if(c==','){row.push(f);f='';}
-    else if(c=='\n'||c=='\r'){ if(c=='\r'&&text[i+1]=='\n') i++; row.push(f);rows.push(row);row=[];f=''; }
-    else f+=c;}
-  if(f||row.length){row.push(f);rows.push(row);}
-  const head=rows.shift().map(h=>h.trim());
-  return rows.filter(r=>r.some(x=>x.trim())).map(r=>Object.fromEntries(head.map((h,i)=>[h,(r[i]||'').trim()])));
-}
-const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];}return a;};
-const toHalf=s=>s.replace(/[０-９]/g,c=>String.fromCharCode(c.charCodeAt(0)-0xFEE0));
-function toast(msg,ms=1600){const t=$('toast');t.innerHTML=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),ms);}
-function speak(text,btn){
-  if(!('speechSynthesis' in window)) return;
-  speechSynthesis.cancel();
-  const u=new SpeechSynthesisUtterance(text);u.lang='ja-JP';u.rate=.9;u.pitch=1.15;
-  const v=speechSynthesis.getVoices().find(v=>v.lang.startsWith('ja'));if(v)u.voice=v;
-  if(btn){btn.classList.add('speaking');u.onend=u.onerror=()=>btn.classList.remove('speaking');}
-  speechSynthesis.speak(u);
-}
-function openModal(id){$(id).classList.add('open');}
-function closeModal(el){el.closest('.modal').classList.remove('open');}
-document.addEventListener('click',e=>{ if(e.target.matches('[data-close]')) closeModal(e.target); else if(e.target.classList.contains('modal') && e.target.id!=='mWelcome' && e.target.id!=='mCsv') e.target.classList.remove('open'); });
-
-/* ================= question builder (correct列を解析) ================= */
-function numChoices(ans){
-  const n=parseInt(ans,10);const set=new Set([n]);
-  const span=n>=20?5:3;
-  while(set.size<4){const d=n+Math.round((Math.random()*2-1)*span);if(d>=0&&d!==n)set.add(d);}
-  return shuffle([...set]).map(String);
-}
-function textChoices(ans,row){
-  // options列の「A / B」グループから探す
-  for(const g of row.options.split(/[、]/)){
-    const parts=g.replace(/^.*】/,'').split(/\s*\/\s*/).map(s=>s.trim()).filter(Boolean);
-    if(parts.length>1 && parts.some(p=>p.includes(ans)||ans.includes(p))) return shuffle(parts);
-  }
-  const words=[...new Set((row.prompt+row.description).match(/[ァ-ヶー]{2,}/g)||[])].filter(w=>w!==ans).slice(0,2);
-  return shuffle([ans,...words]);
-}
-function buildQuestions(row){
-  const c=toHalf(row.correct||'');const qs=[];
-  const isNum=s=>/^\d+$/.test(s);
-  const add=(label,ans)=>{ans=ans.trim();qs.push({label,ans,choices:isNum(ans)?numChoices(ans):textChoices(ans,row)});};
-  const segs=c.split(/[、,]/).map(s=>s.trim()).filter(Boolean);
-
-  if(/【[^】]+】/.test(c)){
-    // 例: 1と【4】、7はあと【3】
-    segs.forEach(seg=>{
-      const ms=[...seg.matchAll(/【([^】]+)】/g)];
-      ms.forEach((m,k)=>{
-        let lbl=seg; ms.forEach((m2,k2)=>{lbl=lbl.replace(m2[0],k2===k?'<span class="box">？</span>':`<span class="box">${m2[1]}</span>`);});
-        add(lbl.replace(/^[①-⑩]/,''),m[1].replace(/[匹ひきびきぴきこ本円]+$/,''));
-      });
-    });
-  } else if(/[①-⑩]/.test(c) && !/\d/.test(c.replace(/[①-⑩]/g,''))){
-    // 例: ②りんご、③たりる
-    segs.forEach((seg,i)=>add(`もんだい ${seg.match(/[①-⑩]/)?.[0]||i+1}`,seg.replace(/[①-⑩]/g,'')));
-  } else if(/:\s*\d+/.test(c)){
-    // 例: ヨーテリー: 6匹
-    segs.forEach(seg=>{const m=seg.match(/(.+?):\s*(\d+)/);if(m)add(`${m[1]}は なんびき？ <span class="box">？</span>`,m[2]);});
-  } else if(/→/.test(c) && /^[\d\s→]+$/.test(c)){
-    c.split('→').forEach((n,i)=>add(`わかれみち ${i+1}：おおきい ほうは？ <span class="box">？</span>`,n));
-  } else if(/=/.test(c) && segs.every(s=>/=\s*\d+\s*$/.test(s))){
-    // 例: 1匹=1 / ピッピ2=●2=2 / 4-2=2
-    segs.forEach(seg=>{const p=seg.split('=');const a=p.pop();add(`${p.join(' = ')} = <span class="box">？</span>`,a);});
-  } else {
-    const nums=c.replace(/^順に/,'').split(/[、,\s]+/).filter(Boolean);
-    if(nums.length>1 && nums.every(isNum)) nums.forEach((n,i)=>add(`${i+1}つめの □ に はいる すうじ <span class="box">？</span>`,n));
-  }
-  if(!qs.length){
-    // 自由形式の正解：プリントで確認するセルフチェック
-    qs.push({label:'プリントの もんだいを ぜんぶ といたかな？<br><small style="font-weight:700;color:#666">こたえ：'+(row.correct||'')+'</small>',ans:'できた！',choices:['できた！','まだ']});
-  }
-  return qs.slice(0,12);
-}
-
-/* ================= map ================= */
-/* 画像上の座標リストを全バトル数に合わせる（足りない分は間隔が広い区間に補間） */
-function fitCoords(base,n){
-  const pts=base.map(p=>[...p]);
-  while(pts.length<n){
-    let bi=0,bd=-1;for(let i=0;i<pts.length-1;i++){const d=Math.hypot(pts[i+1][0]-pts[i][0],pts[i+1][1]-pts[i][1]);if(d>bd){bd=d;bi=i;}}
-    pts.splice(bi+1,0,[(pts[bi][0]+pts[bi+1][0])/2,(pts[bi][1]+pts[bi+1][1])/2]);
-  }
-  return pts.slice(0,n);
-}
 function layoutMap(){
-  const n=ROWS.length, wrap=$('map-wrapper'), vw=document.documentElement.clientWidth;
-  const drill=DRILLS.find(d=>d.id===S.drillId);
-  const stripW=MAP_IMG.cropR-MAP_IMG.cropL;
-  // 横幅いっぱい・高さ2800px以上で余白なし（cover）。狭い画面では横スクロール
-  const s=Math.max(vw/stripW, 2800/MAP_IMG.h);
-  const W=Math.max(vw,stripW*s), H=MAP_IMG.h*s, offX=(W-stripW*s)/2-MAP_IMG.cropL*s;
-  wrap.style.width=W+'px';wrap.style.height=H+'px';
-  const img=$('map-img'); img.src=drill.map;
-  Object.assign(img.style,{width:MAP_IMG.w*s+'px',height:MAP_IMG.h*s+'px',left:offX+'px',top:'0px'});
+  const n = ROWS.length, wrap = $('map-wrapper');
+  if(!n) return;
   wrap.querySelectorAll('.tile').forEach(e=>e.remove());
-  const pts=fitCoords(MAP_COORDS[S.drillId]||MAP_COORDS.sansu,n);
-  const st=D();
-  ROWS.forEach((row,i)=>{
-    const t=document.createElement('button');t.className='tile';t.id='tile-'+(i+1);
-    t.style.left=(offX+pts[i][0]*s)+'px';t.style.top=(pts[i][1]*s)+'px';t.textContent=i+1;
+  const st = D();
+  ROWS.forEach((row, i)=>{
+    const pos = MAP_COORDS[i] || MAP_COORDS[MAP_COORDS.length-1];
+    const t = document.createElement('button');
+    t.className = 'tile';
+    t.id = 'tile-' + (i+1);
+    /* ボード幅1480px, 高さ2048px に対応するパーセンテージで配置 */
+    t.style.left = ((pos[0] / 1480) * 100) + '%';
+    t.style.top = ((pos[1] / 2048) * 2800) + 'px';
+    t.textContent = i + 1;
     if(st.cleared.includes(i)) t.classList.add('cleared');
-    else if(i===st.currentBattleIndex) t.classList.add('current');
-    else if(i>st.currentBattleIndex) t.classList.add('locked');
-    const tp=typeList(row.pokemon_type)[0], [ic,col]=TYPES[tp]||TYPES['ノーマル'];
-    const b=document.createElement('span');b.className='badge';b.style.background=col;b.textContent=ic;b.title=row.pokemon_type;
-    b.style.animationDelay=(i%5*.3)+'s';t.appendChild(b);
-    t.onclick=()=>{
-      if(i>st.currentBattleIndex && !st.cleared.includes(i)){alert('まだ すすめないよ！\nまえの バトルを クリアしてね。');return;}
+    else if(i === st.currentBattleIndex) t.classList.add('current');
+    else if(i > st.currentBattleIndex) t.classList.add('locked');
+    const tp = typeList(row.pokemon_type)[0], [ic, col] = TYPES[tp] || TYPES['ノーマル'];
+    const b = document.createElement('span');
+    b.className = 'badge';
+    b.style.background = col;
+    b.textContent = ic;
+    b.title = row.pokemon_type;
+    b.style.animationDelay = (i % 5 * .3) + 's';
+    t.appendChild(b);
+    t.onclick = ()=>{
+      if(i > st.currentBattleIndex && !st.cleared.includes(i)){
+        alert('まだ すすめないよ！\nまえの バトルを クリアしてね。');
+        return;
+      }
       openBattle(i);
     };
     wrap.appendChild(t);
   });
 }
 function scrollToCurrent(){
-  const tiles=document.querySelectorAll('.tile');
-  const t=document.querySelector('.tile.current')||tiles[tiles.length-1];
-  if(!t){window.scrollTo(0,document.body.scrollHeight);return;}
-  window.scrollTo({top:t.offsetTop-window.innerHeight/2,behavior:'smooth'});
-  $('map').scrollTo({left:t.offsetLeft-$('map').clientWidth/2,behavior:'smooth'});
+  const t = document.querySelector('.tile.current') || document.querySelector('.tile#tile-1');
+  if(t){
+    const targetY = Math.max(0, t.offsetTop - window.innerHeight / 2);
+    window.scrollTo({top: targetY, behavior: 'smooth'});
+  } else {
+    window.scrollTo(0, document.body.scrollHeight);
+  }
 }
 
 /* ================= battle ================= */
@@ -638,12 +539,12 @@ function init(){
   $('btnKana').onclick=()=>openModal('mKana');
   $('btnZukan').onclick=()=>{buildZukan();openModal('mZukan');};
   $('btnQuit').onclick=()=>{if(confirm('きょうは ここまでに する？\n（きろくは ほぞん されているよ）')){speechSynthesis&&speechSynthesis.cancel();
-    document.body.innerHTML=`<div class="loading" style="background:#fff"><img src="${ART(494)}" style="width:200px"><div>${S.name||''}さん、またね！👋</div><button class="mbtn" onclick="location.reload()">もういちど あそぶ</button></div>`;}};
+    document.body.innerHTML=`<div class="loading" style="background:#fff"><img src="${ART(151)}" style="width:200px"><div>${S.name||''}さん、またね！👋</div><button class="mbtn" onclick="location.reload()">もういちど あそぶ</button></div>`;}};
   $('btnBack').onclick=backToMap;
   $('btnThrow').onclick=throwBall;
   $('btnVoice').onclick=()=>{const r=ROWS[curIdx];if(r)speak(r.description,$('btnVoice'));};
   $('btnStart').onclick=()=>{const n=$('nameInput').value.trim();if(!n){toast('おなまえを いれてね');return;}
-    S.name=n;save();$('mWelcome').classList.remove('open');speak(`${n}さん、いっしょに がんばろう！`);toast(`${n}さん、ぼうけんの はじまりだ！`);};
+    S.name=n;save();$('mWelcome').classList.remove('open');speak(`みゅう！ ${n}さん、いっしょに ぼうけんに でかけよう！`);toast(`🌟 ${n}さん、ぼうけんの はじまりだ！`);};
   if('speechSynthesis' in window) speechSynthesis.getVoices();
   loadDrill();
 }

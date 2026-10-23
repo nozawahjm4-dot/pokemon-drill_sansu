@@ -1634,6 +1634,10 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
   font-weight: 900;
   box-shadow: 0 2px 0 #222222;
   transition: all .2s;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  box-sizing: border-box;
 }
 .qtree-box.given {
   border: 2px solid #222222;
@@ -2039,6 +2043,24 @@ const typeList = t => (t||'ノーマル').split(/[・/、]/).map(s=>s.trim()).fi
 const LS_KEY = 'pokeZukanDrill_v3';
 let S = safeGetStorage(LS_KEY, null) || { name:'', points:0, rewardsGiven:0, currentBattleIndex:0, answers:{}, cleared:[], caught:[], allClearRewarded:false };
 const save = () => safeSetStorage(LS_KEY, S);
+
+// 古いフォーマットの複数解答文字列（「1と7, 2と6...」など）をクリーンアップ
+if(S && S.answers && typeof S.answers === 'object'){
+  let cleaned = false;
+  Object.keys(S.answers).forEach(bKey => {
+    const ansMap = S.answers[bKey];
+    if(ansMap && typeof ansMap === 'object'){
+      Object.keys(ansMap).forEach(qKey => {
+        const val = String(ansMap[qKey] || '');
+        if(val.includes('と') || val.includes(',') || val.includes('、') || val.length > 5){
+          delete ansMap[qKey];
+          cleaned = true;
+        }
+      });
+    }
+  });
+  if(cleaned) save();
+}
 
 let ROWS = [], curIdx = -1, curQs = [];
 const $ = id => document.getElementById(id);
@@ -3095,6 +3117,7 @@ function initAchamoMatch(){
 function renderInteractiveStage(row){
   const card = $('bInteractiveCard');
   card.innerHTML = '';
+  card.style.display = 'none';
   const bId = row.battle;
 
   if(bId === 'Battle1'){
@@ -3220,22 +3243,7 @@ function renderInteractiveStage(row){
         '<div id="b11Container"></div>' +
       '</div>';
     initBattle11Compare();
-  } else if(['Battle12','Battle13','Battle14','Battle15','Battle16'].includes(bId)){
-    const totalNum = bId === 'Battle12' ? 6 : bId === 'Battle13' ? 7 : bId === 'Battle14' ? 8 : bId === 'Battle15' ? 9 : 10;
-    card.innerHTML = 
-      '<div class="card interactive-stage" style="text-align:center;padding:16px">' +
-        '<div style="font-size:32px">🌳</div>' +
-        '<h3 style="margin:6px 0;color:#2c3e50">' + totalNum + 'は いくつと いくつかな？</h3>' +
-        '<p style="font-size:14px;color:#555;margin:0">したの ' + (totalNum - 1) + 'つの もんだいカードで、あいている [ ? ] の すうじを えらんでね！</p>' +
-      '</div>';
-  } else if(bId === 'Battle20'){
-    card.innerHTML = 
-      '<div class="card interactive-stage" style="text-align:center;padding:16px">' +
-        '<div style="font-size:32px">⚡</div>' +
-        '<h3 style="margin:6px 0;color:#2c3e50">ピカチュウと かずの 木の もんだい！</h3>' +
-        '<p style="font-size:14px;color:#555;margin:0">したの 7つの もんだいカードで、あいている [ ? ] の すうじを えらんでね！</p>' +
-      '</div>';
-} else if(bId === 'Battle45' || bId === 'Battle45_2'){
+  } else if(bId === 'Battle45' || bId === 'Battle45_2'){
     // とけい
     const isHalf = bId === 'Battle45_2';
     card.innerHTML = 
@@ -3268,6 +3276,12 @@ function renderInteractiveStage(row){
           '<div class="coin-total-box">あつめた おかね: <span id="coinTotal" style="color:#e07a30">0</span> えん</div>' +
         '</div>' +
       '</div>';
+  }
+
+  if(card.innerHTML.trim()){
+    card.style.display = 'block';
+  } else {
+    card.style.display = 'none';
   }
 }
 
@@ -3740,6 +3754,14 @@ function renderQuestionCards(row){
   // ラベルには数は書かずポケモン名のみ表示（答えバレ防止）
   if(curQs[0] && curQs[0].isPaperRow){
     curQs.forEach((q, qi) => {
+      const isSavedValid = saved[qi] != null && (!q.choices || q.choices.includes(String(saved[qi])));
+      if(saved[qi] != null && !isSavedValid){
+        delete saved[qi];
+        if(S.answers[curIdx]) delete S.answers[curIdx][qi];
+        save();
+      }
+      const currentVal = isSavedValid ? String(saved[qi]) : '';
+
       const card = document.createElement('div');
       card.className = 'pd-card';
 
@@ -3753,7 +3775,7 @@ function renderQuestionCards(row){
 
       let choicesHtml = '';
       q.choices.forEach(ch => {
-        choicesHtml += '<button class="pd-btn ' + (saved[qi] === ch ? 'sel' : '') + '" data-val="' + ch + '">' + ch + '</button>';
+        choicesHtml += '<button class="pd-btn ' + (currentVal === ch ? 'sel' : '') + '" data-val="' + ch + '">' + ch + '</button>';
       });
 
       card.innerHTML = 
@@ -3767,7 +3789,7 @@ function renderQuestionCards(row){
           '<div class="pd-choices">' + choicesHtml + '</div>' +
         '</div>' +
         '<div class="pd-write-box">' +
-          '<span class="pd-write-num">' + (saved[qi] || '') + '</span>' +
+          '<span class="pd-write-num">' + (currentVal || '') + '</span>' +
         '</div>';
 
       const choices = card.querySelectorAll('.pd-btn');
@@ -3798,6 +3820,14 @@ function renderQuestionCards(row){
 
   // 3. 通常の個別問題カード（Battle 2 ヨーテリー＆チラーミィ、Battle 12〜16の分解ツリー、その他）
   curQs.forEach((q, qi) => {
+    const isSavedValid = saved[qi] != null && (!q.choices || q.choices.includes(String(saved[qi])));
+    if(saved[qi] != null && !isSavedValid){
+      delete saved[qi];
+      if(S.answers[curIdx]) delete S.answers[curIdx][qi];
+      save();
+    }
+    const currentVal = isSavedValid ? String(saved[qi]) : '';
+
     const card = document.createElement('div');
     card.className = 'q-card';
     
@@ -3817,7 +3847,7 @@ function renderQuestionCards(row){
           '</svg>' +
           '<div class="qtree-bottom-row">' +
             '<div class="qtree-box given">' + q.given + '</div>' +
-            '<div class="qtree-box target ' + (saved[qi] ? 'filled' : '') + '" id="qtreeTarget_' + qi + '">' + (saved[qi] || '?') + '</div>' +
+            '<div class="qtree-box target ' + (currentVal ? 'filled' : '') + '" id="qtreeTarget_' + qi + '">' + (currentVal || '?') + '</div>' +
           '</div>' +
         '</div>';
     }
@@ -3825,7 +3855,7 @@ function renderQuestionCards(row){
     // Battle 2やツリー問題等では右下の数字表示（pd-write-box）は出さない
     const writeBoxHtml = (q.hideWriteBox || q.isTreeQuestion) ? '' : 
       '<div class="pd-write-box">' +
-        '<span class="pd-write-num" id="qWrite_' + qi + '">' + (saved[qi] || '') + '</span>' +
+        '<span class="pd-write-num" id="qWrite_' + qi + '">' + (currentVal || '') + '</span>' +
       '</div>';
 
     card.innerHTML = 
@@ -3841,7 +3871,7 @@ function renderQuestionCards(row){
       '</div>';
 
     const vBtn = card.querySelector('.q-voice');
-    vBtn.onclick = () => speak(q.desc, vBtn);
+    if(vBtn) vBtn.onclick = () => speak(q.desc, vBtn);
 
     const choicesBox = card.querySelector('.choices');
     const writeBox = card.querySelector('#qWrite_' + qi);
@@ -3851,7 +3881,7 @@ function renderQuestionCards(row){
       const b = document.createElement('button');
       b.className = 'choice';
       b.textContent = ch;
-      if(saved[qi] === ch) b.classList.add('sel');
+      if(currentVal === ch) b.classList.add('sel');
 
       b.onclick = () => {
         choicesBox.querySelectorAll('.choice').forEach(x => x.classList.remove('sel'));
@@ -3882,7 +3912,7 @@ function updateThrow(){
   const neededQs = curQs.filter(q => !q.isInteractiveOnly);
   $('btnThrow').disabled = !neededQs.every(q => {
     const qi = curQs.indexOf(q);
-    return a[qi] != null;
+    return a[qi] != null && (!q.choices || q.choices.includes(String(a[qi])));
   });
 }
 function backToMap(){

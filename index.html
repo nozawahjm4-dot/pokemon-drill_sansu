@@ -1448,6 +1448,243 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
   color: var(--blue-d);
 }
 
+
+
+/* ==========================================================
+   NUMBER BOND TREES (Battle 12, 13, 14, 15, 16)
+   ========================================================== */
+.bond-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+}
+.bond-card {
+  background: #ffffff;
+  border: 3px solid #222222;
+  border-radius: 18px;
+  padding: 12px 14px;
+  box-shadow: 0 4px 0 #222222;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 140px;
+  max-width: 175px;
+  flex: 1 1 140px;
+}
+.bond-tree {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  margin-bottom: 6px;
+}
+.bond-top-box {
+  width: 52px;
+  height: 52px;
+  border: 3px solid #222222;
+  border-radius: 12px;
+  background: #f7faff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  font-weight: 900;
+  color: var(--blue-d);
+  box-shadow: 0 2px 0 #222222;
+}
+.bond-branch-svg {
+  width: 90px;
+  height: 22px;
+  overflow: visible;
+}
+.bond-bottom-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.bond-given-box {
+  width: 48px;
+  height: 48px;
+  border: 2.5px solid #222222;
+  border-radius: 10px;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  font-weight: 900;
+  color: #333333;
+}
+.bond-target-box {
+  width: 48px;
+  height: 48px;
+  border: 3px dashed #ff4d5e;
+  border-radius: 10px;
+  background: #fff8f8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 900;
+  color: #ff4d5e;
+  transition: all .2s;
+}
+.bond-target-box.filled {
+  border-style: solid;
+  border-color: #34c77b;
+  background: #e8f5e9;
+  color: #1b8a4f;
+  transform: scale(1.05);
+}
+.bond-apples-row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 4px 0 8px;
+  font-size: 13px;
+  padding: 0 4px;
+}
+.bond-apples-left, .bond-apples-right {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  max-width: 55px;
+}
+.bond-choices {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 6px;
+}
+.bond-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: 2px solid #222222;
+  background: #ffffff;
+  font-size: 19px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 2px 0 #222222;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .1s;
+}
+.bond-btn:hover, .bond-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 0 0 #222222;
+}
+.bond-btn.sel {
+  background: #ffd644;
+  border-color: #e07a00;
+  color: #222222;
+  transform: scale(1.1);
+}
+
+/* Battle 11 どちらがおおいかな */
+.b11-section {
+  background: #ffffff;
+  border: 3px solid #222222;
+  border-radius: 20px;
+  padding: 14px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 0 #222222;
+}
+.b11-sec-title {
+  font-size: 16px;
+  font-weight: 900;
+  color: var(--blue-d);
+  margin-bottom: 10px;
+}
+.b11-compare-row {
+  display: flex;
+  gap: 12px;
+  justify-content: space-around;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.b11-box {
+  flex: 1;
+  min-width: 135px;
+  border-radius: 16px;
+  border: 2.5px solid #222;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.b11-box.yellow-bg { background: #fffde6; border-color: #d4a000; }
+.b11-box.pink-bg { background: #ffeef2; border-color: #e06080; }
+.b11-pokes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  align-items: center;
+  min-height: 90px;
+}
+.b11-poke-item {
+  position: relative;
+  cursor: pointer;
+  transition: transform .15s;
+}
+.b11-poke-item img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2));
+}
+.b11-poke-item.counted::after {
+  content: "★";
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: #ffd644;
+  color: #b35900;
+  border: 2px solid #222;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+}
+.b11-choose-bar {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 10px;
+}
+.b11-choose-btn {
+  padding: 10px 18px;
+  border-radius: 14px;
+  border: 3px solid #222222;
+  background: #ffffff;
+  font-weight: 900;
+  font-size: 17px;
+  cursor: pointer;
+  box-shadow: 0 3px 0 #222222;
+  transition: all .15s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.b11-choose-btn:hover {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #222222;
+}
+.b11-choose-btn.sel {
+  background: #ffd644;
+  border-color: #e07a00;
+  transform: scale(1.08);
+  box-shadow: 0 3px 0 #b35900;
+}
+
 </style>
 </head>
 <body>
@@ -1492,10 +1729,15 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
       <div class="card poke-stage">
         <img id="bPoke" alt="ポケモン">
         <div class="poke-name" id="bName"></div>
-        <div id="bTypes"></div>
       </div>
-      <div class="card">
-        <h2 class="btitle" id="bTitle"></h2>
+      <div class="card battle-desc-card">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+          <h2 class="btitle" id="bTitle" style="margin:0"></h2>
+          <button class="hbtn" id="btnBattleVoice" style="font-size:15px;background:#ffd644;display:flex;align-items:center;gap:4px">
+            🔊 <span>きく</span>
+          </button>
+        </div>
+        <div id="bMainDesc" style="font-size:16px;font-weight:900;color:#222;margin-top:10px;line-height:1.6;background:#f8fbff;border:2px solid #ccd9f0;border-radius:14px;padding:10px 14px"></div>
       </div>
 
       <!-- アプリ上で直感的に遊べるインタラクティブステージ -->
@@ -1668,7 +1910,7 @@ function safeSetStorage(key, val){
    ========================================================= */
 const BG_LIST = Array.from({length:9},(_,i)=>`pokemon field${i+1}.jpeg`);
 const ART = id => `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
-const POINT_PER_CLEAR = 50;
+const POINT_PER_CLEAR = 10;
 const REWARD_STEP = 1000;
 
 /* タカラトミー公式モンコレラインナップ */
@@ -2141,10 +2383,6 @@ function openBattle(i){
   img.src = pid ? ART(pid) : ART(132);
 
   $('bName').textContent = row.pokemon_name + ' が あらわれた！';
-  $('bTypes').innerHTML = typeList(row.pokemon_type).map(t => {
-    const bFile = TYPE_MAP[t] || 'normal.png';
-    return '<span class="type-chip" style="background:' + ((TYPES[t]||TYPES['ノーマル'])[1]) + '"><img src="badges/' + bFile + '" class="chip-badge-img" alt="' + t + '"> ' + t + '</span>';
-  }).join('');
   $('bTitle').innerHTML = '<span class="bnum">バトル' + (i+1) + '</span>' + row.title;
 
   // 原本プリント画像
@@ -2152,6 +2390,17 @@ function openBattle(i){
   $('sheetImg').src = src;
   $('sheetImg').onclick = () => { $('sheetBig').src = src; openModal('mSheetModal'); };
   $('promptNote').textContent = row.prompt + ' ' + row.options;
+
+  // 説明文の設定＆読み上げボタン
+  const mainDesc = row.description1 || row.prompt || 'もんだいを といて ポケモンを つかまえよう！';
+  const descEl = $('bMainDesc');
+  if(descEl) descEl.textContent = mainDesc;
+
+  const speechText = row.title + '。' + mainDesc;
+  const vBtn = $('btnBattleVoice');
+  if(vBtn){
+    vBtn.onclick = () => speak(speechText, vBtn);
+  }
 
   // 問題データ構築（description1〜6反映）
   curQs = buildStageQuestions(row);
@@ -2164,14 +2413,12 @@ function openBattle(i){
 
   updateThrow();
 
-  // 自動読み上げ
+  // ドリルを開いたら自動で読み上げ
   setTimeout(() => {
-    const speechText = row.title + '。' + (row.description1 || row.description || '');
     speak(speechText);
-  }, 350);
+  }, 400);
 }
 
-/* アチャモ線結びの初期化 (Battle 1) */
 function initAchamoMatch(){
   const achamoCol = $('colAchamo');
   const appleCol = $('colApple');
@@ -2246,7 +2493,8 @@ function initAchamoMatch(){
   };
 }
 
-/* インタラクティブUIの描画 */
+
+
 function renderInteractiveStage(row){
   const card = $('bInteractiveCard');
   card.innerHTML = '';
@@ -2267,17 +2515,17 @@ function renderInteractiveStage(row){
       '</div>';
     initAchamoMatch();
   } else if(bId === 'Battle2'){
-    // ヨーテリー＆チラーミィの個別カウント
+    // ヨーテリー＆チラーミィ (答えになる「〇ひき」は非表示、丸のみ点灯)
     card.innerHTML = 
       '<div class="card interactive-stage">' +
         '<h3>👆 ポケモンを タップして かぞえよう！</h3>' +
         '<div class="b2-header">' +
           '<div class="b2-col">' +
-            '<div class="b2-score-title"><img src="' + ART(506) + '" alt="ヨーテリー"> ヨーテリー: <span id="cntYork" style="color:#e07a30;font-size:22px">0</span> / 6ひき</div>' +
+            '<div class="b2-score-title"><img src="' + ART(506) + '" alt="ヨーテリー"> ヨーテリー</div>' +
             '<div class="b2-dots" id="dotsYork"></div>' +
           '</div>' +
           '<div class="b2-col">' +
-            '<div class="b2-score-title"><img src="' + ART(572) + '" alt="チラーミィ"> チラーミィ: <span id="cntMinc" style="color:#6b5bb5;font-size:22px">0</span> / 7ひき</div>' +
+            '<div class="b2-score-title"><img src="' + ART(572) + '" alt="チラーミィ"> チラーミィ</div>' +
             '<div class="b2-dots" id="dotsMinc"></div>' +
           '</div>' +
         '</div>' +
@@ -2315,18 +2563,18 @@ function renderInteractiveStage(row){
       '</div>';
     initThreeColMatch([6, 7, 8, 9, 10], 656, 'ケロマツ');
   } else if(bId === 'Battle5' || bId === 'Battle6'){
-    // りんごの分解 (5はいくつといくつ)
+    // おさら1とおさら2の分解
     card.innerHTML = 
       '<div class="card interactive-stage">' +
         '<h3>🍎 おさらに りんごを わけてみよう！ (ぜんぶで 5こ)</h3>' +
         '<div class="plate-wrap">' +
           '<div class="plate-box">' +
-            '<div style="font-weight:900;color:var(--blue-d)">うえの おさら</div>' +
+            '<div style="font-weight:900;color:var(--blue-d)">おさら1</div>' +
             '<div class="plate-dish" id="plateTop"></div>' +
           '</div>' +
           '<div style="font-size:28px;font-weight:900;color:#e07a30">＋</div>' +
           '<div class="plate-box">' +
-            '<div style="font-weight:900;color:var(--blue-d)">したの おさら</div>' +
+            '<div style="font-weight:900;color:var(--blue-d)">おさら2</div>' +
             '<div class="plate-dish" id="plateBottom"></div>' +
           '</div>' +
         '</div>' +
@@ -2338,23 +2586,53 @@ function renderInteractiveStage(row){
       '</div>';
     initAppleSplit(row);
   } else if(bId === 'Battle9'){
-    // エテボースのすごろく
+    // エテボースのすごろく (何度でも入れ直し可能、ダミー数字入りシャッフル)
     card.innerHTML = 
       '<div class="card interactive-stage">' +
         '<h3>🐒 あいている マスに すうじを いれよう！(1〜10)</h3>' +
+        '<p style="font-size:14px;color:#666;margin:0 0 8px">したのすうじをタップして、マスをえらんでね。はいっているマスをタップすると、やりなおせるよ！</p>' +
         '<div class="seq-track" id="seqTrack"></div>' +
         '<div class="seq-palette" id="seqPalette"></div>' +
+        '<div class="match-status" id="seqDoneMsg">🎉 1から 10まで ぜんぶ ならんだよ！</div>' +
       '</div>';
-    initSequenceFill([1, null, 3, null, null, 6, null, 8, null, 10], [2, 4, 5, 7, 9]);
+    initSequenceFill(
+      [1, null, 3, null, null, 6, null, 8, null, 10],
+      [2, 4, 5, 7, 9],
+      [7, 3, 2, 8, 5, 4, 6, 9, 1] // ダミー数字入りシャッフル
+    );
   } else if(bId === 'Battle10'){
-    // ミミッキュのぎゃくじゅん
+    // ミミッキュのぎゃくじゅん (何度でも入れ直し可能、ダミー数字入りシャッフル)
     card.innerHTML = 
       '<div class="card interactive-stage">' +
         '<h3>👻 10から 1まで ぎゃくに ならべよう！</h3>' +
+        '<p style="font-size:14px;color:#666;margin:0 0 8px">したのすうじをタップして、マスをえらんでね。はいっているマスをタップすると、やりなおせるよ！</p>' +
         '<div class="seq-track" id="seqTrack"></div>' +
         '<div class="seq-palette" id="seqPalette"></div>' +
+        '<div class="match-status" id="seqDoneMsg">🎉 10から 1まで カウントダウン できたよ！</div>' +
       '</div>';
-    initSequenceFill([10, 9, null, 7, null, null, 4, null, 2, null], [8, 6, 5, 3, 1]);
+    initSequenceFill(
+      [10, 9, null, 7, null, null, 4, null, 2, null],
+      [8, 6, 5, 3, 1],
+      [6, 2, 8, 7, 3, 5, 9, 1, 4] // ダミー数字入りシャッフル
+    );
+  } else if(bId === 'Battle11'){
+    // ユキメノコ どちらがおおいかな（紙の手本再現）
+    card.innerHTML = 
+      '<div class="card interactive-stage">' +
+        '<h3>❄️ ポケモンの かずを かぞえて、おおい ほうを えらぼう！</h3>' +
+        '<div id="b11Container"></div>' +
+      '</div>';
+    initBattle11Compare();
+  } else if(['Battle12','Battle13','Battle14','Battle15','Battle16'].includes(bId)){
+    // 数の分解ツリー（紙の手本完全再現：シールの代わりに数字選択）
+    const totalNum = bId === 'Battle12' ? 6 : bId === 'Battle13' ? 7 : bId === 'Battle14' ? 8 : bId === 'Battle15' ? 9 : 10;
+    card.innerHTML = 
+      '<div class="card interactive-stage">' +
+        '<h3>🌳 ' + totalNum + 'は いくつと いくつかな？</h3>' +
+        '<p style="font-size:14px;color:#555;margin:0 0 10px">あいている [ ? ] のマスにあてはまる すうじを えらんでね！</p>' +
+        '<div class="bond-grid" id="bondGrid"></div>' +
+      '</div>';
+    initBondTrees(row, totalNum);
   } else if(bId === 'Battle45' || bId === 'Battle45_2'){
     // とけい
     const isHalf = bId === 'Battle45_2';
@@ -2391,7 +2669,6 @@ function renderInteractiveStage(row){
   }
 }
 
-/* Battle 2: ヨーテリー＆チラーミィ カウント */
 function initBattle2Count(){
   const area = $('countArea');
   const dotsY = $('dotsYork');
@@ -2409,8 +2686,8 @@ function initBattle2Count(){
   let countMinc = 0;
 
   const list = [
-    ...Array(6).fill({ type:'york', name:'ヨーテリー', id:506, tag:'🐶' }),
-    ...Array(7).fill({ type:'minc', name:'チラーミィ', id:572, tag:'🐭' })
+    ...Array(6).fill({ type:'york', name:'ヨーテリー', id:506 }),
+    ...Array(7).fill({ type:'minc', name:'チラーミィ', id:572 })
   ];
 
   shuffle(list).forEach(p => {
@@ -2422,22 +2699,19 @@ function initBattle2Count(){
       if(!d.classList.contains('counted')){
         d.classList.add('counted');
         const badge = d.querySelector('.count-badge');
+        badge.textContent = '⭐';
         if(p.type === 'york'){
           countYork++;
-          badge.textContent = countYork;
           badge.style.background = '#e07a30';
-          $('cntYork').textContent = countYork;
           const dot = $('dotY_' + (countYork - 1));
           if(dot) dot.classList.add('filled-york');
-          if(countYork === 6) toast('🐶 ヨーテリーを 6ぴき ぜんぶ みつけたよ！');
+          if(countYork === 6) toast('🐶 ヨーテリーを ぜんぶ みつけたよ！');
         } else {
           countMinc++;
-          badge.textContent = countMinc;
           badge.style.background = '#8a859e';
-          $('cntMinc').textContent = countMinc;
           const dot = $('dotM_' + (countMinc - 1));
           if(dot) dot.classList.add('filled-minc');
-          if(countMinc === 7) toast('🐭 チラーミィを 7ひき ぜんぶ みつけたよ！');
+          if(countMinc === 7) toast('🐭 チラーミィを ぜんぶ みつけたよ！');
         }
       }
     };
@@ -2624,14 +2898,44 @@ function initAppleSplit(row){
   updatePlates();
 }
 
-/* Battle 9 & 10: すごろく数字埋め */
-function initSequenceFill(board, chips){
+
+
+function initSequenceFill(board, correctAnswers, paletteChips){
   const track = $('seqTrack');
   const pal = $('seqPalette');
   track.innerHTML = '';
   pal.innerHTML = '';
 
   let selectedChip = null;
+  const userSlots = {}; // slotIdx => chipVal
+
+  function checkCompletion(){
+    let correct = true;
+    let filledCount = 0;
+    const emptyIndices = board.map((v, i) => v === null ? i : -1).filter(i => i !== -1);
+    emptyIndices.forEach((slotIdx, i) => {
+      if(userSlots[slotIdx] == null){
+        correct = false;
+      } else {
+        filledCount++;
+        if(parseInt(userSlots[slotIdx], 10) !== correctAnswers[i]){
+          correct = false;
+        }
+      }
+    });
+
+    if(filledCount === emptyIndices.length){
+      if(correct){
+        $('seqDoneMsg').style.display = 'block';
+        (S.answers[curIdx] = S.answers[curIdx] || {})._completed = true;
+        save();
+        updateThrow();
+        speak('ぜんぶの マスが ただしく ならんだよ！ すばらしい！');
+      } else {
+        toast('どこかの すうじが ちがうよ！ もういちど かんがえてみよう');
+      }
+    }
+  }
 
   board.forEach((val, idx) => {
     const slot = document.createElement('div');
@@ -2639,51 +2943,199 @@ function initSequenceFill(board, chips){
     slot.textContent = val !== null ? val : '?';
     slot.dataset.idx = idx;
 
-    slot.onclick = () => {
-      if(slot.classList.contains('empty') && selectedChip){
-        slot.textContent = selectedChip.dataset.val;
-        slot.classList.remove('empty');
-        slot.classList.add('filled');
-        selectedChip.classList.add('used');
-        selectedChip = null;
-        toast('マスに すうじが はいったよ！');
-      }
-    };
+    if(val === null){
+      slot.onclick = () => {
+        // すでに数字が入っている場合は取り出してやり直し可能
+        if(userSlots[idx] != null && !selectedChip){
+          const returnedVal = userSlots[idx];
+          delete userSlots[idx];
+          slot.textContent = '?';
+          slot.classList.remove('filled');
+          slot.classList.add('empty');
+          // パレットのチップを使用可能に戻す
+          const usedChip = pal.querySelector('.seq-chip.used[data-val="' + returnedVal + '"]');
+          if(usedChip) usedChip.classList.remove('used');
+          toast('すうじ ' + returnedVal + ' を もどしたよ！');
+          checkCompletion();
+          return;
+        }
+
+        // 選択中のチップを入れる
+        if(selectedChip){
+          // もしすでに数字が入っていたら前のチップを戻す
+          if(userSlots[idx] != null){
+            const prevVal = userSlots[idx];
+            const prevChip = pal.querySelector('.seq-chip.used[data-val="' + prevVal + '"]');
+            if(prevChip) prevChip.classList.remove('used');
+          }
+
+          const chipVal = selectedChip.dataset.val;
+          userSlots[idx] = chipVal;
+          slot.textContent = chipVal;
+          slot.classList.remove('empty');
+          slot.classList.add('filled');
+
+          selectedChip.classList.add('used');
+          selectedChip.style.transform = '';
+          selectedChip = null;
+          checkCompletion();
+        }
+      };
+    }
     track.appendChild(slot);
   });
 
-  chips.forEach(val => {
+  paletteChips.forEach(val => {
     const chip = document.createElement('div');
     chip.className = 'seq-chip';
     chip.textContent = val;
     chip.dataset.val = val;
 
     chip.onclick = () => {
+      if(chip.classList.contains('used')) return;
       document.querySelectorAll('.seq-chip').forEach(c => c.style.transform = '');
-      chip.style.transform = 'scale(1.15)';
+      chip.style.transform = 'scale(1.18)';
       selectedChip = chip;
-      toast('すうじ ' + val + ' を えらんだよ！ 空いているマスを タップしてね');
+      toast('すうじ ' + val + ' を えらんだよ！ あいているマスを タップしてね');
     };
     pal.appendChild(chip);
   });
 }
 
-let coinSum = 0;
-function addCoin(val){
-  coinSum += val;
-  const t = $('coinTotal');
-  if(t) t.textContent = coinSum;
-  toast('🪙 ' + val + 'えん いれたよ！ 合計: ' + coinSum + 'えん');
+function initBattle11Compare(){
+  const container = $('b11Container');
+  container.innerHTML = '';
+  const saved = S.answers[curIdx] || {};
+
+  const sections = [
+    {
+      qIndex: 0,
+      title: 'もんだい 1：かずが おおい ほうを えらぼう',
+      p1: { name: 'ユキメノコ', count: 7, id: 478, bg: 'yellow-bg' },
+      p2: { name: 'マニューラ', count: 6, id: 461, bg: '' }
+    },
+    {
+      qIndex: 1,
+      title: 'もんだい 2：かずが おおい ほうを えらぼう',
+      p1: { name: 'ユキメノコ', count: 8, id: 478, bg: 'pink-bg' },
+      p2: { name: 'ユキカブリ', count: 9, id: 459, bg: '' }
+    }
+  ];
+
+  sections.forEach(sec => {
+    const wrap = document.createElement('div');
+    wrap.className = 'b11-section';
+
+    let p1Html = '';
+    for(let k=0; k<sec.p1.count; k++){
+      p1Html += '<div class="b11-poke-item" onclick="this.classList.toggle(\'counted\')"><img src="' + ART(sec.p1.id) + '" alt="' + sec.p1.name + '"></div>';
+    }
+
+    let p2Html = '';
+    for(let k=0; k<sec.p2.count; k++){
+      p2Html += '<div class="b11-poke-item" onclick="this.classList.toggle(\'counted\')"><img src="' + ART(sec.p2.id) + '" alt="' + sec.p2.name + '"></div>';
+    }
+
+    wrap.innerHTML = 
+      '<div class="b11-sec-title">' + sec.title + '</div>' +
+      '<div class="b11-compare-row">' +
+        '<div class="b11-box ' + sec.p1.bg + '">' +
+          '<div style="font-weight:900;color:#222;margin-bottom:6px">' + sec.p1.name + '</div>' +
+          '<div class="b11-pokes">' + p1Html + '</div>' +
+        '</div>' +
+        '<div class="b11-box ' + sec.p2.bg + '">' +
+          '<div style="font-weight:900;color:#222;margin-bottom:6px">' + sec.p2.name + '</div>' +
+          '<div class="b11-pokes">' + p2Html + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="b11-choose-bar">' +
+        '<button class="b11-choose-btn ' + (saved[sec.qIndex] === sec.p1.name ? 'sel' : '') + '" data-val="' + sec.p1.name + '"><img src="' + ART(sec.p1.id) + '" style="width:28px;height:28px"> ' + sec.p1.name + '</button>' +
+        '<button class="b11-choose-btn ' + (saved[sec.qIndex] === sec.p2.name ? 'sel' : '') + '" data-val="' + sec.p2.name + '"><img src="' + ART(sec.p2.id) + '" style="width:28px;height:28px"> ' + sec.p2.name + '</button>' +
+      '</div>';
+
+    const btns = wrap.querySelectorAll('.b11-choose-btn');
+    btns.forEach(btn => {
+      btn.onclick = () => {
+        btns.forEach(b => b.classList.remove('sel'));
+        btn.classList.add('sel');
+        const val = btn.dataset.val;
+        (S.answers[curIdx] = S.answers[curIdx] || {})[sec.qIndex] = val;
+        save();
+        updateThrow();
+        speak(val + '！');
+      };
+    });
+
+    container.appendChild(wrap);
+  });
 }
 
-/* 各問題カードの描画 */
+function initBondTrees(row, totalNum){
+  const grid = $('bondGrid');
+  grid.innerHTML = '';
+  const saved = S.answers[curIdx] || {};
+
+  curQs.forEach((q, qi) => {
+    const card = document.createElement('div');
+    card.className = 'bond-card';
+
+    let leftApples = '';
+    for(let k=0; k<q.given; k++) leftApples += '🍎';
+    let rightApples = '';
+    const rightAns = totalNum - q.given;
+    for(let k=0; k<rightAns; k++) rightApples += '🍎';
+
+    let choicesHtml = '';
+    q.choices.forEach(ch => {
+      choicesHtml += '<button class="bond-btn ' + (saved[qi] === ch ? 'sel' : '') + '" data-val="' + ch + '">' + ch + '</button>';
+    });
+
+    card.innerHTML = 
+      '<div class="bond-tree">' +
+        '<div class="bond-top-box">' + totalNum + '</div>' +
+        '<svg class="bond-branch-svg" viewBox="0 0 90 22">' +
+          '<line x1="45" y1="0" x2="22" y2="22" stroke="#222" stroke-width="2.5" stroke-linecap="round"/>' +
+          '<line x1="45" y1="0" x2="68" y2="22" stroke="#222" stroke-width="2.5" stroke-linecap="round"/>' +
+        '</svg>' +
+        '<div class="bond-bottom-row">' +
+          '<div class="bond-given-box">' + q.given + '</div>' +
+          '<div class="bond-target-box ' + (saved[qi] ? 'filled' : '') + '" id="targetBox_' + qi + '">' + (saved[qi] || '?') + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="bond-apples-row">' +
+        '<div class="bond-apples-left">' + leftApples + '</div>' +
+        '<div class="bond-apples-right">' + rightApples + '</div>' +
+      '</div>' +
+      '<div class="bond-choices">' + choicesHtml + '</div>';
+
+    const btns = card.querySelectorAll('.bond-btn');
+    const target = card.querySelector('#targetBox_' + qi);
+
+    btns.forEach(btn => {
+      btn.onclick = () => {
+        btns.forEach(b => b.classList.remove('sel'));
+        btn.classList.add('sel');
+        const val = btn.dataset.val;
+        target.textContent = val;
+        target.classList.add('filled');
+        (S.answers[curIdx] = S.answers[curIdx] || {})[qi] = val;
+        save();
+        updateThrow();
+        speak(val + '！');
+      };
+    });
+
+    grid.appendChild(card);
+  });
+}
+
 function renderQuestionCards(row){
   const box = $('bQuestionCards');
   box.innerHTML = '';
   const saved = S.answers[curIdx] || {};
 
   // 1. 紙のドリル手本再現モード（Battle 3 パチリス、Battle 7 アンノーン、Battle 22 ウオノラゴン等）
-  // 左：パチリスの絵 ➔ その隣：選択肢から選ぶ ➔ その隣：一つ数字を書く四角い枠
+  // ラベルには数は書かずポケモン名のみ表示（答えバレ防止）
   if(curQs[0] && curQs[0].isPaperRow){
     curQs.forEach((q, qi) => {
       const card = document.createElement('div');
@@ -2705,7 +3157,7 @@ function renderQuestionCards(row){
       card.innerHTML = 
         '<div class="pd-left">' +
           '<div class="pd-icons">' + pokeHtml + '</div>' +
-          '<div class="pd-label">' + q.pokemon + ' ' + q.count + 'ひき</div>' +
+          '<div class="pd-label">' + q.pokemon + '</div>' +
           '<div class="pd-ten-frame">' + dotsHtml + '</div>' +
         '</div>' +
         '<div class="pd-choices-box">' +
@@ -2737,29 +3189,26 @@ function renderQuestionCards(row){
     return;
   }
 
-  // 2. インタラクティブ専用ステージ（Battle 4 ピッピ、Battle 8 ケロマツなど）
-  if(curQs[0] && curQs[0].isInteractiveOnly){
-    const info = document.createElement('div');
-    info.className = 'card';
-    info.style.textAlign = 'center';
-    info.style.fontWeight = '900';
-    info.style.color = 'var(--blue-d)';
-    info.style.fontSize = '16px';
-    info.innerHTML = '✏️ うえの がめんで、せんで むすんで クリアしよう！';
-    box.appendChild(info);
-    return;
+  // 2. インタラクティブ専用ステージ（Battle 4 ピッピ、Battle 8 ケロマツ、Battle 9・10、Battle 11、Battle 12〜16など）
+  if(curQs[0] && (curQs[0].isInteractiveOnly || curQs[0].isB11 || curQs[0].isBondRow)){
+    return; // インタラクティブステージが問題そのもののUIなので下の重複カードは表示しない
   }
 
-  // 3. 通常の個別問題カード（Battle 2 ヨーテリー＆チラーミィ、description1〜6対応）
+  // 3. 通常の個別問題カード（Battle 2 ヨーテリー＆チラーミィ、その他）
   curQs.forEach((q, qi) => {
     const card = document.createElement('div');
     card.className = 'q-card';
     
-    // Battle 2 専用のカスタム見出しアイコン
     let pokeIcon = '';
     if(q.pokeId){
       pokeIcon = '<img src="' + ART(q.pokeId) + '" style="width:32px;height:32px;vertical-align:middle;margin-right:6px">';
     }
+
+    // Battle 2等では答えバレ防止のため右下の数字表示（pd-write-box）は出さない
+    const writeBoxHtml = q.hideWriteBox ? '' : 
+      '<div class="pd-write-box">' +
+        '<span class="pd-write-num" id="qWrite_' + qi + '">' + (saved[qi] || '') + '</span>' +
+      '</div>';
 
     card.innerHTML = 
       '<div class="q-header">' +
@@ -2769,9 +3218,7 @@ function renderQuestionCards(row){
       '</div>' +
       '<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:10px;flex-wrap:wrap">' +
         '<div class="choices" style="flex:1"></div>' +
-        '<div class="pd-write-box">' +
-          '<span class="pd-write-num" id="qWrite_' + qi + '">' + (saved[qi] || '') + '</span>' +
-        '</div>' +
+        writeBoxHtml +
       '</div>';
 
     const vBtn = card.querySelector('.q-voice');

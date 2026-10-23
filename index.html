@@ -366,8 +366,30 @@ const typeList = t => (t||'ノーマル').split(/[・/、]/).map(s=>s.trim()).fi
 
 /* ================= state ================= */
 const LS_KEY = 'pokeZukanDrill_v2';
-let S = JSON.parse(localStorage.getItem(LS_KEY) || 'null') || { name:'', points:0, rewardsGiven:0, currentBattleIndex:0, answers:{}, cleared:[], caught:[], allClearRewarded:false };
-const save = () => localStorage.setItem(LS_KEY, JSON.stringify(S));
+
+/* ===== フェイルセーフ：エラーハンドラ＆安全なストレージ ===== */
+window.addEventListener('error', function(e) {
+  console.error('Captured error:', e);
+  const ld = document.getElementById('loading');
+  if(ld) ld.style.display = 'none';
+});
+
+function safeGetStorage(key, def){
+  try {
+    const v = localStorage.getItem(key);
+    return v ? JSON.parse(v) : def;
+  } catch(e) {
+    return def;
+  }
+}
+function safeSetStorage(key, val){
+  try {
+    localStorage.setItem(key, JSON.stringify(val));
+  } catch(e) {}
+}
+
+let S = safeGetStorage(LS_KEY, null) || { name:'', points:0, rewardsGiven:0, currentBattleIndex:0, answers:{}, cleared:[], caught:[], allClearRewarded:false };
+const save = () => safeSetStorage(LS_KEY, S);
 
 let ROWS = [], curIdx = -1, curQs = [];
 const $ = id => document.getElementById(id);
@@ -816,6 +838,7 @@ function updatePoints(bump){
 
 /* ================= 初期化 ================= */
 function init(){
+  try {
   $('bg-image-layer').style.backgroundImage = `url("${BG_LIST[Math.random() * BG_LIST.length | 0]}")`;
   const setH = () => document.documentElement.style.setProperty('--hdr', $('hdr').offsetHeight + 'px');
   setH();
@@ -857,9 +880,19 @@ function init(){
   setTimeout(scrollToCurrent, 100);
 
   if(!S.name) openModal('mWelcome');
+  } catch(err) {
+    console.error('Init error:', err);
+  } finally {
+    const ld = document.getElementById('loading');
+    if(ld) ld.style.display = 'none';
+  }
 }
 
-init();
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
 </script>
 </body>
 </html>

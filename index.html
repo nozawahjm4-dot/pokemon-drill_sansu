@@ -1872,10 +1872,6 @@ function layoutMap(){
     t.appendChild(bWrap);
 
     t.onclick = () => {
-      if(i > S.currentBattleIndex && !S.cleared.includes(i)){
-        alert('まだ すすめないよ！\nまえの バトルを クリアしてね。');
-        return;
-      }
       openBattle(i);
     };
     tilesBox.appendChild(t);
@@ -2126,6 +2122,129 @@ function buildStageQuestions(row){
   }];
 }
 
+
+
+function openBattle(i){
+  curIdx = i;
+  const row = ROWS[i];
+  if(!row) return;
+
+  $('map').classList.remove('active');
+  $('battle').classList.add('active');
+  window.scrollTo(0, 0);
+
+  // ポケモンステージ
+  const pid = pokeId(row.pokemon_name);
+  const img = $('bPoke');
+  img.classList.remove('caught');
+  img.style.visibility = '';
+  img.src = pid ? ART(pid) : ART(132);
+
+  $('bName').textContent = row.pokemon_name + ' が あらわれた！';
+  $('bTypes').innerHTML = typeList(row.pokemon_type).map(t => {
+    const bFile = TYPE_MAP[t] || 'normal.png';
+    return '<span class="type-chip" style="background:' + ((TYPES[t]||TYPES['ノーマル'])[1]) + '"><img src="badges/' + bFile + '" class="chip-badge-img" alt="' + t + '"> ' + t + '</span>';
+  }).join('');
+  $('bTitle').innerHTML = '<span class="bnum">バトル' + (i+1) + '</span>' + row.title;
+
+  // 原本プリント画像
+  const src = row.battle + '.jpg';
+  $('sheetImg').src = src;
+  $('sheetImg').onclick = () => { $('sheetBig').src = src; openModal('mSheetModal'); };
+  $('promptNote').textContent = row.prompt + ' ' + row.options;
+
+  // 問題データ構築（description1〜6反映）
+  curQs = buildStageQuestions(row);
+
+  // インタラクティブ・ドリルステージの描画
+  renderInteractiveStage(row);
+
+  // 各問題カードの描画
+  renderQuestionCards(row);
+
+  updateThrow();
+
+  // 自動読み上げ
+  setTimeout(() => {
+    const speechText = row.title + '。' + (row.description1 || row.description || '');
+    speak(speechText);
+  }, 350);
+}
+
+/* アチャモ線結びの初期化 (Battle 1) */
+function initAchamoMatch(){
+  const achamoCol = $('colAchamo');
+  const appleCol = $('colApple');
+  if(!achamoCol || !appleCol) return;
+  achamoCol.innerHTML = '';
+  appleCol.innerHTML = '';
+
+  for(let i=0; i<7; i++){
+    const d = document.createElement('div');
+    d.className = 'match-node';
+    d.dataset.type = 'achamo';
+    d.dataset.idx = i;
+    d.innerHTML = '<img src="' + ART(255) + '" alt="アチャモ"><span>アチャモ ' + (i+1) + '</span>';
+    achamoCol.appendChild(d);
+  }
+  for(let i=0; i<8; i++){
+    const d = document.createElement('div');
+    d.className = 'match-node';
+    d.dataset.type = 'apple';
+    d.dataset.idx = i;
+    d.innerHTML = '<span style="font-size:28px">🍎</span><span>りんご ' + (i+1) + '</span>';
+    appleCol.appendChild(d);
+  }
+
+  let selectedAchamo = null;
+  const connections = [];
+
+  function drawLines(){
+    const svg = $('matchLines');
+    const box = $('matchBox').getBoundingClientRect();
+    if(!box.width || !box.height) return;
+    svg.setAttribute('viewBox', '0 0 ' + box.width + ' ' + box.height);
+    svg.innerHTML = connections.map(conn => {
+      const a = conn.achamo.getBoundingClientRect();
+      const b = conn.apple.getBoundingClientRect();
+      const x1 = a.right - box.left;
+      const y1 = a.top + a.height/2 - box.top;
+      const x2 = b.left - box.left;
+      const y2 = b.top + b.height/2 - box.top;
+      return '<path d="M ' + x1 + ' ' + y1 + ' C ' + ((x1+x2)/2) + ' ' + y1 + ', ' + ((x1+x2)/2) + ' ' + y2 + ', ' + x2 + ' ' + y2 + '" fill="none" stroke="#ff4d5e" stroke-width="4" stroke-linecap="round"/>';
+    }).join('');
+  }
+
+  window.addEventListener('resize', drawLines);
+
+  $('matchBox').onclick = (e) => {
+    const node = e.target.closest('.match-node');
+    if(!node) return;
+
+    if(node.dataset.type === 'achamo'){
+      document.querySelectorAll('#colAchamo .match-node').forEach(x=>x.classList.remove('selected'));
+      node.classList.add('selected');
+      selectedAchamo = node;
+    } else if(node.dataset.type === 'apple' && selectedAchamo){
+      // 結ぶ
+      if(!connections.some(c=>c.achamo===selectedAchamo || c.apple===node)){
+        connections.push({ achamo: selectedAchamo, apple: node });
+        selectedAchamo.classList.add('connected');
+        node.classList.add('connected');
+        drawLines();
+        if(connections.length >= 7){
+          $('matchDoneMsg').style.display = 'block';
+          (S.answers[curIdx] = S.answers[curIdx] || {})._completed = true;
+          save();
+          updateThrow();
+          speak('7くみ むすべたよ！ りんごが 1こ あまったね！');
+        }
+      }
+      selectedAchamo.classList.remove('selected');
+      selectedAchamo = null;
+    }
+  };
+}
 
 /* インタラクティブUIの描画 */
 function renderInteractiveStage(row){

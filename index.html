@@ -1758,6 +1758,20 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
   box-shadow: 0 3px 0 #b35900;
 }
 
+
+.coin-badge{
+  display:inline-flex;align-items:center;justify-content:center;
+  font-weight:900;border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,0.15);border:2px solid #333;
+}
+.coin-badge.coin-100{
+  width:36px;height:36px;background:linear-gradient(135deg, #f5f5f5, #e0e0e0);color:#333;font-size:11px;border-color:#9e9e9e;
+}
+.coin-badge.coin-10{
+  width:34px;height:34px;background:linear-gradient(135deg, #d7ccc8, #bcaaa4);color:#4e342e;font-size:11px;border-color:#8d6e63;
+}
+.coin-badge.coin-1{
+  width:30px;height:30px;background:linear-gradient(135deg, #fafafa, #eeeeee);color:#616161;font-size:10px;border-color:#bdbdbd;
+}
 </style>
 </head>
 <body>
@@ -2225,6 +2239,72 @@ function scrollToCurrent(){
    ========================================================= */
 
 
+
+// --- Visual Helpers for faithful drill reproduction ---
+function makeClockSvg(hour, minute, size = 110) {
+  const cx = 60, cy = 60;
+  const hourAngle = ((hour % 12) + minute / 60) * 30;
+  const minAngle = minute * 6;
+  const rad = deg => (deg - 90) * Math.PI / 180;
+  const hx = cx + 26 * Math.cos(rad(hourAngle));
+  const hy = cy + 26 * Math.sin(rad(hourAngle));
+  const mx = cx + 38 * Math.cos(rad(minAngle));
+  const my = cy + 38 * Math.sin(rad(minAngle));
+  
+  let marks = '';
+  for(let n = 1; n <= 12; n++){
+    const a = n * 30;
+    const nx = cx + 40 * Math.cos(rad(a));
+    const ny = cy + 40 * Math.sin(rad(a)) + 4;
+    marks += '<text x="' + nx.toFixed(1) + '" y="' + ny.toFixed(1) + '" text-anchor="middle" font-size="11" font-weight="900" fill="#333">' + n + '</text>';
+  }
+  return '<div style="display:flex;justify-content:center;margin:8px 0;">' +
+    '<svg width="' + size + '" height="' + size + '" viewBox="0 0 120 120" style="background:#fff;border-radius:50%;box-shadow:0 3px 6px rgba(0,0,0,0.15);border:3px solid #ffcb05">' +
+      '<circle cx="' + cx + '" cy="' + cy + '" r="54" fill="#ffffff" stroke="#2a4b7c" stroke-width="3"/>' +
+      marks +
+      '<line x1="' + cx + '" y1="' + cy + '" x2="' + hx.toFixed(1) + '" y2="' + hy.toFixed(1) + '" stroke="#e53935" stroke-width="4.5" stroke-linecap="round"/>' +
+      '<line x1="' + cx + '" y1="' + cy + '" x2="' + mx.toFixed(1) + '" y2="' + my.toFixed(1) + '" stroke="#1e88e5" stroke-width="3.5" stroke-linecap="round"/>' +
+      '<circle cx="' + cx + '" cy="' + cy + '" r="4" fill="#333"/>' +
+    '</svg>' +
+  '</div>';
+}
+
+function makeTrackHtml(list, targetIdx) {
+  let html = '<div style="display:flex;align-items:center;justify-content:center;gap:6px;margin:10px 0;flex-wrap:wrap">';
+  list.forEach((num, idx) => {
+    const isTarget = idx === targetIdx;
+    if(idx > 0) html += '<span style="color:#aaa;font-weight:900;font-size:16px">➔</span>';
+    html += '<div style="' +
+      'width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;' +
+      'font-size:' + (isTarget ? '20px' : '17px') + ';font-weight:900;' +
+      (isTarget ? 'background:#fff8db;border:3px dashed #ff9800;color:#e65100;box-shadow:0 2px 5px rgba(255,152,0,0.3);' : 'background:#fff;border:2px solid #90caf9;color:#1565c0;') +
+      '">' + (isTarget ? '？' : num) + '</div>';
+  });
+  html += '</div>';
+  return html;
+}
+
+function makeMoneyHtml(c100, c10, c1) {
+  let html = '<div style="background:#fff9e6;border:2px solid #ffd54f;border-radius:14px;padding:10px;margin:8px 0;display:flex;flex-direction:column;gap:6px">';
+  if(c100 > 0){
+    let coins = '';
+    for(let i=0; i<c100; i++) coins += '<span class="coin-badge coin-100">100円</span>';
+    html += '<div style="display:flex;align-items:center;gap:8px"><span style="font-size:12px;font-weight:900;color:#555;width:60px">100円玉:</span><div style="display:flex;flex-wrap:wrap;gap:6px">' + coins + '</div></div>';
+  }
+  if(c10 > 0){
+    let coins = '';
+    for(let i=0; i<c10; i++) coins += '<span class="coin-badge coin-10">10円</span>';
+    html += '<div style="display:flex;align-items:center;gap:8px"><span style="font-size:12px;font-weight:900;color:#555;width:60px">10円玉:</span><div style="display:flex;flex-wrap:wrap;gap:6px">' + coins + '</div></div>';
+  }
+  if(c1 > 0){
+    let coins = '';
+    for(let i=0; i<c1; i++) coins += '<span class="coin-badge coin-1">1円</span>';
+    html += '<div style="display:flex;align-items:center;gap:8px"><span style="font-size:12px;font-weight:900;color:#555;width:60px">1円玉:</span><div style="display:flex;flex-wrap:wrap;gap:6px">' + coins + '</div></div>';
+  }
+  html += '</div>';
+  return html;
+}
+
 function buildStageQuestions(row){
   const bId = row.battle;
   const descs = [row.description1, row.description2, row.description3, row.description4, row.description5, row.description6].filter(Boolean);
@@ -2470,11 +2550,16 @@ function buildStageQuestions(row){
     ];
   }
 
-  // Battle 22: ウオノラゴン 11から15
+  // =========================================================================
+  // BATTLES 22 〜 55_2 (+ Minigame): 原本ドリルスキャン完全準拠・忠実再現
+  // （CSVの誤ったprompt/こたえは無視し、ドリルの本物画像の内容を100%忠実に出題）
+  // =========================================================================
+
+  // Battle 22: ウオノラゴン 11から15のかず（10のまとまり＋ばらのボール）
   if(bId === 'Battle22'){
     return [11, 12, 13, 14, 15].map((n, idx) => ({
       qNum: idx + 1,
-      desc: 'モンスターボール ' + n + 'こ：かずを かぞえて、すうじを えらびましょう。',
+      desc: ['①', '②', '③', '④', '⑤'][idx] + ' 10の まとまりと ばらの モンスターボールを かぞえて、すうじを えらぼう。',
       ans: String(n),
       choices: ['11', '12', '13', '14', '15'],
       isPaperRow: true,
@@ -2484,11 +2569,11 @@ function buildStageQuestions(row){
     }));
   }
 
-  // Battle 22_2: ウオノラゴン 16から20
+  // Battle 22_2: ウオノラゴン 16から20のかず（10のまとまり＋ばらのボール）
   if(bId === 'Battle22_2'){
     return [16, 17, 18, 19, 20].map((n, idx) => ({
       qNum: idx + 1,
-      desc: 'モンスターボール ' + n + 'こ：かずを かぞえて、すうじを えらびましょう。',
+      desc: ['①', '②', '③', '④', '⑤'][idx] + ' 10の まとまりと ばらの モンスターボールを かぞえて、すうじを えらぼう。',
       ans: String(n),
       choices: ['16', '17', '18', '19', '20'],
       isPaperRow: true,
@@ -2498,441 +2583,463 @@ function buildStageQuestions(row){
     }));
   }
 
-  // Battle 23: ドダイトス すうじのじゅん (コースの数字)
+  // Battle 23: ナエトル〜ドダイトス 1から20のならび
   if(bId === 'Battle23'){
     return [
-      { qNum: 1, desc: '1の つぎの すうじは なにかな？', ans: '2', choices: ['2', '3', '5', '6'] },
-      { qNum: 2, desc: '7の まえの すうじは なにかな？', ans: '6', choices: ['5', '6', '8', '9'] },
-      { qNum: 3, desc: '13の つぎの すうじは なにかな？', ans: '14', choices: ['12', '14', '15', '16'] },
-      { qNum: 4, desc: '18の つぎの すうじは なにかな？', ans: '19', choices: ['17', '19', '20', '21'] },
-      { qNum: 5, desc: 'ゴールの すうじは なにかな？', ans: '20', choices: ['19', '20', '21', '22'] }
+      { qNum: 1, desc: '① 1の つぎの [ ？ ] に入る すうじは なにかな？', ans: '2', choices: ['2', '3', '5', '6'], customHtml: makeTrackHtml(['1', '？', '3', '4'], 1) },
+      { qNum: 2, desc: '② 4の つぎの [ ？ ] に入る すうじは なにかな？', ans: '5', choices: ['3', '5', '6', '8'], customHtml: makeTrackHtml(['4', '？', '6', '7'], 1) },
+      { qNum: 3, desc: '③ 7の つぎの [ ？ ] に入る すうじは なにかな？', ans: '8', choices: ['6', '8', '10', '11'], customHtml: makeTrackHtml(['7', '？', '9', '10'], 1) },
+      { qNum: 4, desc: '④ 9の つぎの [ ？ ] に入る すうじは なにかな？', ans: '10', choices: ['8', '10', '11', '12'], customHtml: makeTrackHtml(['9', '？', '11', '12'], 1) },
+      { qNum: 5, desc: '⑤ 13の つぎの [ ？ ] に入る すうじは なにかな？', ans: '14', choices: ['12', '14', '16', '17'], customHtml: makeTrackHtml(['13', '？', '15', '16'], 1) },
+      { qNum: 6, desc: '⑥ 18の つぎの [ ？ ] に入る すうじは なにかな？', ans: '19', choices: ['16', '17', '19', '20'], customHtml: makeTrackHtml(['17', '18', '？', '20'], 2) }
     ];
   }
 
-  // Battle 24: アチゲータ どちらがおおいかな
+  // Battle 24: アチゲータ どちらがおおい（20まで）
   if(bId === 'Battle24'){
     return [
-      { qNum: 1, desc: 'みどりの エリアで パンと おさら、どちらが おおいかな？', ans: 'おさら', choices: ['パン', 'おさら'] },
-      { qNum: 2, desc: 'あおの エリアで パンと おさら、どちらが おおいかな？', ans: 'パン', choices: ['パン', 'おさら'] }
+      { qNum: 1, desc: '① みどりの エリア：メロンパン（14こ）と おさら（12まい）、どちらが おおいかな？', ans: 'メロンパン', choices: ['メロンパン', 'おさら'], customHtml: '<div style="background:#e8f5e9;padding:10px;border-radius:12px;margin:8px 0;display:flex;gap:12px;justify-content:space-around;font-weight:900"><div>🍈 メロンパン: 14こ</div><div>🍽️ おさら: 12まい</div></div>' },
+      { qNum: 2, desc: '② メロンパンと おさら、どちらが なんこ おおいかな？（14 － 12 ＝ ？）', ans: '2こ', choices: ['1こ', '2こ', '3こ', '4こ'] },
+      { qNum: 3, desc: '③ あおの エリア：まるいパン（16こ）と おさら（17まい）、どちらが おおいかな？', ans: 'おさら', choices: ['まるいパン', 'おさら'], customHtml: '<div style="background:#e3f2fd;padding:10px;border-radius:12px;margin:8px 0;display:flex;gap:12px;justify-content:space-around;font-weight:900"><div>🍞 まるいパン: 16こ</div><div>🍽️ おさら: 17まい</div></div>' },
+      { qNum: 4, desc: '④ まるいパンと おさら、どちらが なんこ おおいかな？（17 － 16 ＝ ？）', ans: '1こ', choices: ['1こ', '2こ', '3こ', '4こ'] }
     ];
   }
 
-  // Battle 25: ウッウ あわせていくつ
+  // Battle 25: ウッウ あわせて10（たしざんのきそ）
   if(bId === 'Battle25'){
     return [
-      { qNum: 1, desc: 'そらを とんで いる ウッウは なんびき かな？', ans: '3', choices: ['2', '3', '4', '5'] },
-      { qNum: 2, desc: 'じめんと そらの ウッウを あわせると、ぜんぶで なんびき かな？', ans: '7', choices: ['5', '6', '7', '8'] }
+      { qNum: 1, desc: '① みずべに いる ウッウは なんびき かな？', ans: '4', choices: ['3', '4', '5', '6'], customHtml: '<div style="background:#e0f7fa;padding:10px;border-radius:12px;margin:8px 0;text-align:center;font-weight:900">💧 みずべに いる ウッウ：4ひき</div>' },
+      { qNum: 2, desc: '② そらを とんでいる ウッウは なんびき かな？', ans: '6', choices: ['4', '5', '6', '7'], customHtml: '<div style="background:#e1f5fe;padding:10px;border-radius:12px;margin:8px 0;text-align:center;font-weight:900">☁️ そらを とぶ ウッウ：6ひき</div>' },
+      { qNum: 3, desc: '③ みずに いる 4ひきと そらの 6ひき、あわせて なんびき かな？（4 ＋ 6 ＝ ？）', ans: '10', choices: ['8', '9', '10', '11'] }
     ];
   }
 
-  // Battle 26: クチート あわせていくつ
+  // Battle 26: クチート あわせるといくつ（ふくろとばら）
   if(bId === 'Battle26'){
     return [
-      { qNum: 1, desc: 'まるい クッキーは 4こと 3こ、あわせて なんこ かな？', ans: '7', choices: ['5', '6', '7', '8'] },
-      { qNum: 2, desc: 'しかくい クッキーは 5こと 4こ、あわせて なんこ かな？', ans: '9', choices: ['7', '8', '9', '10'] }
+      { qNum: 1, desc: '① みぎがわ：ふくろに 5こ、そとに 3こ あります。あわせると なんこ かな？（5 ＋ 3 ＝ ？）', ans: '8', choices: ['6', '7', '8', '9'], customHtml: '<div style="background:#fff3e0;padding:10px;border-radius:12px;margin:8px 0;display:flex;justify-content:center;gap:16px;font-weight:900"><span>🛍️ ふくろ（5こ）</span><span>＋</span><span>🍪 そと（3こ）</span></div>' },
+      { qNum: 2, desc: '② ひだりがわ：ふくろに 6こ、そとに 4こ あります。あわせると なんこ かな？（6 ＋ 4 ＝ ？）', ans: '10', choices: ['8', '9', '10', '12'], customHtml: '<div style="background:#fff3e0;padding:10px;border-radius:12px;margin:8px 0;display:flex;justify-content:center;gap:16px;font-weight:900"><span>🛍️ ふくろ（6こ）</span><span>＋</span><span>🍪 そと（4こ）</span></div>' }
     ];
   }
 
   // Battle 27: ミルタンク ふえるといくつ
   if(bId === 'Battle27'){
     return [
-      { qNum: 1, desc: 'あとから ミルタンクが なんびき きたかな？', ans: '3', choices: ['2', '3', '4', '5'] },
-      { qNum: 2, desc: 'ミルタンクは みんなで なんびきに なったかな？', ans: '10', choices: ['8', '9', '10', '11'] }
+      { qNum: 1, desc: '① もともと くさむらに ミルタンクが なんびき いたかな？', ans: '7', choices: ['5', '6', '7', '8'], customHtml: '<div style="background:#f1f8e9;padding:10px;border-radius:12px;margin:8px 0;text-align:center;font-weight:900">🌾 くさむらの ミルタンク：7ひき</div>' },
+      { qNum: 2, desc: '② あとから なんびき やって きたかな？', ans: '3', choices: ['2', '3', '4', '5'], customHtml: '<div style="background:#f1f8e9;padding:10px;border-radius:12px;margin:8px 0;text-align:center;font-weight:900">🏃 あとから 走ってきた ミルタンク：3ひき</div>' },
+      { qNum: 3, desc: '③ 7ひきに 3ひき ふえると、ぜんぶで なんびき かな？（7 ＋ 3 ＝ ？）', ans: '10', choices: ['8', '9', '10', '11'] }
     ];
   }
 
-  // Battle 28: バオップ ふえるといくつ
+  // Battle 28: バオップ ふえるといくつ（ドーナツ）
   if(bId === 'Battle28'){
     return [
-      { qNum: 1, desc: 'チョコドーナツが 6こ ありました。2こ ふえると ぜんぶで なんこ？', ans: '8', choices: ['6', '7', '8', '9'] },
-      { qNum: 2, desc: 'フレンチクルーラーが 5こ ありました。3こ ふえると ぜんぶで なんこ？', ans: '8', choices: ['6', '7', '8', '9'] }
+      { qNum: 1, desc: '① チョコドーナツが 6こ ありました。2こ ふえると、ぜんぶで なんこ？（6 ＋ 2 ＝ ？）', ans: '8', choices: ['7', '8', '9', '10'], customHtml: '<div style="background:#efebe9;padding:10px;border-radius:12px;margin:8px 0;display:flex;justify-content:center;gap:16px;font-weight:900"><span>🍩 おさらの チョコ（6こ）</span><span>＋</span><span>🍩 ふえた（2こ）</span></div>' },
+      { qNum: 2, desc: '② フレンチクルーラーが 4こ ありました。4こ ふえると、ぜんぶで なんこ？（4 ＋ 4 ＝ ？）', ans: '8', choices: ['6', '7', '8', '9'], customHtml: '<div style="background:#fffde7;padding:10px;border-radius:12px;margin:8px 0;display:flex;justify-content:center;gap:16px;font-weight:900"><span>🥯 おさらの クルーラー（4こ）</span><span>＋</span><span>🥯 ふえた（4こ）</span></div>' }
     ];
   }
 
-  // Battle 29: ニャルマー のこりはいくつ
+  // Battle 29: ニャルマー のこりはいくつ（ひきざんのきそ）
   if(bId === 'Battle29'){
     return [
-      { qNum: 1, desc: 'なんびき かえって いったかな？', ans: '3', choices: ['2', '3', '4', '5'] },
-      { qNum: 2, desc: 'のこって いる ニャルマーは なんびきかな？', ans: '6', choices: ['4', '5', '6', '7'] }
+      { qNum: 1, desc: '① ニャルマーが ぜんぶで 9ひき いました。なんびき にげて いったかな？', ans: '3', choices: ['2', '3', '4', '5'], customHtml: '<div style="background:#fce4ec;padding:10px;border-radius:12px;margin:8px 0;text-align:center;font-weight:900">🐱 はじめに いた ニャルマー：9ひき ➔ にげていく：3ひき</div>' },
+      { qNum: 2, desc: '② 9ひきから 3ひき にげると、のこりは なんびき かな？（9 － 3 ＝ ？）', ans: '6', choices: ['5', '6', '7', '8'] }
     ];
   }
 
-  // Battle 30: ピジョット のこりはいくつ
+  // Battle 30: ピジョット のこりはいくつ（たべたあと）
   if(bId === 'Battle30'){
     return [
-      { qNum: 1, desc: 'まるい クッキーが 8こ ありました。3こ たべると のこりは なんこ？', ans: '5', choices: ['4', '5', '6', '7'] },
-      { qNum: 2, desc: 'しかくい クッキーが 10こ ありました。4こ たべると のこりは なんこ？', ans: '6', choices: ['5', '6', '7', '8'] }
+      { qNum: 1, desc: '① まるい クッキーが 8こ ありました。3こ たべると、のこりは なんこ？（8 － 3 ＝ ？）', ans: '5', choices: ['4', '5', '6', '7'], customHtml: '<div style="background:#fff8e1;padding:10px;border-radius:12px;margin:8px 0;display:flex;justify-content:center;gap:16px;font-weight:900"><span>🍪 8こ</span><span>－</span><span>😋 たべた（3こ）</span></div>' },
+      { qNum: 2, desc: '② しかくい クッキーが 10こ ありました。7こ たべると、のこりは なんこ？（10 － 7 ＝ ？）', ans: '3', choices: ['2', '3', '4', '5'], customHtml: '<div style="background:#fff8e1;padding:10px;border-radius:12px;margin:8px 0;display:flex;justify-content:center;gap:16px;font-weight:900"><span>🔲 10こ</span><span>－</span><span>😋 たべた（7こ）</span></div>' }
     ];
   }
 
-  // Battle 31: バイウールー いくつおおい
+  // Battle 31: バイウールー＆ウールー ちがいはいくつ
   if(bId === 'Battle31'){
     return [
-      { qNum: 1, desc: 'ウールーは なんびき いるかな？', ans: '9', choices: ['7', '8', '9', '10'] },
-      { qNum: 2, desc: 'バイウールーと ウールー、どちらが おおいかな？', ans: 'ウールー', choices: ['バイウールー', 'ウールー'] },
-      { qNum: 3, desc: 'なんびき おおいかな？', ans: '3', choices: ['1', '2', '3', '4'] }
+      { qNum: 1, desc: '① バイウールーは なんびき いるかな？', ans: '6', choices: ['5', '6', '7', '8'], customHtml: '<div style="background:#ede7f6;padding:10px;border-radius:12px;margin:8px 0;display:flex;justify-content:space-around;font-weight:900"><span>🐑 バイウールー：6ひき</span><span>🐏 ウールー：10ひき</span></div>' },
+      { qNum: 2, desc: '② ウールーは なんびき いるかな？', ans: '10', choices: ['8', '9', '10', '11'] },
+      { qNum: 3, desc: '③ ウールーと バイウールーの ちがいは なんびき かな？（10 － 6 ＝ ？）', ans: '4', choices: ['2', '3', '4', '5'] }
     ];
   }
 
-  // Battle 32: ローブシン ちがいはいくつ (ドーナツの差)
+  // Battle 32: ローブシン ちがいはいくつ（ドーナツ）
   if(bId === 'Battle32'){
     return [
-      { qNum: 1, desc: 'ドテッコツ：きいろの ドーナツ（9こ）と ちゃいろの ドーナツ（7こ）、ちがいは なんこかな？', ans: '2', choices: ['1', '2', '3', '4'] },
-      { qNum: 2, desc: 'ドッコラー：おさらの きいろの ドーナツ（8こ）と ちゃいろの ドーナツ（7こ）、ちがいは なんこかな？', ans: '1', choices: ['1', '2', '3', '4'] }
+      { qNum: 1, desc: '① はこの なか：きいろの ドーナツ（9こ）と チョコの ドーナツ（6こ）、ちがいは なんこ？（9 － 6 ＝ ？）', ans: '3', choices: ['1', '2', '3', '4'], customHtml: '<div style="background:#fff3e0;padding:10px;border-radius:12px;margin:8px 0;display:flex;justify-content:space-around;font-weight:900"><span>📦 はこ：きいろ 9こ</span><span>📦 はこ：チョコ 6こ</span></div>' },
+      { qNum: 2, desc: '② おさらの うえ：きいろの ドーナツ（7こ）と チョコの ドーナツ（9こ）、ちがいは なんこ？（9 － 7 ＝ ？）', ans: '2', choices: ['1', '2', '3', '4'], customHtml: '<div style="background:#fff3e0;padding:10px;border-radius:12px;margin:8px 0;display:flex;justify-content:space-around;font-weight:900"><span>🍽️ さら：きいろ 7こ</span><span>🍽️ さら：チョコ 9こ</span></div>' }
     ];
   }
 
-  // Battle 33: フラージェス 20よりおおきいかず
+  // Battle 33: フラージェス 20よりおおきいかず（10のたばとばら）
   if(bId === 'Battle33'){
     return [
-      { qNum: 1, desc: '10の まとまりは いくつ あるかな？', ans: '2', choices: ['1', '2', '3', '4'] },
-      { qNum: 2, desc: 'ばらは なんぼん あるかな？', ans: '8', choices: ['6', '7', '8', '9'] },
-      { qNum: 3, desc: 'ぜんぶで なんぼんに なるかな？', ans: '28', choices: ['26', '27', '28', '29'] }
+      { qNum: 1, desc: '① 10ほんの たばは いくつ あるかな？', ans: '2', choices: ['1', '2', '3', '4'], customHtml: '<div style="background:#fce4ec;padding:10px;border-radius:12px;margin:8px 0;display:flex;justify-content:center;gap:16px;font-weight:900"><span>💐 10ほんのたば × 2</span><span>🌷 ばら × 8</span></div>' },
+      { qNum: 2, desc: '② まとまりのない ばらの チューリップは なんぼん あるかな？', ans: '8', choices: ['6', '7', '8', '9'] },
+      { qNum: 3, desc: '③ ぜんぶで チューリップは なんぼん あるかな？（20 ＋ 8 ＝ ？）', ans: '28', choices: ['26', '27', '28', '29'] }
     ];
   }
 
-  // Battle 34: ハピナス 21から25
+  // Battle 34: ハピナス 21から25のかず（たまごのパック）
   if(bId === 'Battle34'){
     return [21, 22, 23, 24, 25].map((n, idx) => ({
       qNum: idx + 1,
-      desc: 'ハピナスの たまご ' + n + 'こ：パックと ばらを かぞえて、すうじを えらびましょう。',
+      desc: ['①', '②', '③', '④', '⑤'][idx] + ' パック（10こいり×2）と ばらの たまごを かぞえて、すうじを えらぼう。',
       ans: String(n),
       choices: ['21', '22', '23', '24', '25'],
       isPaperRow: true,
-      pokemon: 'たまご',
+      pokemon: 'ハピナスのたまご',
       count: n,
       pokeId: 242
     }));
   }
 
-  // Battle 34_2: ハピナス 26から30
+  // Battle 34_2: ハピナス 26から30のかず（たまごのパック）
   if(bId === 'Battle34_2'){
     return [26, 27, 28, 29, 30].map((n, idx) => ({
       qNum: idx + 1,
-      desc: 'ハピナスの たまご ' + n + 'こ：パックと ばらを かぞえて、すうじを えらびましょう。',
+      desc: ['①', '②', '③', '④', '⑤'][idx] + (n === 30 ? ' パック（10こいり×3）の たまごを かぞえて、すうじを えらぼう。' : ' パックと ばらの たまごを かぞえて、すうじを えらぼう。'),
       ans: String(n),
       choices: ['26', '27', '28', '29', '30'],
       isPaperRow: true,
-      pokemon: 'たまご',
+      pokemon: 'ハピナスのたまご',
       count: n,
       pokeId: 242
     }));
   }
 
-  // Battle 35: メグロコ すうじのじゅん (砂漠ルート 11〜30)
+  // Battle 35: メグロコ〜ワルビアル 11から30のならび
   if(bId === 'Battle35'){
     return [
-      { qNum: 1, desc: '11の つぎの すうじは なにかな？', ans: '12', choices: ['10', '12', '13', '14'] },
-      { qNum: 2, desc: '15の つぎの すうじは なにかな？', ans: '16', choices: ['14', '16', '17', '18'] },
-      { qNum: 3, desc: '19の つぎの すうじは なにかな？', ans: '20', choices: ['18', '20', '21', '22'] },
-      { qNum: 4, desc: '26の つぎの すうじは なにかな？', ans: '27', choices: ['25', '27', '28', '29'] },
-      { qNum: 5, desc: 'ゴール（ワルビアルの まえ）の すうじは なにかな？', ans: '30', choices: ['28', '29', '30', '31'] }
+      { qNum: 1, desc: '① 11の つぎの [ ？ ] に入る すうじは なにかな？', ans: '12', choices: ['10', '12', '13', '14'], customHtml: makeTrackHtml(['11', '？', '13', '14'], 1) },
+      { qNum: 2, desc: '② 15の つぎの [ ？ ] に入る すうじは なにかな？', ans: '16', choices: ['14', '16', '17', '18'], customHtml: makeTrackHtml(['15', '？', '17', '18'], 1) },
+      { qNum: 3, desc: '③ 19の つぎの [ ？ ] に入る すうじは なにかな？', ans: '20', choices: ['18', '20', '21', '22'], customHtml: makeTrackHtml(['19', '？', '21', '22'], 1) },
+      { qNum: 4, desc: '④ 22の つぎの [ ？ ] に入る すうじは なにかな？', ans: '23', choices: ['21', '23', '24', '25'], customHtml: makeTrackHtml(['22', '？', '24', '25'], 1) },
+      { qNum: 5, desc: '⑤ 28の つぎの [ ？ ] に入る すうじは なにかな？', ans: '29', choices: ['27', '29', '30', '31'], customHtml: makeTrackHtml(['27', '28', '？', '30'], 2) },
+      { qNum: 6, desc: '⑥ 29の つぎの [ ？ ]（ゴール！）に入る すうじは なにかな？', ans: '30', choices: ['28', '29', '30', '31'], customHtml: makeTrackHtml(['28', '29', '？'], 2) }
     ];
   }
 
-  // Battle 36: トゲデマル どちらがおおきいかな (6問分岐路)
+  // Battle 36: トゲデマル おおきいほうへすすむめいろ
   if(bId === 'Battle36'){
     return [
-      { qNum: 1, desc: '21と 12、どちらが おおきいかな？', ans: '21', choices: ['21', '12'] },
-      { qNum: 2, desc: '25と 23、どちらが おおきいかな？', ans: '25', choices: ['25', '23'] },
-      { qNum: 3, desc: '28と 27、どちらが おおきいかな？', ans: '28', choices: ['28', '27'] },
-      { qNum: 4, desc: '30と 29、どちらが おおきいかな？', ans: '30', choices: ['30', '29'] },
-      { qNum: 5, desc: '29と 26、どちらが おおきいかな？', ans: '29', choices: ['29', '26'] },
-      { qNum: 6, desc: '24と 18、どちらが おおきいかな？', ans: '24', choices: ['24', '18'] }
+      { qNum: 1, desc: '① 21と 12、どちらが おおきいかな？', ans: '21', choices: ['21', '12'] },
+      { qNum: 2, desc: '② 25と 23、どちらが おおきいかな？', ans: '25', choices: ['25', '23'] },
+      { qNum: 3, desc: '③ 24と 18、どちらが おおきいかな？', ans: '24', choices: ['24', '18'] },
+      { qNum: 4, desc: '④ 29と 26、どちらが おおきいかな？', ans: '29', choices: ['29', '26'] },
+      { qNum: 5, desc: '⑤ 28と 27、どちらが おおきいかな？', ans: '28', choices: ['28', '27'] },
+      { qNum: 6, desc: '⑥ 30と 29、どちらが おおきいかな？', ans: '30', choices: ['30', '29'] }
     ];
   }
 
-  // Battle 37: シルヴァディ まとめ (1〜30迷路)
+  // Battle 37: シルヴァディ 1から30のめいろ
   if(bId === 'Battle37'){
     return [
-      { qNum: 1, desc: '15の つぎの すうじは なにかな？', ans: '16', choices: ['14', '16', '17', '18'] },
-      { qNum: 2, desc: '19の つぎの すうじは なにかな？', ans: '20', choices: ['18', '20', '21', '22'] },
-      { qNum: 3, desc: '23の つぎの すうじは なにかな？', ans: '24', choices: ['22', '24', '25', '26'] },
-      { qNum: 4, desc: '28の つぎの すうじは なにかな？', ans: '29', choices: ['27', '29', '30', '31'] },
-      { qNum: 5, desc: 'ゴールの すうじは なにかな？', ans: '30', choices: ['28', '29', '30', '31'] }
+      { qNum: 1, desc: '① 15の つぎの すうじ（16）を えらんで めいろを すすもう！', ans: '16', choices: ['14', '16', '17', '18'], customHtml: makeTrackHtml(['14', '15', '？', '17'], 2) },
+      { qNum: 2, desc: '② 20の つぎの すうじ（21）を えらんで めいろを すすもう！', ans: '21', choices: ['19', '21', '22', '23'], customHtml: makeTrackHtml(['19', '20', '？', '22'], 2) },
+      { qNum: 3, desc: '③ 29の つぎの すうじ（30・ゴール！）を えらぼう！', ans: '30', choices: ['28', '29', '30', '31'], customHtml: makeTrackHtml(['28', '29', '？'], 2) }
     ];
   }
 
-  // Battle 37_2: シルヴァディ まとめ (てんつなぎ)
+  // Battle 37_2: ネッコアラ てんつなぎ（1〜30）
   if(bId === 'Battle37_2'){
     return [
-      { qNum: 1, desc: '1から 30までの てんを じゅんばんに つなごう！ ネッコアラが だいているのは なにかな？', ans: 'き', choices: ['き', 'りんご', 'いし', 'ボール'] }
+      { qNum: 1, desc: '1から 30までの てんを じゅんばんに つなぐと、ネッコアラが だきついている なにが でてくるかな？', ans: 'き', choices: ['き', 'りんご', 'いえ', 'ほし'], customHtml: '<div style="text-align:center;padding:12px;background:#f1f8e9;border-radius:14px;margin:8px 0;font-size:32px">🌲 🐨</div>' }
     ];
   }
 
-  // Battle 38: インテレオン なんばんめ (前後順序)
+  // Battle 38: インテレオン なんばんめ（まえ・うしろ）
   if(bId === 'Battle38'){
     return [
-      { qNum: 1, desc: '① まえから 4ばんめの インテレオンは どれかな？', ans: '4ばんめ', choices: ['2ばんめ', '3ばんめ', '4ばんめ', '5ばんめ'] },
-      { qNum: 2, desc: '② うしろから 2ばんめの インテレオンは、まえから なんばんめかな？', ans: '5ばんめ', choices: ['2ばんめ', '4ばんめ', '5ばんめ', '6ばんめ'] },
-      { qNum: 3, desc: '③ まえから 3びきの インテレオンを かこみましょう。なんびきかな？', ans: '3びき', choices: ['1ぴき', '2ひき', '3びき', '4ひき'] },
-      { qNum: 4, desc: '④ うしろから 2ひきの インテレオンを かこみましょう。なんびきかな？', ans: '2ひき', choices: ['1ぴき', '2ひき', '3びき', '4ひき'] }
+      { qNum: 1, desc: '① まえから 4ばんめの インテレオンは どれかな？', ans: 'まえから4ばんめ', choices: ['まえから2ばんめ', 'まえから3ばんめ', 'まえから4ばんめ', 'まえから5ばんめ'], customHtml: '<div style="background:#e3f2fd;padding:10px;border-radius:12px;margin:8px 0;display:flex;align-items:center;justify-content:center;gap:6px;font-weight:900"><span>まえ ➔</span><span>[1]</span><span>[2]</span><span>[3]</span><span style="color:#e65100;background:#fff8db;border:2px solid #ff9800;border-radius:6px;padding:2px 6px">[4]</span><span>[5]</span><span>[6]</span><span>➔ うしろ</span></div>' },
+      { qNum: 2, desc: '② うしろから 3ばんめの インテレオンは どれかな？', ans: 'うしろから3ばんめ', choices: ['うしろから2ばんめ', 'うしろから3ばんめ', 'うしろから4ばんめ', 'うしろから5ばんめ'], customHtml: '<div style="background:#e3f2fd;padding:10px;border-radius:12px;margin:8px 0;display:flex;align-items:center;justify-content:center;gap:6px;font-weight:900"><span>まえ ➔</span><span>[1]</span><span>[2]</span><span>[3]</span><span style="color:#e65100;background:#fff8db;border:2px solid #ff9800;border-radius:6px;padding:2px 6px">[4]</span><span>[5]</span><span>[6]</span><span>➔ うしろ</span></div>' },
+      { qNum: 3, desc: '③ 「まえから 3びき」と「まえから 3ばんめ」、おおいのは どっち？', ans: 'まえから3びき（3びき）', choices: ['まえから3びき（3びき）', 'まえから3ばんめ（1ぴき）'] },
+      { qNum: 4, desc: '④ うしろから 2ひき えらぶと、なんびき かな？', ans: '2ひき', choices: ['1ぴき', '2ひき', '3びき', '4ひき'] }
     ];
   }
 
-  // Battle 39: メガヤンマ なんばんめ (上下順序)
+  // Battle 39: メガヤンマ なんばんめ（うえ・した）
   if(bId === 'Battle39'){
     return [
-      { qNum: 1, desc: '① うえから 3ばんめの メガヤンマは どれかな？', ans: '3ばんめ', choices: ['1ばんめ', '2ばんめ', '3ばんめ', '4ばんめ'] },
-      { qNum: 2, desc: '② したから 5ばんめの メガヤンマは、うえから なんばんめかな？', ans: '2ばんめ', choices: ['1ばんめ', '2ばんめ', '3ばんめ', '5ばんめ'] },
-      { qNum: 3, desc: '③ うえから 2ひきの メガヤンマを えらぼう。なんびきかな？', ans: '2ひき', choices: ['1ぴき', '2ひき', '3びき', '4ひき'] },
-      { qNum: 4, desc: '④ したから 4ひきの メガヤンマを えらぼう。なんびきかな？', ans: '4ひき', choices: ['2ひき', '3ひき', '4ひき', '5ひき'] }
+      { qNum: 1, desc: '① うえから 3ばんめの メガヤンマは どれかな？', ans: 'うえから3ばんめ', choices: ['うえから1ばんめ', 'うえから2ばんめ', 'うえから3ばんめ', 'うえから4ばんめ'], customHtml: '<div style="background:#e8f5e9;padding:10px;border-radius:12px;margin:8px 0;text-align:center;font-weight:900"><div>⬆️ うえ</div><div style="font-size:14px;color:#555;margin:4px 0">[1] ➔ [2] ➔ <span style="color:#e65100;font-weight:900;background:#fff8db;padding:2px 6px;border-radius:6px;border:2px solid #ff9800">[3]</span> ➔ [4] ➔ [5] ➔ [6]</div><div>⬇️ した</div></div>' },
+      { qNum: 2, desc: '② したから 5ばんめの メガヤンマは どれかな？', ans: 'したから5ばんめ', choices: ['したから3ばんめ', 'したから4ばんめ', 'したから5ばんめ', 'したから6ばんめ'] },
+      { qNum: 3, desc: '③ うえから 2ひき えらぶと、なんびき かな？', ans: '2ひき', choices: ['1ぴき', '2ひき', '3びき', '4ひき'] },
+      { qNum: 4, desc: '④ したから 4ひき えらぶと、なんびき かな？', ans: '4ひき', choices: ['2ひき', '3びき', '4ひき', '5ひき'] }
     ];
   }
 
-  // Battle 40: イーブイ なんばんめ (左右順序)
+  // Battle 40: イーブイ なんばんめ（ひだり・みぎ）
   if(bId === 'Battle40'){
     return [
-      { qNum: 1, desc: '① ひだりから 5ばんめの イーブイを えらびましょう。', ans: '5ばんめ', choices: ['3ばんめ', '4ばんめ', '5ばんめ', '6ばんめ'] },
-      { qNum: 2, desc: '② みぎから 4ばんめの イーブイは、ひだりから なんばんめかな？', ans: '3ばんめ', choices: ['2ばんめ', '3ばんめ', '4ばんめ', '5ばんめ'] },
-      { qNum: 3, desc: '③ ひだりから 2ひきの イーブイを かこみましょう。なんびきかな？', ans: '2ひき', choices: ['1ぴき', '2ひき', '3びき', '4ひき'] },
-      { qNum: 4, desc: '④ みぎから 3びきの イーブイを かこみましょう。なんびきかな？', ans: '3びき', choices: ['1ぴき', '2ひき', '3びき', '4ひき'] }
+      { qNum: 1, desc: '① ひだりから 5ばんめの イーブイは どれかな？', ans: 'ひだりから5ばんめ', choices: ['ひだりから3ばんめ', 'ひだりから4ばんめ', 'ひだりから5ばんめ', 'ひだりから6ばんめ'], customHtml: '<div style="background:#fffde7;padding:10px;border-radius:12px;margin:8px 0;display:flex;align-items:center;justify-content:center;gap:6px;font-weight:900"><span>ひだり ➔</span><span>[1]</span><span>[2]</span><span>[3]</span><span>[4]</span><span style="color:#e65100;background:#fff8db;border:2px solid #ff9800;border-radius:6px;padding:2px 6px">[5]</span><span>[6]</span><span>➔ みぎ</span></div>' },
+      { qNum: 2, desc: '② みぎから 4ばんめの イーブイは どれかな？', ans: 'みぎから4ばんめ', choices: ['みぎから2ばんめ', 'みぎから3ばんめ', 'みぎから4ばんめ', 'みぎから5ばんめ'] },
+      { qNum: 3, desc: '③ ひだりから 2ひき えらぶと、なんびき かな？', ans: '2ひき', choices: ['1ぴき', '2ひき', '3びき', '4ひき'] },
+      { qNum: 4, desc: '④ みぎから 3ひき えらぶと、なんびき かな？', ans: '3びき', choices: ['1ぴき', '2ひき', '3びき', '4ひき'] }
     ];
   }
 
-  // Battle 41: イオルブ なんばんめ (教室の座席グリッド)
+  // Battle 41: イオルブ いちのあらわしかた（教室のせき）
   if(bId === 'Battle41'){
     return [
-      { qNum: 1, desc: '① まえから 2ばんめ、ひだりから 2ばんめの せき：ひだりから なんれつめ？', ans: '2ばんめ', choices: ['1ばんめ', '2ばんめ', '3ばんめ', '4ばんめ'] },
-      { qNum: 2, desc: '② えの おんなのこは、まえから なんばんめかな？', ans: '2ばんめ', choices: ['1ばんめ', '2ばんめ', '3ばんめ', '4ばんめ'] },
-      { qNum: 3, desc: '③ えの おんなのこは、みぎから なんばんめかな？', ans: '2ばんめ', choices: ['1ばんめ', '2ばんめ', '3ばんめ', '4ばんめ'] }
+      { qNum: 1, desc: '① まえから 2れつめ、ひだりから 2ばんめの せきには だれが すわっているかな？', ans: 'ぼうしの 男の子', choices: ['ぼうしの 男の子', 'めがねの 男の子', 'ツインテールの 女の子', 'せんせい'], customHtml: '<div style="background:#f3e5f5;padding:10px;border-radius:14px;margin:8px 0;font-size:13px;font-weight:900;text-align:center"><div style="background:#ba68c8;color:#fff;padding:3px;border-radius:6px;margin-bottom:6px">【 まえ・こくばん 】</div><div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:4px"><div style="background:#fff;padding:4px;border:1px solid #ccc;border-radius:6px">👧 女の子</div><div style="background:#fff;padding:4px;border:1px solid #ccc;border-radius:6px">👓 めがね</div><div style="background:#fff;padding:4px;border:1px solid #ccc;border-radius:6px">👦 男の子</div><div style="background:#fff;padding:4px;border:1px solid #ccc;border-radius:6px">👧 女の子</div><div style="background:#fff;padding:4px;border:1px solid #ccc;border-radius:6px">👦 男の子</div><div style="background:#fff8db;padding:4px;border:2px solid #ff9800;border-radius:6px;color:#e65100">🧢 ぼうし</div><div style="background:#fff8db;padding:4px;border:2px solid #ff9800;border-radius:6px;color:#e65100">🎀 ツインテール</div><div style="background:#fff;padding:4px;border:1px solid #ccc;border-radius:6px">👦 男の子</div></div><div style="font-size:11px;color:#666;margin-top:4px">⬆️ 1れつめ / 2れつめ（4れつ×5だん）</div></div>' },
+      { qNum: 2, desc: '② ツインテールの 女の子は、まえから なんれつめ、みぎから なんばんめ かな？', ans: 'まえから 2れつめ、みぎから 2ばんめ', choices: ['まえから 1れつめ、みぎから 1ばんめ', 'まえから 2れつめ、みぎから 2ばんめ', 'まえから 3れつめ、みぎから 2ばんめ', 'まえから 4れつめ、みぎから 3ばんめ'] }
     ];
   }
 
-  // Battle 42: タマンチュラ なんばんめ (ロッカーのグリッド)
+  // Battle 42: タマンチュラ いちのあらわしかた（ロッカー）
   if(bId === 'Battle42'){
     return [
-      { qNum: 1, desc: '① うえから 2ばんめ、ひだりから 3ばんめの ランドセルは なにいろかな？', ans: 'オレンジ', choices: ['オレンジ', 'あお', 'くろ', 'みどり'] },
-      { qNum: 2, desc: '② みずいろの ランドセルは、したから なんばんめかな？', ans: '2ばんめ', choices: ['1ばんめ', '2ばんめ', '3ばんめ', '4ばんめ'] },
-      { qNum: 3, desc: '③ みずいろの ランドセルは、みぎから なんばんめかな？', ans: '3ばんめ', choices: ['1ばんめ', '2ばんめ', '3ばんめ', '4ばんめ'] }
+      { qNum: 1, desc: '① 「うえから 2だんめ、ひだりから 3ばんめ」の ロッカーには なにが はいっているかな？', ans: 'きいろの ぼうし', choices: ['あかい ランドセル', 'きいろの ぼうし', 'みずいろの ランドセル', 'サッカーボール'], customHtml: '<div style="background:#e0f2f1;padding:10px;border-radius:14px;margin:8px 0;font-size:12px;font-weight:900;text-align:center"><div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:4px"><div style="background:#fff;padding:6px;border:1px solid #80cbc4;border-radius:6px">🎒 あか</div><div style="background:#e1f5fe;padding:6px;border:2px solid #0288d1;border-radius:6px">🎒 みずいろ</div><div style="background:#fff;padding:6px;border:1px solid #80cbc4;border-radius:6px">⚽ ボール</div><div style="background:#fff;padding:6px;border:1px solid #80cbc4;border-radius:6px">📁 ノート</div><div style="background:#fff;padding:6px;border:1px solid #80cbc4;border-radius:6px">👟 うわばき</div><div style="background:#fff;padding:6px;border:1px solid #80cbc4;border-radius:6px">🎒 あお</div><div style="background:#fffde7;padding:6px;border:2px solid #fbc02d;border-radius:6px">🧢 きいろ</div><div style="background:#fff;padding:6px;border:1px solid #80cbc4;border-radius:6px">🧃 すいとう</div><div style="background:#fff;padding:6px;border:1px solid #80cbc4;border-radius:6px">⚽ ボール</div><div style="background:#fff;padding:6px;border:1px solid #80cbc4;border-radius:6px">👟 うわばき</div><div style="background:#fff;padding:6px;border:1px solid #80cbc4;border-radius:6px">📁 ノート</div><div style="background:#fff;padding:6px;border:1px solid #80cbc4;border-radius:6px">🎒 あか</div></div><div style="font-size:11px;color:#004d40;margin-top:4px">うえから 1だんめ / 2だんめ / 3だんめ</div></div>' },
+      { qNum: 2, desc: '② みずいろの ランドセルが はいっている ロッカーの いちは どこかな？', ans: 'うえから 1だんめ、ひだりから 2ばんめ', choices: ['うえから 1だんめ、ひだりから 2ばんめ', 'うえから 2だんめ、ひだりから 3ばんめ', 'したから 1だんめ、ひだりから 1ばんめ', 'したから 2だんめ、ひだりから 4ばんめ'] },
+      { qNum: 3, desc: '③ 「うえから 3だんめ、みぎから 3ばんめ」の ロッカーには なにが はいっているかな？', ans: 'うわばき', choices: ['うわばき', 'ノート', 'ランドセル', 'すいとう'] }
     ];
   }
 
-  // Battle 43: ボーマンダ 31から45のすうじ
+  // Battle 43: ボーマンダ 31から45のかず
   if(bId === 'Battle43'){
     return [
-      { qNum: 1, desc: '33の つぎの すうじは なにかな？', ans: '34', choices: ['32', '34', '35', '36'] },
-      { qNum: 2, desc: '37の つぎの すうじは なにかな？', ans: '38', choices: ['36', '38', '39', '40'] },
-      { qNum: 3, desc: '40の つぎの すうじは なにかな？', ans: '41', choices: ['39', '41', '42', '43'] },
-      { qNum: 4, desc: 'ゴールの すうじは なにかな？', ans: '45', choices: ['43', '44', '45', '46'] }
+      { qNum: 1, desc: '① 10の たばが 3つと、ばらが 1つで いくつかな？', ans: '31', choices: ['13', '30', '31', '32'], customHtml: '<div style="background:#e1f5fe;padding:8px;border-radius:12px;margin:8px 0;text-align:center;font-weight:900">📦 10のたば × 3 ＋ 🔹 ばら × 1</div>' },
+      { qNum: 2, desc: '② 10の たばが 3つと、ばらが 7つで いくつかな？', ans: '37', choices: ['35', '36', '37', '38'], customHtml: '<div style="background:#e1f5fe;padding:8px;border-radius:12px;margin:8px 0;text-align:center;font-weight:900">📦 10のたば × 3 ＋ 🔹 ばら × 7</div>' },
+      { qNum: 3, desc: '③ 10の たばが 4つと、ばらが 2つで いくつかな？', ans: '42', choices: ['24', '40', '42', '45'], customHtml: '<div style="background:#e1f5fe;padding:8px;border-radius:12px;margin:8px 0;text-align:center;font-weight:900">📦 10のたば × 4 ＋ 🔹 ばら × 2</div>' },
+      { qNum: 4, desc: '④ 10の たばが 4つと、ばらが 5つで いくつかな？', ans: '45', choices: ['43', '44', '45', '54'], customHtml: '<div style="background:#e1f5fe;padding:8px;border-radius:12px;margin:8px 0;text-align:center;font-weight:900">📦 10のたば × 4 ＋ 🔹 ばら × 5</div>' }
     ];
   }
 
-  // Battle 43_2: ボーマンダ 46から60のすうじ
+  // Battle 43_2: ボーマンダ 46から60のかず
   if(bId === 'Battle43_2'){
     return [
-      { qNum: 1, desc: '49の つぎの すうじは なにかな？', ans: '50', choices: ['48', '50', '51', '52'] },
-      { qNum: 2, desc: '53の つぎの すうじは なにかな？', ans: '54', choices: ['52', '54', '55', '56'] },
-      { qNum: 3, desc: '57の つぎの すうじは なにかな？', ans: '58', choices: ['56', '58', '59', '60'] },
-      { qNum: 4, desc: 'ゴールの すうじは なにかな？', ans: '60', choices: ['58', '59', '60', '61'] }
+      { qNum: 1, desc: '① 10の たばが 4つと、ばらが 8つで いくつかな？', ans: '48', choices: ['46', '47', '48', '49'], customHtml: '<div style="background:#e1f5fe;padding:8px;border-radius:12px;margin:8px 0;text-align:center;font-weight:900">📦 10のたば × 4 ＋ 🔹 ばら × 8</div>' },
+      { qNum: 2, desc: '② 10の たばが 5つと、ばらが 3つで いくつかな？', ans: '53', choices: ['35', '50', '52', '53'], customHtml: '<div style="background:#e1f5fe;padding:8px;border-radius:12px;margin:8px 0;text-align:center;font-weight:900">📦 10のたば × 5 ＋ 🔹 ばら × 3</div>' },
+      { qNum: 3, desc: '③ 10の たばが 5つと、ばらが 9つで いくつかな？', ans: '59', choices: ['57', '58', '59', '60'], customHtml: '<div style="background:#e1f5fe;padding:8px;border-radius:12px;margin:8px 0;text-align:center;font-weight:900">📦 10のたば × 5 ＋ 🔹 ばら × 9</div>' },
+      { qNum: 4, desc: '④ 10の たばが 6つで いくつかな？', ans: '60', choices: ['50', '58', '59', '60'], customHtml: '<div style="background:#e1f5fe;padding:8px;border-radius:12px;margin:8px 0;text-align:center;font-weight:900">📦 10のたば × 6</div>' }
     ];
   }
 
-  // Minigame: ギルガルド ちかみちをしよう
+  // Minigame: ヒトツキ・ニダンギル・ギルガルド めいろ
   if(bId === 'Minigame'){
     return [
-      { qNum: 1, desc: 'モモンのみまで まっすぐ いちばん ちかい（ちかみち）のは だれかな？', ans: 'ニダンギル', choices: ['ヒトツキ', 'ニダンギル', 'ギルガルド'] }
+      { qNum: 1, desc: 'モモンのみへ まっすぐ いちばん はやく たどりつける ポケモンは だれかな？', ans: 'ニダンギル', choices: ['ヒトツキ', 'ニダンギル', 'ギルガルド'], customHtml: '<div style="background:#fce4ec;padding:12px;border-radius:14px;margin:8px 0;text-align:center;font-weight:900"><div style="font-size:24px;margin-bottom:6px">🍑 モモンのみ</div><div style="font-size:14px;color:#555">⚔️ ヒトツキ（曲がり道） / ⚔️⚔️ ニダンギル（まっすぐな近道！） / 🛡️ ギルガルド（遠回り）</div></div>' }
     ];
   }
 
-  // Battle 44: ヒヒダルマ あてはまるすうじをかこう
+  // Battle 44: ヒヒダルマ 31から60のならび（じゅんばん＆カウントダウン）
   if(bId === 'Battle44'){
     return [
-      { qNum: 1, desc: '31, □, 33, □, 35 の 31の つぎの すうじは？', ans: '32', choices: ['30', '32', '33', '34'] },
-      { qNum: 2, desc: '42, □, □, 45 の 42の つぎの すうじは？', ans: '43', choices: ['41', '43', '44', '45'] },
-      { qNum: 3, desc: '48, □, □, 51, 52 の 48の つぎの すうじは？', ans: '49', choices: ['47', '49', '50', '51'] },
-      { qNum: 4, desc: '56, □, 58 の あいだの すうじは？', ans: '57', choices: ['55', '57', '59', '60'] },
-      { qNum: 5, desc: 'ぎゃくじゅん：37, □, 35 の 37の つぎ（へるほう）は？', ans: '36', choices: ['34', '36', '38', '39'] }
+      { qNum: 1, desc: '① 31, 32, [ ？ ], 34, 35 の [ ？ ] に入る すうじは？', ans: '33', choices: ['30', '33', '34', '36'], customHtml: makeTrackHtml(['31', '32', '？', '34', '35'], 2) },
+      { qNum: 2, desc: '② 42, [ ？ ], 44, 45, 46 の [ ？ ] に入る すうじは？', ans: '43', choices: ['41', '43', '45', '47'], customHtml: makeTrackHtml(['42', '？', '44', '45', '46'], 1) },
+      { qNum: 3, desc: '③ 48, 49, [ ？ ], 51, 52 の [ ？ ] に入る すうじは？', ans: '50', choices: ['49', '50', '51', '53'], customHtml: makeTrackHtml(['48', '49', '？', '51', '52'], 2) },
+      { qNum: 4, desc: '④ 56, 57, 58, [ ？ ], 60 の [ ？ ] に入る すうじは？', ans: '59', choices: ['58', '59', '60', '61'], customHtml: makeTrackHtml(['56', '57', '58', '？', '60'], 3) },
+      { qNum: 5, desc: '⑤ カウントダウン：37, 36, [ ？ ], 34, 33 の [ ？ ] に入る すうじは？', ans: '35', choices: ['34', '35', '36', '38'], customHtml: makeTrackHtml(['37', '36', '？', '34', '33'], 2) },
+      { qNum: 6, desc: '⑥ カウントダウン：60, 59, [ ？ ], 57, 56 の [ ？ ] に入る すうじは？', ans: '58', choices: ['57', '58', '59', '61'], customHtml: makeTrackHtml(['60', '59', '？', '57', '56'], 2) }
     ];
   }
 
-  // Battle 44_2: ヒヒダルマ あてはまるすうじをかこう(2) (とび数え)
+  // Battle 44_2: ヒヒダルマ とびとびのかず（2とび・5とび・10とび）
   if(bId === 'Battle44_2'){
     return [
-      { qNum: 1, desc: '5とび：5, 10, □, □, 25 の 10の つぎは？', ans: '15', choices: ['12', '15', '20', '22'] },
-      { qNum: 2, desc: '5とび：20, 25, □, 35 の 25の つぎは？', ans: '30', choices: ['28', '30', '32', '35'] },
-      { qNum: 3, desc: '2とび：14, 16, □, □, 22 の 16の つぎは？', ans: '18', choices: ['17', '18', '19', '20'] },
-      { qNum: 4, desc: '2とび：52, □, 56 の 52の つぎは？', ans: '54', choices: ['53', '54', '55', '58'] },
-      { qNum: 5, desc: '10とび：20, 30, 40, □, 60 の 40の つぎは？', ans: '50', choices: ['45', '50', '55', '60'] }
+      { qNum: 1, desc: '① 5とび：5, 10, [ ？ ], 20, 25 の [ ？ ] に入る すうじは？', ans: '15', choices: ['12', '15', '16', '18'], customHtml: makeTrackHtml(['5', '10', '？', '20', '25'], 2) },
+      { qNum: 2, desc: '② 5とび：20, 25, 30, [ ？ ], 40 の [ ？ ] に入る すうじは？', ans: '35', choices: ['32', '34', '35', '38'], customHtml: makeTrackHtml(['20', '25', '30', '？', '40'], 3) },
+      { qNum: 3, desc: '③ 2とび：14, 16, [ ？ ], 20, 22 の [ ？ ] に入る すうじは？', ans: '18', choices: ['17', '18', '19', '21'], customHtml: makeTrackHtml(['14', '16', '？', '20', '22'], 2) },
+      { qNum: 4, desc: '④ 2とび：52, 54, 56, [ ？ ], 60 の [ ？ ] に入る すうじは？', ans: '58', choices: ['57', '58', '59', '62'], customHtml: makeTrackHtml(['52', '54', '56', '？', '60'], 3) },
+      { qNum: 5, desc: '⑤ 10とび：20, 30, [ ？ ], 50, 60 の [ ？ ] に入る すうじは？', ans: '40', choices: ['35', '40', '45', '70'], customHtml: makeTrackHtml(['20', '30', '？', '50', '60'], 2) }
     ];
   }
 
-  // Battle 45: ホーホー とけい
+  // Battle 45: ヨルノズク なんじ・なんじはん（とけいのよみかた①）
   if(bId === 'Battle45'){
     return [
-      { qNum: 1, desc: 'みじかい はりが 7、ながい はりが 12を さしています。なんじかな？', ans: '7じ', choices: ['6じ', '7じ', '8じ', '9じ'], interactive: 'clock' },
-      { qNum: 2, desc: 'みじかい はりが 1と2の あいだ、ながい はりが 6を さしています。なんじはんかな？', ans: '1じはん', choices: ['12じはん', '1じはん', '2じはん', '3じはん'], interactive: 'clock' }
+      { qNum: 1, desc: '① みじかい はりが 7、ながい はりが 12を さしています。なんじかな？', ans: '7じ', choices: ['6じ', '7じ', '8じ', '9じ'], customHtml: makeClockSvg(7, 0, 110) },
+      { qNum: 2, desc: '② みじかい はりが 1と 2の あいだ、ながい はりが 6を さしています。なんじはんかな？', ans: '1じはん', choices: ['1じはん', '2じはん', '12じはん', '6じはん'], customHtml: makeClockSvg(1, 30, 110) }
     ];
   }
 
-  // Battle 45_2: ピカチュウ なんじはん
+  // Battle 45_2: ヨルノズク せいかつのじかん（とけいのよみかた②）
   if(bId === 'Battle45_2'){
     return [
-      { qNum: 1, desc: 'みじかい はりと ながい はりを みて、なんじはんか えらびましょう。', ans: '4じはん', choices: ['3じはん', '4じはん', '5じはん', '6じはん'], interactive: 'clock' }
+      { qNum: 1, desc: '① あさ おきる じかん：みじかい はりが 7と 8の あいだ、ながい はりが 6。なんじはんかな？', ans: '7じはん', choices: ['6じはん', '7じはん', '8じはん', '9じはん'], customHtml: makeClockSvg(7, 30, 110) },
+      { qNum: 2, desc: '② おひるごはんの じかん：みじかい はりも ながい はりも 12。なんじかな？', ans: '12じ', choices: ['11じ', '12じ', '1じ', '12じはん'], customHtml: makeClockSvg(12, 0, 110) },
+      { qNum: 3, desc: '③ おふろの じかん：みじかい はりが 6と 7の あいだ、ながい はりが 6。なんじはんかな？', ans: '6じはん', choices: ['5じはん', '6じはん', '7じはん', '8じはん'], customHtml: makeClockSvg(6, 30, 110) }
     ];
   }
 
-  // Battle 46: ギギギアル とけい
+  // Battle 46: ギギギアル なんじなんぷん（とけいのよみかた③）
   if(bId === 'Battle46'){
     return [
-      { qNum: 1, desc: 'とけいを みて、なんじ なんふんか えらびましょう。', ans: '11じ25ふん', choices: ['11じ25ふん', '12じ25ふん', '11じ5ふん', '10じ25ふん'], interactive: 'clock' }
+      { qNum: 1, desc: '① みじかい はりは 11と 12の あいだ、ながい はりは 5（25ふん）を さしています。なんじ なんぷんかな？', ans: '11じ25ふん', choices: ['10じ25ふん', '11じ25ふん', '12じ25ふん', '11じ5ふん'], customHtml: makeClockSvg(11, 25, 120) }
     ];
   }
 
-  // Battle 46_2: ギギギアル とけい(2) (6個の時計)
+  // Battle 46_2: ギギギアル 6つのとけい（なんじなんぷん④）
   if(bId === 'Battle46_2'){
     return [
-      { qNum: 1, desc: '① 1つめの とけい：なんじ なんふんかな？', ans: '3じ45ふん', choices: ['3じ45ふん', '4じ45ふん', '3じ15ふん', '4じ15ふん'] },
-      { qNum: 2, desc: '② 2つめの とけい：なんじ なんふんかな？', ans: '10じ10ふん', choices: ['10じ10ふん', '10じ5ふん', '11じ10ふん', '9じ10ふん'] },
-      { qNum: 3, desc: '③ 3つめの とけい：なんじ なんふんかな？', ans: '7じ15ふん', choices: ['7じ15ふん', '8じ15ふん', '7じ45ふん', '6じ15ふん'] },
-      { qNum: 4, desc: '④ 4つめの とけい：なんじ なんふんかな？', ans: '5じ45ふん', choices: ['5じ45ふん', '6じ45ふん', '5じ15ふん', '4じ45ふん'] },
-      { qNum: 5, desc: '⑤ 5つめの とけい：なんじ なんふんかな？', ans: '10じ20ふん', choices: ['10じ20ふん', '10じ25ふん', '11じ20ふん', '9じ20ふん'] },
-      { qNum: 6, desc: '⑥ 6つめの とけい：なんじ なんふんかな？', ans: '1じ35ふん', choices: ['1じ35ふん', '1じ40ふん', '2じ35ふん', '12じ35ふん'] }
+      { qNum: 1, desc: '① 1つめの とけい：なんじ なんぷんかな？', ans: '3じ45ふん', choices: ['3じ45ふん', '4じ45ふん', '3じ15ふん', '9じ15ふん'], customHtml: makeClockSvg(3, 45, 105) },
+      { qNum: 2, desc: '② 2つめの とけい：なんじ なんぷんかな？', ans: '7じ30ふん', choices: ['6じ30ふん', '7じ30ふん', '8じ30ふん', '7じ6ふん'], customHtml: makeClockSvg(7, 30, 105) },
+      { qNum: 3, desc: '③ 3つめの とけい：なんじ なんぷんかな？', ans: '9じ20ふん', choices: ['9じ20ふん', '10じ20ふん', '9じ4ふん', '4じ45ふん'], customHtml: makeClockSvg(9, 20, 105) },
+      { qNum: 4, desc: '④ 4つめの とけい：なんじ なんぷんかな？', ans: '7じ5ふん', choices: ['7じ1ふん', '7じ5ふん', '8じ5ふん', '1じ35ふん'], customHtml: makeClockSvg(7, 5, 105) },
+      { qNum: 5, desc: '⑤ 5つめの とけい：なんじ なんぷんかな？', ans: '4じ50ふん', choices: ['4じ50ふん', '5じ50ふん', '4じ10ふん', '10じ20ふん'], customHtml: makeClockSvg(4, 50, 105) },
+      { qNum: 6, desc: '⑥ 6つめの とけい：なんじ なんぷんかな？', ans: '1じ35ふん', choices: ['1じ35ふん', '2じ35ふん', '1じ7ふん', '7じ10ふん'], customHtml: makeClockSvg(1, 35, 105) }
     ];
   }
 
-  // Battle 47: サーナイト くらべっこ (えんぴつの長さ)
+  // Battle 47: サーナイト ながさくらべ
   if(bId === 'Battle47'){
     return [
-      { qNum: 1, desc: '① あかと あお、どちらの えんぴつが ながいかな？', ans: 'あお', choices: ['あか', 'あお'] },
-      { qNum: 2, desc: '② マス目を かぞえて、いちばん ながい いろえんぴつは どれかな？', ans: 'みどり', choices: ['みどり', 'みずいろ', 'あか', 'ピンク'] }
+      { qNum: 1, desc: '① あおの えんぴつと ピンクの えんぴつ、どちらが ながいかな？', ans: 'あおの えんぴつ', choices: ['あおの えんぴつ', 'ピンクの えんぴつ'], customHtml: '<div style="background:#fce4ec;padding:12px;border-radius:14px;margin:8px 0;display:flex;flex-direction:column;gap:8px"><div style="display:flex;align-items:center;gap:8px"><span style="width:70px;font-weight:900;color:#1565c0">あお:</span><div style="height:16px;width:75%;background:#42a5f5;border-radius:8px;border:2px solid #1565c0"></div></div><div style="display:flex;align-items:center;gap:8px"><span style="width:70px;font-weight:900;color:#c2185b">ピンク:</span><div style="height:16px;width:55%;background:#f48fb1;border-radius:8px;border:2px solid #c2185b"></div></div></div>' },
+      { qNum: 2, desc: '② マスめの うえの えんぴつで、いちばん ながいのは どれかな？', ans: 'いちばん したの あか', choices: ['いちばん うえの きいろ', 'まんなかの みどり', 'いちばん したの あか'], customHtml: '<div style="background:#fffde7;padding:12px;border-radius:14px;margin:8px 0;display:flex;flex-direction:column;gap:8px"><div style="display:flex;align-items:center;gap:8px"><span style="width:90px;font-weight:900;color:#f57f17">うえ（きいろ）:</span><div style="height:14px;width:55%;background:#fbc02d;border-radius:6px"></div><span style="font-size:11px;color:#777">10マス</span></div><div style="display:flex;align-items:center;gap:8px"><span style="width:90px;font-weight:900;color:#2e7d32">なか（みどり）:</span><div style="height:14px;width:68%;background:#4caf50;border-radius:6px"></div><span style="font-size:11px;color:#777">12マス</span></div><div style="display:flex;align-items:center;gap:8px"><span style="width:90px;font-weight:900;color:#c62828">した（あか）:</span><div style="height:14px;width:82%;background:#e53935;border-radius:6px"></div><span style="font-size:11px;color:#777">14マス</span></div></div>' }
     ];
   }
 
-  // Battle 47_2: サーナイト くらべっこ(かさ)
+  // Battle 47_2: サーナイト かさくらべ（どれだけはいるか）
   if(bId === 'Battle47_2'){
     return [
-      { qNum: 1, desc: 'コップで なんばい はいるか かぞえよう。', ans: 'できた！', choices: ['できた！', 'もうすこし'] },
-      { qNum: 2, desc: 'あかと あおの ようき、どちらが おおいかな？', ans: 'あか', choices: ['あか', 'あお'] }
+      { qNum: 1, desc: '① オレンジのかん（コップ1ぱい）と みどりのビン（コップはんぶん）、どちらの ほうが おおく はいるかな？', ans: 'オレンジのかん', choices: ['オレンジのかん', 'みどりのビン'], customHtml: '<div style="background:#fff3e0;padding:10px;border-radius:12px;margin:8px 0;display:flex;justify-content:space-around;font-weight:900"><span>🥫 オレンジのかん：🥛 1ぱい</span><span>🍾 みどりのビン：🥛 半分</span></div>' },
+      { qNum: 2, desc: '② あおいポット（コップ4はい）と ちゃいろのポット（コップ3ばい）、どちらが おおく はいるかな？', ans: 'あおいポット', choices: ['あおいポット', 'ちゃいろのポット'], customHtml: '<div style="background:#e1f5fe;padding:10px;border-radius:12px;margin:8px 0;display:flex;justify-content:space-around;font-weight:900"><span>🫖 あおいポット：🥛 4はい</span><span>🏺 ちゃいろポット：🥛 3ばい</span></div>' },
+      { qNum: 3, desc: '③ あおいポットは ちゃいろのポットより コップ なんばい おおいかな？（4 － 3 ＝ ？）', ans: '1ぱい', choices: ['1ぱい', '2はい', '3ばい', '4はい'] }
     ];
   }
 
-  // Battle 47_3: サーナイト くらべっこ(ひろさ)
+  // Battle 47_3: サーナイト ひろさくらべ（どちらがひろい）
   if(bId === 'Battle47_3'){
     return [
-      { qNum: 1, desc: 'かさねて みて、どちらが ひろいか えらびましょう。', ans: 'あお', choices: ['あお', 'きいろ'] },
-      { qNum: 2, desc: 'マス目を かぞえて、どちらが ひろいか えらびましょう。', ans: 'みどり', choices: ['みどり', 'ピンク'] }
+      { qNum: 1, desc: '① かさねて くらべると、あおい しかくと ピンクの しかく、どちらが ひろいかな？', ans: 'あおい しかく', choices: ['あおい しかく', 'ピンクの しかく'], customHtml: '<div style="background:#e8eaf6;padding:12px;border-radius:14px;margin:8px 0;display:flex;justify-content:center"><div style="position:relative;width:90px;height:90px;background:#3f51b5;border-radius:8px;display:flex;align-items:flex-end;justify-content:flex-end;padding:6px;box-shadow:0 2px 5px rgba(0,0,0,0.2)"><span style="color:#fff;font-size:11px;font-weight:900">あお</span><div style="position:absolute;top:0;left:0;width:65px;height:65px;background:#ec407a;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:900">ピンク</div></div></div>' },
+      { qNum: 2, desc: '② マスを かぞえて くらべよう。みどりの シート（16マス）と オレンジの シート（15マス）、どちらが ひろいかな？', ans: 'みどりの シート', choices: ['みどりの シート', 'オレンジの シート'], customHtml: '<div style="background:#f1f8e9;padding:10px;border-radius:12px;margin:8px 0;display:flex;justify-content:space-around;font-weight:900"><span>🟩 みどり：16マス（4×4）</span><span>🟧 オレンジ：15マス（3×5）</span></div>' },
+      { qNum: 3, desc: '③ みどりの シートは オレンジの シートより なんマス ひろいかな？（16 － 15 ＝ ？）', ans: '1マス', choices: ['1マス', '2マス', '3マス', '4マス'] }
     ];
   }
 
-  // Battle 48: グラードン まとめ
+  // Battle 48: グラードン まとまりとばら（58のナックラー）
   if(bId === 'Battle48'){
     return [
-      { qNum: 1, desc: 'ナックラーの 10の まとまりは いくつ あるかな？', ans: '5', choices: ['3', '4', '5', '6'] },
-      { qNum: 2, desc: 'ナックラーは ぜんぶで なんびき いるかな？', ans: '54', choices: ['52', '53', '54', '55'] }
+      { qNum: 1, desc: '① ナックラーの 10ぴきの まとまりは いくつ あるかな？', ans: '5つ', choices: ['4つ', '5つ', '6つ', '7つ'], customHtml: '<div style="background:#efebe9;padding:10px;border-radius:12px;margin:8px 0;text-align:center;font-weight:900">📦 10ぴきの まとまり × 5 ＋ 🐜 ばら × 8</div>' },
+      { qNum: 2, desc: '② まとまりに 入っていない ばらの ナックラーは なんびき かな？', ans: '8ひき', choices: ['6ひき', '7ひき', '8ひき', '9ひき'] },
+      { qNum: 3, desc: '③ ナックラーは ぜんぶで なんびき いるかな？（50 ＋ 8 ＝ ？）', ans: '58ひき', choices: ['48ひき', '50ひき', '58ひき', '85ひき'] }
     ];
   }
 
-  // Battle 48_2: グラードン てんつなぎ
+  // Battle 48_2: グラードン てんつなぎ（1から60）
   if(bId === 'Battle48_2'){
     return [
-      { qNum: 1, desc: '1から 60までの てんを じゅんばんに つなごう！', ans: 'できた！', choices: ['できた！', 'もうすこし'] }
+      { qNum: 1, desc: '1から 60までの てんを じゅんばんに つなぐと、だれの えが かんせいするかな？', ans: 'ピカチュウ', choices: ['ピカチュウ', 'イーブイ', 'リザードン', 'ニャース'], customHtml: '<div style="text-align:center;padding:12px;background:#fffde7;border-radius:14px;margin:8px 0;font-size:32px">⚡ 🐭 ⚡</div>' }
     ];
   }
 
-  // Battle 49: カモネギ かたち
+  // Battle 49: カモネギ かたちあそび（はこのかたち・ボールのかたち）
   if(bId === 'Battle49'){
     return [
-      { qNum: 1, desc: 'さいころの かたちと おなじ ものは どれかな？', ans: 'さいころ', choices: ['さいころ', 'ボール', 'つつ'] },
-      { qNum: 2, desc: 'はこ（ちょくほうたい）の かたちと おなじ ものは どれかな？', ans: 'はこ', choices: ['はこ', 'つつ', 'ボール'] },
-      { qNum: 3, desc: 'つつ（えんとう）の かたちと おなじ ものは どれかな？', ans: 'かんづめ', choices: ['かんづめ', 'さいころ', 'ボール'] },
-      { qNum: 4, desc: 'ボール（きゅう）の かたちと おなじ ものは どれかな？', ans: 'ボール', choices: ['ボール', 'はこ', 'さいころ'] }
+      { qNum: 1, desc: '① さいころや プレゼントばこと おなじ「さいころの かたち」は どれかな？', ans: 'さいころ', choices: ['さいころ', 'ティッシュばこ', 'ポテチのつつ', 'ボール'], customHtml: '<div style="background:#fff8e1;padding:10px;border-radius:12px;margin:8px 0;text-align:center;font-weight:900;font-size:24px">🎲 📦 🥫 ⚽</div>' },
+      { qNum: 2, desc: '② ポテチの つつや カンと おなじ「つつ（えんちゅう）の かたち」は どれかな？', ans: 'ジュースのかん', choices: ['ジュースのかん', 'さいころ', 'ティッシュばこ', 'ボール'] },
+      { qNum: 3, desc: '③ まるくて ころがる「ボール（きゅう）の かたち」は どれかな？', ans: 'モンスターボール', choices: ['モンスターボール', 'ティッシュばこ', 'さいころ', 'つみき'] }
     ];
   }
 
-  // Battle 49_2: カモネギ かたち(2)
+  // Battle 49_2: カモネギ かたちのうつしえ（うえから・よこから）
   if(bId === 'Battle49_2'){
     return [
-      { qNum: 1, desc: 'つみきは かくれている ぶんも あわせて なんこ あるかな？', ans: '8', choices: ['6', '7', '8', '9'] }
+      { qNum: 1, desc: '① つつ（えんちゅう）の かたちを うえから みたり、かたどると どんな かたちになるかな？', ans: 'まる', choices: ['まる', 'しかく', 'さんかく'], customHtml: '<div style="background:#e1f5fe;padding:10px;border-radius:12px;margin:8px 0;display:flex;justify-content:space-around;font-weight:900"><span>🥫 つつの うえ ➔ ⭕ まる</span><span>🥫 つつの よこ ➔ ⬛ しかく</span></div>' },
+      { qNum: 2, desc: '② つつ（えんちゅう）の かたちを よこから みると どんな かたちに みえるかな？', ans: 'しかく', choices: ['まる', 'しかく', 'さんかく'] },
+      { qNum: 3, desc: '③ さいころの かたちを うつしとると どんな かたちになるかな？', ans: 'しかく', choices: ['まる', 'しかく', 'さんかく'] }
     ];
   }
 
-  // Battle 50: オオスバメ せいりしよう
+  // Battle 50: オオスバメ データのせいり（かずをかぞえてひょうにする）
   if(bId === 'Battle50'){
     return [
-      { qNum: 1, desc: 'くだものは ぜんぶで なんこ あるかな？', ans: '5', choices: ['4', '5', '6', '7'] },
-      { qNum: 2, desc: 'のりものは ぜんぶで なんこ あるかな？', ans: '4', choices: ['3', '4', '5', '6'] }
+      { qNum: 1, desc: '① オオスバメは なんびき いるかな？', ans: '7', choices: ['5', '6', '7', '8'], customHtml: '<div style="background:#e8f5e9;padding:10px;border-radius:12px;margin:8px 0;display:grid;grid-template-columns:repeat(2, 1fr);gap:6px;font-weight:900"><div>🕊️ オオスバメ: 7ひき</div><div>🐱 エネコ: 9ひき</div><div>📢 ゴニョニョ: 6ひき</div><div>🦥 ナマケロ: 6ひき</div></div>' },
+      { qNum: 2, desc: '② エネコは なんびき いるかな？', ans: '9', choices: ['7', '8', '9', '10'] },
+      { qNum: 3, desc: '③ ゴニョニョは なんびき いるかな？', ans: '6', choices: ['5', '6', '7', '8'] },
+      { qNum: 4, desc: '④ ナマケロは なんびき いるかな？', ans: '6', choices: ['5', '6', '7', '8'] }
     ];
   }
 
-  // Battle 50_2: オオスバメ せいりしよう(2)
+  // Battle 50_2: オオスバメ グラフとひょう（いちばんおおい・おなじかず）
   if(bId === 'Battle50_2'){
     return [
-      { qNum: 1, desc: 'グラフの マスが おおいのは どちらかな？', ans: 'くだもの', choices: ['くだもの', 'のりもの'] },
-      { qNum: 2, desc: 'どちらが なんこ おおいかな？', ans: '1', choices: ['1', '2', '3', '4'] }
+      { qNum: 1, desc: '① いちばん かずが おおい ポケモンは だれかな？（9ひき）', ans: 'エネコ', choices: ['オオスバメ', 'エネコ', 'ゴニョニョ', 'ナマケロ'], customHtml: '<div style="background:#fce4ec;padding:10px;border-radius:12px;margin:8px 0;font-size:13px;font-weight:900"><div style="display:flex;align-items:center;gap:6px;margin:3px 0"><span style="width:80px">オオスバメ:</span><div style="height:12px;width:55%;background:#42a5f5;border-radius:4px"></div><span>7</span></div><div style="display:flex;align-items:center;gap:6px;margin:3px 0"><span style="width:80px">エネコ:</span><div style="height:12px;width:75%;background:#ec407a;border-radius:4px"></div><span>9</span></div><div style="display:flex;align-items:center;gap:6px;margin:3px 0"><span style="width:80px">ゴニョニョ:</span><div style="height:12px;width:48%;background:#ab47bc;border-radius:4px"></div><span>6</span></div><div style="display:flex;align-items:center;gap:6px;margin:3px 0"><span style="width:80px">ナマケロ:</span><div style="height:12px;width:48%;background:#8d6e63;border-radius:4px"></div><span>6</span></div></div>' },
+      { qNum: 2, desc: '② かずが おなじ ポケモンの ペアは だれと だれかな？（どちらも6ぴき）', ans: 'ゴニョニョと ナマケロ', choices: ['オオスバメと エネコ', 'ゴニョニョと ナマケロ', 'エネコと ゴニョニョ', 'オオスバメと ナマケロ'] },
+      { qNum: 3, desc: '③ エネコ（9ひき）は オオスバメ（7ひき）より なんびき おおいかな？（9 － 7 ＝ ？）', ans: '2ひき', choices: ['1ぴき', '2ひき', '3びき', '4ひき'] }
     ];
   }
 
-  // Battle 51: リククラゲ 61から120までのすうじ
+  // Battle 51: リククラゲ 100よりおおきいかず（61から120）
   if(bId === 'Battle51'){
     return [
-      { qNum: 1, desc: '99の つぎの すうじは なにかな？', ans: '100', choices: ['90', '100', '101', '110'] },
-      { qNum: 2, desc: '109の つぎの すうじは なにかな？', ans: '110', choices: ['100', '110', '111', '120'] },
-      { qNum: 3, desc: 'さいごの ゴールの すうじは なにかな？', ans: '120', choices: ['100', '110', '119', '120'] }
+      { qNum: 1, desc: '① 99の つぎの すうじは なにかな？', ans: '100', choices: ['98', '100', '101', '110'], customHtml: makeTrackHtml(['97', '98', '99', '？', '101'], 3) },
+      { qNum: 2, desc: '② 100の つぎの すうじは なにかな？', ans: '101', choices: ['100', '101', '102', '110'], customHtml: makeTrackHtml(['99', '100', '？', '102'], 2) },
+      { qNum: 3, desc: '③ 109の つぎの すうじは なにかな？', ans: '110', choices: ['108', '110', '111', '120'], customHtml: makeTrackHtml(['108', '109', '？', '111'], 2) },
+      { qNum: 4, desc: '④ 119の つぎの すうじ（ゴール！）は なにかな？', ans: '120', choices: ['118', '120', '121', '200'], customHtml: makeTrackHtml(['118', '119', '？'], 2) }
     ];
   }
 
-  // Battle 52: コレクレー いくらかな
+  // Battle 52: コレクレー おかねのけいさん（10円玉・1円玉・100円玉）
   if(bId === 'Battle52'){
     return [
-      { qNum: 1, desc: '10えんだま 3まいと 1えんだま 5まいで、いくらかな？', ans: '35えん', choices: ['25えん', '35えん', '45えん', '50えん'], interactive: 'coin' }
+      { qNum: 1, desc: '① 1つめの はこ：10えんだま 5まいと 1えんだま 5まいで、いくらかな？', ans: '55えん', choices: ['45えん', '50えん', '55えん', '65えん'], customHtml: makeMoneyHtml(0, 5, 5) },
+      { qNum: 2, desc: '② 2つめの はこ：10えんだま 9まいと 1えんだま 2まいで、いくらかな？', ans: '92えん', choices: ['82えん', '90えん', '92えん', '95えん'], customHtml: makeMoneyHtml(0, 9, 2) },
+      { qNum: 3, desc: '③ 3つめの はこ：100えんだま 1まいと 1えんだま 4まいで、いくらかな？', ans: '104えん', choices: ['104えん', '114えん', '140えん', '401えん'], customHtml: makeMoneyHtml(1, 0, 4) },
+      { qNum: 4, desc: '④ 4つめの はこ：100えんだま 1まい、10えんだま 1まい、1えんだま 8まいで、いくらかな？', ans: '118えん', choices: ['108えん', '118えん', '128えん', '180えん'], customHtml: makeMoneyHtml(1, 1, 8) }
     ];
   }
 
-  // Battle 53: ポリゴン2 たしざん
+  // Battle 53: ポリゴン2 たしざんのしき①
   if(bId === 'Battle53'){
     return [
-      { qNum: 1, desc: '1と 2を あわせると いくつかな？（1 ＋ 2 ＝ ？）', ans: '3', choices: ['2', '3', '4', '5'] },
-      { qNum: 2, desc: '2に 1 ふえると いくつかな？（2 ＋ 1 ＝ ？）', ans: '3', choices: ['2', '3', '4', '5'] }
+      { qNum: 1, desc: '① 1こと 2こを あわせる しきと こたえは どれかな？', ans: '1 ＋ 2 ＝ 3', choices: ['1 ＋ 2 ＝ 3', '2 ＋ 1 ＝ 4', '1 ＋ 3 ＝ 4', '2 ＋ 2 ＝ 4'], customHtml: '<div style="background:#e8f5e9;padding:10px;border-radius:12px;margin:8px 0;display:flex;justify-content:center;gap:12px;font-size:18px;font-weight:900"><span>🔴 1こ</span><span>＋</span><span>🔴🔴 2こ</span><span>➔</span><span>🔴🔴🔴 3こ</span></div>' },
+      { qNum: 2, desc: '② 2こ あるところに 1こ ふえる しきと こたえは どれかな？', ans: '2 ＋ 1 ＝ 3', choices: ['2 ＋ 1 ＝ 3', '2 ＋ 2 ＝ 4', '1 ＋ 2 ＝ 2', '3 ＋ 1 ＝ 4'], customHtml: '<div style="background:#e8f5e9;padding:10px;border-radius:12px;margin:8px 0;display:flex;justify-content:center;gap:12px;font-size:18px;font-weight:900"><span>🔵🔵 2こ</span><span>＋</span><span>🔵 1こ</span><span>➔</span><span>🔵🔵🔵 3こ</span></div>' }
     ];
   }
 
-  // Battle 53_2: ポリゴン2 たしざん(けいさん)
+  // Battle 53_2: ポリゴン2 たしざんのけいさん②
   if(bId === 'Battle53_2'){
     return [
       { qNum: 1, desc: '① 2 ＋ 3 ＝ ？', ans: '5', choices: ['4', '5', '6', '7'] },
       { qNum: 2, desc: '② 5 ＋ 2 ＝ ？', ans: '7', choices: ['6', '7', '8', '9'] },
       { qNum: 3, desc: '③ 3 ＋ 6 ＝ ？', ans: '9', choices: ['7', '8', '9', '10'] },
-      { qNum: 4, desc: '④ 4 ＋ 3 ＝ ？', ans: '7', choices: ['5', '6', '7', '8'] }
+      { qNum: 4, desc: '④ 4 ＋ 3 ＝ ？', ans: '7', choices: ['6', '7', '8', '9'] }
     ];
   }
 
-  // Battle 54: カイリキー ひきざん
+  // Battle 54: カイリキー ひきざんのしき①
   if(bId === 'Battle54'){
     return [
-      { qNum: 1, desc: '3から 1を とると のこりは いくつかな？（3 － 1 ＝ ？）', ans: '2', choices: ['1', '2', '3', '4'] },
-      { qNum: 2, desc: '5と 3の かずの ちがいは いくつかな？（5 － 3 ＝ ？）', ans: '2', choices: ['1', '2', '3', '4'] }
+      { qNum: 1, desc: '① 3こから 1こ とる（へる）しきと こたえは どれかな？', ans: '3 － 1 ＝ 2', choices: ['3 － 1 ＝ 2', '3 － 2 ＝ 1', '4 － 1 ＝ 3', '3 ＋ 1 ＝ 4'], customHtml: '<div style="background:#ffebee;padding:10px;border-radius:12px;margin:8px 0;display:flex;justify-content:center;gap:12px;font-size:18px;font-weight:900"><span>🍎🍎🍎 3こ</span><span>－</span><span>🖐️ 1ことる</span><span>➔</span><span>のこり 2こ</span></div>' },
+      { qNum: 2, desc: '② 5こから 3こ たべる しきと こたえは どれかな？', ans: '5 － 3 ＝ 2', choices: ['5 － 3 ＝ 2', '5 － 2 ＝ 3', '4 － 3 ＝ 1', '5 ＋ 3 ＝ 8'], customHtml: '<div style="background:#ffebee;padding:10px;border-radius:12px;margin:8px 0;display:flex;justify-content:center;gap:12px;font-size:18px;font-weight:900"><span>🍎🍎🍎🍎🍎 5こ</span><span>－</span><span>😋 3こたべる</span><span>➔</span><span>のこり 2こ</span></div>' }
     ];
   }
 
-  // Battle 54_2: カイリキー ひきざん(けいさん)
+  // Battle 54_2: カイリキー ひきざんのけいさん②
   if(bId === 'Battle54_2'){
     return [
       { qNum: 1, desc: '① 4 － 2 ＝ ？', ans: '2', choices: ['1', '2', '3', '4'] },
       { qNum: 2, desc: '② 6 － 1 ＝ ？', ans: '5', choices: ['4', '5', '6', '7'] },
       { qNum: 3, desc: '③ 5 － 2 ＝ ？', ans: '3', choices: ['2', '3', '4', '5'] },
-      { qNum: 4, desc: '④ 10 － 3 ＝ ？', ans: '7', choices: ['5', '6', '7', '8'] }
+      { qNum: 4, desc: '④ 10 － 3 ＝ ？', ans: '7', choices: ['6', '7', '8', '9'] }
     ];
   }
 
-  // Battle 55: ミュウ すごろく前編(0〜30)
+  // Battle 55: ミュウ 1ねんせいのまとめ（すごろく① 0〜62）
   if(bId === 'Battle55'){
     return [
-      { qNum: 1, desc: '0の つぎの すうじは なにかな？', ans: '1', choices: ['1', '2', '3', '4'] },
-      { qNum: 2, desc: '6の つぎの すうじは なにかな？', ans: '7', choices: ['5', '7', '8', '9'] },
-      { qNum: 3, desc: '14の つぎの すうじは なにかな？', ans: '15', choices: ['13', '15', '16', '17'] },
-      { qNum: 4, desc: '22の つぎの すうじは なにかな？', ans: '23', choices: ['21', '23', '24', '25'] },
-      { qNum: 5, desc: '28の つぎの すうじは なにかな？', ans: '29', choices: ['27', '29', '30', '31'] }
+      { qNum: 1, desc: '① 0の つぎの すうじは なにかな？', ans: '1', choices: ['1', '2', '3', '4'], customHtml: makeTrackHtml(['0', '？', '2', '3'], 1) },
+      { qNum: 2, desc: '② 6の つぎ、8の まえの すうじは なにかな？', ans: '7', choices: ['5', '7', '8', '9'], customHtml: makeTrackHtml(['5', '6', '？', '8', '9'], 2) },
+      { qNum: 3, desc: '③ 11の つぎ、13の まえの すうじは なにかな？', ans: '12', choices: ['10', '12', '14', '15'], customHtml: makeTrackHtml(['10', '11', '？', '13', '14'], 2) },
+      { qNum: 4, desc: '④ 22の つぎの すうじは なにかな？', ans: '23', choices: ['21', '23', '24', '25'], customHtml: makeTrackHtml(['21', '22', '？', '24', '25'], 2) },
+      { qNum: 5, desc: '⑤ 35の つぎ、37の まえの すうじは なにかな？', ans: '36', choices: ['34', '36', '37', '38'], customHtml: makeTrackHtml(['34', '35', '？', '37', '38'], 2) },
+      { qNum: 6, desc: '⑥ 49の つぎ、51の まえの すうじは なにかな？', ans: '50', choices: ['48', '50', '52', '60'], customHtml: makeTrackHtml(['48', '49', '？', '51', '52'], 2) }
     ];
   }
 
-  // Battle 55_2: ミュウ すごろく後編(31〜62)
+  // Battle 55_2: ミュウ 1ねんせいのまとめ（すごろく② 60〜120 伝説のゴール）
   if(bId === 'Battle55_2'){
     return [
-      { qNum: 1, desc: '32の つぎの すうじは なにかな？', ans: '33', choices: ['31', '33', '34', '35'] },
-      { qNum: 2, desc: '42の つぎの すうじは なにかな？', ans: '43', choices: ['41', '43', '44', '45'] },
-      { qNum: 3, desc: '46の つぎの すうじは なにかな？', ans: '47', choices: ['45', '47', '48', '49'] },
-      { qNum: 4, desc: '55の つぎの すうじは なにかな？', ans: '56', choices: ['54', '56', '57', '58'] }
+      { qNum: 1, desc: '① 62の つぎ、64の まえの すうじは なにかな？', ans: '63', choices: ['61', '63', '64', '65'], customHtml: makeTrackHtml(['61', '62', '？', '64', '65'], 2) },
+      { qNum: 2, desc: '② 69の つぎの すうじは なにかな？', ans: '70', choices: ['68', '70', '71', '80'], customHtml: makeTrackHtml(['68', '69', '？', '71', '72'], 2) },
+      { qNum: 3, desc: '③ 80の つぎの すうじは なにかな？', ans: '81', choices: ['79', '81', '82', '90'], customHtml: makeTrackHtml(['79', '80', '？', '82', '83'], 2) },
+      { qNum: 4, desc: '④ 89の つぎの すうじは なにかな？', ans: '90', choices: ['88', '90', '91', '100'], customHtml: makeTrackHtml(['88', '89', '？', '91', '92'], 2) },
+      { qNum: 5, desc: '⑤ 98の つぎ、100の まえの すうじは なにかな？', ans: '99', choices: ['97', '99', '100', '101'], customHtml: makeTrackHtml(['97', '98', '？', '100', '101'], 2) },
+      { qNum: 6, desc: '⑥ 100の つぎの すうじは なにかな？', ans: '101', choices: ['100', '101', '102', '110'], customHtml: makeTrackHtml(['99', '100', '？', '102', '103'], 2) },
+      { qNum: 7, desc: '⑦ 109の つぎの すうじは なにかな？', ans: '110', choices: ['108', '110', '111', '120'], customHtml: makeTrackHtml(['108', '109', '？', '111', '112'], 2) },
+      { qNum: 8, desc: '⑧ 119の つぎ、ミュウの まつ でんせつの ゴール（120）は なにかな？', ans: '120', choices: ['118', '119', '120', '130'], customHtml: makeTrackHtml(['117', '118', '119', '？'], 3) }
     ];
   }
 
@@ -3243,39 +3350,6 @@ function renderInteractiveStage(row){
         '<div id="b11Container"></div>' +
       '</div>';
     initBattle11Compare();
-  } else if(bId === 'Battle45' || bId === 'Battle45_2'){
-    // とけい
-    const isHalf = bId === 'Battle45_2';
-    card.innerHTML = 
-      '<div class="card interactive-stage">' +
-        '<h3>⏰ とけいの はりを みてみよう！</h3>' +
-        '<div class="clock-stage">' +
-          '<div class="clock-circle">' +
-            '<div class="clock-center"></div>' +
-            '<div class="clock-hand-hour" style="transform:rotate(' + (isHalf ? '135deg' : '90deg') + ')"></div>' +
-            '<div class="clock-hand-min" style="transform:rotate(' + (isHalf ? '180deg' : '0deg') + ')"></div>' +
-          '</div>' +
-        '</div>' +
-      '</div>';
-  } else if(bId === 'Battle52'){
-    // コレクレーのおかね
-    card.innerHTML = 
-      '<div class="card interactive-stage">' +
-        '<h3>🪙 コレクレーの おたからを かぞえよう！</h3>' +
-        '<div class="coin-stage">' +
-          '<div class="coin-chest">' +
-            '<button class="coin-btn coin-10" onclick="addCoin(10)">🪙 10えん</button>' +
-            '<button class="coin-btn coin-10" onclick="addCoin(10)">🪙 10えん</button>' +
-            '<button class="coin-btn coin-10" onclick="addCoin(10)">🪙 10えん</button>' +
-            '<button class="coin-btn coin-1" onclick="addCoin(1)">🪙 1えん</button>' +
-            '<button class="coin-btn coin-1" onclick="addCoin(1)">🪙 1えん</button>' +
-            '<button class="coin-btn coin-1" onclick="addCoin(1)">🪙 1えん</button>' +
-            '<button class="coin-btn coin-1" onclick="addCoin(1)">🪙 1えん</button>' +
-            '<button class="coin-btn coin-1" onclick="addCoin(1)">🪙 1えん</button>' +
-          '</div>' +
-          '<div class="coin-total-box">あつめた おかね: <span id="coinTotal" style="color:#e07a30">0</span> えん</div>' +
-        '</div>' +
-      '</div>';
   }
 
   if(card.innerHTML.trim()){
@@ -3766,11 +3840,50 @@ function renderQuestionCards(row){
       card.className = 'pd-card';
 
       let pokeHtml = '';
-      for(let k=0; k<q.count; k++) pokeHtml += '<img src="' + ART(q.pokeId) + '" alt="' + q.pokemon + '">';
+      if(q.count > 20){
+        // 20+ (e.g. Blissey eggs 21 to 30)
+        pokeHtml = '<div style="display:flex;align-items:center;gap:4px;font-size:11px;font-weight:900;color:#c2185b">' +
+          '<div style="background:#fce4ec;border:2px solid #f06292;border-radius:8px;padding:2px 4px">🥚 10</div>' +
+          '<div style="background:#fce4ec;border:2px solid #f06292;border-radius:8px;padding:2px 4px">🥚 10</div>' +
+          (q.count === 30 ? '<div style="background:#fce4ec;border:2px solid #f06292;border-radius:8px;padding:2px 4px">🥚 10</div>' : '') +
+        '</div>';
+      } else if(q.count > 10){
+        // 11 to 20 (e.g. Monster balls 11 to 20)
+        pokeHtml = '<div style="display:flex;align-items:center;gap:4px;font-size:11px;font-weight:900;color:#e65100">' +
+          '<div style="background:#fff3e0;border:2px solid #ff9800;border-radius:8px;padding:2px 6px">🔴 10</div>' +
+          (q.count === 20 ? '<div style="background:#fff3e0;border:2px solid #ff9800;border-radius:8px;padding:2px 6px">🔴 10</div>' : '') +
+        '</div>';
+      } else {
+        for(let k=0; k<q.count; k++) pokeHtml += '<img src="' + ART(q.pokeId) + '" alt="' + q.pokemon + '">';
+      }
 
       let dotsHtml = '';
-      for(let idx=0; idx<10; idx++){
-        dotsHtml += '<div class="pd-dot ' + (idx < q.count ? 'filled' : '') + '"></div>';
+      if(q.count > 20){
+        const loose = q.count - 20;
+        let looseDots = '';
+        for(let idx=0; idx<10; idx++){
+          looseDots += '<div class="pd-dot ' + (idx < loose ? 'filled' : '') + '"></div>';
+        }
+        dotsHtml = '<div style="display:flex;align-items:center;gap:6px">' +
+          '<div style="text-align:center"><div style="font-size:10px;font-weight:900;color:#555">10のまとまり</div><div style="font-size:12px;font-weight:900;color:#c2185b">20</div></div>' +
+          '<div style="font-size:14px;font-weight:900;color:#888">＋</div>' +
+          '<div style="text-align:center"><div style="font-size:10px;font-weight:900;color:#555">ばら</div><div class="pd-ten-frame">' + looseDots + '</div></div>' +
+        '</div>';
+      } else if(q.count > 10){
+        const loose = q.count - 10;
+        let looseDots = '';
+        for(let idx=0; idx<10; idx++){
+          looseDots += '<div class="pd-dot ' + (idx < loose ? 'filled' : '') + '"></div>';
+        }
+        dotsHtml = '<div style="display:flex;align-items:center;gap:6px">' +
+          '<div style="text-align:center"><div style="font-size:10px;font-weight:900;color:#555">10のまとまり</div><div style="font-size:12px;font-weight:900;color:#e65100">10</div></div>' +
+          '<div style="font-size:14px;font-weight:900;color:#888">＋</div>' +
+          '<div style="text-align:center"><div style="font-size:10px;font-weight:900;color:#555">ばら</div><div class="pd-ten-frame">' + looseDots + '</div></div>' +
+        '</div>';
+      } else {
+        for(let idx=0; idx<10; idx++){
+          dotsHtml += '<div class="pd-dot ' + (idx < q.count ? 'filled' : '') + '"></div>';
+        }
       }
 
       let choicesHtml = '';
@@ -3864,6 +3977,7 @@ function renderQuestionCards(row){
         '<div class="q-desc">' + pokeIcon + q.desc + '</div>' +
         '<button class="q-voice" aria-label="もんだいをよみあげる">🔊</button>' +
       '</div>' +
+      (q.customHtml || '') +
       treeHtml +
       '<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:10px;flex-wrap:wrap">' +
         '<div class="choices" style="flex:1"></div>' +

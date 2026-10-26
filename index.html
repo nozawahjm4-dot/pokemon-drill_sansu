@@ -3801,24 +3801,50 @@ function cleanSpeechText(text) {
 
   // 2. Correct symbol pronunciations
   t = t
-    .replace(/[①②③④⑤⑥⑦⑧⑨⑩]/g, '')
-    // 〇, ⭕, ○, ◯ -> まる
-    .replace(/[〇⭕○◯]/g, ' まる ')
-    // ● -> まる
-    .replace(/●/g, ' まる ')
+    .replace(/[①②③④⑤⑥⑦⑧⑨⑩]/g, ' ')
+    // 〇, ⭕, ○, ◯, ●, ◎ -> まる
+    .replace(/[〇⭕○◯●◎]/g, ' まる ')
     // ×, ✖ -> ばつ
     .replace(/[×✖]/g, ' ばつ ')
     // ＋, + -> たす
     .replace(/[＋+]/g, ' たす ')
-    // True minuses (do NOT touch katakana prolonged sound mark ー \u30FC!)
-    .replace(/[−－]/g, ' ひく ')
-    .replace(/(?<=[\d\s])-(?=[\d\s])/g, ' ひく ')
     // ＝, = -> は
     .replace(/[＝=]/g, ' は ')
     // 田, [ ？ ], □ -> しかく
     .replace(/\[\s*？\s*\]|【\s*？\s*】|\[\s*　\s*\]|[田□]/g, ' しかく ')
     .replace(/[？\?]/g, ' はてな ')
-    .replace(/[〜～]/g, ' から ')
+    .replace(/[〜～]/g, ' から ');
+
+  // 3. Phonetic conversion of Katakana/Hiragana prolonged sound mark ー to proper vowel
+  // Windows TTS (Haruka/Ayumi) pronounces 'ー' as 'ひく' (minus sign), so we convert it to the preceding vowel
+  const vowelMap = {
+    // a-dan
+    'ア':'あ','カ':'あ','サ':'あ','タ':'あ','ナ':'あ','ハ':'あ','マ':'あ','ヤ':'あ','ラ':'あ','ワ':'あ','ガ':'あ','ザ':'あ','ダ':'あ','バ':'あ','パ':'あ','ァ':'あ','ャ':'あ',
+    'あ':'あ','か':'あ','さ':'あ','た':'あ','な':'あ','は':'あ','ま':'あ','や':'あ','ら':'あ','わ':'あ','が':'あ','ざ':'あ','だ':'あ','ば':'あ','ぱ':'あ','ぁ':'あ','ゃ':'あ',
+    // i-dan
+    'イ':'い','キ':'い','シ':'い','チ':'い','ニ':'い','ヒ':'い','ミ':'い','リ':'い','ギ':'い','ジ':'い','ヂ':'い','ビ':'い','ピ':'い','ィ':'い',
+    'い':'い','き':'い','し':'い','ち':'い','に':'い','ひ':'い','み':'い','り':'い','ぎ':'い','じ':'い','ぢ':'い','び':'い','ぴ':'い','ぃ':'い',
+    // u-dan
+    'ウ':'う','ク':'う','ス':'う','ツ':'う','ヌ':'う','フ':'う','ム':'う','ユ':'う','ル':'う','グ':'う','ズ':'う','ヅ':'う','ブ':'う','プ':'う','ヴ':'う','ゥ':'う','ュ':'う',
+    'う':'う','く':'う','す':'う','つ':'う','ぬ':'う','ふ':'う','む':'う','ゆ':'う','る':'う','ぐ':'う','ず':'う','づ':'う','ぶ':'う','ぷ':'う','ぅ':'う','ゅ':'う',
+    // e-dan
+    'エ':'え','ケ':'え','セ':'え','テ':'え','ネ':'え','ヘ':'え','メ':'え','レ':'え','ゲ':'え','ゼ':'え','デ':'え','ベ':'え','ペ':'え','ェ':'え',
+    'え':'え','け':'え','せ':'え','て':'え','ね':'え','へ':'え','め':'え','れ':'え','ゲ':'え','ぜ':'え','で':'え','べ':'え','ぺ':'え','ぇ':'え',
+    // o-dan
+    'オ':'お','コ':'お','ソ':'お','ト':'お','ノ':'お','ホ':'お','モ':'お','ヨ':'お','ロ':'お','ヲ':'お','ゴ':'お','ゾ':'お','ド':'お','ボ':'お','ポ':'お','ォ':'お','ョ':'お',
+    'お':'お','こ':'お','そ':'お','と':'お','の':'お','ほ':'お','も':'お','よ':'お','ろ':'お','を':'お','ご':'お','ぞ':'お','ど':'お','ぼ':'お','ぽ':'お','ぉ':'お','ょ':'お'
+  };
+
+  t = t.replace(/([ァ-ヴぁ-ん])ー+/g, (match, prevChar) => {
+    const vowel = vowelMap[prevChar] || 'お';
+    return prevChar + vowel.repeat(match.length - 1);
+  });
+
+  // True minuses
+  t = t.replace(/[−－―–]/g, ' ひく ').replace(/(?<=[\d\s])-(?=[\d\s])/g, ' ひく ');
+
+  // Counters
+  t = t
     .replace(/(\d+)ひき/g, '$1 ひき')
     .replace(/(\d+)こ/g, '$1 こ')
     .replace(/(\d+)まい/g, '$1 まい')
@@ -4179,16 +4205,16 @@ function buildStageQuestions(row){
   // Battle 5: フシギソウ 5はいくつといくつ (おさら1とおさら2)
   if(bId === 'Battle5'){
     return [
-      { qNum: 1, desc: 'おさら1に 1こ あります。ぜんぶで5にするには おさら2に なんこ ひつよう？', ans: '4', choices: ['2','3','4','5'], interactive: 'apple_split' },
-      { qNum: 2, desc: 'おさら1に 2こ あります。ぜんぶで5にするには おさら2に なんこ ひつよう？', ans: '3', choices: ['1','2','3','4'], interactive: 'apple_split' }
+      { qNum: 1, desc: 'おさら1に 1こ あります。全部で5にするには おさら2に なんこ ひつよう？', ans: '4', choices: ['1','2','3','4','5'], interactive: 'apple_split' },
+      { qNum: 2, desc: 'おさら1に 2こ あります。全部で5にするには おさら2に なんこ ひつよう？', ans: '3', choices: ['1','2','3','4','5'], interactive: 'apple_split' }
     ];
   }
 
   // Battle 6: ジヘッド 5はいくつといくつ (おさら1とおさら2)
   if(bId === 'Battle6'){
     return [
-      { qNum: 1, desc: 'おさら1に 3こ あります。ぜんぶで5にするには おさら2に なんこ ひつよう？', ans: '2', choices: ['1','2','3','4'], interactive: 'apple_split' },
-      { qNum: 2, desc: 'おさら1に 4こ あります。ぜんぶで5にするには おさら2に なんこ ひつよう？', ans: '1', choices: ['1','2','3','4'], interactive: 'apple_split' }
+      { qNum: 1, desc: 'おさら1に 3こ あります。全部で5にするには おさら2に なんこ ひつよう？', ans: '2', choices: ['1','2','3','4','5'], interactive: 'apple_split' },
+      { qNum: 2, desc: 'おさら1に 4こ あります。全部で5にするには おさら2に なんこ ひつよう？', ans: '1', choices: ['1','2','3','4','5'], interactive: 'apple_split' }
     ];
   }
 
@@ -4568,43 +4594,86 @@ function renderInteractiveStage(row){
       '</div>';
     initThreeColMatch([6, 7, 8, 9, 10], 656, 'ケロマツ');
   } else if(bId === 'Battle5' || bId === 'Battle6'){
-    // おさら1とおさら2の分解（フシギソウ・ジヘッド）
+    // おさら1とおさら2の分解（フシギソウ・ジヘッド）- 2問連続縦並び・上限遵守・5個ポップアップ撤去
     const isB5 = bId === 'Battle5';
     const pokeName = isB5 ? 'フシギソウ' : 'ジヘッド';
     const pokeFuri = isB5 ? 'ふしぎそう' : 'じへっど';
     const pokeIdNum = isB5 ? 2 : 634;
 
+    const topCount1 = isB5 ? 1 : 3;
+    const topCount2 = isB5 ? 2 : 4;
+
+    let p1_apples1 = '';
+    for(let k=0; k<topCount1; k++) p1_apples1 += '<span class="plate-apple">🍎</span>';
+    let p2_apples1 = '';
+    for(let k=0; k<topCount2; k++) p2_apples1 += '<span class="plate-apple">🍎</span>';
+
     card.innerHTML = 
       '<div class="drill-book-page">' +
-        makeDrillBookHeader(isB5 ? 5 : 6, pokeName, pokeFuri, '5は いくつと いくつ', 'おさらに りんごを わけてみよう！ ぜんぶで 5こに なるように してね。', pokeIdNum) +
-        '<div style="background:#fff7ed;border:2px solid #fed7aa;border-radius:18px;padding:14px;margin-bottom:12px">' +
-          '<div style="display:flex;gap:12px;justify-content:center;align-items:center;margin-bottom:12px">' +
-            '<button type="button" class="plate-tab-btn active" id="b5Tab1" style="background:#ea580c;color:#fff;border:none;border-radius:10px;padding:6px 14px;font-weight:900;cursor:pointer">もんだい ①</button>' +
-            '<button type="button" class="plate-tab-btn" id="b5Tab2" style="background:#fdba74;color:#9a3412;border:none;border-radius:10px;padding:6px 14px;font-weight:900;cursor:pointer">もんだい ②</button>' +
+        makeDrillBookHeader(isB5 ? 5 : 6, pokeName, pokeFuri, '5は いくつと いくつ', 'おさらに りんごを わけてみよう！ 全部で5にするには おさら2に なんこ ひつよう？', pokeIdNum) +
+        
+        '<!-- もんだい 1 -->' +
+        '<div class="b5-prob-card" style="background:#fff;border:3px solid #f97316;border-radius:18px;padding:16px;margin-bottom:18px;box-shadow:0 4px 10px rgba(0,0,0,0.06)">' +
+          '<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">' +
+            '<span style="background:#ea580c;color:#fff;font-weight:900;border-radius:8px;padding:3px 10px;font-size:14px">もんだい ①</span>' +
+            '<span style="font-weight:900;font-size:16px;color:#1e293b">' + (isB5 ? 'おさら1に 1こ あります。全部で5にするには おさら2に なんこ ひつよう？' : 'おさら1に 3こ あります。全部で5にするには おさら2に なんこ ひつよう？') + '</span>' +
           '</div>' +
-          '<div class="plate-wrap" style="display:flex;gap:14px;justify-content:center;align-items:center">' +
-            '<div class="plate-box" style="text-align:center">' +
-              '<div style="font-weight:900;color:#0284c7;font-size:14px;margin-bottom:4px">おさら 1</div>' +
-              '<div class="plate-dish" id="plateTop" style="width:120px;height:70px;background:#fff;border:3px solid #38bdf8;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px"></div>' +
+          '<div style="display:flex;align-items:center;justify-content:center;gap:14px;background:#fff7ed;border-radius:14px;padding:12px;margin-bottom:12px">' +
+            '<div style="text-align:center">' +
+              '<div style="font-weight:900;color:#0284c7;font-size:13px;margin-bottom:4px">おさら 1</div>' +
+              '<div class="plate-dish" style="width:110px;height:65px;background:#fff;border:3px solid #38bdf8;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px">' + p1_apples1 + '</div>' +
             '</div>' +
-            '<div style="font-size:28px;font-weight:900;color:#ea580c">＋</div>' +
-            '<div class="plate-box" style="text-align:center">' +
-              '<div style="font-weight:900;color:#0284c7;font-size:14px;margin-bottom:4px">おさら 2</div>' +
-              '<div class="plate-dish" id="plateBottom" style="width:120px;height:70px;background:#fff;border:3px solid #38bdf8;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px"></div>' +
+            '<div style="font-size:26px;font-weight:900;color:#ea580c">＋</div>' +
+            '<div style="text-align:center">' +
+              '<div style="font-weight:900;color:#0284c7;font-size:13px;margin-bottom:4px">おさら 2</div>' +
+              '<div class="plate-dish" id="p1_plateBot" style="width:110px;height:65px;background:#fff;border:3px solid #38bdf8;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px"></div>' +
             '</div>' +
           '</div>' +
-          '<div style="text-align:center;margin-top:12px">' +
-            '<button type="button" class="plate-btn" id="btnAddApple" style="background:#ea580c;color:#fff;border:none;border-radius:12px;padding:8px 18px;font-weight:900;font-size:15px;cursor:pointer">🍎 りんごを おく</button> ' +
-            '<button type="button" class="plate-btn" id="btnRemoveApple" style="background:#64748b;color:#fff;border:none;border-radius:12px;padding:8px 18px;font-weight:900;font-size:15px;cursor:pointer">↩️ もどす</button>' +
-            '<div style="font-size:16px;font-weight:900;margin-top:10px;color:#1e293b">ぜんぶで: <span id="plateTotal" style="color:#ea580c;font-size:26px">1</span> こ</div>' +
+          '<div style="text-align:center;margin-bottom:12px">' +
+            '<button type="button" class="plate-btn" id="p1_btnAdd" style="background:#ea580c;color:#fff;border:none;border-radius:10px;padding:7px 16px;font-weight:900;font-size:14px;cursor:pointer">🍎 りんごを おく</button> ' +
+            '<button type="button" class="plate-btn" id="p1_btnRemove" style="background:#64748b;color:#fff;border:none;border-radius:10px;padding:7px 16px;font-weight:900;font-size:14px;cursor:pointer">↩️ もどす</button>' +
+            '<div style="font-size:15px;font-weight:900;margin-top:6px;color:#1e293b">ぜんぶで: <span id="p1_total" style="color:#ea580c;font-size:22px">' + topCount1 + '</span> こ</div>' +
+          '</div>' +
+          '<div style="text-align:center;border-top:2px dashed #fed7aa;padding-top:12px">' +
+            '<div style="font-size:14px;font-weight:900;color:#475569;margin-bottom:8px">おさら2の かずを えらぼう：</div>' +
+            '<div class="choices" id="p1_choices" style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap"></div>' +
           '</div>' +
         '</div>' +
+
+        '<!-- もんだい 2 (もんだい1の直後に挿入) -->' +
+        '<div class="b5-prob-card" style="background:#fff;border:3px solid #f97316;border-radius:18px;padding:16px;margin-bottom:18px;box-shadow:0 4px 10px rgba(0,0,0,0.06)">' +
+          '<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">' +
+            '<span style="background:#ea580c;color:#fff;font-weight:900;border-radius:8px;padding:3px 10px;font-size:14px">もんだい ②</span>' +
+            '<span style="font-weight:900;font-size:16px;color:#1e293b">' + (isB5 ? 'おさら1に 2こ あります。全部で5にするには おさら2に なんこ ひつよう？' : 'おさら1に 4こ あります。全部で5にするには おさら2に なんこ ひつよう？') + '</span>' +
+          '</div>' +
+          '<div style="display:flex;align-items:center;justify-content:center;gap:14px;background:#fff7ed;border-radius:14px;padding:12px;margin-bottom:12px">' +
+            '<div style="text-align:center">' +
+              '<div style="font-weight:900;color:#0284c7;font-size:13px;margin-bottom:4px">おさら 1</div>' +
+              '<div class="plate-dish" style="width:110px;height:65px;background:#fff;border:3px solid #38bdf8;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px">' + p2_apples1 + '</div>' +
+            '</div>' +
+            '<div style="font-size:26px;font-weight:900;color:#ea580c">＋</div>' +
+            '<div style="text-align:center">' +
+              '<div style="font-weight:900;color:#0284c7;font-size:13px;margin-bottom:4px">おさら 2</div>' +
+              '<div class="plate-dish" id="p2_plateBot" style="width:110px;height:65px;background:#fff;border:3px solid #38bdf8;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px"></div>' +
+            '</div>' +
+          '</div>' +
+          '<div style="text-align:center;margin-bottom:12px">' +
+            '<button type="button" class="plate-btn" id="p2_btnAdd" style="background:#ea580c;color:#fff;border:none;border-radius:10px;padding:7px 16px;font-weight:900;font-size:14px;cursor:pointer">🍎 りんごを おく</button> ' +
+            '<button type="button" class="plate-btn" id="p2_btnRemove" style="background:#64748b;color:#fff;border:none;border-radius:10px;padding:7px 16px;font-weight:900;font-size:14px;cursor:pointer">↩️ もどす</button>' +
+            '<div style="font-size:15px;font-weight:900;margin-top:6px;color:#1e293b">ぜんぶで: <span id="p2_total" style="color:#ea580c;font-size:22px">' + topCount2 + '</span> こ</div>' +
+          '</div>' +
+          '<div style="text-align:center;border-top:2px dashed #fed7aa;padding-top:12px">' +
+            '<div style="font-size:14px;font-weight:900;color:#475569;margin-bottom:8px">おさら2の かずを えらぼう：</div>' +
+            '<div class="choices" id="p2_choices" style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap"></div>' +
+          '</div>' +
+        '</div>' +
+
         makeDrillBookFooter(pokeName, isB5 ? 'たねポケモン' : 'そぼうポケモン', isB5 ? 'くさ・どく' : 'ドラゴン・あく', isB5 ? '1.0m' : '1.4m', isB5 ? '13.0kg' : '50.0kg', '5の構成（1と4、2と3）を具体物のお皿の操作を通じて直感的に把握します。', pokeIdNum) +
       '</div>';
 
-    initAppleSplitTabs(isB5);
+    initAppleSplitSequential(isB5);
   } else if(bId === 'Battle9'){
-    // エテボースのすごろく (何度でも入れ直し可能、ダミー数字入りシャッフル)
+    // エテボースのすごろく
     card.innerHTML = 
       '<div class="card interactive-stage">' +
         '<h3>🐒 あいている マスに すうじを いれよう！(1〜10)</h3>' +
@@ -4616,10 +4685,10 @@ function renderInteractiveStage(row){
     initSequenceFill(
       [1, null, 3, null, null, 6, null, 8, null, 10],
       [2, 4, 5, 7, 9],
-      [7, 3, 2, 8, 5, 4, 6, 9, 1] // ダミー数字入りシャッフル
+      [7, 3, 2, 8, 5, 4, 6, 9, 1]
     );
   } else if(bId === 'Battle10'){
-    // ミミッキュのぎゃくじゅん (何度でも入れ直し可能、ダミー数字入りシャッフル)
+    // ミミッキュのぎゃくじゅん
     card.innerHTML = 
       '<div class="card interactive-stage">' +
         '<h3>👻 10から 1まで ぎゃくに ならべよう！</h3>' +
@@ -4631,10 +4700,10 @@ function renderInteractiveStage(row){
     initSequenceFill(
       [10, 9, null, 7, null, null, 4, null, 2, null],
       [8, 6, 5, 3, 1],
-      [6, 2, 8, 7, 3, 5, 9, 1, 4] // ダミー数字入りシャッフル
+      [6, 2, 8, 7, 3, 5, 9, 1, 4]
     );
   } else if(bId === 'Battle11'){
-    // ユキメノコ どちらがおおいかな（紙の手本再現）
+    // ユキメノコ どちらがおおいかな
     card.innerHTML = 
       '<div class="card interactive-stage">' +
         '<h3>❄️ ポケモンの かずを かぞえて、おおい ほうを えらぼう！</h3>' +
@@ -4642,7 +4711,7 @@ function renderInteractiveStage(row){
       '</div>';
     initBattle11Compare();
   } else if(bId === 'Battle20'){
-    // ピカチュウ 1〜10のまとめ 7つの数の木迷路（原本Battle20.jpg完全再現）
+    // ピカチュウ 1〜10のまとめ 7つの数の木迷路（原本Battle20.jpg完全再現・t-math-box & テンキートレイ連携）
     function makeMazeTree(total, given, ans, stepNum) {
       return '<div style="background:#fff;border:3px solid #f59e0b;border-radius:14px;padding:8px 6px;text-align:center;box-shadow:0 3px 6px rgba(0,0,0,0.08);min-width:96px">' +
         '<div style="background:#fbcfe8;border:2px solid #db2777;border-radius:8px;font-size:22px;font-weight:900;color:#9d174d;width:42px;margin:0 auto 3px">' + total + '</div>' +
@@ -4652,10 +4721,16 @@ function renderInteractiveStage(row){
         '</svg>' +
         '<div style="display:flex;justify-content:center;gap:6px;align-items:center;margin-top:2px">' +
           '<div style="background:#f8fafc;border:2px solid #64748b;border-radius:6px;font-size:18px;font-weight:900;width:34px;height:34px;display:flex;align-items:center;justify-content:center;color:#1e293b">' + given + '</div>' +
-          '<div class="math-box" data-ans="' + ans + '" style="width:36px;height:36px;font-size:20px;border:2.5px dashed #2563eb;border-radius:6px;background:#eff6ff"></div>' +
+          '<div class="t-math-box" data-target="' + ans + '" style="width:36px;height:36px;font-size:20px;border:2.5px dashed #2563eb;border-radius:6px;background:#eff6ff;display:flex;align-items:center;justify-content:center;cursor:pointer">？</div>' +
         '</div>' +
       '</div>';
     }
+
+    let trayHtml = '<div class="num-choice-tray" style="margin-top:14px;justify-content:center;gap:8px">';
+    ['2', '3', '4', '5', '6'].forEach(n => {
+      trayHtml += '<button type="button" class="num-choice-btn" data-val="' + n + '">' + n + '</button>';
+    });
+    trayHtml += '<button type="button" class="num-choice-btn erase" data-val="erase">⌫ けす</button></div>';
 
     card.innerHTML = 
       '<div class="drill-book-page">' +
@@ -4678,17 +4753,17 @@ function renderInteractiveStage(row){
             '<span style="font-size:22px;font-weight:900;color:#15803d">⬇️</span>' +
           '</div>' +
 
-          '<!-- Row 2: 8(4, 4) <- 10(7, 3) <- 7(5, 2) -->' +
+          '<!-- Row 2: 7(5, 2) -> 10(7, 3) -> 8(4, 4) -->' +
           '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">' +
-            makeMazeTree(8, 4, '4', 5) +
-            '<span style="font-size:20px;font-weight:900;color:#15803d">⬅️</span>' +
-            makeMazeTree(10, 7, '3', 4) +
-            '<span style="font-size:20px;font-weight:900;color:#15803d">⬅️</span>' +
             makeMazeTree(7, 5, '2', 3) +
+            '<span style="font-size:20px;font-weight:900;color:#15803d">➡️</span>' +
+            makeMazeTree(10, 7, '3', 4) +
+            '<span style="font-size:20px;font-weight:900;color:#15803d">➡️</span>' +
+            makeMazeTree(8, 4, '4', 5) +
           '</div>' +
 
           '<!-- 左端の折り返し下向き矢印 -->' +
-          '<div style="text-align:left;padding-left:45px;margin:-4px 0">' +
+          '<div style="text-align:right;padding-right:45px;margin:-4px 0">' +
             '<span style="font-size:22px;font-weight:900;color:#15803d">⬇️</span>' +
           '</div>' +
 
@@ -4704,12 +4779,13 @@ function renderInteractiveStage(row){
             '</div>' +
           '</div>' +
         '</div>' +
+        trayHtml +
         makeDrillBookFooter('ピカチュウ', 'ねずみポケモン', 'でんき', '0.4m', '6.0kg', '1から10までの数の分解と合成を、一本の迷路のストーリーの中で楽しく総復習します。', 25) +
       '</div>';
 
     initBattle20Pikachu();
   } else if(bId === 'Battle21'){
-    // アブリボン 10よりおおきいかず（原本Battle21.jpg完全再現・タッチで10のまとまり枠出現・余計な丸排除）
+    // アブリボン 10よりおおきいかず（原本Battle21.jpg完全再現・タッチで10のまとまり枠出現・余計な丸排除・t-math-box連携）
     let tenHtml = '';
     for(let k = 0; k < 10; k++){
       tenHtml += '<img src="' + ART(743) + '" alt="アブリボン" style="width:44px;height:44px;object-fit:contain;margin:2px">';
@@ -4718,6 +4794,12 @@ function renderInteractiveStage(row){
     for(let k = 0; k < 4; k++){
       fourHtml += '<img src="' + ART(743) + '" alt="アブリボン" style="width:44px;height:44px;object-fit:contain;margin:2px">';
     }
+
+    let trayHtml = '<div class="num-choice-tray" style="margin-top:14px;justify-content:center;gap:8px">';
+    ['11', '12', '13', '14', '15'].forEach(n => {
+      trayHtml += '<button type="button" class="num-choice-btn" data-val="' + n + '">' + n + '</button>';
+    });
+    trayHtml += '<button type="button" class="num-choice-btn erase" data-val="erase">⌫ けす</button></div>';
 
     card.innerHTML = 
       '<div class="drill-book-page">' +
@@ -4740,10 +4822,11 @@ function renderInteractiveStage(row){
         '<div style="background:#fff;border:2.5px solid #cbd5e1;border-radius:16px;padding:14px;text-align:center;margin-bottom:14px">' +
           '<div style="font-size:18px;font-weight:900;color:#1e293b;display:flex;align-items:center;justify-content:center;gap:8px">' +
             '<span>アブリボンの かずは、</span>' +
-            '<div class="math-box" data-ans="14" style="width:56px;height:56px;font-size:26px"></div>' +
+            '<div class="t-math-box" data-target="14" style="width:64px;height:56px;font-size:26px;border:2.5px dashed #2563eb;border-radius:8px;background:#eff6ff;display:flex;align-items:center;justify-content:center;cursor:pointer">？</div>' +
             '<span>ひき です。</span>' +
           '</div>' +
         '</div>' +
+        trayHtml +
         makeDrillBookFooter('アブリボン', 'ツリアブポケモン', 'むし・フェアリー', '0.2m', '0.5kg', '10のまとまりを作り、10と4で14という数の構成を理解します。一の位、十の位と10ごとに単位を作る「十進位取り記数法」の素地になります。', 743) +
       '</div>';
 
@@ -7782,6 +7865,1092 @@ function initBattle36Togedemaru() {
 
 /* ===== BATTLES 5, 6, 20, 21 INITIALIZERS ===== */
 
+function initAppleSplitSequential(isB5) {
+  const top1 = isB5 ? 1 : 3;
+  const maxBot1 = isB5 ? 4 : 2;
+  const top2 = isB5 ? 2 : 4;
+  const maxBot2 = isB5 ? 3 : 1;
+
+  let bot1 = 0, bot2 = 0;
+  const p1Bot = $('p1_plateBot');
+  const p1Total = $('p1_total');
+  const p2Bot = $('p2_plateBot');
+  const p2Total = $('p2_total');
+
+  function renderP1() {
+    let h = '';
+    for(let k=0; k<bot1; k++) h += '<span class="plate-apple">🍎</span>';
+    if(p1Bot) p1Bot.innerHTML = h;
+    if(p1Total) p1Total.textContent = top1 + bot1;
+  }
+  function renderP2() {
+    let h = '';
+    for(let k=0; k<bot2; k++) h += '<span class="plate-apple">🍎</span>';
+    if(p2Bot) p2Bot.innerHTML = h;
+    if(p2Total) p2Total.textContent = top2 + bot2;
+  }
+
+  const p1Add = $('p1_btnAdd');
+  const p1Rem = $('p1_btnRemove');
+  if(p1Add) p1Add.onclick = () => {
+    if(bot1 < maxBot1){
+      playMarimbaPop(1.3);
+      bot1++;
+      renderP1();
+    }
+  };
+  if(p1Rem) p1Rem.onclick = () => {
+    if(bot1 > 0){
+      playMarimbaPop(0.9);
+      bot1--;
+      renderP1();
+    }
+  };
+
+  const p2Add = $('p2_btnAdd');
+  const p2Rem = $('p2_btnRemove');
+  if(p2Add) p2Add.onclick = () => {
+    if(bot2 < maxBot2){
+      playMarimbaPop(1.3);
+      bot2++;
+      renderP2();
+    }
+  };
+  if(p2Rem) p2Rem.onclick = () => {
+    if(bot2 > 0){
+      playMarimbaPop(0.9);
+      bot2--;
+      renderP2();
+    }
+  };
+
+  // Choice buttons for Problem 1
+  const saved = S.answers[curIdx] || {};
+  const p1Box = $('p1_choices');
+  if(p1Box){
+    p1Box.innerHTML = '';
+    ['1', '2', '3', '4', '5'].forEach(ch => {
+      const b = document.createElement('button');
+      b.className = 'choice';
+      b.style.fontSize = '17px';
+      b.style.padding = '8px 14px';
+      const n = parseInt(ch, 10);
+      b.innerHTML = '<span style="font-weight:900">' + ch + '</span><span style="font-size:13px;margin-left:4px">' + '🍎'.repeat(n) + '</span>';
+      if(saved[0] === ch) b.classList.add('sel');
+      b.onclick = () => {
+        playMarimbaPop(1.2);
+        p1Box.querySelectorAll('.choice').forEach(x => x.classList.remove('sel'));
+        b.classList.add('sel');
+        if(!S.answers[curIdx]) S.answers[curIdx] = {};
+        S.answers[curIdx][0] = ch;
+        save();
+        updateThrow();
+      };
+      p1Box.appendChild(b);
+    });
+  }
+
+  // Choice buttons for Problem 2
+  const p2Box = $('p2_choices');
+  if(p2Box){
+    p2Box.innerHTML = '';
+    ['1', '2', '3', '4', '5'].forEach(ch => {
+      const b = document.createElement('button');
+      b.className = 'choice';
+      b.style.fontSize = '17px';
+      b.style.padding = '8px 14px';
+      const n = parseInt(ch, 10);
+      b.innerHTML = '<span style="font-weight:900">' + ch + '</span><span style="font-size:13px;margin-left:4px">' + '🍎'.repeat(n) + '</span>';
+      if(saved[1] === ch) b.classList.add('sel');
+      b.onclick = () => {
+        playMarimbaPop(1.2);
+        p2Box.querySelectorAll('.choice').forEach(x => x.classList.remove('sel'));
+        b.classList.add('sel');
+        if(!S.answers[curIdx]) S.answers[curIdx] = {};
+        S.answers[curIdx][1] = ch;
+        save();
+        updateThrow();
+      };
+      p2Box.appendChild(b);
+    });
+  }
+
+  renderP1();
+  renderP2();
+}
+
+function initSequenceFill(board, correctAnswers, paletteChips){
+  const track = $('seqTrack');
+  const pal = $('seqPalette');
+  track.innerHTML = '';
+  pal.innerHTML = '';
+
+  let selectedChip = null;
+  const userSlots = {}; // slotIdx => chipVal
+
+  function checkCompletion(){
+    let correct = true;
+    let filledCount = 0;
+    const emptyIndices = board.map((v, i) => v === null ? i : -1).filter(i => i !== -1);
+    emptyIndices.forEach((slotIdx, i) => {
+      if(userSlots[slotIdx] == null){
+        correct = false;
+      } else {
+        filledCount++;
+        if(parseInt(userSlots[slotIdx], 10) !== correctAnswers[i]){
+          correct = false;
+        }
+      }
+    });
+
+    if(filledCount === emptyIndices.length){
+      if(correct){
+        $('seqDoneMsg').style.display = 'block';
+        (S.answers[curIdx] = S.answers[curIdx] || {})._completed = true;
+        save();
+        updateThrow();
+        speak('ぜんぶの マスが ただしく ならんだよ！ すばらしい！');
+      } else {
+        toast('どこかの すうじが ちがうよ！ もういちど かんがえてみよう');
+      }
+    }
+  }
+
+  board.forEach((val, idx) => {
+    const slot = document.createElement('div');
+    slot.className = 'seq-slot ' + (val === null ? 'empty' : '');
+    slot.textContent = val !== null ? val : '?';
+    slot.dataset.idx = idx;
+
+    if(val === null){
+      slot.onclick = () => {
+        // すでに数字が入っている場合は取り出してやり直し可能
+        if(userSlots[idx] != null && !selectedChip){
+          const returnedVal = userSlots[idx];
+          delete userSlots[idx];
+          slot.textContent = '?';
+          slot.classList.remove('filled');
+          slot.classList.add('empty');
+          // パレットのチップを使用可能に戻す
+          const usedChip = pal.querySelector('.seq-chip.used[data-val="' + returnedVal + '"]');
+          if(usedChip) usedChip.classList.remove('used');
+          toast('すうじ ' + returnedVal + ' を もどしたよ！');
+          checkCompletion();
+          return;
+        }
+
+        // 選択中のチップを入れる
+        if(selectedChip){
+          // もしすでに数字が入っていたら前のチップを戻す
+          if(userSlots[idx] != null){
+            const prevVal = userSlots[idx];
+            const prevChip = pal.querySelector('.seq-chip.used[data-val="' + prevVal + '"]');
+            if(prevChip) prevChip.classList.remove('used');
+          }
+
+          const chipVal = selectedChip.dataset.val;
+          userSlots[idx] = chipVal;
+          slot.textContent = chipVal;
+          slot.classList.remove('empty');
+          slot.classList.add('filled');
+
+          selectedChip.classList.add('used');
+          selectedChip.style.transform = '';
+          selectedChip = null;
+          checkCompletion();
+        }
+      };
+    }
+    track.appendChild(slot);
+  });
+
+  paletteChips.forEach(val => {
+    const chip = document.createElement('div');
+    chip.className = 'seq-chip';
+    chip.textContent = val;
+    chip.dataset.val = val;
+
+    chip.onclick = () => {
+      if(chip.classList.contains('used')) return;
+      document.querySelectorAll('.seq-chip').forEach(c => c.style.transform = '');
+      chip.style.transform = 'scale(1.18)';
+      selectedChip = chip;
+      toast('すうじ ' + val + ' を えらんだよ！ あいているマスを タップしてね');
+    };
+    pal.appendChild(chip);
+  });
+}
+
+function initBattle11Compare(){
+  const container = $('b11Container');
+  container.innerHTML = '';
+  const saved = S.answers[curIdx] || {};
+
+  const sections = [
+    {
+      qIndex: 0,
+      title: 'もんだい 1：かずが おおい ほうを えらぼう',
+      p1: { name: 'ユキメノコ', count: 7, id: 478, bg: 'yellow-bg' },
+      p2: { name: 'マニューラ', count: 6, id: 461, bg: '' }
+    },
+    {
+      qIndex: 1,
+      title: 'もんだい 2：かずが おおい ほうを えらぼう',
+      p1: { name: 'ユキメノコ', count: 8, id: 478, bg: 'pink-bg' },
+      p2: { name: 'ユキカブリ', count: 9, id: 459, bg: '' }
+    }
+  ];
+
+  sections.forEach(sec => {
+    const wrap = document.createElement('div');
+    wrap.className = 'b11-section';
+
+    let p1Html = '';
+    for(let k=0; k<sec.p1.count; k++){
+      p1Html += '<div class="b11-poke-item" onclick="this.classList.toggle(\'counted\')"><img src="' + ART(sec.p1.id) + '" alt="' + sec.p1.name + '"></div>';
+    }
+
+    let p2Html = '';
+    for(let k=0; k<sec.p2.count; k++){
+      p2Html += '<div class="b11-poke-item" onclick="this.classList.toggle(\'counted\')"><img src="' + ART(sec.p2.id) + '" alt="' + sec.p2.name + '"></div>';
+    }
+
+    wrap.innerHTML = 
+      '<div class="b11-sec-title">' + sec.title + '</div>' +
+      '<div class="b11-compare-row">' +
+        '<div class="b11-box ' + sec.p1.bg + '">' +
+          '<div style="font-weight:900;color:#222;margin-bottom:6px">' + sec.p1.name + '</div>' +
+          '<div class="b11-pokes">' + p1Html + '</div>' +
+        '</div>' +
+        '<div class="b11-box ' + sec.p2.bg + '">' +
+          '<div style="font-weight:900;color:#222;margin-bottom:6px">' + sec.p2.name + '</div>' +
+          '<div class="b11-pokes">' + p2Html + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="b11-choose-bar">' +
+        '<button class="b11-choose-btn ' + (saved[sec.qIndex] === sec.p1.name ? 'sel' : '') + '" data-val="' + sec.p1.name + '"><img src="' + ART(sec.p1.id) + '" style="width:28px;height:28px"> ' + sec.p1.name + '</button>' +
+        '<button class="b11-choose-btn ' + (saved[sec.qIndex] === sec.p2.name ? 'sel' : '') + '" data-val="' + sec.p2.name + '"><img src="' + ART(sec.p2.id) + '" style="width:28px;height:28px"> ' + sec.p2.name + '</button>' +
+      '</div>';
+
+    const btns = wrap.querySelectorAll('.b11-choose-btn');
+    btns.forEach(btn => {
+      btn.onclick = () => {
+        btns.forEach(b => b.classList.remove('sel'));
+        btn.classList.add('sel');
+        const val = btn.dataset.val;
+        (S.answers[curIdx] = S.answers[curIdx] || {})[sec.qIndex] = val;
+        save();
+        updateThrow();
+        // answer tap (no tts)
+      };
+    });
+
+    container.appendChild(wrap);
+  });
+}
+
+function initBondTrees(row, totalNum){
+  const grid = $('bondGrid');
+  grid.innerHTML = '';
+  const saved = S.answers[curIdx] || {};
+
+  curQs.forEach((q, qi) => {
+    const card = document.createElement('div');
+    card.className = 'bond-card';
+
+    let leftApples = '';
+    for(let k=0; k<q.given; k++) leftApples += '🍎';
+    let rightApples = '';
+    const rightAns = totalNum - q.given;
+    for(let k=0; k<rightAns; k++) rightApples += '🍎';
+
+    let choicesHtml = '';
+    q.choices.forEach(ch => {
+      choicesHtml += '<button class="bond-btn ' + (saved[qi] === ch ? 'sel' : '') + '" data-val="' + ch + '">' + ch + '</button>';
+    });
+
+    card.innerHTML = 
+      '<div class="bond-tree">' +
+        '<div class="bond-top-box">' + totalNum + '</div>' +
+        '<svg class="bond-branch-svg" viewBox="0 0 90 22">' +
+          '<line x1="45" y1="0" x2="22" y2="22" stroke="#222" stroke-width="2.5" stroke-linecap="round"/>' +
+          '<line x1="45" y1="0" x2="68" y2="22" stroke="#222" stroke-width="2.5" stroke-linecap="round"/>' +
+        '</svg>' +
+        '<div class="bond-bottom-row">' +
+          '<div class="bond-given-box">' + q.given + '</div>' +
+          '<div class="bond-target-box ' + (saved[qi] ? 'filled' : '') + '" id="targetBox_' + qi + '">' + (saved[qi] || '?') + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="bond-apples-row">' +
+        '<div class="bond-apples-left">' + leftApples + '</div>' +
+        '<div class="bond-apples-right">' + rightApples + '</div>' +
+      '</div>' +
+      '<div class="bond-choices">' + choicesHtml + '</div>';
+
+    const btns = card.querySelectorAll('.bond-btn');
+    const target = card.querySelector('#targetBox_' + qi);
+
+    btns.forEach(btn => {
+      btn.onclick = () => {
+        btns.forEach(b => b.classList.remove('sel'));
+        btn.classList.add('sel');
+        const val = btn.dataset.val;
+        target.textContent = val;
+        target.classList.add('filled');
+        (S.answers[curIdx] = S.answers[curIdx] || {})[qi] = val;
+        save();
+        updateThrow();
+        // answer tap (no tts)
+      };
+    });
+
+    grid.appendChild(card);
+  });
+}
+
+
+function initRibombeeStage(){
+  const riboBtns = document.querySelectorAll('.ribo-btn');
+  const riboCountEl = $('riboCount');
+  const riboDoneMsg = $('riboDoneMsg');
+  let riboSelected = new Set();
+
+  riboBtns.forEach(btn => {
+    btn.onclick = () => {
+      const idx = btn.dataset.idx;
+      if(riboSelected.has(idx)){
+        riboSelected.delete(idx);
+        btn.classList.remove('selected');
+      } else {
+        if(riboSelected.size < 10){
+          riboSelected.add(idx);
+          btn.classList.add('selected');
+        }
+      }
+      if(riboCountEl) riboCountEl.textContent = riboSelected.size;
+      if(riboSelected.size === 10){
+        if(riboDoneMsg) riboDoneMsg.style.display = 'inline';
+        (S.answers[curIdx] = S.answers[curIdx] || {})[0] = '10';
+        save(); updateThrow(); speak('10ぴき えらべたね！ 10の まとまりが できたよ！');
+      } else {
+        if(riboDoneMsg) riboDoneMsg.style.display = 'none';
+        
+      }
+    };
+  });
+
+  const circBtns = document.querySelectorAll('.circ-slot-btn');
+  const circCountEl = $('circCount');
+  const circDoneMsg = $('circDoneMsg');
+  let circSelected = new Set();
+
+  circBtns.forEach(btn => {
+    btn.onclick = () => {
+      const idx = btn.dataset.idx;
+      if(circSelected.has(idx)){
+        circSelected.delete(idx);
+        btn.classList.remove('filled');
+        btn.textContent = '◯';
+      } else {
+        circSelected.add(idx);
+        btn.classList.add('filled');
+        btn.textContent = '●';
+      }
+      if(circCountEl) circCountEl.textContent = circSelected.size;
+      if(circSelected.size === 10){
+        if(circDoneMsg) circDoneMsg.style.display = 'inline';
+        (S.answers[curIdx] = S.answers[curIdx] || {})[1] = '10';
+        save(); updateThrow(); speak('10こ ぬれたね！');
+      } else {
+        if(circDoneMsg) circDoneMsg.style.display = 'none';
+        
+      }
+    };
+  });
+}
+
+function initB24FoodTap(){
+  const melonBtns = document.querySelectorAll('.melon-btn');
+  const plate1Btns = document.querySelectorAll('.plate-btn[data-type="plate1"]');
+  const roundBtns = document.querySelectorAll('.round-btn');
+  const plate2Btns = document.querySelectorAll('.plate-btn[data-type="plate2"]');
+
+  let melonSel = 0, plate1Sel = 0, roundSel = 0, plate2Sel = 0;
+
+  melonBtns.forEach(b => {
+    b.onclick = () => {
+      b.classList.toggle('selected');
+      melonSel = document.querySelectorAll('.melon-btn.selected').length;
+      const el = $('cntMelon'); if(el) el.textContent = melonSel;
+      
+    };
+  });
+  plate1Btns.forEach(b => {
+    b.onclick = () => {
+      b.classList.toggle('selected');
+      plate1Sel = document.querySelectorAll('.plate-btn[data-type="plate1"].selected').length;
+      const el = $('cntPlate1'); if(el) el.textContent = plate1Sel;
+      
+    };
+  });
+  roundBtns.forEach(b => {
+    b.onclick = () => {
+      b.classList.toggle('selected');
+      roundSel = document.querySelectorAll('.round-btn.selected').length;
+      const el = $('cntRound'); if(el) el.textContent = roundSel;
+      
+    };
+  });
+  plate2Btns.forEach(b => {
+    b.onclick = () => {
+      b.classList.toggle('selected');
+      plate2Sel = document.querySelectorAll('.plate-btn[data-type="plate2"].selected').length;
+      const el = $('cntPlate2'); if(el) el.textContent = plate2Sel;
+      
+    };
+  });
+}
+
+function initPikachuColoring(){
+  const paletteBtns = document.querySelectorAll('.pika-color-btn');
+  const segs = document.querySelectorAll('.pika-seg');
+  const cntEl = $('pikaPaintedCount');
+  const doneMsg = $('pikaDoneMsg');
+  if(!paletteBtns.length || !segs.length) return;
+
+  const colorMap = {
+    '0': '#ff99bb',     // ピンク
+    '1-4': '#77ccff',   // みずいろ
+    '5': '#333333',     // くろ
+    '6-10': '#ffd23f'   // きいろ
+  };
+
+  let activeRule = '0';
+  paletteBtns.forEach(btn => {
+    btn.onclick = () => {
+      paletteBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeRule = btn.dataset.rule;
+    };
+  });
+
+  let solvedCount = 0;
+  segs.forEach(seg => {
+    seg.onclick = () => {
+      const segRule = seg.dataset.rule;
+      if(activeRule === segRule){
+        seg.setAttribute('fill', colorMap[segRule]);
+        if(segRule === '5'){
+          const t = seg.nextElementSibling;
+          if(t && t.tagName === 'text') t.setAttribute('fill', '#ffffff');
+        }
+        if(!seg.dataset.solved){
+          seg.dataset.solved = 'true';
+          solvedCount++;
+          if(cntEl) cntEl.textContent = solvedCount;
+          if(solvedCount >= segs.length){
+            if(doneMsg) doneMsg.style.display = 'block';
+            playPikaanSound();
+            toast('🎉 ピカチュウの ぬりえが かんせいしたよ！✨', 2200);
+          }
+        }
+      } else {
+        toast('すうじの ルールを よくみてね！', 1200);
+      }
+    };
+  });
+}
+
+function initCramoTap(){
+  const skyItems = document.querySelectorAll('.cramo-poke-item.sky');
+  const groundItems = document.querySelectorAll('.cramo-poke-item.ground');
+
+  skyItems.forEach(b => {
+    b.onclick = () => {
+      b.classList.toggle('selected');
+      const count = document.querySelectorAll('.cramo-poke-item.sky.selected').length;
+      const el = $('cntSky'); if(el) el.textContent = count;
+    };
+  });
+  groundItems.forEach(b => {
+    b.onclick = () => {
+      b.classList.toggle('selected');
+      const count = document.querySelectorAll('.cramo-poke-item.ground.selected').length;
+      const el = $('cntGround'); if(el) el.textContent = count;
+    };
+  });
+}
+
+function initCookieTap(){
+  const cookies = document.querySelectorAll('.cookie-tap-item');
+  cookies.forEach(c => {
+    c.onclick = () => {
+      c.classList.toggle('selected');
+    };
+  });
+}
+
+function initMiltankTap(){
+  const mil1 = document.querySelectorAll('.miltank-item[data-group="orig"]');
+  const mil2 = document.querySelectorAll('.miltank-item[data-group="arrive"]');
+  mil1.forEach(m => {
+    m.onclick = () => {
+      m.classList.toggle('selected');
+      const cnt = document.querySelectorAll('.miltank-item[data-group="orig"].selected').length;
+      const el = $('cntMil1'); if(el) el.textContent = cnt;
+    };
+  });
+  mil2.forEach(m => {
+    m.onclick = () => {
+      m.classList.toggle('selected');
+      const cnt = document.querySelectorAll('.miltank-item[data-group="arrive"].selected').length;
+      const el = $('cntMil2'); if(el) el.textContent = cnt;
+    };
+  });
+}
+
+function initDonutTap(){
+  const donuts = document.querySelectorAll('.donut-tap-item');
+  donuts.forEach(d => {
+    d.onclick = () => {
+      d.classList.toggle('selected');
+    };
+  });
+}
+
+function initGlameowTap(){
+  const rem = document.querySelectorAll('.glameow-item[data-group="stay"]');
+  const leave = document.querySelectorAll('.glameow-item[data-group="run"]');
+  rem.forEach(g => {
+    g.onclick = () => {
+      g.classList.toggle('selected');
+      const cnt = document.querySelectorAll('.glameow-item[data-group="stay"].selected').length;
+      const el = $('cntNyRemain'); if(el) el.textContent = cnt;
+    };
+  });
+  leave.forEach(g => {
+    g.onclick = () => {
+      g.classList.toggle('selected');
+      const cnt = document.querySelectorAll('.glameow-item[data-group="run"].selected').length;
+      const el = $('cntNyLeave'); if(el) el.textContent = cnt;
+    };
+  });
+}
+
+function initPidgeotTap(){
+  const cookies = document.querySelectorAll('.pidgeot-cookie-item');
+  cookies.forEach(c => {
+    c.onclick = () => {
+      c.classList.toggle('selected');
+    };
+  });
+}
+
+function initDubwoolTap(){
+  const dubs = document.querySelectorAll('.sheep-item[data-type="dubwool"]');
+  const wooloos = document.querySelectorAll('.sheep-item[data-type="wooloo"]');
+  dubs.forEach(s => {
+    s.onclick = () => {
+      s.classList.toggle('selected');
+      const cnt = document.querySelectorAll('.sheep-item[data-type="dubwool"].selected').length;
+      const el = $('cntDub'); if(el) el.textContent = cnt;
+    };
+  });
+  wooloos.forEach(s => {
+    s.onclick = () => {
+      s.classList.toggle('selected');
+      const cnt = document.querySelectorAll('.sheep-item[data-type="wooloo"].selected').length;
+      const el = $('cntWoo'); if(el) el.textContent = cnt;
+    };
+  });
+}
+
+
+/* ===== AUTHENTIC DRILL INITIALIZERS (Battles 23-36) ===== */
+
+function initBattle23Maze() {
+  const container = document.querySelector('.b23-maze-outer');
+  if (!container) return;
+  const cells = Array.from(container.querySelectorAll('.b23-cell.blank'));
+  const pawn = document.getElementById('b23Pawn');
+  let activeStep = 2;
+
+  function updatePawn() {
+    // Find highest contiguous filled step starting from 1
+    let highest = 1;
+    for (let s = 2; s <= 20; s++) {
+      const c = document.getElementById('b23_cell_' + s);
+      if (c && (c.classList.contains('printed') || c.dataset.val === String(s))) {
+        highest = s;
+      } else {
+        break;
+      }
+    }
+    const targetCell = document.getElementById('b23_cell_' + highest);
+    if (targetCell && pawn) {
+      pawn.style.display = 'block';
+      targetCell.appendChild(pawn);
+    }
+  }
+
+  function setActive(step) {
+    activeStep = step;
+    cells.forEach(c => {
+      if (parseInt(c.dataset.step) === activeStep) c.classList.add('active');
+      else c.classList.remove('active');
+    });
+  }
+
+  cells.forEach(c => {
+    c.onclick = () => {
+      playMarimbaPop(1.1);
+      setActive(parseInt(c.dataset.step));
+    };
+  });
+
+  // First unfilled
+  const firstUnfilled = cells.find(c => !c.dataset.val);
+  setActive(firstUnfilled ? parseInt(firstUnfilled.dataset.step) : 2);
+  updatePawn();
+
+  const tray = document.querySelector('.drill-book-page .num-choice-tray');
+  if (tray) {
+    tray.onclick = (e) => {
+      const btn = e.target.closest('.num-choice-btn');
+      if (!btn) return;
+      const val = btn.dataset.val;
+      const targetCell = document.getElementById('b23_cell_' + activeStep);
+      if (!targetCell) return;
+
+      if (val === 'erase') {
+        playMarimbaPop(0.8);
+        delete targetCell.dataset.val;
+        targetCell.textContent = '？';
+        targetCell.classList.remove('filled', 'correct');
+      } else {
+        playMarimbaPop(1.2);
+        targetCell.dataset.val = val;
+        targetCell.textContent = val;
+        targetCell.classList.add('filled');
+
+        // Check if correct
+        if (val === targetCell.dataset.ans) {
+          targetCell.classList.add('correct');
+        } else {
+          targetCell.classList.remove('correct');
+        }
+
+        // Advance to next unfilled blank
+        const blankSteps = [2, 3, 5, 6, 8, 10, 11, 12, 14, 16, 17, 19, 20];
+        const nextBlank = blankSteps.find(s => s > activeStep && !document.getElementById('b23_cell_' + s)?.dataset.val);
+        if (nextBlank) {
+          setActive(nextBlank);
+        } else {
+          const anyBlank = blankSteps.find(s => !document.getElementById('b23_cell_' + s)?.dataset.val);
+          if (anyBlank) setActive(anyBlank);
+        }
+      }
+
+      updatePawn();
+
+      // Check all 13 blanks
+      const allCorrect = cells.every(c => c.dataset.val === c.dataset.ans);
+      if (allCorrect) {
+        cells.forEach(c => c.classList.add('correct'));
+        const goal = document.getElementById('b23TorterraGoal');
+        if (goal) goal.style.animation = 'catBounce 0.6s 3';
+        stampDrillSuccess();
+        (S.answers[curIdx] = S.answers[curIdx] || {})._completed = true;
+        save();
+        updateThrow();
+      }
+    };
+  }
+}
+
+function initBattle24Crocalor() {
+  const container = document.querySelector('.drill-book-page');
+  if (!container) return;
+
+  // Tap to count items
+  container.querySelectorAll('.b24-tap-item').forEach(item => {
+    item.onclick = () => {
+      playMarimbaPop(1.15);
+      item.classList.toggle('counted');
+      if (item.classList.contains('counted')) {
+        item.style.filter = 'drop-shadow(0 0 6px rgba(255,152,0,0.8))';
+        item.style.transform = 'scale(1.15)';
+      } else {
+        item.style.filter = '';
+        item.style.transform = '';
+      }
+    };
+  });
+
+  // Bundle 10 buttons
+  const r1 = document.getElementById('btnRing1');
+  if (r1) {
+    r1.onclick = () => {
+      playMarimbaPop(1.3);
+      const colBag = document.getElementById('b24ColBag');
+      const colPl1 = document.getElementById('b24ColPl1');
+      colBag?.classList.toggle('b24-bundle-ring');
+      colPl1?.classList.toggle('b24-bundle-ring');
+    };
+  }
+  const r2 = document.getElementById('btnRing2');
+  if (r2) {
+    r2.onclick = () => {
+      playMarimbaPop(1.3);
+      const colBun = document.getElementById('b24ColBun');
+      const colPl2 = document.getElementById('b24ColPl2');
+      colBun?.classList.toggle('b24-bundle-ring');
+      colPl2?.classList.toggle('b24-bundle-ring');
+    };
+  }
+
+  // Comparison selection
+  let choiceG1 = null;
+  let choiceG2 = null;
+
+  container.querySelectorAll('.b24-choice-card').forEach(btn => {
+    btn.onclick = () => {
+      playMarimbaPop(1.25);
+      const g = btn.dataset.group;
+      const v = btn.dataset.val;
+      container.querySelectorAll('.b24-choice-card[data-group="' + g + '"]').forEach(b => {
+        b.classList.remove('selected');
+        const c = b.querySelector('.circle-mark');
+        if (c) c.style.display = 'none';
+      });
+      btn.classList.add('selected');
+      const mark = btn.querySelector('.circle-mark');
+      if (mark) mark.style.display = 'inline';
+
+      if (g === 'g1') choiceG1 = v;
+      if (g === 'g2') choiceG2 = v;
+      checkComplete();
+    };
+  });
+
+  // Math box answers: [16, 14, 17, 16]
+  setupMathBoxController(container, ['16', '14', '17', '16'], checkComplete);
+
+  function checkComplete() {
+    const boxes = Array.from(container.querySelectorAll('.t-math-box'));
+    const boxesCorrect = boxes.every((b, i) => b.dataset.val === ['16', '14', '17', '16'][i]);
+    const choicesCorrect = (choiceG1 === 'bread' && choiceG2 === 'bread');
+
+    if (boxesCorrect && choicesCorrect) {
+      stampDrillSuccess();
+      (S.answers[curIdx] = S.answers[curIdx] || {})._completed = true;
+      save();
+      updateThrow();
+    }
+  }
+}
+
+function initBattle25Cramorant() {
+  const container = document.querySelector('.drill-book-page');
+  if (!container) return;
+
+  let skyCount = 0, groundCount = 0;
+  container.querySelectorAll('.b29-cat-item[data-group="sky"]').forEach(item => {
+    item.onclick = () => {
+      playMarimbaPop(1.2);
+      if (!item.dataset.counted) {
+        item.dataset.counted = 'true';
+        skyCount++;
+        item.classList.add('bounce');
+        const badge = document.createElement('div');
+        badge.className = 'b29-tap-badge';
+        badge.textContent = skyCount;
+        item.appendChild(badge);
+        const cnt = document.getElementById('cntSky');
+        if (cnt) cnt.textContent = skyCount;
+      }
+    };
+  });
+
+  container.querySelectorAll('.b29-cat-item[data-group="ground"]').forEach(item => {
+    item.onclick = () => {
+      playMarimbaPop(1.1);
+      if (!item.dataset.counted) {
+        item.dataset.counted = 'true';
+        groundCount++;
+        item.classList.add('bounce');
+        const badge = document.createElement('div');
+        badge.className = 'b29-tap-badge';
+        badge.textContent = groundCount;
+        item.appendChild(badge);
+        const cnt = document.getElementById('cntGround');
+        if (cnt) cnt.textContent = groundCount;
+      }
+    };
+  });
+
+  setupMathBoxController(container, ['5', '9']);
+}
+
+function initBattle26Mawile() {
+  const container = document.querySelector('.drill-book-page');
+  if (!container) return;
+
+  setupMathBoxController(container, ['5', '3', '8', '5', '4', '9']);
+}
+
+function initBattle27Miltank() {
+  const container = document.querySelector('.drill-book-page');
+  if (!container) return;
+
+  let standCount = 0, runCount = 0;
+  container.querySelectorAll('.b29-cat-item[data-group="stand"]').forEach(item => {
+    item.onclick = () => {
+      playMarimbaPop(1.1);
+      if (!item.dataset.counted) {
+        item.dataset.counted = 'true';
+        standCount++;
+        item.classList.add('bounce');
+        const badge = document.createElement('div');
+        badge.className = 'b29-tap-badge';
+        badge.textContent = standCount;
+        item.appendChild(badge);
+        const cnt = document.getElementById('cntStand');
+        if (cnt) cnt.textContent = standCount;
+      }
+    };
+  });
+
+  container.querySelectorAll('.b29-cat-item[data-group="run"]').forEach(item => {
+    item.onclick = () => {
+      playMarimbaPop(1.25);
+      if (!item.dataset.counted) {
+        item.dataset.counted = 'true';
+        runCount++;
+        item.classList.add('bounce');
+        const badge = document.createElement('div');
+        badge.className = 'b29-tap-badge';
+        badge.textContent = runCount;
+        item.appendChild(badge);
+        const cnt = document.getElementById('cntRun');
+        if (cnt) cnt.textContent = runCount;
+      }
+    };
+  });
+
+  setupMathBoxController(container, ['3', '10']);
+}
+
+function initBattle28Pansear() {
+  const container = document.querySelector('.drill-book-page');
+  if (!container) return;
+
+  setupMathBoxController(container, ['6', '2', '8', '4', '5', '9']);
+}
+
+function initBattle29Glameow() {
+  const container = document.querySelector('.drill-book-page');
+  if (!container) return;
+
+  let remCount = 0, leaveCount = 0;
+  container.querySelectorAll('.b29-cat-item[data-group="remain"]').forEach(item => {
+    item.onclick = () => {
+      playMarimbaPop(1.1);
+      if (!item.dataset.counted) {
+        item.dataset.counted = 'true';
+        remCount++;
+        item.classList.add('bounce');
+        const badge = document.createElement('div');
+        badge.className = 'b29-tap-badge';
+        badge.textContent = remCount;
+        item.appendChild(badge);
+        const cnt = document.getElementById('cntNyRemain');
+        if (cnt) cnt.textContent = remCount;
+      }
+    };
+  });
+
+  container.querySelectorAll('.b29-cat-item[data-group="leave"]').forEach(item => {
+    item.onclick = () => {
+      playMarimbaPop(1.3);
+      if (!item.dataset.counted) {
+        item.dataset.counted = 'true';
+        leaveCount++;
+        item.classList.add('bounce');
+        const badge = document.createElement('div');
+        badge.className = 'b29-tap-badge';
+        badge.textContent = leaveCount;
+        item.appendChild(badge);
+        const cnt = document.getElementById('cntNyLeave');
+        if (cnt) cnt.textContent = leaveCount;
+      }
+    };
+  });
+
+  setupMathBoxController(container, ['3', '6'], () => {
+    // 3 walking cats sprint away
+    container.querySelectorAll('.b29-cat-item[data-group="leave"]').forEach((c, idx) => {
+      setTimeout(() => {
+        c.style.transition = 'all 1.2s ease-in';
+        c.style.transform = 'translateX(180px) scale(0.6)';
+        c.style.opacity = '0';
+      }, idx * 150);
+    });
+  });
+}
+
+function initBattle30Pidgeot() {
+  const container = document.querySelector('.drill-book-page');
+  if (!container) return;
+
+  container.querySelectorAll('.b30-eaten-circle .b30-cookie').forEach(c => {
+    c.onclick = () => {
+      playCookieCrunch();
+      c.style.transform = 'scale(0.7)';
+      c.style.opacity = '0.2';
+    };
+  });
+
+  setupMathBoxController(container, ['9', '4', '5', '10', '7', '3']);
+}
+
+function initBattle31Dubwool() {
+  const container = document.querySelector('.drill-book-page');
+  if (!container) return;
+
+  setupMathBoxController(container, ['10', '4']);
+}
+
+function initBattle32Conkeldurr() {
+  const container = document.querySelector('.drill-book-page');
+  if (!container) return;
+
+  setupMathBoxController(container, ['8', '6', '2', '7', '10', '3']);
+}
+
+function initBattle33Florges() {
+  const container = document.querySelector('.drill-book-page');
+  if (!container) return;
+
+  setupMathBoxController(container, ['2', '8', '28']);
+}
+
+function initBattle35Sandile() {
+  const container = document.querySelector('.drill-book-page');
+  if (!container) return;
+
+  const cells = Array.from(container.querySelectorAll('.b23-cell.blank'));
+  let activeStep = 12;
+
+  function setActive(step) {
+    activeStep = step;
+    cells.forEach(c => {
+      if (parseInt(c.dataset.step) === activeStep) c.classList.add('active');
+      else c.classList.remove('active');
+    });
+  }
+
+  cells.forEach(c => {
+    c.onclick = () => {
+      playMarimbaPop(1.1);
+      setActive(parseInt(c.dataset.step));
+    };
+  });
+
+  const firstUnfilled = cells.find(c => !c.dataset.val);
+  setActive(firstUnfilled ? parseInt(firstUnfilled.dataset.step) : 12);
+
+  const tray = container.querySelector('.num-choice-tray');
+  if (tray) {
+    tray.onclick = (e) => {
+      const btn = e.target.closest('.num-choice-btn');
+      if (!btn) return;
+      const val = btn.dataset.val;
+      const targetCell = document.getElementById('b35_cell_' + activeStep);
+      if (!targetCell) return;
+
+      if (val === 'erase') {
+        playMarimbaPop(0.8);
+        delete targetCell.dataset.val;
+        targetCell.textContent = '？';
+        targetCell.classList.remove('filled', 'correct');
+      } else {
+        playMarimbaPop(1.2);
+        targetCell.dataset.val = val;
+        targetCell.textContent = val;
+        targetCell.classList.add('filled');
+
+        if (val === targetCell.dataset.ans) {
+          targetCell.classList.add('correct');
+        } else {
+          targetCell.classList.remove('correct');
+        }
+
+        const blankSteps = [12, 13, 14, 16, 17, 18, 20, 21, 23, 24, 25, 27, 29, 30];
+        const nextBlank = blankSteps.find(s => s > activeStep && !document.getElementById('b35_cell_' + s)?.dataset.val);
+        if (nextBlank) {
+          setActive(nextBlank);
+        } else {
+          const anyBlank = blankSteps.find(s => !document.getElementById('b35_cell_' + s)?.dataset.val);
+          if (anyBlank) setActive(anyBlank);
+        }
+      }
+
+      const allCorrect = cells.every(c => c.dataset.val === c.dataset.ans);
+      if (allCorrect) {
+        cells.forEach(c => c.classList.add('correct'));
+        stampDrillSuccess();
+        (S.answers[curIdx] = S.answers[curIdx] || {})._completed = true;
+        save();
+        updateThrow();
+      }
+    };
+  }
+}
+
+function initBattle36Togedemaru() {
+  const container = document.querySelector('.drill-book-page');
+  if (!container) return;
+
+  const correctPicks = { '1': '21', '2': '25', '3': '24', '4': '29', '5': '28', '6': '30' };
+  const userPicks = {};
+
+  container.querySelectorAll('.b36-step-row').forEach(row => {
+    const s = row.dataset.step;
+    const btns = row.querySelectorAll('.b36-fork-btn');
+    btns.forEach(btn => {
+      btn.onclick = () => {
+        const val = btn.dataset.val;
+        if (val === correctPicks[s]) {
+          playMarimbaPop(1.3);
+          btns.forEach(b => b.classList.remove('correct', 'wrong'));
+          btn.classList.add('correct');
+          userPicks[s] = val;
+
+          // Check all 6 steps
+          const allSteps = Object.keys(correctPicks).every(k => userPicks[k] === correctPicks[k]);
+          if (allSteps) {
+            stampDrillSuccess();
+            (S.answers[curIdx] = S.answers[curIdx] || {})._completed = true;
+            save();
+            updateThrow();
+          }
+        } else {
+          playMarimbaPop(0.7);
+          btn.classList.add('wrong');
+          setTimeout(() => btn.classList.remove('wrong'), 600);
+        }
+      };
+    });
+  });
+}
+
+
+
+/* ===== AUTHENTIC INITIALIZERS (Battles 34 to 55_2) ===== */
+
+/* ===== BATTLES 5, 6, 20, 21 INITIALIZERS ===== */
+
 function initAppleSplitTabs(isB5) {
   let activeTab = 1;
   const pTop = $('plateTop');
@@ -8439,8 +9608,12 @@ function renderQuestionCards(row){
   box.innerHTML = '';
   const saved = S.answers[curIdx] || {};
 
-  // 1. 紙のドリル手本再現モード（Battle 3 パチリス、Battle 7 アンノーン、Battle 22 ウオノラゴン等）
-  // ラベルには数は書かずポケモン名のみ表示（答えバレ防止）
+  // Battle 5, Battle 6, Battle 20, 21, 23..55_2 は独自ステージに統合表示のため下部カードは非表示
+  if(row.battle === 'Battle5' || row.battle === 'Battle6' || /^(Battle(20|21|2[3-9]|[3-5][0-9]|55(_[23])?)|Minigame)$/i.test(row.battle)){
+    return;
+  }
+
+  // 1. 紙のドリル手本再現モード（Battle 3 パチリス、Battle 7 アンノーン等）
   if(curQs[0] && curQs[0].isPaperRow){
     curQs.forEach((q, qi) => {
       const isSavedValid = saved[qi] != null && (!q.choices || q.choices.includes(String(saved[qi])));
@@ -8456,14 +9629,12 @@ function renderQuestionCards(row){
 
       let pokeHtml = '';
       if(q.count > 20){
-        // 20+ (e.g. Blissey eggs 21 to 30)
         pokeHtml = '<div style="display:flex;align-items:center;gap:4px;font-size:11px;font-weight:900;color:#c2185b">' +
           '<div style="background:#fce4ec;border:2px solid #f06292;border-radius:8px;padding:2px 4px">🥚 10</div>' +
           '<div style="background:#fce4ec;border:2px solid #f06292;border-radius:8px;padding:2px 4px">🥚 10</div>' +
           (q.count === 30 ? '<div style="background:#fce4ec;border:2px solid #f06292;border-radius:8px;padding:2px 4px">🥚 10</div>' : '') +
         '</div>';
       } else if(q.count > 10){
-        // 11 to 20 (e.g. Monster balls 11 to 20)
         pokeHtml = '<div style="display:flex;align-items:center;gap:4px;font-size:11px;font-weight:900;color:#e65100">' +
           '<div style="background:#fff3e0;border:2px solid #ff9800;border-radius:8px;padding:2px 6px">🔴 10</div>' +
           (q.count === 20 ? '<div style="background:#fff3e0;border:2px solid #ff9800;border-radius:8px;padding:2px 6px">🔴 10</div>' : '') +
@@ -8477,7 +9648,7 @@ function renderQuestionCards(row){
         const loose = q.count - 20;
         let looseDots = '';
         for(let idx=0; idx<10; idx++){
-          looseDots += '<div class="pd-dot ' + (idx < loose ? 'filled' : '') + '"></div>';
+          looseDots += '<div class="pd-dot tap-dot" data-idx="' + idx + '"></div>';
         }
         dotsHtml = '<div style="display:flex;align-items:center;gap:6px">' +
           '<div style="text-align:center"><div style="font-size:10px;font-weight:900;color:#555">10のまとまり</div><div style="font-size:12px;font-weight:900;color:#c2185b">20</div></div>' +
@@ -8488,7 +9659,7 @@ function renderQuestionCards(row){
         const loose = q.count - 10;
         let looseDots = '';
         for(let idx=0; idx<10; idx++){
-          looseDots += '<div class="pd-dot ' + (idx < loose ? 'filled' : '') + '"></div>';
+          looseDots += '<div class="pd-dot tap-dot" data-idx="' + idx + '"></div>';
         }
         dotsHtml = '<div style="display:flex;align-items:center;gap:6px">' +
           '<div style="text-align:center"><div style="font-size:10px;font-weight:900;color:#555">10のまとまり</div><div style="font-size:12px;font-weight:900;color:#e65100">10</div></div>' +
@@ -8496,8 +9667,9 @@ function renderQuestionCards(row){
           '<div style="text-align:center"><div style="font-size:10px;font-weight:900;color:#555">ばら</div><div class="pd-ten-frame">' + looseDots + '</div></div>' +
         '</div>';
       } else {
+        // バトル3・バトル7：回答者が自分で○をタップして塗れる
         for(let idx=0; idx<10; idx++){
-          dotsHtml += '<div class="pd-dot ' + (idx < q.count ? 'filled' : '') + '"></div>';
+          dotsHtml += '<div class="pd-dot tap-dot" data-idx="' + idx + '"></div>';
         }
       }
 
@@ -8517,31 +9689,31 @@ function renderQuestionCards(row){
           '<div class="pd-choices">' + choicesHtml + '</div>' +
         '</div>' +
         '<div class="pd-write-box">' +
-          '<span class="pd-write-num">' + (currentVal || '') + '</span>' +
+          '<span class="pd-write-label">かいた すうじ</span>' +
+          '<span class="pd-write-num" id="pdWrite_' + qi + '">' + (currentVal || '') + '</span>' +
         '</div>';
 
-      const choices = card.querySelectorAll('.pd-btn');
-      const writeNum = card.querySelector('.pd-write-num');
-
-      choices.forEach(btn => {
-        btn.onclick = () => {
-          choices.forEach(x => x.classList.remove('sel'));
-          btn.classList.add('sel');
-          const val = btn.dataset.val;
-          writeNum.textContent = val;
-          (S.answers[curIdx] = S.answers[curIdx] || {})[qi] = val;
-          save();
-          updateThrow();
-          // answer tap (no tts)
-        };
-      });
-
-      
-      // タップで塗れる丸（バトル3 パチリス、バトル7 アンノーン）
+      // ○のタップで色塗りトグル（まる塗りインタラクション）
       card.querySelectorAll('.pd-dot.tap-dot').forEach(dot => {
         dot.onclick = () => {
           playMarimbaPop(1.3);
           dot.classList.toggle('filled');
+        };
+      });
+
+      card.querySelectorAll('.pd-btn').forEach(btn => {
+        btn.onclick = () => {
+          const val = btn.dataset.val;
+          card.querySelectorAll('.pd-btn').forEach(b => b.classList.remove('sel'));
+          btn.classList.add('sel');
+          playMarimbaPop(1.2);
+          const writeBox = card.querySelector('#pdWrite_' + qi);
+          if(writeBox) writeBox.textContent = val;
+
+          if(!S.answers[curIdx]) S.answers[curIdx] = {};
+          S.answers[curIdx][qi] = val;
+          save();
+          updateThrow();
         };
       });
 
@@ -8550,13 +9722,10 @@ function renderQuestionCards(row){
     return;
   }
 
-  // 2. インタラクティブ専用ステージ（Battle 1, 4, 8, 9, 10, 11など）
-  if(curQs[0] && (curQs[0].isInteractiveOnly || curQs[0].isB11)){
-    return; // インタラクティブステージが問題そのもののUIなので下の重複カードは表示しない
-  }
-
-  // 3. 通常の個別問題カード（Battle 2 ヨーテリー＆チラーミィ、Battle 12〜16の分解ツリー、その他）
+  // 2. 通常問題カード（Battle 12〜19のツリー表示・絵付き選択肢対応）
   curQs.forEach((q, qi) => {
+    if(q.isInteractiveOnly) return;
+
     const isSavedValid = saved[qi] != null && (!q.choices || q.choices.includes(String(saved[qi])));
     if(saved[qi] != null && !isSavedValid){
       delete saved[qi];
@@ -8567,38 +9736,40 @@ function renderQuestionCards(row){
 
     const card = document.createElement('div');
     card.className = 'q-card';
-    
+
     let pokeIcon = '';
     if(q.pokeId){
-      pokeIcon = '<img src="' + ART(q.pokeId) + '" style="width:32px;height:32px;vertical-align:middle;margin-right:6px">';
+      pokeIcon = '<img src="' + ART(q.pokeId) + '" alt="' + (q.pokemon || '') + '" style="width:40px;height:40px;object-fit:contain;vertical-align:middle;margin-right:6px">';
     }
 
     let treeHtml = '';
     if(q.isTreeQuestion){
       const iconStr = q.itemIcon || '';
-      const totalIcons = (iconStr && q.total) ? ('<div style="font-size:13px;line-height:1;margin-top:2px;letter-spacing:-1px">' + Array(q.total).fill(iconStr).join('') + '</div>') : '';
-      const givenIcons = (iconStr && q.given) ? ('<div style="font-size:12px;line-height:1;margin-top:2px;letter-spacing:-1px">' + Array(q.given).fill(iconStr).join('') + '</div>') : '';
+      const totalIcons = (iconStr && q.total) ? ('<div style="font-size:15px;margin-top:4px">' + Array(q.total).fill(iconStr).join(' ') + '</div>') : '';
+      const givenIcons = (iconStr && q.given) ? ('<div style="font-size:15px;margin-top:4px">' + Array(q.given).fill(iconStr).join(' ') + '</div>') : '';
       treeHtml = 
-        '<div class="qtree-container">' +
-          '<div class="qtree-top">' +
-            '<div>' + q.total + '</div>' +
+        '<div class="qtree-container" style="display:flex;flex-direction:column;align-items:center;margin:12px 0">' +
+          '<div style="text-align:center;margin-bottom:4px">' +
+            '<div class="qtree-top" style="margin:0 auto"><div>' + q.total + '</div></div>' +
             totalIcons +
           '</div>' +
-          '<svg class="qtree-branch-svg" viewBox="0 0 90 22">' +
+          '<svg class="qtree-branch-svg" viewBox="0 0 90 22" style="width:90px;height:22px;margin:2px 0">' +
             '<line x1="45" y1="0" x2="22" y2="22" stroke="#222" stroke-width="2.5" stroke-linecap="round"/>' +
             '<line x1="45" y1="0" x2="68" y2="22" stroke="#222" stroke-width="2.5" stroke-linecap="round"/>' +
           '</svg>' +
-          '<div class="qtree-bottom-row">' +
-            '<div class="qtree-box given">' +
-              '<div>' + q.given + '</div>' +
+          '<div class="qtree-bottom-row" style="display:flex;align-items:flex-start;justify-content:center;gap:24px">' +
+            '<div style="text-align:center">' +
+              '<div class="qtree-box given" style="margin:0 auto"><div>' + q.given + '</div></div>' +
               givenIcons +
             '</div>' +
-            '<div class="qtree-box target ' + (currentVal ? 'filled' : '') + '" id="qtreeTarget_' + qi + '">' + (currentVal || '?') + '</div>' +
+            '<div style="text-align:center">' +
+              '<div class="qtree-box target ' + (currentVal ? 'filled' : '') + '" id="qtreeTarget_' + qi + '" style="margin:0 auto">' + (currentVal || '?') + '</div>' +
+              '<div style="font-size:15px;margin-top:4px" id="qtreeTargetIcons_' + qi + '">' + (currentVal && parseInt(currentVal, 10) > 0 ? Array(parseInt(currentVal, 10)).fill(iconStr).join(' ') : '❓') + '</div>' +
+            '</div>' +
           '</div>' +
         '</div>';
     }
 
-    // Battle 2やツリー問題等では右下の数字表示（pd-write-box）は出さない
     const writeBoxHtml = (q.hideWriteBox || q.isTreeQuestion) ? '' : 
       '<div class="pd-write-box">' +
         '<span class="pd-write-num" id="qWrite_' + qi + '">' + (currentVal || '') + '</span>' +
@@ -8633,43 +9804,45 @@ function renderQuestionCards(row){
 
     const choicesBox = card.querySelector('.choices');
     const writeBox = card.querySelector('#qWrite_' + qi);
-    const qtreeTarget = card.querySelector('#qtreeTarget_' + qi);
+    const blankBox = card.querySelector('#blank_' + qi);
 
     q.choices.forEach(ch => {
       const b = document.createElement('button');
       b.className = 'choice';
       if(q.itemIcon && !isNaN(parseInt(ch, 10))){
         const num = parseInt(ch, 10);
-        const icons = num > 0 ? (' ' + Array(num).fill(q.itemIcon).join('')) : '';
-        b.innerHTML = '<span style="font-weight:900">' + ch + '</span><span style="font-size:12px;margin-left:4px;letter-spacing:-1px">' + icons + '</span>';
+        const icons = num > 0 ? (' ' + Array(num).fill(q.itemIcon).join('')) : (num === 0 ? ' (0こ)' : '');
+        b.innerHTML = '<span style="font-weight:900;font-size:18px">' + ch + '</span><span style="font-size:14px;margin-left:6px">' + icons + '</span>';
       } else {
         b.textContent = ch;
       }
       if(currentVal === ch) b.classList.add('sel');
 
       b.onclick = () => {
+        playMarimbaPop(1.2);
         choicesBox.querySelectorAll('.choice').forEach(x => x.classList.remove('sel'));
         b.classList.add('sel');
+
         if(writeBox) writeBox.textContent = ch;
-        const blankBox = card.querySelector('#blank_' + qi);
         if(blankBox){
           blankBox.textContent = ch;
           blankBox.classList.add('filled');
         }
-        const mazeStep = document.querySelector('#mazeStep_' + ch);
-        if(mazeStep){
-          mazeStep.classList.add('solved');
-          const span = mazeStep.querySelector('.maze-step-num');
-          if(span) span.textContent = ch;
-        }
+        const qtreeTarget = card.querySelector('#qtreeTarget_' + qi);
         if(qtreeTarget){
           qtreeTarget.textContent = ch;
           qtreeTarget.classList.add('filled');
         }
-        (S.answers[curIdx] = S.answers[curIdx] || {})[qi] = ch;
+        const qtreeTargetIcons = card.querySelector('#qtreeTargetIcons_' + qi);
+        if(qtreeTargetIcons && q.itemIcon){
+          const num = parseInt(ch, 10);
+          qtreeTargetIcons.textContent = num > 0 ? Array(num).fill(q.itemIcon).join(' ') : '0こ';
+        }
+
+        if(!S.answers[curIdx]) S.answers[curIdx] = {};
+        S.answers[curIdx][qi] = ch;
         save();
         updateThrow();
-        // answer tap (no tts)
       };
       choicesBox.appendChild(b);
     });

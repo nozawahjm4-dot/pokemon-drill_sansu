@@ -47,36 +47,11 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
 
 /* ポケモン風デフォルメ5大バイオーム背景レイヤー */
 .biome-layer{position:absolute;left:0;right:0;width:100%;background-size:cover;background-position:center;background-repeat:no-repeat;pointer-events:none;z-index:1}
-.biome-temple{
-  top:0;height:600px;
-  background-image:url('map_bg_temple.jpg');
-  -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 78%, rgba(0,0,0,0) 100%);
-  mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 78%, rgba(0,0,0,0) 100%);
-}
-.biome-ice{
-  top:540px;height:620px;
-  background-image:url('map_bg_ice.jpg');
-  -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%);
-  mask-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%);
-}
-.biome-canyon{
-  top:1100px;height:620px;
-  background-image:url('map_bg_canyon.jpg');
-  -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%);
-  mask-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%);
-}
-.biome-water{
-  top:1660px;height:620px;
-  background-image:url('map_bg_water.jpg');
-  -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%);
-  mask-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%);
-}
-.biome-grassland{
-  top:2220px;height:580px;
-  background-image:url('map_bg_grassland.jpg');
-  -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%, rgba(0,0,0,1) 100%);
-  mask-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%, rgba(0,0,0,1) 100%);
-}
+.biome-temple{top:0px;height:840px;background-image:url('map_bg_temple.jpg');-webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%);mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%);}
+.biome-ice{top:840px;height:860px;background-image:url('map_bg_ice.jpg');-webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%);mask-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%);}
+.biome-canyon{top:1680px;height:860px;background-image:url('map_bg_canyon.jpg');-webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%);mask-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%);}
+.biome-water{top:2520px;height:860px;background-image:url('map_bg_water.jpg');-webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%);mask-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%);}
+.biome-grassland{top:3360px;height:840px;background-image:url('map_bg_grassland.jpg');-webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%, rgba(0,0,0,1) 100%);mask-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%, rgba(0,0,0,1) 100%);}
 
 /* バイオーム見出しリボン */
 .biome-flag{
@@ -2299,13 +2274,15 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
   font-weight: 700;
 }
 .drill-header-avatar {
-  width: min(24vw, 110px);
-  height: min(24vw, 110px);
+  width: min(32vw, 150px);
+  height: min(32vw, 150px);
   object-fit: contain;
-  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.22));
+  filter: drop-shadow(0 6px 12px rgba(0,0,0,0.25));
   flex-shrink: 0;
   animation: gentleFloat 3s ease-in-out infinite alternate;
+  transition: transform 0.2s;
 }
+.drill-header-avatar:hover { transform: scale(1.08); }
 @keyframes gentleFloat {
   0% { transform: translateY(0); }
   100% { transform: translateY(-7px); }
@@ -3046,7 +3023,7 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
   box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.3), 0 3px 0 #b91c1c;
 }
 .ordinal-item img {
-  width: 48px; height: 48px; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+  width: 64px; height: 64px; object-fit: contain; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.18));
 }
 .ordinal-num-badge {
   font-size: 11px; font-weight: 900; color: #475569;
@@ -3304,7 +3281,7 @@ battle,pokemon_name,pokemon_type,title,prompt,description1,description2,descript
 hyoushi,ミュウ,エスパー,ポケモンずかんボード・表紙,【ポケモンずかんボード】獲得したポケモンシールを収集・一覧できるコレクションダッシュボード。全55種類のポケモンスロットがグリッド配置され、各バトルクリアでシールが貼られ図鑑が完成していくUI。,バトルを クリアして、あつめた ポケモンの シールを ずかんに はっていこう！ ぜんぶの ポケモンを あつめられるかな？,,,,,,【UI構成】図鑑グリッド一覧、タイプ別フィルタ、ポケモン詳細モーダル、進捗バー,全55問クリアでマスターボール＆ミュウ解放,ずかんボード画像
 Battle1,アチャモ,ほのお,たりるかな,【たりるかな（1対1対応）】アチャモ7匹とりんご8個を画面に表示。①アチャモとりんごをタップで線結び対応。②どちらが多いかを2択で選択。③「りんごはたりますか？」を「たりる」「たりない」ボタンで回答。,アチャモと りんごを せんで むすびましょう。,アチャモと りんごは、どちらが おおいでしょう。おおい ほうを えらびましょう。,りんごは、たりますか。「たりる」「たりない」を えらびましょう。,,,,【選択肢】アチャモ / りんご、【判定ボタン】たりる / たりない,②りんご、③たりる,Battle1画像
 Battle2,ヨーデリー,ノーマル,ポケモンをかぞえよう,【ポケモンをかぞえよう】枠内に散らばったヨーデリー(6匹)とチラーミィ(7匹)をタップしてカウント。数えた数だけゲージの○を点灯させ、最終的な匹数を数字ボタンで答える。,わくの なかの ヨーテリーと チラーミィを タップして かぞえましょう。なんびき いるか すうじを えらんでね。,,,,,,【UI要素】タップで印が付くカウントエリア、1〜10の数字ボタン,ヨーデリー: 6匹、チラーミィ: 7匹,Battle2画像
-Battle3,パチリス,でんき,1から 5の すうじを かこう,【1から5のすうじ】表示されたパチリスの数（1〜5匹）に合わせて、10フレームの○をタップして塗り、対応する数字（1〜5）を選択または手書き入力する。,① パチリス 1ぴき：かずだけ ○を ぬって、すうじを かきましょう。,② パチリス 2ひき：かずだけ ○を ぬって、すうじを かきましょう。,③ パチリス 3びき：かずだけ ○を ぬって、すうじを かきましょう。,④ パチリス 4ひき：かずだけ ○を ぬって、すうじを かきましょう。,⑤ パチリス 5ひき：かずだけ ○を ぬって、すうじを かきましょう。,,【UI要素】10フレーム（タップで点灯）、1〜5の数字選択ボタン,"1匹=1, 2匹=2, 3匹=3, 4匹=4, 5匹=5",Battle3画像
+Battle3,パチリス,でんき,1から 5の すうじを かこう,パチリスいっぴきぶんだけ〇をぬって、すうじをえらびましょう。,パチリスいっぴきぶんだけ〇をぬって、すうじをえらびましょう。,① パチリス 1ぴき：かずだけ ○を ぬって、すうじを かきましょう。,② パチリス 2ひき：かずだけ ○を ぬって、すうじを かきましょう。,③ パチリス 3びき：かずだけ ○を ぬって、すうじを かきましょう。,④ パチリス 4ひき：かずだけ ○を ぬって、すうじを かきましょう。,⑤ パチリス 5ひき：かずだけ ○を ぬって、すうじを かきましょう。,,【UI要素】10フレーム（タップで点灯）、1〜5の数字選択ボタン,"1匹=1, 2匹=2, 3匹=3, 4匹=4, 5匹=5",Battle3画像
 Battle4,ピッピ,フェアリー,せんでむすぼう,【せんでむすぼう(1〜5)】「ピッピの絵（1〜5匹）」「赤丸カード（●1〜5個）」「数字（1〜5）」の3列をタップまたはスワイプで結ぶ3者対応マッチングUI。,かずが おなじに なるように、ピッピと ●と すうじを せんで つなぎましょう。,,,,,,【UI要素】ピッピ列(1〜5)、赤丸列(●1〜5)、数字列(1〜5)のマッチングノード,"ピッピ1=●1=1, ピッピ2=●2=2, ピッピ3=●3=3, ピッピ4=●4=4, ピッピ5=●5=5",Battle4画像
 Battle5,フシギソウ,くさ,5はいくつといくつ,【5の分解(1)】5個のりんごを2枚の皿に分ける。上皿にあるりんご（1個、2個）を見て、下皿に必要な個数をドラッグして置き、空欄に数字を入力。,ぜんぶで 5この りんごが あります。したの おさらに りんごを わけて、あてはまる すうじを かきましょう。,,,,,,【UI要素】りんごドラッグ可能パレット、数字キーパッド(1〜5),1と【4】、2と【3】,Battle5画像
 Battle6,ジヘッド,あく・ドラゴン,5は いくつと いくつ,【5の分解(2)】5個のりんごを分ける。左皿に3個あるとき右皿は何個？左皿に4個あるとき右皿は何個？空皿にりんごを配分し数字を選択。,5は いくつと いくつかな？ からの おさらに りんごを おいて、□に すうじを いれましょう。,,,,,,【UI要素】りんごシール配置、数字ボタン(1〜5),3と【2】、4と【1】,Battle6画像
@@ -3796,19 +3773,41 @@ function getBestJaVoice() {
 // 読み上げテキストを自然な発音に整音（＋、－、記号の適切な読み替え）
 function cleanSpeechText(text) {
   if (!text) return '';
-  return text
+  // 1. Ruby tags: extract furigana rt text so it reads correct hiragana pronunciation
+  let t = text.replace(/<ruby>[^<]*<rt>([^<]+)<\/rt><\/ruby>/gi, '$1').replace(/<[^>]+>/g, ' ');
+
+  // 2. Correct symbol pronunciations
+  t = t
     .replace(/[①②③④⑤⑥⑦⑧⑨⑩]/g, '')
-    .replace(/＋/g, ' たす ')
-    .replace(/－|ー/g, ' ひく ')
-    .replace(/＝/g, ' は ')
-    .replace(/\[\s*？\s*\]|【\s*？\s*】|\[\s*　\s*\]/g, ' しかく ')
-    .replace(/〜/g, ' から ')
+    // 〇, ⭕, ○, ◯ -> まる
+    .replace(/[〇⭕○◯]/g, ' まる ')
+    // ● -> まる
+    .replace(/●/g, ' まる ')
+    // ×, ✖ -> ばつ
+    .replace(/[×✖]/g, ' ばつ ')
+    // ＋, + -> たす
+    .replace(/[＋+]/g, ' たす ')
+    // True minuses (do NOT touch katakana prolonged sound mark ー \u30FC!)
+    .replace(/[−－]/g, ' ひく ')
+    .replace(/(?<=[\d\s])-(?=[\d\s])/g, ' ひく ')
+    // ＝, = -> は
+    .replace(/[＝=]/g, ' は ')
+    // 田, [ ？ ], □ -> しかく
+    .replace(/\[\s*？\s*\]|【\s*？\s*】|\[\s*　\s*\]|[田□]/g, ' しかく ')
+    .replace(/[？\?]/g, ' はてな ')
+    .replace(/[〜～]/g, ' から ')
     .replace(/(\d+)ひき/g, '$1 ひき')
     .replace(/(\d+)こ/g, '$1 こ')
     .replace(/(\d+)まい/g, '$1 まい')
     .replace(/(\d+)ほん/g, '$1 ほん')
     .replace(/(\d+)わ/g, '$1 わ')
+    .replace(/(\d+)ばんめ/g, '$1 ばんめ')
+    .replace(/(\d+)じ/g, '$1 じ')
+    .replace(/(\d+)ふん/g, '$1 ふん')
+    .replace(/\s+/g, ' ')
     .trim();
+
+  return t;
 }
 
 function speak(text, btn){
@@ -3840,16 +3839,78 @@ document.addEventListener('click', e => {
    要件①：マップ画面（全72マスの完全一体化＆美ルート描画）
    ========================================================= */
 function computeMapTiles(total){
-  const pts = [];
-  const startY = 2680, endY = 120;
-  for(let i=0; i<total; i++){
-    const t = i / (total - 1);
+  const densePts = [];
+  const N_DENSE = 3500;
+  const startY = 4050, endY = 160;
+
+  for(let s = 0; s <= N_DENSE; s++){
+    const t = s / N_DENSE;
     const y = startY - t * (startY - endY);
-    /* 画面横幅100vw（16%〜84%）をゆったりS字カーブで蛇行 */
-    const x = 50 + 32 * Math.sin(t * Math.PI * 7) + 6 * Math.sin(t * Math.PI * 14);
-    pts.push({ x: Math.round(x * 10) / 10, y: Math.round(y) });
+    let x = 50;
+
+    // 5 biomes with distinct path geometries
+    if(t < 0.22){
+      // 1. 草原 (Grassland): カクカクしたジグザグの角ばったステップ
+      const bt = t / 0.22;
+      const phase = bt * Math.PI * 4;
+      const stepVal = Math.sign(Math.sin(phase)) * Math.pow(Math.abs(Math.sin(phase)), 0.3);
+      x = 50 + 30 * stepVal;
+    } else if(t < 0.44){
+      // 2. 水辺 (Water): ゆったりとした清流のS字ウェーブ
+      const bt = (t - 0.22) / 0.22;
+      x = 50 + 32 * Math.sin(bt * Math.PI * 3 + Math.PI / 4);
+    } else if(t < 0.66){
+      // 3. 渓谷 (Canyon): 段々になった岩肌のスイッチバック
+      const bt = (t - 0.44) / 0.22;
+      const stepPhase = Math.floor(bt * 6) * 1.8;
+      x = 50 + 26 * Math.sin(stepPhase) + 6 * Math.sin(bt * Math.PI * 8);
+    } else if(t < 0.86){
+      // 4. 氷山 (Ice Mountain): 鋭い氷晶のシェブロン（三角形の角）
+      const bt = (t - 0.66) / 0.20;
+      const tri = (Math.abs(((bt * 3.5) % 1) - 0.5) - 0.25) * 4;
+      x = 50 + 30 * tri;
+    } else {
+      // 5. 天空神殿 (Sky Temple): ミュウへ昇る神秘の渦巻き螺旋
+      const bt = (t - 0.86) / 0.14;
+      const r = 24 * (1 - bt * 0.7);
+      x = 50 + r * Math.cos(bt * Math.PI * 3.5);
+    }
+
+    densePts.push({ x: Math.max(16, Math.min(84, x)), y });
   }
-  return pts;
+
+  // 弧長（Arc Length）を厳密に計算し、全72マスを完全等間隔に配置（重なり完全ゼロ保証）
+  const dists = [0];
+  const W_PX = 480;
+  for(let i = 1; i < densePts.length; i++){
+    const p1 = densePts[i - 1], p2 = densePts[i];
+    const dx = ((p2.x - p1.x) / 100) * W_PX;
+    const dy = p2.y - p1.y;
+    dists.push(dists[i - 1] + Math.sqrt(dx * dx + dy * dy));
+  }
+
+  const totalLen = dists[dists.length - 1];
+  const stepLen = totalLen / (total - 1);
+  const sampled = [];
+
+  for(let i = 0; i < total; i++){
+    const targetDist = i * stepLen;
+    let low = 0, high = dists.length - 1;
+    while(low < high){
+      const mid = (low + high) >> 1;
+      if(dists[mid] < targetDist) low = mid + 1;
+      else high = mid;
+    }
+    const idx = Math.max(1, low);
+    const d1 = dists[idx - 1], d2 = dists[idx];
+    const ratio = d2 > d1 ? (targetDist - d1) / (d2 - d1) : 0;
+    const p1 = densePts[idx - 1], p2 = densePts[idx];
+    const sx = p1.x + (p2.x - p1.x) * ratio;
+    const sy = p1.y + (p2.y - p1.y) * ratio;
+    sampled.push({ x: Math.round(sx * 10) / 10, y: Math.round(sy) });
+  }
+
+  return sampled;
 }
 
 function layoutMap(){
@@ -3861,10 +3922,10 @@ function layoutMap(){
 
   const pts = computeMapTiles(n);
 
-  /* SVGで美しい石畳の道を描画 */
+  /* SVGでバイオームごとの専用ルートを描画 */
   const svg = $('map-svg');
   const W = wrap.clientWidth || window.innerWidth;
-  const H = 2800;
+  const H = 4200;
   svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
 
   const d = pts.map((p, i) => {
@@ -3872,15 +3933,52 @@ function layoutMap(){
     return `${i === 0 ? 'M' : 'L'} ${px} ${p.y}`;
   }).join(' ');
 
+  const idxGrass = Math.round(n * 0.22);
+  const idxWater = Math.round(n * 0.44);
+  const idxCanyon = Math.round(n * 0.66);
+  const idxIce = Math.round(n * 0.86);
+
+  const makeSubPath = (start, end) => {
+    const sub = pts.slice(start, end + 1);
+    return sub.map((p, i) => `${i === 0 ? 'M' : 'L'} ${(p.x/100)*W} ${p.y}`).join(' ');
+  };
+
+  const dGrass = makeSubPath(0, idxGrass);
+  const dWater = makeSubPath(idxGrass, idxWater);
+  const dCanyon = makeSubPath(idxWater, idxCanyon);
+  const dIce = makeSubPath(idxCanyon, idxIce);
+  const dTemple = makeSubPath(idxIce, n - 1);
+
   svg.innerHTML = `
-    <!-- 背景の道（影＋石畳＋敷石） -->
-    <path d="${d}" fill="none" stroke="rgba(0,0,0,0.55)" stroke-width="88" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="${d}" fill="none" stroke="#d5c48b" stroke-width="74" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="${d}" fill="none" stroke="#fff8dc" stroke-width="58" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="${d}" fill="none" stroke="#bfa369" stroke-width="52" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="10 16"/>
+    <!-- 背景の道シャドウ -->
+    <path d="${d}" fill="none" stroke="rgba(0,0,0,0.45)" stroke-width="84" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- 1. 草原：カクカク石畳とギザギザ敷石エッジ -->
+    <path d="${dGrass}" fill="none" stroke="#65a30d" stroke-width="70" stroke-linecap="square" stroke-linejoin="miter"/>
+    <path d="${dGrass}" fill="none" stroke="#fef08a" stroke-width="52" stroke-linecap="square" stroke-linejoin="miter"/>
+    <path d="${dGrass}" fill="none" stroke="#4d7c0f" stroke-width="48" stroke-dasharray="10 14" stroke-linecap="square"/>
+
+    <!-- 2. 水辺：なめらかな流水ブリッジ -->
+    <path d="${dWater}" fill="none" stroke="#0284c7" stroke-width="72" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="${dWater}" fill="none" stroke="#bae6fd" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="${dWater}" fill="none" stroke="#0369a1" stroke-width="46" stroke-dasharray="14 18" stroke-linecap="round"/>
+
+    <!-- 3. 渓谷：赤土の階段テラスと砂岩エッジ -->
+    <path d="${dCanyon}" fill="none" stroke="#9a3412" stroke-width="74" stroke-linecap="square" stroke-linejoin="miter"/>
+    <path d="${dCanyon}" fill="none" stroke="#fed7aa" stroke-width="54" stroke-linecap="square" stroke-linejoin="miter"/>
+    <path d="${dCanyon}" fill="none" stroke="#c2410c" stroke-width="48" stroke-dasharray="12 14" stroke-linecap="square"/>
+
+    <!-- 4. 氷山：シャープな氷晶クリスタルロード -->
+    <path d="${dIce}" fill="none" stroke="#1d4ed8" stroke-width="72" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="${dIce}" fill="none" stroke="#e0f2fe" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="${dIce}" fill="none" stroke="#38bdf8" stroke-width="46" stroke-dasharray="8 12" stroke-linecap="round"/>
+
+    <!-- 5. 天空神殿：黄金の天空アーチと星屑トレイル -->
+    <path d="${dTemple}" fill="none" stroke="#b45309" stroke-width="76" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="${dTemple}" fill="none" stroke="#fef08a" stroke-width="56" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="${dTemple}" fill="none" stroke="#f59e0b" stroke-width="48" stroke-dasharray="12 16" stroke-linecap="round"/>
   `;
 
-  /* 全72個のマスを道の真上に完璧に配置 */
+  /* 全72個のマスを均等分散配置 */
   pts.forEach((p, i) => {
     const row = ROWS[i];
     const t = document.createElement('button');
@@ -3894,7 +3992,6 @@ function layoutMap(){
     else if(i === S.currentBattleIndex) t.classList.add('current');
     else if(i > S.currentBattleIndex) t.classList.add('locked');
 
-    // 本物の公式タイプバッジ（上下浮遊＋3秒に1回横回転）
     const tpList = typeList(row.pokemon_type);
     const primaryType = tpList[0] || 'ノーマル';
     const badgeFile = TYPE_MAP[primaryType] || 'normal.png';
@@ -3908,453 +4005,15 @@ function layoutMap(){
     bImg.className = 'badge-img';
     bImg.src = 'badges/' + badgeFile;
     bImg.alt = primaryType;
-    bImg.style.animationDelay = (i % 5 * 0.6) + 's';
-
     bWrap.appendChild(bImg);
     t.appendChild(bWrap);
 
     t.onclick = () => {
+      playPikaanSound();
       openBattle(i);
     };
     tilesBox.appendChild(t);
   });
-}
-
-function scrollToCurrent(){
-  const t = document.querySelector('.tile.current') || document.querySelector('.tile#tile-1');
-  const mapEl = $('map');
-  if(t && mapEl){
-    const targetY = Math.max(0, t.offsetTop - mapEl.clientHeight / 2);
-    mapEl.scrollTo({ top: targetY, behavior: 'smooth' });
-  }
-}
-
-/* =========================================================
-   要件②＆③：ドリル画面（インタラクティブ再現＆description1〜6分割表示）
-   ========================================================= */
-
-
-
-// --- Visual Helpers for faithful drill reproduction ---
-
-function makeMonsterBallSvg(size = 32) {
-  return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 100 100" style="vertical-align:middle;filter:drop-shadow(0 2px 3px rgba(0,0,0,0.2))">' +
-    '<circle cx="50" cy="50" r="46" fill="#f5f5f5" stroke="#222" stroke-width="6"/>' +
-    '<path d="M 4 50 A 46 46 0 0 1 96 50 Z" fill="#e53935" stroke="#222" stroke-width="6"/>' +
-    '<line x1="4" y1="50" x2="96" y2="50" stroke="#222" stroke-width="6"/>' +
-    '<circle cx="50" cy="50" r="14" fill="#ffffff" stroke="#222" stroke-width="6"/>' +
-    '<circle cx="50" cy="50" r="6" fill="#f0f0f0" stroke="#222" stroke-width="2"/>' +
-  '</svg>';
-}
-
-function makeMonsterBallBox(count) {
-  const loose = count - 10;
-  let topBalls = '';
-  for(let i = 0; i < 10; i++) topBalls += makeMonsterBallSvg(30);
-  let botBalls = '';
-  for(let i = 0; i < loose; i++) botBalls += makeMonsterBallSvg(30);
-  
-  return '<div class="mball-question-box">' +
-    '<div class="mball-row mball-top-row">' +
-      '<span class="mball-label">上だん:</span>' +
-      '<div class="mball-icons-group">' + topBalls + '</div>' +
-    '</div>' +
-    '<div class="mball-row mball-bottom-row">' +
-      '<span class="mball-label">下だん:</span>' +
-      '<div class="mball-icons-group">' + botBalls + '</div>' +
-    '</div>' +
-  '</div>';
-}
-
-function makeCookieSvg(type, size=32) {
-  if(type === 'round') {
-    return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 34 34" style="vertical-align:middle;filter:drop-shadow(0 2px 3px rgba(0,0,0,0.15))">' +
-      '<circle cx="17" cy="17" r="15" fill="#f5ba68" stroke="#ba7926" stroke-width="2"/>' +
-      '<circle cx="11" cy="12" r="2.3" fill="#5d4037"/><circle cx="21" cy="11" r="2" fill="#5d4037"/>' +
-      '<circle cx="14" cy="22" r="2.2" fill="#5d4037"/><circle cx="23" cy="20" r="2.3" fill="#5d4037"/>' +
-      '<circle cx="17" cy="16" r="1.8" fill="#5d4037"/>' +
-    '</svg>';
-  } else {
-    return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 34 34" style="vertical-align:middle;filter:drop-shadow(0 2px 3px rgba(0,0,0,0.15))">' +
-      '<rect x="2" y="2" width="30" height="30" rx="5" fill="#eed9a8" stroke="#ba7926" stroke-width="2"/>' +
-      '<rect x="2" y="2" width="15" height="15" rx="3" fill="#8d5b2d"/>' +
-      '<rect x="17" y="17" width="15" height="15" rx="3" fill="#8d5b2d"/>' +
-    '</svg>';
-  }
-}
-
-function makeDonutSvg(type, size=34) {
-  if(type === 'choco') {
-    return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 36 36" style="vertical-align:middle;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.15))">' +
-      '<circle cx="18" cy="18" r="16" fill="#f5ba68" stroke="#ba7926" stroke-width="2"/>' +
-      '<circle cx="18" cy="18" r="13" fill="#5d4037"/>' +
-      '<circle cx="18" cy="18" r="5" fill="#ffffff"/>' +
-      '<circle cx="12" cy="11" r="1" fill="#fff"/><circle cx="24" cy="13" r="1" fill="#fff"/>' +
-      '<circle cx="14" cy="24" r="1" fill="#fff"/><circle cx="22" cy="23" r="1" fill="#fff"/>' +
-    '</svg>';
-  } else {
-    return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 36 36" style="vertical-align:middle;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.15))">' +
-      '<circle cx="18" cy="18" r="16" fill="#ffe082" stroke="#ffa000" stroke-width="2"/>' +
-      '<circle cx="18" cy="18" r="13" fill="#fff8e1" stroke="#ffb300" stroke-width="2" stroke-dasharray="6 3"/>' +
-      '<circle cx="18" cy="18" r="5" fill="#ffffff" stroke="#ffa000" stroke-width="1.5"/>' +
-    '</svg>';
-  }
-}
-
-function makeTulipSvg(size=30) {
-  return '<svg width="' + size + '" height="' + Math.round(size*1.2) + '" viewBox="0 0 28 36" style="vertical-align:middle;filter:drop-shadow(0 2px 3px rgba(0,0,0,0.12))">' +
-    '<path d="M14,18 L14,34" stroke="#4caf50" stroke-width="3" stroke-linecap="round"/>' +
-    '<path d="M14,26 Q8,24 5,20" stroke="#4caf50" stroke-width="2.5" fill="none" stroke-linecap="round"/>' +
-    '<path d="M14,28 Q20,26 23,22" stroke="#4caf50" stroke-width="2.5" fill="none" stroke-linecap="round"/>' +
-    '<path d="M7,16 C5,10 7,4 14,4 C21,4 23,10 21,16 C19,19 16,20 14,20 C12,20 9,19 7,16 Z" fill="#e53935"/>' +
-    '<polygon points="10,4 14,10 18,4 14,7" fill="#b71c1c"/>' +
-  '</svg>';
-}
-
-function makeEggSvg(size=26) {
-  return '<svg width="' + size + '" height="' + Math.round(size*1.25) + '" viewBox="0 0 26 32" style="vertical-align:middle;filter:drop-shadow(0 2px 3px rgba(0,0,0,0.15))">' +
-    '<ellipse cx="13" cy="17" rx="10" ry="13" fill="#fff9f0" stroke="#d7ccc8" stroke-width="2"/>' +
-    '<ellipse cx="10" cy="12" rx="2" ry="4" fill="#ffffff" opacity="0.9"/>' +
-  '</svg>';
-}
-
-function makeClockSvg(hour, minute, size = 110) {
-  const cx = 60, cy = 60;
-  const hourAngle = ((hour % 12) + minute / 60) * 30;
-  const minAngle = minute * 6;
-  const rad = deg => (deg - 90) * Math.PI / 180;
-  const hx = cx + 26 * Math.cos(rad(hourAngle));
-  const hy = cy + 26 * Math.sin(rad(hourAngle));
-  const mx = cx + 38 * Math.cos(rad(minAngle));
-  const my = cy + 38 * Math.sin(rad(minAngle));
-  
-  let marks = '';
-  for(let n = 1; n <= 12; n++){
-    const a = n * 30;
-    const nx = cx + 40 * Math.cos(rad(a));
-    const ny = cy + 40 * Math.sin(rad(a)) + 4;
-    marks += '<text x="' + nx.toFixed(1) + '" y="' + ny.toFixed(1) + '" text-anchor="middle" font-size="11" font-weight="900" fill="#333">' + n + '</text>';
-  }
-  return '<div style="display:flex;justify-content:center;margin:8px 0;">' +
-    '<svg width="' + size + '" height="' + size + '" viewBox="0 0 120 120" style="background:#fff;border-radius:50%;box-shadow:0 3px 6px rgba(0,0,0,0.15);border:3px solid #ffcb05">' +
-      '<circle cx="' + cx + '" cy="' + cy + '" r="54" fill="#ffffff" stroke="#2a4b7c" stroke-width="3"/>' +
-      marks +
-      '<line x1="' + cx + '" y1="' + cy + '" x2="' + hx.toFixed(1) + '" y2="' + hy.toFixed(1) + '" stroke="#e53935" stroke-width="4.5" stroke-linecap="round"/>' +
-      '<line x1="' + cx + '" y1="' + cy + '" x2="' + mx.toFixed(1) + '" y2="' + my.toFixed(1) + '" stroke="#1e88e5" stroke-width="3.5" stroke-linecap="round"/>' +
-      '<circle cx="' + cx + '" cy="' + cy + '" r="4" fill="#333"/>' +
-    '</svg>' +
-  '</div>';
-}
-
-function makeTrackHtml(list, targetIdx) {
-  let html = '<div style="display:flex;align-items:center;justify-content:center;gap:6px;margin:10px 0;flex-wrap:wrap">';
-  list.forEach((num, idx) => {
-    const isTarget = idx === targetIdx;
-    if(idx > 0) html += '<span style="color:#aaa;font-weight:900;font-size:16px">➔</span>';
-    html += '<div style="' +
-      'width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;' +
-      'font-size:' + (isTarget ? '20px' : '17px') + ';font-weight:900;' +
-      (isTarget ? 'background:#fff8db;border:3px dashed #ff9800;color:#e65100;box-shadow:0 2px 5px rgba(255,152,0,0.3);' : 'background:#fff;border:2px solid #90caf9;color:#1565c0;') +
-      '">' + (isTarget ? '？' : num) + '</div>';
-  });
-  html += '</div>';
-  return html;
-}
-
-function makeMoneyHtml(c100, c10, c1) {
-  let html = '<div style="background:#fff9e6;border:2px solid #ffd54f;border-radius:14px;padding:10px;margin:8px 0;display:flex;flex-direction:column;gap:6px">';
-  if(c100 > 0){
-    let coins = '';
-    for(let i=0; i<c100; i++) coins += '<span class="coin-badge coin-100">100円</span>';
-    html += '<div style="display:flex;align-items:center;gap:8px"><span style="font-size:12px;font-weight:900;color:#555;width:60px">100円玉:</span><div style="display:flex;flex-wrap:wrap;gap:6px">' + coins + '</div></div>';
-  }
-  if(c10 > 0){
-    let coins = '';
-    for(let i=0; i<c10; i++) coins += '<span class="coin-badge coin-10">10円</span>';
-    html += '<div style="display:flex;align-items:center;gap:8px"><span style="font-size:12px;font-weight:900;color:#555;width:60px">10円玉:</span><div style="display:flex;flex-wrap:wrap;gap:6px">' + coins + '</div></div>';
-  }
-  if(c1 > 0){
-    let coins = '';
-    for(let i=0; i<c1; i++) coins += '<span class="coin-badge coin-1">1円</span>';
-    html += '<div style="display:flex;align-items:center;gap:8px"><span style="font-size:12px;font-weight:900;color:#555;width:60px">1円玉:</span><div style="display:flex;flex-wrap:wrap;gap:6px">' + coins + '</div></div>';
-  }
-  html += '</div>';
-  return html;
-}
-
-function buildStageQuestions(row){
-  const bId = row.battle;
-  const descs = [row.description1, row.description2, row.description3, row.description4, row.description5, row.description6].filter(Boolean);
-  const correctRaw = (row.correct || '').replace(/[０-９]/g, c => String.fromCharCode(c.charCodeAt(0)-0xFEE0));
-
-  function numChoices(ans, count=4){
-    const n = parseInt(ans, 10);
-    const set = new Set([n]);
-    const span = n >= 20 ? 5 : 3;
-    while(set.size < count){
-      const d = n + Math.round((Math.random() * 2 - 1) * span);
-      if(d >= 0 && d !== n) set.add(d);
-    }
-    return [...set].sort((a,b)=>a-b).map(String);
-  }
-
-  // Battle 1: アチャモ (線結び + 2問)
-  if(bId === 'Battle1'){
-    return [
-      { qNum: 1, desc: row.description1 || 'アチャモとりんごを せんで むすびましょう。', interactive: 'achamo_match', isInteractiveOnly: true },
-      { qNum: 2, desc: row.description2 || 'アチャモと りんごは、どちらが おおいでしょう。おおい ほうを えらびましょう。', ans: 'りんご', choices: ['りんご', 'アチャモ'] },
-      { qNum: 3, desc: row.description3 || 'りんごは、たりますか。「たりる」「たりない」を えらびましょう。', ans: 'たりる', choices: ['たりる', 'たりない'] }
-    ];
-  }
-
-  // Battle 2: ヨーテリー & チラーミィ (2問の個別選択)
-  if(bId === 'Battle2'){
-    return [
-      { qNum: 1, desc: 'わくの なかの ヨーテリーは なんびき いましたか？', ans: '6', choices: ['4','5','6','7'], poke: 'ヨーテリー', count: 6, pokeId: 506, hideWriteBox: true },
-      { qNum: 2, desc: 'わくの なかの チラーミィは なんびき いましたか？', ans: '7', choices: ['5','6','7','8'], poke: 'チラーミィ', count: 7, pokeId: 572, hideWriteBox: true }
-    ];
-  }
-
-  // Battle 3: パチリス 1から5のすうじ (紙の手本 5問再現)
-  if(bId === 'Battle3'){
-    return [1, 2, 3, 4, 5].map(n => ({
-      qNum: n,
-      desc: n + 'ぴきの パチリス：かずだけ ○を ぬって、すうじを えらびましょう。',
-      ans: String(n),
-      choices: ['1', '2', '3', '4', '5'],
-      isPaperRow: true,
-      pokemon: 'パチリス',
-      count: n,
-      pokeId: 417
-    }));
-  }
-
-  // Battle 4: ピッピ せんでむすぼう (3列マッチング)
-  if(bId === 'Battle4'){
-    return [
-      { qNum: 1, desc: 'かずが おなじに なるように、ピッピと ●と すうじを せんで つなぎましょう。', interactive: 'three_col_match', isInteractiveOnly: true }
-    ];
-  }
-
-  // Battle 5: フシギソウ 5はいくつといくつ (おさら1とおさら2)
-  if(bId === 'Battle5'){
-    return [
-      { qNum: 1, desc: 'おさら1に 1こ あります。5にするには おさら2に なんこ ひつよう？', ans: '4', choices: ['2','3','4','5'], interactive: 'apple_split' },
-      { qNum: 2, desc: 'おさら1に 2こ あります。5にするには おさら2に なんこ ひつよう？', ans: '3', choices: ['1','2','3','4'], interactive: 'apple_split' }
-    ];
-  }
-
-  // Battle 6: ジヘッド 5はいくつといくつ (おさら1とおさら2)
-  if(bId === 'Battle6'){
-    return [
-      { qNum: 1, desc: 'おさら1に 3こ あります。5にするには おさら2に なんこ ひつよう？', ans: '2', choices: ['1','2','3','4'], interactive: 'apple_split' },
-      { qNum: 2, desc: 'おさら1に 4こ あります。5にするには おさら2に なんこ ひつよう？', ans: '1', choices: ['1','2','3','4'], interactive: 'apple_split' }
-    ];
-  }
-
-  // Battle 7: アンノーン 6から10のすうじ (紙の手本 5問再現)
-  if(bId === 'Battle7'){
-    return [6, 7, 8, 9, 10].map((n, idx) => ({
-      qNum: idx + 1,
-      desc: n + 'ぴきの アンノーン：かずだけ ○を ぬって、すうじを えらびましょう。',
-      ans: String(n),
-      choices: ['6', '7', '8', '9', '10'],
-      isPaperRow: true,
-      pokemon: 'アンノーン',
-      count: n,
-      pokeId: 201
-    }));
-  }
-
-  // Battle 8: ケロマツ せんでむすぼう (3列マッチング 6〜10)
-  if(bId === 'Battle8'){
-    return [
-      { qNum: 1, desc: 'かずが おなじに なるように、ケロマツと ●と すうじを せんで つなぎましょう。', interactive: 'three_col_match', isInteractiveOnly: true }
-    ];
-  }
-
-  // Battle 9: エテボース ぬけているすうじをかこう (すごろく直結・もんだい1重複なし)
-  if(bId === 'Battle9'){
-    return [
-      { qNum: 1, desc: 'すうじが 1から 10まで じゅんびんに ならぶように、あいている マスに すうじを いれましょう。', interactive: 'seq_fill', isInteractiveOnly: true }
-    ];
-  }
-
-  // Battle 10: ミミッキュ ぎゃくじゅん 10〜1 (すごろく直結・もんだい1重複なし)
-  if(bId === 'Battle10'){
-    return [
-      { qNum: 1, desc: '10から 1まで、すうじを ぎゃくの じゅんばんで ならべましょう。あいている マスを うめてね。', interactive: 'seq_fill', isInteractiveOnly: true }
-    ];
-  }
-
-  // Battle 11: ユキメノコ どちらがおおいかな (2問個別比較)
-  if(bId === 'Battle11'){
-    return [
-      { qNum: 1, desc: 'ユキメノコと マニューラ、どちらが おおいかな？', ans: 'ユキメノコ', choices: ['ユキメノコ', 'マニューラ'], isB11: true },
-      { qNum: 2, desc: 'ユキメノコと ユキカブリ、どちらが おおいかな？', ans: 'ユキカブリ', choices: ['ユキメノコ', 'ユキカブリ'], isB11: true }
-    ];
-  }
-
-  // Battle 12: バタフリー 6はいくつといくつ (5問個別・ツリー表示)
-  if(bId === 'Battle12'){
-    const total = 6;
-    return [1, 2, 3, 4, 5].map(given => ({
-      qNum: given,
-      desc: total + 'は ' + given + 'と いくつかな？',
-      ans: String(total - given),
-      choices: ['1', '2', '3', '4', '5'],
-      isTreeQuestion: true,
-      total,
-      given
-    }));
-  }
-
-  // Battle 13: マリルリ 7はいくつといくつ (6問個別・ツリー表示)
-  if(bId === 'Battle13'){
-    const total = 7;
-    return [1, 2, 3, 4, 5, 6].map(given => ({
-      qNum: given,
-      desc: total + 'は ' + given + 'と いくつかな？',
-      ans: String(total - given),
-      choices: ['1', '2', '3', '4', '5', '6'],
-      isTreeQuestion: true,
-      total,
-      given
-    }));
-  }
-
-  // Battle 14: ヤミラミ 8はいくつといくつ (7問個別・ツリー表示)
-  if(bId === 'Battle14'){
-    const total = 8;
-    return [1, 2, 3, 4, 5, 6, 7].map(given => ({
-      qNum: given,
-      desc: total + 'は ' + given + 'と いくつかな？',
-      ans: String(total - given),
-      choices: ['1', '2', '3', '4', '5', '6', '7'],
-      isTreeQuestion: true,
-      total,
-      given
-    }));
-  }
-
-  // Battle 15: ギガイアス 9はいくつといくつ (8問個別・ツリー表示)
-  if(bId === 'Battle15'){
-    const total = 9;
-    return [1, 2, 3, 4, 5, 6, 7, 8].map(given => ({
-      qNum: given,
-      desc: total + 'は ' + given + 'と いくつかな？',
-      ans: String(total - given),
-      choices: ['1', '2', '3', '4', '5', '6', '7', '8'],
-      isTreeQuestion: true,
-      total,
-      given
-    }));
-  }
-
-  // Battle 16: ゴーゴート 10はいくつといくつ (9問個別・ツリー表示)
-  if(bId === 'Battle16'){
-    const total = 10;
-    return [1, 2, 3, 4, 5, 6, 7, 8, 9].map(given => ({
-      qNum: given,
-      desc: total + 'は ' + given + 'と いくつかな？',
-      ans: String(total - given),
-      choices: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
-      isTreeQuestion: true,
-      total,
-      given
-    }));
-  }
-
-  // Battle 17: トゲピー あといくつで10
-  if(bId === 'Battle17'){
-    return [
-      { qNum: 1, desc: 'たまごが 8こ あります。あと いくつで 10に なるかな？', ans: '2', choices: ['1', '2', '3', '4'] },
-      { qNum: 2, desc: 'たまごが 5こ あります。あと いくつで 10に なるかな？', ans: '5', choices: ['3', '4', '5', '6'] },
-      { qNum: 3, desc: 'たまごが 3こ あります。あと いくつで 10に なるかな？', ans: '7', choices: ['5', '6', '7', '8'] }
-    ];
-  }
-
-  // Battle 18: ヤングース あといくつで10
-  if(bId === 'Battle18'){
-    return [
-      { qNum: 1, desc: 'りんごが 7こ あります。7は あと いくつで 10に なるかな？', ans: '3', choices: ['1', '2', '3', '4'] },
-      { qNum: 2, desc: 'りんごが 9こ あります。9は あと いくつで 10に なるかな？', ans: '1', choices: ['1', '2', '3', '4'] },
-      { qNum: 3, desc: 'りんごが 6こ あります。6は あと いくつで 10に なるかな？', ans: '4', choices: ['2', '3', '4', '5'] }
-    ];
-  }
-
-  // Battle 19: イッカネズミ 0というかず
-  if(bId === 'Battle19'){
-    return [
-      { qNum: 1, desc: 'おさらの なかの りんご：なにも ない おさらの りんごは なんこかな？', ans: '0', choices: ['0', '1', '2', '3'] },
-      { qNum: 2, desc: 'わなげ：ひとつも はいっていない ところの わは なんこかな？', ans: '0', choices: ['0', '1', '2', '3'] }
-    ];
-  }
-
-  // Battle 20: ピカチュウ まとめ (7つの数の木)
-  if(bId === 'Battle20'){
-    const trees = [
-      { total: 6, given: 1, ans: '5', choices: ['3', '4', '5', '6'] },
-      { total: 9, given: 3, ans: '6', choices: ['4', '5', '6', '7'] },
-      { total: 7, given: 5, ans: '2', choices: ['1', '2', '3', '4'] },
-      { total: 10, given: 7, ans: '3', choices: ['2', '3', '4', '5'] },
-      { total: 8, given: 4, ans: '4', choices: ['2', '3', '4', '5'] },
-      { total: 9, given: 5, ans: '4', choices: ['3', '4', '5', '6'] },
-      { total: 10, given: 8, ans: '2', choices: ['1', '2', '3', '4'] }
-    ];
-    return trees.map((t, idx) => ({
-      qNum: idx + 1,
-      desc: t.total + 'は ' + t.given + 'と いくつかな？',
-      ans: t.ans,
-      choices: t.choices,
-      isTreeQuestion: true,
-      total: t.total,
-      given: t.given
-    }));
-  }
-
-  // Battle 20_2: ピカチュウ ぬりえ
-  if(bId === 'Battle20_2'){
-    return [
-      { qNum: 1, desc: 'すうじに あわせて いろを ぬり、ピカチュウを かんせいさせよう！', ans: 'できた！', choices: ['できた！', 'もうすこし'] }
-    ];
-  }
-
-  // Battle 21: アブリボン 10よりおおきいかず（14体選択・10個の丸・数字選択）
-  if(bId === 'Battle21'){
-    return [
-      { qNum: 1, desc: '① アブリボンを 10ぴき タップして、10の まとまりを つくろう！', ans: '10', choices: ['10'], isInteractiveOnly: true },
-      { qNum: 2, desc: '② 10の まとまりの ぶんだけ、したの ○を 10こ タップして ぬろう！', ans: '10', choices: ['10'], isInteractiveOnly: true },
-      { qNum: 3, desc: '③ 10の まとまりの なかには、アブリボンが なんびき いるかな？', ans: '10', choices: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'], blankLabel: '10の まとまり：', blankUnit: 'ひき' },
-      { qNum: 4, desc: '④ 10ぴきと ばらの 4ひきで、ぜんぶで なんびき かな？', ans: '14', choices: ['11', '12', '13', '14', '15'], blankLabel: 'ぜんぶで：', blankUnit: 'ひき' }
-    ];
-  }
-
-  // =========================================================================
-  // BATTLES 22 〜 55_2 (+ Minigame): 原本ドリルスキャン完全準拠・忠実再現
-  // =========================================================================
-
-  // Battle 22: ウオノラゴン 11から20（上段10個・下段残り・ランダム出題・1ドリル統合）
-  if(bId === 'Battle22'){
-    // ランダム順（13, 11, 16, 14, 18, 12, 17, 15, 19）
-    const shuffledCounts = [13, 11, 16, 14, 18, 12, 17, 15, 19];
-    return shuffledCounts.map((n, idx) => ({
-      qNum: idx + 1,
-      desc: ['①', '②', '③', '④', '⑤', '⑥', '⑦', '⑧', '⑨'][idx] + ' モンスターボールを かぞえて、したの しかく [ ？ ] に すうじを えらぼう。',
-      ans: String(n),
-      choices: ['10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'],
-      customHtml: makeMonsterBallBox(n),
-      blankLabel: 'モンスターボール：',
-      blankUnit: 'こ'
-    }));
-  }
-
-  // Authentic Textbook Drills (Battle 23 to 55_2)
-  if(/^(Battle(2[3-9]|[3-5][0-9]|55(_[23])?))$/.test(bId) || bId.startsWith('Battle')){
-    return [
-      { qNum: 1, desc: row.title, isInteractiveOnly: true }
-    ];
-  }
 }
 
 function openBattle(i){
@@ -4562,28 +4221,41 @@ function renderInteractiveStage(row){
       '</div>';
     initThreeColMatch([6, 7, 8, 9, 10], 656, 'ケロマツ');
   } else if(bId === 'Battle5' || bId === 'Battle6'){
-    // おさら1とおさら2の分解
+    // おさら1とおさら2の分解（フシギソウ・ジヘッド）
+    const isB5 = bId === 'Battle5';
+    const pokeName = isB5 ? 'フシギソウ' : 'ジヘッド';
+    const pokeFuri = isB5 ? 'ふしぎそう' : 'じへっど';
+    const pokeIdNum = isB5 ? 2 : 634;
+
     card.innerHTML = 
-      '<div class="card interactive-stage">' +
-        '<h3>🍎 おさらに りんごを わけてみよう！ (ぜんぶで 5こ)</h3>' +
-        '<div class="plate-wrap">' +
-          '<div class="plate-box">' +
-            '<div style="font-weight:900;color:var(--blue-d)">おさら1</div>' +
-            '<div class="plate-dish" id="plateTop"></div>' +
+      '<div class="drill-book-page">' +
+        makeDrillBookHeader(isB5 ? 5 : 6, pokeName, pokeFuri, '5は いくつと いくつ', 'おさらに りんごを わけてみよう！ ぜんぶで 5こに なるように してね。', pokeIdNum) +
+        '<div style="background:#fff7ed;border:2px solid #fed7aa;border-radius:18px;padding:14px;margin-bottom:12px">' +
+          '<div style="display:flex;gap:12px;justify-content:center;align-items:center;margin-bottom:12px">' +
+            '<button type="button" class="plate-tab-btn active" id="b5Tab1" style="background:#ea580c;color:#fff;border:none;border-radius:10px;padding:6px 14px;font-weight:900;cursor:pointer">もんだい ①</button>' +
+            '<button type="button" class="plate-tab-btn" id="b5Tab2" style="background:#fdba74;color:#9a3412;border:none;border-radius:10px;padding:6px 14px;font-weight:900;cursor:pointer">もんだい ②</button>' +
           '</div>' +
-          '<div style="font-size:28px;font-weight:900;color:#e07a30">＋</div>' +
-          '<div class="plate-box">' +
-            '<div style="font-weight:900;color:var(--blue-d)">おさら2</div>' +
-            '<div class="plate-dish" id="plateBottom"></div>' +
+          '<div class="plate-wrap" style="display:flex;gap:14px;justify-content:center;align-items:center">' +
+            '<div class="plate-box" style="text-align:center">' +
+              '<div style="font-weight:900;color:#0284c7;font-size:14px;margin-bottom:4px">おさら 1</div>' +
+              '<div class="plate-dish" id="plateTop" style="width:120px;height:70px;background:#fff;border:3px solid #38bdf8;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px"></div>' +
+            '</div>' +
+            '<div style="font-size:28px;font-weight:900;color:#ea580c">＋</div>' +
+            '<div class="plate-box" style="text-align:center">' +
+              '<div style="font-weight:900;color:#0284c7;font-size:14px;margin-bottom:4px">おさら 2</div>' +
+              '<div class="plate-dish" id="plateBottom" style="width:120px;height:70px;background:#fff;border:3px solid #38bdf8;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px"></div>' +
+            '</div>' +
+          '</div>' +
+          '<div style="text-align:center;margin-top:12px">' +
+            '<button type="button" class="plate-btn" id="btnAddApple" style="background:#ea580c;color:#fff;border:none;border-radius:12px;padding:8px 18px;font-weight:900;font-size:15px;cursor:pointer">🍎 りんごを おく</button> ' +
+            '<button type="button" class="plate-btn" id="btnRemoveApple" style="background:#64748b;color:#fff;border:none;border-radius:12px;padding:8px 18px;font-weight:900;font-size:15px;cursor:pointer">↩️ もどす</button>' +
+            '<div style="font-size:16px;font-weight:900;margin-top:10px;color:#1e293b">ぜんぶで: <span id="plateTotal" style="color:#ea580c;font-size:26px">1</span> こ</div>' +
           '</div>' +
         '</div>' +
-        '<div style="text-align:center;margin-top:8px">' +
-          '<button class="plate-btn" id="btnAddApple">🍎 りんごを おく</button> ' +
-          '<button class="plate-btn" id="btnRemoveApple" style="background:#5c6bc0">↩️ もどす</button>' +
-          '<div style="font-size:16px;font-weight:900;margin-top:8px;color:#333">あわせると: <span id="plateTotal" style="color:#e07a30;font-size:24px">1</span>こ</div>' +
-        '</div>' +
+        makeDrillBookFooter(pokeName, isB5 ? 'たねポケモン' : 'そぼうポケモン', isB5 ? 'くさ・どく' : 'ドラゴン・あく', isB5 ? '1.0m' : '1.4m', isB5 ? '13.0kg' : '50.0kg', '5の構成（1と4、2と3）を具体物のお皿の操作を通じて直感的に把握します。', pokeIdNum) +
       '</div>';
-    initAppleSplit(row);
+
+    initAppleSplitTabs(isB5);
   } else if(bId === 'Battle9'){
     // エテボースのすごろく (何度でも入れ直し可能、ダミー数字入りシャッフル)
     card.innerHTML = 
@@ -7752,6 +7424,120 @@ function initBattle36Togedemaru() {
 
 /* ===== AUTHENTIC INITIALIZERS (Battles 34 to 55_2) ===== */
 
+/* ===== BATTLES 5, 6, 20, 21 INITIALIZERS ===== */
+
+function initAppleSplitTabs(isB5) {
+  let activeTab = 1;
+  const pTop = $('plateTop');
+  const pBottom = $('plateBottom');
+  const btnAdd = $('btnAddApple');
+  const btnRemove = $('btnRemoveApple');
+  const lblTotal = $('plateTotal');
+  const tab1 = $('b5Tab1');
+  const tab2 = $('b5Tab2');
+
+  let bottomCount = 0;
+
+  function renderState() {
+    let topCount = 1;
+    let maxBottom = 4;
+
+    if (isB5) {
+      topCount = activeTab === 1 ? 1 : 2;
+      maxBottom = activeTab === 1 ? 4 : 3;
+    } else {
+      topCount = activeTab === 1 ? 3 : 4;
+      maxBottom = activeTab === 1 ? 2 : 1;
+    }
+
+    if (bottomCount > maxBottom) bottomCount = maxBottom;
+
+    let topHtml = '';
+    for (let k = 0; k < topCount; k++) topHtml += '<span class="plate-apple">🍎</span>';
+    pTop.innerHTML = topHtml;
+
+    let botHtml = '';
+    for (let k = 0; k < bottomCount; k++) botHtml += '<span class="plate-apple">🍎</span>';
+    pBottom.innerHTML = botHtml;
+
+    lblTotal.textContent = topCount + bottomCount;
+  }
+
+  if (tab1) {
+    tab1.onclick = () => {
+      activeTab = 1;
+      bottomCount = 0;
+      tab1.style.background = '#ea580c';
+      tab1.style.color = '#fff';
+      if (tab2) { tab2.style.background = '#fdba74'; tab2.style.color = '#9a3412'; }
+      renderState();
+    };
+  }
+
+  if (tab2) {
+    tab2.onclick = () => {
+      activeTab = 2;
+      bottomCount = 0;
+      tab2.style.background = '#ea580c';
+      tab2.style.color = '#fff';
+      if (tab1) { tab1.style.background = '#fdba74'; tab1.style.color = '#9a3412'; }
+      renderState();
+    };
+  }
+
+  btnAdd.onclick = () => {
+    let maxBottom = isB5 ? (activeTab === 1 ? 4 : 3) : (activeTab === 1 ? 2 : 1);
+    if (bottomCount < maxBottom) {
+      playMarimbaPop(1.3);
+      bottomCount++;
+      renderState();
+    }
+  };
+
+  btnRemove.onclick = () => {
+    if (bottomCount > 0) {
+      playMarimbaPop(0.9);
+      bottomCount--;
+      renderState();
+    }
+  };
+
+  renderState();
+}
+
+function initBattle20Pikachu() {
+  const p = document.querySelector('.drill-book-page');
+  if (!p) return;
+  setupMathBoxController(p, ['5', '6', '2', '3', '4', '4', '2'], () => {
+    playCrystalSparkle();
+    completeBookDrill();
+  });
+}
+
+function initBattle21Ribombee() {
+  const p = document.querySelector('.drill-book-page');
+  if (!p) return;
+  const area = document.getElementById('b21RibombeeArea');
+  const bundle = document.getElementById('b21Bundle10');
+  const msg = document.getElementById('b21LoopMsg');
+
+  if (area && bundle) {
+    area.onclick = () => {
+      playMarimbaPop(1.4);
+      bundle.style.border = '4px solid #16a34a';
+      bundle.style.background = '#dcfce7';
+      bundle.style.boxShadow = '0 0 0 6px rgba(34, 197, 94, 0.3)';
+      if (msg) msg.style.display = 'block';
+    };
+  }
+
+  setupMathBoxController(p, ['14'], () => {
+    playCrystalSparkle();
+    completeBookDrill();
+  });
+}
+
+
 function completeBookDrill() {
   stampDrillSuccess();
   (S.answers[curIdx] = S.answers[curIdx] || {})._completed = true;
@@ -8327,7 +8113,7 @@ function renderQuestionCards(row){
           (q.count === 20 ? '<div style="background:#fff3e0;border:2px solid #ff9800;border-radius:8px;padding:2px 6px">🔴 10</div>' : '') +
         '</div>';
       } else {
-        for(let k=0; k<q.count; k++) pokeHtml += '<img src="' + ART(q.pokeId) + '" alt="' + q.pokemon + '">';
+        for(let k=0; k<q.count; k++) pokeHtml += '<img src="' + ART(q.pokeId) + '" alt="' + q.pokemon + '" style="width:56px;height:56px;object-fit:contain;margin:2px;filter:drop-shadow(0 3px 5px rgba(0,0,0,0.15))">';
       }
 
       let dotsHtml = '';
@@ -8391,6 +8177,15 @@ function renderQuestionCards(row){
           save();
           updateThrow();
           // answer tap (no tts)
+        };
+      });
+
+      
+      // タップで塗れる丸（バトル3 パチリス、バトル7 アンノーン）
+      card.querySelectorAll('.pd-dot.tap-dot').forEach(dot => {
+        dot.onclick = () => {
+          playMarimbaPop(1.3);
+          dot.classList.toggle('filled');
         };
       });
 

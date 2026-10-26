@@ -1858,31 +1858,352 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
 .food-tap-btn.selected .food-check{display:block}
 .b24-counter{font-size:13px;font-weight:900;margin-top:6px}
 
-/* Cramorant Scenic Scene */
-.cramo-scenic-field{
-  border-radius:18px;overflow:hidden;border:3px solid #64b5f6;box-shadow:0 3px 8px rgba(0,0,0,0.12);
+/* Pikachu Coloring UI (Battle 20) */
+.pika-palette-bar{
+  display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:10px 0;
+}
+.pika-color-btn{
+  border:3px solid transparent;border-radius:20px;padding:6px 14px;font-size:14px;font-weight:900;
+  cursor:pointer;transition:all 0.2s;box-shadow:0 3px 6px rgba(0,0,0,0.12);
+}
+.pika-color-btn.active{
+  border-color:#222;transform:scale(1.08);box-shadow:0 0 10px rgba(0,0,0,0.3);
+}
+.pika-canvas-wrap{
+  max-width:320px;margin:10px auto;background:#fff;border-radius:18px;border:3px solid #2a4b7c;
+  overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.15);padding:6px;
+}
+.pika-color-svg{
+  width:100%;height:auto;display:block;
+}
+.pika-seg{
+  cursor:pointer;transition:fill 0.25s, stroke-width 0.15s;
+}
+.pika-seg:hover{
+  stroke-width:3.5;
+}
+.pika-status-bar{
+  font-size:15px;font-weight:900;color:#222;text-align:center;margin-top:8px;
+}
+
+/* Seamless Landscape Stages (Battles 25 to 34) */
+/* Cramorant Seamless Landscape */
+.cramo-seamless-scene{
+  border-radius:18px;overflow:hidden;border:3px solid #64b5f6;box-shadow:0 4px 12px rgba(0,0,0,0.12);
   margin:10px 0;
 }
-.cramo-sky{
-  background:linear-gradient(180deg, #b3e5fc 0%, #e1f5fe 100%);padding:12px;border-bottom:3px solid #81d4fa;
+.cramo-sky-area{
+  background:linear-gradient(180deg, #64b5f6 0%, #bbdefb 60%, #e3f2fd 100%);
+  padding:14px 10px 10px;position:relative;
 }
-.cramo-ground{
-  background:linear-gradient(180deg, #c8e6c9 0%, #a5d6a7 100%);padding:12px;
-}
-.cramo-badge{
+.cramo-sky-header{
   font-size:13px;font-weight:900;color:#0277bd;margin-bottom:6px;
 }
-.cramo-badge.ground-b{color:#2e7d32}
-.cramo-group{display:flex;flex-wrap:wrap;gap:8px}
-.cramo-btn{
-  position:relative;width:52px;height:52px;background:rgba(255,255,255,0.85);border:2px solid #fff;border-radius:12px;
-  cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;box-shadow:0 2px 4px rgba(0,0,0,0.1);
+.cramo-ground-area{
+  background:linear-gradient(180deg, #81c784 0%, #4caf50 60%, #388e3c 100%);
+  padding:12px 10px 14px;
 }
-.cramo-btn img{width:44px;height:44px;object-fit:contain}
-.cramo-btn.selected{border-color:#ff9800;background:#fff8db;box-shadow:0 0 8px rgba(255,152,0,0.6);transform:scale(1.08)}
-.cramo-check{position:absolute;top:2px;right:2px;font-size:12px;display:none}
-.cramo-btn.selected .cramo-check{display:block}
-.cramo-counter{font-size:12px;font-weight:900;margin-top:6px}
+.cramo-ground-header{
+  font-size:13px;font-weight:900;color:#1b5e20;margin-bottom:6px;
+}
+.cramo-poke-grid{
+  display:flex;flex-wrap:wrap;gap:12px;justify-content:space-around;align-items:center;
+}
+.cramo-poke-item{
+  position:relative;background:transparent;border:none;cursor:pointer;padding:4px;
+  display:inline-flex;align-items:center;justify-content:center;transition:transform 0.2s;
+}
+.cramo-poke-item img{
+  width:58px;height:58px;object-fit:contain;transition:filter 0.2s, transform 0.2s;
+}
+.cramo-poke-item:hover img{
+  transform:scale(1.1);
+}
+.cramo-poke-item.selected img{
+  filter:drop-shadow(0 0 10px #ffd600) drop-shadow(0 0 4px #ff9800);
+  transform:scale(1.12);
+}
+.cramo-poke-item .cramo-star{
+  position:absolute;top:-4px;right:-4px;font-size:16px;display:none;
+}
+.cramo-poke-item.selected .cramo-star{
+  display:block;
+}
+.cramo-counter-bar{
+  display:flex;justify-content:space-around;font-size:14px;font-weight:900;color:#222;margin-top:8px;
+}
+
+/* Mawile Cookie Bags */
+.mawile-cookie-scene{
+  background:linear-gradient(180deg, #fff9e6 0%, #ffe0b2 100%);
+  border-radius:18px;border:3px solid #ffb74d;padding:12px;margin:10px 0;box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+.cookie-problem-box{
+  background:rgba(255,255,255,0.92);border-radius:14px;padding:10px;border:2px solid #ffe082;
+}
+.cookie-prob-title{
+  font-size:14px;font-weight:900;color:#e65100;margin-bottom:8px;display:flex;align-items:center;gap:6px;
+}
+.cookie-bags-row{
+  display:flex;align-items:center;justify-content:space-around;gap:10px;flex-wrap:wrap;
+}
+.cookie-bag{
+  position:relative;background:rgba(255,255,255,0.85);border:2.5px solid #ffb74d;border-radius:16px;
+  padding:24px 10px 8px;min-width:105px;text-align:center;box-shadow:0 3px 6px rgba(0,0,0,0.08);
+}
+.cookie-ribbon{
+  position:absolute;top:-12px;left:50%;transform:translateX(-50%);font-size:22px;
+}
+.cookie-bag-inner{
+  display:flex;flex-wrap:wrap;gap:4px;justify-content:center;align-items:center;min-height:50px;
+}
+.cookie-bag-label{
+  font-size:11px;font-weight:900;color:#bf360c;margin-top:4px;
+}
+.scene-pokemon-mawile{
+  width:56px;height:56px;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+}
+
+/* Miltank Pasture */
+.miltank-pasture-scene{
+  background:linear-gradient(180deg, #a5d6a7 0%, #81c784 50%, #4caf50 100%);
+  border-radius:18px;border:3px solid #43a047;padding:12px;margin:10px 0;
+  display:flex;align-items:center;justify-content:space-around;flex-wrap:wrap;gap:10px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.12);
+}
+.pasture-left-zone, .pasture-right-zone{
+  flex:1;min-width:140px;background:rgba(255,255,255,0.75);border-radius:14px;padding:8px;
+}
+.pasture-zone-title{
+  font-size:12px;font-weight:900;color:#1b5e20;margin-bottom:6px;text-align:center;
+}
+.pasture-divider{
+  font-size:24px;font-weight:900;color:#fff;text-shadow:0 2px 4px rgba(0,0,0,0.3);
+}
+.miltank-group-wrap{
+  display:flex;flex-wrap:wrap;gap:6px;justify-content:center;
+}
+.miltank-item{
+  width:44px;height:44px;object-fit:contain;cursor:pointer;transition:transform 0.2s, filter 0.2s;
+}
+.miltank-item:hover{
+  transform:scale(1.15);
+}
+.miltank-item.selected{
+  filter:drop-shadow(0 0 8px #ffeb3b);transform:scale(1.15);
+}
+.scene-counter-bar{
+  display:flex;justify-content:space-around;font-size:14px;font-weight:900;color:#222;margin-top:8px;
+}
+
+/* Pansear Donut Scene */
+.pansear-donut-scene{
+  background:repeating-linear-gradient(90deg, #fff8e7 0px, #fff8e7 20px, #ffecb3 20px, #ffecb3 40px);
+  border-radius:18px;border:3px solid #ffa000;padding:12px;margin:10px 0;box-shadow:0 4px 10px rgba(0,0,0,0.12);
+}
+.donut-prob-box{
+  background:rgba(255,255,255,0.92);border-radius:14px;padding:10px;border:2px solid #ffe082;
+}
+.donut-prob-title{
+  font-size:14px;font-weight:900;color:#e65100;margin-bottom:8px;
+}
+.donut-platter-wrap{
+  display:flex;align-items:center;justify-content:space-around;gap:8px;flex-wrap:wrap;
+}
+.donut-platter{
+  border-radius:30px;background:#ffffff;border:3.5px solid #b0bec5;padding:8px 12px;
+  display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:center;min-width:120px;
+  box-shadow:inset 0 0 10px rgba(0,0,0,0.08), 0 3px 6px rgba(0,0,0,0.1);
+}
+.donut-incoming{
+  display:flex;align-items:center;gap:4px;background:#fff3e0;border:2px dashed #ff9800;border-radius:14px;padding:6px 10px;
+}
+.motion-arrow{
+  font-size:11px;font-weight:900;color:#e65100;
+}
+.scene-pokemon-pansear{
+  width:52px;height:52px;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+}
+
+/* Glameow Meadow with Rainbow */
+.glameow-rainbow-scene{
+  background:linear-gradient(180deg, #b3e5fc 0%, #c8e6c9 50%, #81c784 100%);
+  border-radius:18px;border:3px solid #81c784;padding:12px;margin:10px 0;position:relative;
+  display:flex;align-items:center;justify-content:space-around;flex-wrap:wrap;gap:10px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.12);
+}
+.rainbow-arc-bg{
+  position:absolute;top:4px;left:50%;transform:translateX(-50%);font-size:32px;opacity:0.85;pointer-events:none;
+}
+.glameow-remain-zone, .glameow-leave-zone{
+  flex:1;min-width:140px;background:rgba(255,255,255,0.78);border-radius:14px;padding:8px;position:relative;z-index:1;
+}
+.glameow-zone-title{
+  font-size:12px;font-weight:900;color:#2e7d32;margin-bottom:6px;text-align:center;
+}
+.glameow-group-wrap{
+  display:flex;flex-wrap:wrap;gap:6px;justify-content:center;
+}
+.glameow-item{
+  width:44px;height:44px;object-fit:contain;cursor:pointer;transition:transform 0.2s, filter 0.2s;
+}
+.glameow-item:hover{
+  transform:scale(1.15);
+}
+.glameow-item.selected{
+  filter:drop-shadow(0 0 8px #ffeb3b);transform:scale(1.15);
+}
+
+/* Pidgeot Bitten Cookies */
+.pidgeot-cookie-scene{
+  background:repeating-linear-gradient(0deg, #fff8e1 0px, #fff8e1 15px, #ffecb3 15px, #ffecb3 30px);
+  border-radius:18px;border:3px solid #ffb300;padding:12px;margin:10px 0;box-shadow:0 4px 10px rgba(0,0,0,0.12);
+}
+.pidgeot-prob-box{
+  background:rgba(255,255,255,0.94);border-radius:14px;padding:10px;border:2px solid #ffd54f;
+}
+.pidgeot-prob-title{
+  font-size:14px;font-weight:900;color:#c9283a;margin-bottom:8px;
+}
+.pidgeot-platter-wrap{
+  display:flex;align-items:center;justify-content:space-around;gap:8px;flex-wrap:wrap;
+}
+.pidgeot-platter{
+  border-radius:30px;background:#ffffff;border:3.5px solid #b0bec5;padding:8px 12px;
+  min-width:140px;box-shadow:inset 0 0 10px rgba(0,0,0,0.08), 0 3px 6px rgba(0,0,0,0.1);
+}
+.cookies-top-remain{
+  display:flex;flex-wrap:wrap;gap:6px;justify-content:center;padding:4px 0;
+}
+.cookies-bottom-eaten-circle{
+  border:2.5px solid #e53935;border-radius:18px;background:rgba(255,235,238,0.7);padding:6px 8px;margin-top:6px;
+  display:flex;flex-wrap:wrap;gap:6px;justify-content:center;position:relative;
+}
+.eaten-circle-tag{
+  font-size:11px;font-weight:900;color:#c62828;width:100%;text-align:center;
+}
+.scene-pokemon-pidgeot{
+  width:58px;height:58px;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+}
+
+/* Dubwool & Wooloo Paddock */
+.dubwool-paddock-scene{
+  background:linear-gradient(180deg, #d7ccc8 0%, #bcaaa4 100%);
+  border-radius:18px;border:3px solid #8d6e63;padding:12px;margin:10px 0;box-shadow:0 4px 10px rgba(0,0,0,0.12);
+}
+.paddock-row{
+  background:rgba(255,255,255,0.85);border-radius:14px;padding:8px;margin:4px 0;
+}
+.paddock-row-title{
+  font-size:12px;font-weight:900;color:#4e342e;margin-bottom:4px;
+}
+.paddock-pokemon-row{
+  display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-start;
+}
+.sheep-item{
+  width:42px;height:42px;object-fit:contain;cursor:pointer;transition:transform 0.2s, filter 0.2s;
+}
+.sheep-item:hover{
+  transform:scale(1.15);
+}
+.sheep-item.selected{
+  filter:drop-shadow(0 0 8px #ffeb3b);transform:scale(1.15);
+}
+.paddock-pairing-lines{
+  display:flex;justify-content:space-around;padding:2px 10px;font-size:16px;color:#8d6e63;
+}
+
+/* Conkeldurr Donut Comparison */
+.conkeldurr-donut-scene{
+  background:#fff3e0;border-radius:18px;border:3px solid #ff9800;padding:12px;margin:10px 0;box-shadow:0 4px 10px rgba(0,0,0,0.12);
+}
+.conkel-prob-box{
+  background:#fff;border-radius:14px;padding:10px;border:2px solid #ffe082;
+}
+.conkel-prob-title{
+  font-size:14px;font-weight:900;color:#e65100;margin-bottom:8px;
+}
+.conkel-tray-wrap{
+  display:flex;align-items:center;justify-content:space-around;gap:8px;flex-wrap:wrap;
+}
+.conkel-tray{
+  background:#fff8e1;border:3px solid #d7ccc8;border-radius:12px;padding:8px 12px;
+  display:flex;flex-direction:column;gap:6px;
+}
+.tray-donut-row{
+  display:flex;gap:4px;
+}
+.conkel-platter-wrap{
+  display:flex;align-items:center;justify-content:space-around;gap:8px;flex-wrap:wrap;
+}
+.conkel-platter{
+  border-radius:24px;background:#fff;border:3px solid #b0bec5;padding:8px 12px;
+}
+.platter-donut-group{
+  display:flex;flex-wrap:wrap;gap:4px;justify-content:center;
+}
+.scene-pokemon-conkel{
+  width:56px;height:56px;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+}
+
+/* Florges Tulip Garden */
+.florges-garden-scene{
+  background:linear-gradient(180deg, #c8e6c9 0%, #a5d6a7 100%);
+  border-radius:18px;border:3px solid #66bb6a;padding:12px;margin:10px 0;
+  display:flex;align-items:center;justify-content:space-around;gap:10px;flex-wrap:wrap;
+  box-shadow:0 4px 10px rgba(0,0,0,0.12);
+}
+.garden-left-flowerbed{
+  flex:1;min-width:160px;
+}
+.tulip-bundle-box{
+  background:rgba(255,255,255,0.9);border:2.5px solid #43a047;border-radius:16px;padding:6px 8px;
+}
+.bundle-badge{
+  font-size:11px;font-weight:900;color:#2e7d32;margin-bottom:4px;
+}
+.bundle-badge.loose-b{
+  color:#c2185b;
+}
+.tulip-loose-box{
+  background:rgba(255,255,255,0.8);border:2px dashed #ec407a;border-radius:16px;padding:6px 8px;
+}
+.tulip-grid{
+  display:flex;flex-wrap:wrap;gap:4px;justify-content:center;
+}
+.garden-right-pokemon{
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+}
+.scene-pokemon-florges{
+  width:64px;height:64px;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+}
+.scene-pokemon-flabebe{
+  width:42px;height:42px;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+}
+
+/* Blissey Egg Cartons */
+.blissey-egg-scene{
+  background:linear-gradient(180deg, #fce4ec 0%, #f8bbd0 100%);
+  border-radius:18px;border:3px solid #f06292;padding:12px;margin:10px 0;
+  display:flex;align-items:center;justify-content:space-around;gap:10px;flex-wrap:wrap;
+  box-shadow:0 4px 10px rgba(0,0,0,0.12);
+}
+.egg-carton-demo{
+  display:flex;flex-direction:column;gap:8px;flex:1;min-width:140px;
+}
+.carton-item{
+  background:#fff;border:2.5px solid #d7ccc8;border-radius:14px;padding:6px 10px;
+  box-shadow:0 2px 4px rgba(0,0,0,0.08);
+}
+.carton-badge{
+  font-size:11px;font-weight:900;color:#8d6e63;margin-bottom:4px;
+}
+.egg-grid-10{
+  display:flex;flex-wrap:wrap;gap:4px;justify-content:center;
+}
+.scene-pokemon-blissey{
+  width:64px;height:64px;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+}
 
 /* Universal White Blank Box for Drill */
 .drill-blank-row{
@@ -2144,7 +2465,7 @@ const MONCOLLE = [
 ];
 const moncolleImg = m => `${MONCOLLE_BASE}${m.slug}/images/img00.png`;
 
-const POKEDEX = {アチャモ:255,ヨーテリー:506,ヨーデリー:506,パチリス:417,ピッピ:35,フシギソウ:2,ジヘッド:634,アンノーン:201,ケロマツ:656,
+const POKEDEX = {ウールー:831,フラベベ:669,ドテッコツ:533,ドッコラー:532,ナエトル:387,アチャモ:255,ヨーテリー:506,ヨーデリー:506,パチリス:417,ピッピ:35,フシギソウ:2,ジヘッド:634,アンノーン:201,ケロマツ:656,
  エテボース:424,ミミッキュ:778,ユキメノコ:478,バタフリー:12,マリルリ:184,ヤミラミ:302,ギガイアス:526,ゴーゴート:673,トゲピー:175,
  ヤングース:734,イッカネズミ:925,ピカチュウ:25,アブリボン:743,ウオノラゴン:882,ドダイトス:389,アチゲータ:910,ウッウ:845,クチート:303,
  ミルタンク:241,バオップ:513,ニャルマー:431,ピジョット:18,バイウールー:832,ローブシン:534,フラージェス:671,ハピナス:242,メグロコ:551,
@@ -2248,12 +2569,112 @@ function toast(msg, ms=1600){
   clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'), ms);
 }
 
+let audioCtx = null;
+function getAudioContext() {
+  if (!audioCtx) {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (AudioContext) audioCtx = new AudioContext();
+  }
+  if (audioCtx && audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+  return audioCtx;
+}
+
+// ぴかーん✨効果音（ポケモンゲット時のきらめきチャイム・Web Audio API・完全無料）
+function playPikaanSound() {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const now = ctx.currentTime;
+    
+    // きらめきアルペジオ (E6, G#6, B6, E7, G#7)
+    const freqs = [1318.51, 1661.22, 1975.53, 2637.02, 3322.44];
+    freqs.forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, now + i * 0.055);
+      
+      const startTime = now + i * 0.055;
+      const duration = 0.6 + i * 0.08;
+      
+      gain.gain.setValueAtTime(0.0001, startTime);
+      gain.gain.exponentialRampToValueAtTime(0.26, startTime + 0.015);
+      gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+      
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      
+      osc.start(startTime);
+      osc.stop(startTime + duration);
+    });
+
+    // 高音のシャイニング・クリスタル音
+    const shimmerOsc = ctx.createOscillator();
+    const shimmerGain = ctx.createGain();
+    shimmerOsc.type = 'triangle';
+    shimmerOsc.frequency.setValueAtTime(4186.01, now + 0.22);
+    shimmerGain.gain.setValueAtTime(0.0001, now + 0.22);
+    shimmerGain.gain.exponentialRampToValueAtTime(0.14, now + 0.25);
+    shimmerGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.85);
+    shimmerOsc.connect(shimmerGain);
+    shimmerGain.connect(ctx.destination);
+    shimmerOsc.start(now + 0.22);
+    shimmerOsc.stop(now + 0.85);
+  } catch(e) {
+    console.warn('Audio error', e);
+  }
+}
+
+// 最適な自然な日本語音声を選択（無料のEdge Neural/Natural音声やGoogle日本語、Kyoko、Ayumi等を最優先）
+function getBestJaVoice() {
+  if (!('speechSynthesis' in window)) return null;
+  const voices = speechSynthesis.getVoices() || [];
+  if (!voices.length) return null;
+  
+  // 1. Natural / Online 高音質ニューラル音声 (Edge等で無料提供)
+  let v = voices.find(v => v.lang.startsWith('ja') && (v.name.includes('Natural') || v.name.includes('Online')));
+  if (v) return v;
+  // 2. 代表的な高品質日本語音声
+  v = voices.find(v => v.lang.startsWith('ja') && (v.name.includes('Nanami') || v.name.includes('Google') || v.name.includes('Kyoko') || v.name.includes('Ayumi') || v.name.includes('Otoya')));
+  if (v) return v;
+  // 3. 機械的なDesktop音声以外の日本語音声
+  v = voices.find(v => v.lang.startsWith('ja') && !v.name.includes('Desktop'));
+  if (v) return v;
+  // 4. その他の日本語音声
+  return voices.find(v => v.lang.startsWith('ja')) || null;
+}
+
+// 読み上げテキストを自然な発音に整音（＋、－、記号の適切な読み替え）
+function cleanSpeechText(text) {
+  if (!text) return '';
+  return text
+    .replace(/[①②③④⑤⑥⑦⑧⑨⑩]/g, '')
+    .replace(/＋/g, ' たす ')
+    .replace(/－|ー/g, ' ひく ')
+    .replace(/＝/g, ' は ')
+    .replace(/\[\s*？\s*\]|【\s*？\s*】|\[\s*　\s*\]/g, ' しかく ')
+    .replace(/〜/g, ' から ')
+    .replace(/(\d+)ひき/g, '$1 ひき')
+    .replace(/(\d+)こ/g, '$1 こ')
+    .replace(/(\d+)まい/g, '$1 まい')
+    .replace(/(\d+)ほん/g, '$1 ほん')
+    .replace(/(\d+)わ/g, '$1 わ')
+    .trim();
+}
+
 function speak(text, btn){
   if(!('speechSynthesis' in window)) return;
   speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = 'ja-JP'; u.rate = 0.9; u.pitch = 1.15;
-  const v = speechSynthesis.getVoices().find(v=>v.lang.startsWith('ja'));
+  const cleaned = cleanSpeechText(text);
+  if(!cleaned) return;
+  const u = new SpeechSynthesisUtterance(cleaned);
+  u.lang = 'ja-JP';
+  u.rate = 0.98;
+  u.pitch = 1.05;
+  const v = getBestJaVoice();
   if(v) u.voice = v;
   if(btn){
     btn.classList.add('speaking');
@@ -2389,14 +2810,66 @@ function makeMonsterBallBox(count) {
   
   return '<div class="mball-question-box">' +
     '<div class="mball-row mball-top-row">' +
-      '<span class="mball-label">上だん (10こ):</span>' +
+      '<span class="mball-label">上だん:</span>' +
       '<div class="mball-icons-group">' + topBalls + '</div>' +
     '</div>' +
     '<div class="mball-row mball-bottom-row">' +
-      '<span class="mball-label">下だん (ばら):</span>' +
+      '<span class="mball-label">下だん:</span>' +
       '<div class="mball-icons-group">' + botBalls + '</div>' +
     '</div>' +
   '</div>';
+}
+
+function makeCookieSvg(type, size=32) {
+  if(type === 'round') {
+    return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 34 34" style="vertical-align:middle;filter:drop-shadow(0 2px 3px rgba(0,0,0,0.15))">' +
+      '<circle cx="17" cy="17" r="15" fill="#f5ba68" stroke="#ba7926" stroke-width="2"/>' +
+      '<circle cx="11" cy="12" r="2.3" fill="#5d4037"/><circle cx="21" cy="11" r="2" fill="#5d4037"/>' +
+      '<circle cx="14" cy="22" r="2.2" fill="#5d4037"/><circle cx="23" cy="20" r="2.3" fill="#5d4037"/>' +
+      '<circle cx="17" cy="16" r="1.8" fill="#5d4037"/>' +
+    '</svg>';
+  } else {
+    return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 34 34" style="vertical-align:middle;filter:drop-shadow(0 2px 3px rgba(0,0,0,0.15))">' +
+      '<rect x="2" y="2" width="30" height="30" rx="5" fill="#eed9a8" stroke="#ba7926" stroke-width="2"/>' +
+      '<rect x="2" y="2" width="15" height="15" rx="3" fill="#8d5b2d"/>' +
+      '<rect x="17" y="17" width="15" height="15" rx="3" fill="#8d5b2d"/>' +
+    '</svg>';
+  }
+}
+
+function makeDonutSvg(type, size=34) {
+  if(type === 'choco') {
+    return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 36 36" style="vertical-align:middle;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.15))">' +
+      '<circle cx="18" cy="18" r="16" fill="#f5ba68" stroke="#ba7926" stroke-width="2"/>' +
+      '<circle cx="18" cy="18" r="13" fill="#5d4037"/>' +
+      '<circle cx="18" cy="18" r="5" fill="#ffffff"/>' +
+      '<circle cx="12" cy="11" r="1" fill="#fff"/><circle cx="24" cy="13" r="1" fill="#fff"/>' +
+      '<circle cx="14" cy="24" r="1" fill="#fff"/><circle cx="22" cy="23" r="1" fill="#fff"/>' +
+    '</svg>';
+  } else {
+    return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 36 36" style="vertical-align:middle;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.15))">' +
+      '<circle cx="18" cy="18" r="16" fill="#ffe082" stroke="#ffa000" stroke-width="2"/>' +
+      '<circle cx="18" cy="18" r="13" fill="#fff8e1" stroke="#ffb300" stroke-width="2" stroke-dasharray="6 3"/>' +
+      '<circle cx="18" cy="18" r="5" fill="#ffffff" stroke="#ffa000" stroke-width="1.5"/>' +
+    '</svg>';
+  }
+}
+
+function makeTulipSvg(size=30) {
+  return '<svg width="' + size + '" height="' + Math.round(size*1.2) + '" viewBox="0 0 28 36" style="vertical-align:middle;filter:drop-shadow(0 2px 3px rgba(0,0,0,0.12))">' +
+    '<path d="M14,18 L14,34" stroke="#4caf50" stroke-width="3" stroke-linecap="round"/>' +
+    '<path d="M14,26 Q8,24 5,20" stroke="#4caf50" stroke-width="2.5" fill="none" stroke-linecap="round"/>' +
+    '<path d="M14,28 Q20,26 23,22" stroke="#4caf50" stroke-width="2.5" fill="none" stroke-linecap="round"/>' +
+    '<path d="M7,16 C5,10 7,4 14,4 C21,4 23,10 21,16 C19,19 16,20 14,20 C12,20 9,19 7,16 Z" fill="#e53935"/>' +
+    '<polygon points="10,4 14,10 18,4 14,7" fill="#b71c1c"/>' +
+  '</svg>';
+}
+
+function makeEggSvg(size=26) {
+  return '<svg width="' + size + '" height="' + Math.round(size*1.25) + '" viewBox="0 0 26 32" style="vertical-align:middle;filter:drop-shadow(0 2px 3px rgba(0,0,0,0.15))">' +
+    '<ellipse cx="13" cy="17" rx="10" ry="13" fill="#fff9f0" stroke="#d7ccc8" stroke-width="2"/>' +
+    '<ellipse cx="10" cy="12" rx="2" ry="4" fill="#ffffff" opacity="0.9"/>' +
+  '</svg>';
 }
 
 function makeClockSvg(hour, minute, size = 110) {
@@ -3502,10 +3975,73 @@ function renderInteractiveStage(row){
         '<div id="b11Container"></div>' +
       '</div>';
     initBattle11Compare();
-  }
-
-
-  if(bId === 'Battle21'){
+  } else if(bId === 'Battle20'){
+    // ピカチュウのすうじパズルぬりえ（原本スキャンBattle20_2再現）
+    card.innerHTML = 
+      '<div class="card interactive-stage" id="pikaColorStage">' +
+        '<h3>🎨 ピカチュウの すうじパズルぬりえ！</h3>' +
+        '<p style="font-size:14px;color:#444;margin:0 0 10px;font-weight:700">' +
+          'ドリル原本の ルール：下のパレットから 色を えらんで、番号の エリアを タップして ピカチュウを かんせいさせよう！' +
+        '</p>' +
+        '<div class="pika-palette-bar">' +
+          '<button type="button" class="pika-color-btn active" data-rule="0" style="background:#ff99bb;color:#fff">🌸 ピンク (0)</button>' +
+          '<button type="button" class="pika-color-btn" data-rule="1-4" style="background:#77ccff;color:#fff">💧 みずいろ (1〜4)</button>' +
+          '<button type="button" class="pika-color-btn" data-rule="5" style="background:#333333;color:#fff">⚫ くろ (5)</button>' +
+          '<button type="button" class="pika-color-btn" data-rule="6-10" style="background:#ffd23f;color:#333">⚡ きいろ (5より おおきい)</button>' +
+        '</div>' +
+        '<div class="pika-canvas-wrap">' +
+          '<svg class="pika-color-svg" viewBox="0 0 340 340">' +
+            '<path class="pika-seg" data-val="2" data-rule="1-4" d="M10,10 L120,10 L70,80 L10,100 Z" fill="#ffffff" stroke="#222" stroke-width="2.5"/>' +
+            '<text x="50" y="45" font-size="16" font-weight="900" fill="#222" text-anchor="middle" pointer-events="none">2</text>' +
+            '<path class="pika-seg" data-val="1" data-rule="1-4" d="M120,10 L220,10 L190,70 L150,70 Z" fill="#ffffff" stroke="#222" stroke-width="2.5"/>' +
+            '<text x="170" y="40" font-size="16" font-weight="900" fill="#222" text-anchor="middle" pointer-events="none">1</text>' +
+            '<path class="pika-seg" data-val="3" data-rule="1-4" d="M220,10 L330,10 L330,100 L270,80 Z" fill="#ffffff" stroke="#222" stroke-width="2.5"/>' +
+            '<text x="290" y="45" font-size="16" font-weight="900" fill="#222" text-anchor="middle" pointer-events="none">3</text>' +
+            '<path class="pika-seg" data-val="4" data-rule="1-4" d="M10,100 L70,80 L70,220 L10,240 Z" fill="#ffffff" stroke="#222" stroke-width="2.5"/>' +
+            '<text x="35" y="160" font-size="16" font-weight="900" fill="#222" text-anchor="middle" pointer-events="none">4</text>' +
+            '<path class="pika-seg" data-val="3" data-rule="1-4" d="M330,100 L270,80 L270,220 L330,240 Z" fill="#ffffff" stroke="#222" stroke-width="2.5"/>' +
+            '<text x="305" y="160" font-size="16" font-weight="900" fill="#222" text-anchor="middle" pointer-events="none">3</text>' +
+            '<path class="pika-seg" data-val="2" data-rule="1-4" d="M10,240 L70,220 L110,330 L10,330 Z" fill="#ffffff" stroke="#222" stroke-width="2.5"/>' +
+            '<text x="50" y="280" font-size="16" font-weight="900" fill="#222" text-anchor="middle" pointer-events="none">2</text>' +
+            '<path class="pika-seg" data-val="4" data-rule="1-4" d="M330,240 L270,220 L230,330 L330,330 Z" fill="#ffffff" stroke="#222" stroke-width="2.5"/>' +
+            '<text x="290" y="280" font-size="16" font-weight="900" fill="#222" text-anchor="middle" pointer-events="none">4</text>' +
+            '<polygon class="pika-seg" data-val="5" data-rule="5" points="70,80 100,20 120,40 105,95" fill="#ffffff" stroke="#222" stroke-width="2.5"/>' +
+            '<text x="98" y="55" font-size="15" font-weight="900" fill="#222" text-anchor="middle" pointer-events="none">5</text>' +
+            '<polygon class="pika-seg" data-val="8" data-rule="6-10" points="105,95 120,40 150,70 125,120" fill="#ffffff" stroke="#222" stroke-width="2.5"/>' +
+            '<text x="125" y="85" font-size="15" font-weight="900" fill="#222" text-anchor="middle" pointer-events="none">8</text>' +
+            '<polygon class="pika-seg" data-val="5" data-rule="5" points="270,80 240,20 220,40 235,95" fill="#ffffff" stroke="#222" stroke-width="2.5"/>' +
+            '<text x="242" y="55" font-size="15" font-weight="900" fill="#222" text-anchor="middle" pointer-events="none">5</text>' +
+            '<polygon class="pika-seg" data-val="7" data-rule="6-10" points="235,95 220,40 190,70 215,120" fill="#ffffff" stroke="#222" stroke-width="2.5"/>' +
+            '<text x="215" y="85" font-size="15" font-weight="900" fill="#222" text-anchor="middle" pointer-events="none">7</text>' +
+            '<path class="pika-seg" data-val="9" data-rule="6-10" d="M125,120 L150,70 L190,70 L215,120 Q170,105 125,120 Z" fill="#ffffff" stroke="#222" stroke-width="2.5"/>' +
+            '<text x="170" y="105" font-size="16" font-weight="900" fill="#222" text-anchor="middle" pointer-events="none">9</text>' +
+            '<path class="pika-seg" data-val="10" data-rule="6-10" d="M70,220 C60,160 80,120 125,120 L135,175 L105,215 Z" fill="#ffffff" stroke="#222" stroke-width="2.5"/>' +
+            '<text x="98" y="165" font-size="16" font-weight="900" fill="#222" text-anchor="middle" pointer-events="none">10</text>' +
+            '<path class="pika-seg" data-val="10" data-rule="6-10" d="M270,220 C280,160 260,120 215,120 L205,175 L235,215 Z" fill="#ffffff" stroke="#222" stroke-width="2.5"/>' +
+            '<text x="242" y="165" font-size="16" font-weight="900" fill="#222" text-anchor="middle" pointer-events="none">10</text>' +
+            '<path class="pika-seg" data-val="6" data-rule="6-10" d="M125,120 Q170,105 215,120 L205,175 L170,205 L135,175 Z" fill="#ffffff" stroke="#222" stroke-width="2.5"/>' +
+            '<text x="170" y="150" font-size="16" font-weight="900" fill="#222" text-anchor="middle" pointer-events="none">6</text>' +
+            '<circle class="pika-seg" data-val="0" data-rule="0" cx="100" cy="205" r="22" fill="#ffffff" stroke="#222" stroke-width="2.5"/>' +
+            '<text x="100" y="211" font-size="16" font-weight="900" fill="#222" text-anchor="middle" pointer-events="none">0</text>' +
+            '<circle class="pika-seg" data-val="0" data-rule="0" cx="240" cy="205" r="22" fill="#ffffff" stroke="#222" stroke-width="2.5"/>' +
+            '<text x="240" y="211" font-size="16" font-weight="900" fill="#222" text-anchor="middle" pointer-events="none">0</text>' +
+            '<circle class="pika-seg" data-val="5" data-rule="5" cx="130" cy="155" r="14" fill="#ffffff" stroke="#222" stroke-width="2.5"/>' +
+            '<text x="130" y="160" font-size="13" font-weight="900" fill="#222" text-anchor="middle" pointer-events="none">5</text>' +
+            '<circle class="pika-seg" data-val="5" data-rule="5" cx="210" cy="155" r="14" fill="#ffffff" stroke="#222" stroke-width="2.5"/>' +
+            '<text x="210" y="160" font-size="13" font-weight="900" fill="#222" text-anchor="middle" pointer-events="none">5</text>' +
+            '<path class="pika-seg" data-val="0" data-rule="0" d="M155,200 Q170,215 185,200 Q170,225 155,200 Z" fill="#ffffff" stroke="#222" stroke-width="2.5"/>' +
+            '<text x="170" y="210" font-size="12" font-weight="900" fill="#222" text-anchor="middle" pointer-events="none">0</text>' +
+            '<path class="pika-seg" data-val="8" data-rule="6-10" d="M105,215 L135,175 L170,205 L205,175 L235,215 Q170,265 105,215 Z" fill="#ffffff" stroke="#222" stroke-width="2.5"/>' +
+            '<text x="170" y="240" font-size="16" font-weight="900" fill="#222" text-anchor="middle" pointer-events="none">8</text>' +
+            '<path class="pika-seg" data-val="7" data-rule="6-10" d="M110,330 L105,215 Q170,265 235,215 L230,330 Z" fill="#ffffff" stroke="#222" stroke-width="2.5"/>' +
+            '<text x="170" y="295" font-size="16" font-weight="900" fill="#222" text-anchor="middle" pointer-events="none">7</text>' +
+          '</svg>' +
+        '</div>' +
+        '<div class="pika-status-bar" id="pikaStatus">ぬったエリア：<span id="pikaPaintedCount">0</span> / 18</div>' +
+        '<div class="match-status" id="pikaDoneMsg">🎉 ピカチュウが かんせいしたよ！ すばらしい！⚡</div>' +
+      '</div>';
+    initPikachuColoring();
+  } else if(bId === 'Battle21'){
     // アブリボン 10のまとまり作り
     let riboHtml = '';
     for(let k = 0; k < 14; k++){
@@ -3596,33 +4132,294 @@ function renderInteractiveStage(row){
       '</div>';
     initB24FoodTap();
   } else if(bId === 'Battle25'){
-    // ウッウ：原本スキャンの青空と水辺背景
+    // ウッウ：原本スキャン完全再現（枠線なし、シームレスな青空と草地の風景画）
     let skyBirds = '';
     for(let k = 0; k < 6; k++){
-      skyBirds += '<button type="button" class="cramo-btn sky" data-idx="' + k + '"><img src="' + ART(845) + '" alt="ウッウ"><span class="cramo-check">✨</span></button>';
+      skyBirds += '<button type="button" class="cramo-poke-item sky" data-idx="' + k + '"><img src="' + ART(845) + '" alt="ウッウ"><span class="cramo-star">✨</span></button>';
     }
     let groundBirds = '';
     for(let k = 0; k < 4; k++){
-      groundBirds += '<button type="button" class="cramo-btn ground" data-idx="' + k + '"><img src="' + ART(845) + '" alt="ウッウ"><span class="cramo-check">✨</span></button>';
+      groundBirds += '<button type="button" class="cramo-poke-item ground" data-idx="' + k + '"><img src="' + ART(845) + '" alt="ウッウ"><span class="cramo-star">✨</span></button>';
     }
     card.innerHTML = 
       '<div class="card interactive-stage">' +
-        '<h3>🐟 ウッウを タップして かぞえよう！</h3>' +
-        '<p style="font-size:15px;color:#555;margin:0 0 10px">空と 地面（水辺）にいる ウッウを タップして かぞえてみよう！</p>' +
-        '<div class="cramo-scenic-field">' +
-          '<div class="cramo-sky">' +
-            '<div class="cramo-badge">☁️ そらを とんでいる ウッウ (6ひき)</div>' +
-            '<div class="cramo-group">' + skyBirds + '</div>' +
-            '<div class="cramo-counter">タップした数: <span id="cntSky" style="color:#0288d1;font-weight:900;font-size:20px">0</span> / 6</div>' +
+        '<h3>🐟 ウッウを タップして かぞえよう！（あわせて いくつ）</h3>' +
+        '<p style="font-size:14px;color:#555;margin:0 0 10px;font-weight:700">空と 地面（草地）にいる ウッウを タップして かぞえてみよう！</p>' +
+        '<div class="cramo-seamless-scene">' +
+          '<div class="cramo-sky-area">' +
+            '<div class="cramo-sky-header">☁️ そらを とんでいる ウッウ</div>' +
+            '<div class="cramo-poke-grid">' + skyBirds + '</div>' +
           '</div>' +
-          '<div class="cramo-ground">' +
-            '<div class="cramo-badge ground-b">💧 じめんに いる ウッウ (4ひき)</div>' +
-            '<div class="cramo-group">' + groundBirds + '</div>' +
-            '<div class="cramo-counter">タップした数: <span id="cntGround" style="color:#2e7d32;font-weight:900;font-size:20px">0</span> / 4</div>' +
+          '<div class="cramo-ground-area">' +
+            '<div class="cramo-ground-header">🌿 じめんに いる ウッウ</div>' +
+            '<div class="cramo-poke-grid">' + groundBirds + '</div>' +
           '</div>' +
+        '</div>' +
+        '<div class="cramo-counter-bar">' +
+          '<span>☁️ そら：<strong id="cntSky" style="color:#0288d1;font-size:20px">0</strong> ひき</span>' +
+          '<span>🌿 じめん：<strong id="cntGround" style="color:#2e7d32;font-size:20px">0</strong> ひき</span>' +
         '</div>' +
       '</div>';
     initCramoTap();
+  } else if(bId === 'Battle26'){
+    // クチート：袋に入ったクッキー（原本スキャン再現・リボン付きギフト袋）
+    const makeBags = (type, c1, c2) => {
+      let b1 = '', b2 = '';
+      for(let i=0; i<c1; i++) b1 += '<span class="cookie-tap-item">' + makeCookieSvg(type, 30) + '</span>';
+      for(let i=0; i<c2; i++) b2 += '<span class="cookie-tap-item">' + makeCookieSvg(type, 30) + '</span>';
+      return '<div class="cookie-bags-row">' +
+        '<div class="cookie-bag"><div class="cookie-ribbon">🎀</div><div class="cookie-bag-inner">' + b1 + '</div><div class="cookie-bag-label">うえの ふくろ</div></div>' +
+        '<div class="cookie-bag"><div class="cookie-ribbon">🎀</div><div class="cookie-bag-inner">' + b2 + '</div><div class="cookie-bag-label">したの ふくろ</div></div>' +
+        '<img src="' + ART(303) + '" class="scene-pokemon-mawile" alt="クチート">' +
+      '</div>';
+    };
+    card.innerHTML = 
+      '<div class="card interactive-stage">' +
+        '<h3>🛍️ ふくろの クッキーを かぞえよう！（あわせて いくつ）</h3>' +
+        '<p style="font-size:14px;color:#555;margin:0 0 10px;font-weight:700">ふくろの なかの クッキーを タップして かぞえよう！</p>' +
+        '<div class="mawile-cookie-scene">' +
+          '<div class="cookie-problem-box">' +
+            '<div class="cookie-prob-title">🍪 みぎがわ（まるいクッキー）</div>' +
+            makeBags('round', 5, 3) +
+          '</div>' +
+          '<div class="cookie-problem-box" style="margin-top:10px">' +
+            '<div class="cookie-prob-title">🔲 ひだりがわ（しかくいクッキー）</div>' +
+            makeBags('checkered', 6, 4) +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    initCookieTap();
+  } else if(bId === 'Battle27'){
+    // ミルタンク：牧場はらっぱ（原本スキャン再現・7匹＋3匹）
+    let m1 = '', m2 = '';
+    for(let i=0; i<7; i++) m1 += '<img src="' + ART(241) + '" class="miltank-item" data-group="orig" alt="ミルタンク">';
+    for(let i=0; i<3; i++) m2 += '<img src="' + ART(241) + '" class="miltank-item" data-group="arrive" alt="ミルタンク">';
+    card.innerHTML = 
+      '<div class="card interactive-stage">' +
+        '<h3>🌾 はらっぱの ミルタンクを かぞえよう！（ふえると いくつ）</h3>' +
+        '<p style="font-size:14px;color:#555;margin:0 0 10px;font-weight:700">もともと いた 7ひきに、あとから 3びき やってきたよ！</p>' +
+        '<div class="miltank-pasture-scene">' +
+          '<div class="pasture-left-zone">' +
+            '<div class="pasture-zone-title">🌿 はじめに いた ミルタンク</div>' +
+            '<div class="miltank-group-wrap">' + m1 + '</div>' +
+          '</div>' +
+          '<div class="pasture-divider">➔</div>' +
+          '<div class="pasture-right-zone">' +
+            '<div class="pasture-zone-title">🏃 あとから きた ミルタンク</div>' +
+            '<div class="miltank-group-wrap">' + m2 + '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="scene-counter-bar">' +
+          '<span>🌿 はじめに：<strong id="cntMil1" style="color:#2e7d32;font-size:20px">0</strong> ひき</span>' +
+          '<span>🏃 あとから：<strong id="cntMil2" style="color:#e65100;font-size:20px">0</strong> びき</span>' +
+        '</div>' +
+      '</div>';
+    initMiltankTap();
+  } else if(bId === 'Battle28'){
+    // バオップ：お皿とドーナツ（原本スキャン再現・6+2, 4+4）
+    const makeDonutPlatter = (type, onPlate, incoming) => {
+      let p = '', inc = '';
+      for(let i=0; i<onPlate; i++) p += '<span class="donut-tap-item">' + makeDonutSvg(type, 34) + '</span>';
+      for(let i=0; i<incoming; i++) inc += '<span class="donut-tap-item">' + makeDonutSvg(type, 34) + '</span>';
+      return '<div class="donut-platter-wrap">' +
+        '<div class="donut-platter">' + p + '</div>' +
+        '<div class="donut-incoming">' + inc + '<span class="motion-arrow">💨 ふえた！</span></div>' +
+        '<img src="' + ART(513) + '" class="scene-pokemon-pansear" alt="バオップ">' +
+      '</div>';
+    };
+    card.innerHTML = 
+      '<div class="card interactive-stage">' +
+        '<h3>🍩 おさらの ドーナツを かぞえよう！（ふえると いくつ）</h3>' +
+        '<p style="font-size:14px;color:#555;margin:0 0 10px;font-weight:700">おさらの ドーナツに、あとから ドーナツが ふえたよ！</p>' +
+        '<div class="pansear-donut-scene">' +
+          '<div class="donut-prob-box">' +
+            '<div class="donut-prob-title">🍩 みぎがわ（チョコドーナツ）</div>' +
+            makeDonutPlatter('choco', 6, 2) +
+          '</div>' +
+          '<div class="donut-prob-box" style="margin-top:10px">' +
+            '<div class="donut-prob-title">🥯 ひだりがわ（フレンチクルーラー）</div>' +
+            makeDonutPlatter('cruller', 4, 4) +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    initDonutTap();
+  } else if(bId === 'Battle29'){
+    // ニャルマー：虹とはらっぱ（原本スキャン再現・6匹残り＋3匹帰る）
+    let g1 = '', g2 = '';
+    for(let i=0; i<6; i++) g1 += '<img src="' + ART(431) + '" class="glameow-item" data-group="stay" alt="ニャルマー">';
+    for(let i=0; i<3; i++) g2 += '<img src="' + ART(431) + '" class="glameow-item" data-group="run" alt="ニャルマー">';
+    card.innerHTML = 
+      '<div class="card interactive-stage">' +
+        '<h3>🐱 はらっぱの ニャルマーを かぞえよう！（のこりは いくつ）</h3>' +
+        '<p style="font-size:14px;color:#555;margin:0 0 10px;font-weight:700">はじめに 9ひき いたよ。3びき かえっていくよ！</p>' +
+        '<div class="glameow-rainbow-scene">' +
+          '<div class="rainbow-arc-bg">🌈</div>' +
+          '<div class="glameow-remain-zone">' +
+            '<div class="glameow-zone-title">🌿 のこっている ニャルマー</div>' +
+            '<div class="glameow-group-wrap">' + g1 + '</div>' +
+          '</div>' +
+          '<div class="glameow-leave-zone">' +
+            '<div class="glameow-zone-title">🏃 かえっていく ニャルマー</div>' +
+            '<div class="glameow-group-wrap">' + g2 + '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="scene-counter-bar">' +
+          '<span>🌿 のこり：<strong id="cntNyRemain" style="color:#8e24aa;font-size:20px">0</strong> ぴき</span>' +
+          '<span>🏃 かえった：<strong id="cntNyLeave" style="color:#d81b60;font-size:20px">0</strong> びき</span>' +
+        '</div>' +
+      '</div>';
+    initGlameowTap();
+  } else if(bId === 'Battle30'){
+    // ピジョット：食べたあとのクッキー（原本スキャン再現・赤枠で囲み）
+    const makePidgeotPlatter = (type, remain, eaten) => {
+      let r = '', e = '';
+      for(let i=0; i<remain; i++) r += '<span class="pidgeot-cookie-item">' + makeCookieSvg(type, 30) + '</span>';
+      for(let i=0; i<eaten; i++) e += '<span class="pidgeot-cookie-item">' + makeCookieSvg(type, 30) + '</span>';
+      return '<div class="pidgeot-platter-wrap">' +
+        '<div class="pidgeot-platter">' +
+          '<div class="cookies-top-remain">' + r + '</div>' +
+          '<div class="cookies-bottom-eaten-circle">' +
+            '<span class="eaten-circle-tag">🔴 たべる（' + eaten + 'こ）➔</span>' +
+            e +
+          '</div>' +
+        '</div>' +
+        '<img src="' + ART(18) + '" class="scene-pokemon-pidgeot" alt="ピジョット">' +
+      '</div>';
+    };
+    card.innerHTML = 
+      '<div class="card interactive-stage">' +
+        '<h3>🍪 おさらの クッキーを たべよう！（のこりは いくつ）</h3>' +
+        '<p style="font-size:14px;color:#555;margin:0 0 10px;font-weight:700">あかい わくの クッキーを たべると、のこりは なんこかな？</p>' +
+        '<div class="pidgeot-cookie-scene">' +
+          '<div class="pidgeot-prob-box">' +
+            '<div class="pidgeot-prob-title">🍪 まるい クッキー（ぜんぶで 8こ）</div>' +
+            makePidgeotPlatter('round', 4, 4) +
+          '</div>' +
+          '<div class="pidgeot-prob-box" style="margin-top:10px">' +
+            '<div class="pidgeot-prob-title">🔲 しかくい クッキー（ぜんぶで 10こ）</div>' +
+            makePidgeotPlatter('checkered', 3, 7) +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    initPidgeotTap();
+  } else if(bId === 'Battle31'){
+    // バイウールー＆ウールー（原本スキャン再現・1対1対応）
+    let dSheep = '', wSheep = '', lines = '';
+    for(let i=0; i<6; i++) dSheep += '<img src="' + ART(832) + '" class="sheep-item" data-type="dubwool" alt="バイウールー">';
+    for(let i=0; i<10; i++) wSheep += '<img src="' + ART(831) + '" class="sheep-item" data-type="wooloo" alt="ウールー">';
+    for(let i=0; i<6; i++) lines += '<span>↕</span>';
+    for(let i=0; i<4; i++) lines += '<span style="color:#d32f2f">★</span>';
+    card.innerHTML = 
+      '<div class="card interactive-stage">' +
+        '<h3>🐑 バイウールーと ウールーを くらべよう！（いくつ おおい）</h3>' +
+        '<p style="font-size:14px;color:#555;margin:0 0 10px;font-weight:700">1ぴきずつ せんで むすんで、どちらが なんびき おおいか くらべよう！</p>' +
+        '<div class="dubwool-paddock-scene">' +
+          '<div class="paddock-row">' +
+            '<div class="paddock-row-title">バイウールー（6ひき）</div>' +
+            '<div class="paddock-pokemon-row">' + dSheep + '</div>' +
+          '</div>' +
+          '<div class="paddock-pairing-lines">' + lines + '</div>' +
+          '<div class="paddock-row">' +
+            '<div class="paddock-row-title">ウールー（10ひき）</div>' +
+            '<div class="paddock-pokemon-row">' + wSheep + '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="scene-counter-bar">' +
+          '<span>🐑 バイウールー：<strong id="cntDub" style="color:#5c6bc0;font-size:20px">0</strong> ひき</span>' +
+          '<span>🐏 ウールー：<strong id="cntWoo" style="color:#ab47bc;font-size:20px">0</strong> ぴき</span>' +
+        '</div>' +
+      '</div>';
+    initDubwoolTap();
+  } else if(bId === 'Battle32'){
+    // ローブシン：ドーナツのちがいはいくつ（原本スキャン再現）
+    let cr8 = '', ch6 = '', cr7 = '', ch10 = '';
+    for(let i=0; i<8; i++) cr8 += makeDonutSvg('cruller', 30);
+    for(let i=0; i<6; i++) ch6 += makeDonutSvg('choco', 30);
+    for(let i=0; i<7; i++) cr7 += makeDonutSvg('cruller', 30);
+    for(let i=0; i<10; i++) ch10 += makeDonutSvg('choco', 30);
+    card.innerHTML = 
+      '<div class="card interactive-stage">' +
+        '<h3>🍩 ドーナツの かずの ちがいは いくつかな？</h3>' +
+        '<div class="conkeldurr-donut-scene">' +
+          '<div class="conkel-prob-box">' +
+            '<div class="conkel-prob-title">📦 ながばこの なか（クルーラー 8こ vs チョコ 6こ）</div>' +
+            '<div class="conkel-tray-wrap">' +
+              '<div class="conkel-tray">' +
+                '<div class="tray-donut-row">' + cr8 + '</div>' +
+                '<div class="tray-donut-row">' + ch6 + '</div>' +
+              '</div>' +
+              '<img src="' + ART(534) + '" class="scene-pokemon-conkel" alt="ローブシン">' +
+            '</div>' +
+          '</div>' +
+          '<div class="conkel-prob-box" style="margin-top:10px">' +
+            '<div class="conkel-prob-title">🍽️ おさらの うえ（クルーラー 7こ vs チョコ 10こ）</div>' +
+            '<div class="conkel-platter-wrap">' +
+              '<div class="conkel-platter">' +
+                '<div class="platter-donut-group">' + cr7 + '</div>' +
+                '<div class="platter-donut-group" style="margin-top:6px">' + ch10 + '</div>' +
+              '</div>' +
+              '<img src="' + ART(533) + '" class="scene-pokemon-conkel" alt="ドテッコツ">' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+  } else if(bId === 'Battle33'){
+    // フラージェス：チューリップの10のまとまり（原本スキャン再現）
+    let b1 = '', b2 = '', loose = '';
+    for(let i=0; i<10; i++) b1 += makeTulipSvg(28);
+    for(let i=0; i<10; i++) b2 += makeTulipSvg(28);
+    for(let i=0; i<8; i++) loose += makeTulipSvg(28);
+    card.innerHTML = 
+      '<div class="card interactive-stage">' +
+        '<h3>🌷 チューリップの 10の まとまりを かぞえよう！</h3>' +
+        '<div class="florges-garden-scene">' +
+          '<div class="garden-left-flowerbed">' +
+            '<div class="tulip-bundle-box">' +
+              '<div class="bundle-badge">💐 10の まとまり ①</div>' +
+              '<div class="tulip-grid">' + b1 + '</div>' +
+            '</div>' +
+            '<div class="tulip-bundle-box" style="margin-top:8px">' +
+              '<div class="bundle-badge">💐 10の まとまり ②</div>' +
+              '<div class="tulip-grid">' + b2 + '</div>' +
+            '</div>' +
+            '<div class="tulip-loose-box" style="margin-top:8px">' +
+              '<div class="bundle-badge loose-b">🌷 1（ばらの チューリップ）</div>' +
+              '<div class="tulip-grid loose-grid">' + loose + '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="garden-right-pokemon">' +
+            '<img src="' + ART(671) + '" class="scene-pokemon-florges" alt="フラージェス">' +
+            '<img src="' + ART(669) + '" class="scene-pokemon-flabebe" alt="フラベベ">' +
+          '</div>' +
+        '</div>' +
+        '<div class="scene-counter-bar">' +
+          '<span>💐 10の まとまり：<strong>2</strong> つ</span>' +
+          '<span>🌷 ばら：<strong>8</strong> ほん</span>' +
+          '<span>合計：<strong>28</strong> ほん</span>' +
+        '</div>' +
+      '</div>';
+  } else if(bId === 'Battle34' || bId === 'Battle34_2'){
+    // ハピナス：卵パック（原本スキャン再現）
+    let p1 = '', p2 = '';
+    for(let i=0; i<10; i++) p1 += makeEggSvg(26);
+    for(let i=0; i<10; i++) p2 += makeEggSvg(26);
+    card.innerHTML = 
+      '<div class="card interactive-stage">' +
+        '<h3>🥚 ハピナスの たまごパック（10こ入り）を かぞえよう！</h3>' +
+        '<div class="blissey-egg-scene">' +
+          '<div class="egg-carton-demo">' +
+            '<div class="carton-item">' +
+              '<div class="carton-badge">📦 10こ パック ①</div>' +
+              '<div class="egg-grid-10">' + p1 + '</div>' +
+            '</div>' +
+            '<div class="carton-item">' +
+              '<div class="carton-badge">📦 10こ パック ②</div>' +
+              '<div class="egg-grid-10">' + p2 + '</div>' +
+            '</div>' +
+          '</div>' +
+          '<img src="' + ART(242) + '" class="scene-pokemon-blissey" alt="ハピナス">' +
+        '</div>' +
+      '</div>';
   }
 
   if(card.innerHTML.trim()){
@@ -4025,7 +4822,7 @@ function initBattle11Compare(){
         (S.answers[curIdx] = S.answers[curIdx] || {})[sec.qIndex] = val;
         save();
         updateThrow();
-        speak(val + '！');
+        // answer tap (no tts)
       };
     });
 
@@ -4084,7 +4881,7 @@ function initBondTrees(row, totalNum){
         (S.answers[curIdx] = S.answers[curIdx] || {})[qi] = val;
         save();
         updateThrow();
-        speak(val + '！');
+        // answer tap (no tts)
       };
     });
 
@@ -4118,7 +4915,7 @@ function initRibombeeStage(){
         save(); updateThrow(); speak('10ぴき えらべたね！ 10の まとまりが できたよ！');
       } else {
         if(riboDoneMsg) riboDoneMsg.style.display = 'none';
-        speak(riboSelected.size + 'ひき！');
+        
       }
     };
   });
@@ -4147,7 +4944,7 @@ function initRibombeeStage(){
         save(); updateThrow(); speak('10こ ぬれたね！');
       } else {
         if(circDoneMsg) circDoneMsg.style.display = 'none';
-        speak(circSelected.size + 'こ！');
+        
       }
     };
   });
@@ -4166,7 +4963,7 @@ function initB24FoodTap(){
       b.classList.toggle('selected');
       melonSel = document.querySelectorAll('.melon-btn.selected').length;
       const el = $('cntMelon'); if(el) el.textContent = melonSel;
-      speak('メロンパン ' + melonSel + 'こ！');
+      
     };
   });
   plate1Btns.forEach(b => {
@@ -4174,7 +4971,7 @@ function initB24FoodTap(){
       b.classList.toggle('selected');
       plate1Sel = document.querySelectorAll('.plate-btn[data-type="plate1"].selected').length;
       const el = $('cntPlate1'); if(el) el.textContent = plate1Sel;
-      speak('おさら ' + plate1Sel + 'まい！');
+      
     };
   });
   roundBtns.forEach(b => {
@@ -4182,7 +4979,7 @@ function initB24FoodTap(){
       b.classList.toggle('selected');
       roundSel = document.querySelectorAll('.round-btn.selected').length;
       const el = $('cntRound'); if(el) el.textContent = roundSel;
-      speak('まるいパン ' + roundSel + 'こ！');
+      
     };
   });
   plate2Btns.forEach(b => {
@@ -4190,29 +4987,161 @@ function initB24FoodTap(){
       b.classList.toggle('selected');
       plate2Sel = document.querySelectorAll('.plate-btn[data-type="plate2"].selected').length;
       const el = $('cntPlate2'); if(el) el.textContent = plate2Sel;
-      speak('おさら ' + plate2Sel + 'まい！');
+      
+    };
+  });
+}
+
+function initPikachuColoring(){
+  const paletteBtns = document.querySelectorAll('.pika-color-btn');
+  const segs = document.querySelectorAll('.pika-seg');
+  const cntEl = $('pikaPaintedCount');
+  const doneMsg = $('pikaDoneMsg');
+  if(!paletteBtns.length || !segs.length) return;
+
+  const colorMap = {
+    '0': '#ff99bb',     // ピンク
+    '1-4': '#77ccff',   // みずいろ
+    '5': '#333333',     // くろ
+    '6-10': '#ffd23f'   // きいろ
+  };
+
+  let activeRule = '0';
+  paletteBtns.forEach(btn => {
+    btn.onclick = () => {
+      paletteBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeRule = btn.dataset.rule;
+    };
+  });
+
+  let solvedCount = 0;
+  segs.forEach(seg => {
+    seg.onclick = () => {
+      const segRule = seg.dataset.rule;
+      if(activeRule === segRule){
+        seg.setAttribute('fill', colorMap[segRule]);
+        if(segRule === '5'){
+          const t = seg.nextElementSibling;
+          if(t && t.tagName === 'text') t.setAttribute('fill', '#ffffff');
+        }
+        if(!seg.dataset.solved){
+          seg.dataset.solved = 'true';
+          solvedCount++;
+          if(cntEl) cntEl.textContent = solvedCount;
+          if(solvedCount >= segs.length){
+            if(doneMsg) doneMsg.style.display = 'block';
+            playPikaanSound();
+            toast('🎉 ピカチュウの ぬりえが かんせいしたよ！✨', 2200);
+          }
+        }
+      } else {
+        toast('すうじの ルールを よくみてね！', 1200);
+      }
     };
   });
 }
 
 function initCramoTap(){
-  const skyBtns = document.querySelectorAll('.cramo-btn.sky');
-  const groundBtns = document.querySelectorAll('.cramo-btn.ground');
+  const skyItems = document.querySelectorAll('.cramo-poke-item.sky');
+  const groundItems = document.querySelectorAll('.cramo-poke-item.ground');
 
-  skyBtns.forEach(b => {
+  skyItems.forEach(b => {
     b.onclick = () => {
       b.classList.toggle('selected');
-      const count = document.querySelectorAll('.cramo-btn.sky.selected').length;
+      const count = document.querySelectorAll('.cramo-poke-item.sky.selected').length;
       const el = $('cntSky'); if(el) el.textContent = count;
-      speak('そらのウッウ ' + count + 'ひき！');
     };
   });
-  groundBtns.forEach(b => {
+  groundItems.forEach(b => {
     b.onclick = () => {
       b.classList.toggle('selected');
-      const count = document.querySelectorAll('.cramo-btn.ground.selected').length;
+      const count = document.querySelectorAll('.cramo-poke-item.ground.selected').length;
       const el = $('cntGround'); if(el) el.textContent = count;
-      speak('じめんのウッウ ' + count + 'ひき！');
+    };
+  });
+}
+
+function initCookieTap(){
+  const cookies = document.querySelectorAll('.cookie-tap-item');
+  cookies.forEach(c => {
+    c.onclick = () => {
+      c.classList.toggle('selected');
+    };
+  });
+}
+
+function initMiltankTap(){
+  const mil1 = document.querySelectorAll('.miltank-item[data-group="orig"]');
+  const mil2 = document.querySelectorAll('.miltank-item[data-group="arrive"]');
+  mil1.forEach(m => {
+    m.onclick = () => {
+      m.classList.toggle('selected');
+      const cnt = document.querySelectorAll('.miltank-item[data-group="orig"].selected').length;
+      const el = $('cntMil1'); if(el) el.textContent = cnt;
+    };
+  });
+  mil2.forEach(m => {
+    m.onclick = () => {
+      m.classList.toggle('selected');
+      const cnt = document.querySelectorAll('.miltank-item[data-group="arrive"].selected').length;
+      const el = $('cntMil2'); if(el) el.textContent = cnt;
+    };
+  });
+}
+
+function initDonutTap(){
+  const donuts = document.querySelectorAll('.donut-tap-item');
+  donuts.forEach(d => {
+    d.onclick = () => {
+      d.classList.toggle('selected');
+    };
+  });
+}
+
+function initGlameowTap(){
+  const rem = document.querySelectorAll('.glameow-item[data-group="stay"]');
+  const leave = document.querySelectorAll('.glameow-item[data-group="run"]');
+  rem.forEach(g => {
+    g.onclick = () => {
+      g.classList.toggle('selected');
+      const cnt = document.querySelectorAll('.glameow-item[data-group="stay"].selected').length;
+      const el = $('cntNyRemain'); if(el) el.textContent = cnt;
+    };
+  });
+  leave.forEach(g => {
+    g.onclick = () => {
+      g.classList.toggle('selected');
+      const cnt = document.querySelectorAll('.glameow-item[data-group="run"].selected').length;
+      const el = $('cntNyLeave'); if(el) el.textContent = cnt;
+    };
+  });
+}
+
+function initPidgeotTap(){
+  const cookies = document.querySelectorAll('.pidgeot-cookie-item');
+  cookies.forEach(c => {
+    c.onclick = () => {
+      c.classList.toggle('selected');
+    };
+  });
+}
+
+function initDubwoolTap(){
+  const dubs = document.querySelectorAll('.sheep-item[data-type="dubwool"]');
+  const wooloos = document.querySelectorAll('.sheep-item[data-type="wooloo"]');
+  dubs.forEach(s => {
+    s.onclick = () => {
+      s.classList.toggle('selected');
+      const cnt = document.querySelectorAll('.sheep-item[data-type="dubwool"].selected').length;
+      const el = $('cntDub'); if(el) el.textContent = cnt;
+    };
+  });
+  wooloos.forEach(s => {
+    s.onclick = () => {
+      s.classList.toggle('selected');
+      const cnt = document.querySelectorAll('.sheep-item[data-type="wooloo"].selected').length;
+      const el = $('cntWoo'); if(el) el.textContent = cnt;
     };
   });
 }
@@ -4315,7 +5244,7 @@ function renderQuestionCards(row){
           (S.answers[curIdx] = S.answers[curIdx] || {})[qi] = val;
           save();
           updateThrow();
-          speak(val + '！');
+          // answer tap (no tts)
         };
       });
 
@@ -4428,7 +5357,7 @@ function renderQuestionCards(row){
         (S.answers[curIdx] = S.answers[curIdx] || {})[qi] = ch;
         save();
         updateThrow();
-        speak(ch + '！');
+        // answer tap (no tts)
       };
       choicesBox.appendChild(b);
     });
@@ -4528,7 +5457,7 @@ function onCaught(){
     updatePoints(true);
   }
 
-  speak(name + '、ゲットだぜ！');
+  playPikaanSound();
   toast(`🎉 ${name} ゲット！${first ? `<br>🪙 +${POINT_PER_CLEAR} pt` : ''}`, 1800);
   setTimeout(() => { backToMap(); checkRewards(); }, 1900);
 }
@@ -4627,7 +5556,7 @@ function init(){
 
     // CSVパース＆全72バトル起動
     const rawCsv = $('csv-data').textContent;
-    ROWS = parseCSV(rawCsv).filter(r => /^(Battle|Minigame)/i.test(r.battle) && r.battle !== 'Battle22_2');
+    ROWS = parseCSV(rawCsv).filter(r => /^(Battle|Minigame)/i.test(r.battle) && r.battle !== 'Battle20_2' && r.battle !== 'Battle22_2');
 
     layoutMap();
     setTimeout(scrollToCurrent, 100);

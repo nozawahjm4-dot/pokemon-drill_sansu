@@ -1772,6 +1772,134 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
 .coin-badge.coin-1{
   width:30px;height:30px;background:linear-gradient(135deg, #fafafa, #eeeeee);color:#616161;font-size:10px;border-color:#bdbdbd;
 }
+
+/* Interactive stages for Battles 21, 22, 23, 24, 25 */
+.ribo-grid{
+  display:grid;grid-template-columns:repeat(7, 1fr);gap:8px;margin:12px 0;
+}
+.ribo-btn{
+  position:relative;background:#fff;border:2.5px solid #ffb74d;border-radius:14px;
+  padding:6px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;
+}
+.ribo-btn img{width:42px;height:42px;object-fit:contain}
+.ribo-btn .ribo-check{
+  position:absolute;top:2px;right:2px;background:#e91e63;color:#fff;
+  width:18px;height:18px;border-radius:50%;font-size:11px;font-weight:900;
+  display:none;align-items:center;justify-content:center;
+}
+.ribo-btn.selected{
+  background:#fff8e1;border-color:#e91e63;box-shadow:0 0 10px rgba(233,30,99,0.5);transform:scale(1.06);
+}
+.ribo-btn.selected .ribo-check{display:flex}
+
+.circ-grid{
+  display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:10px 0;
+}
+.circ-slot-btn{
+  width:44px;height:44px;border-radius:50%;border:3px solid #222;background:#fff;
+  font-size:22px;font-weight:900;color:#888;cursor:pointer;transition:all 0.15s;
+  display:flex;align-items:center;justify-content:center;
+}
+.circ-slot-btn.filled{
+  background:#e53935;color:#fff;border-color:#b71c1c;box-shadow:inset 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.inter-counter-box{
+  background:#f8f9fa;border-radius:10px;padding:8px 12px;font-weight:900;font-size:15px;margin-top:6px;
+}
+
+/* Monster Ball Box */
+.mball-question-box{
+  background:#fffde7;border:2.5px solid #fbc02d;border-radius:16px;padding:12px;margin:10px 0;
+  display:flex;flex-direction:column;gap:10px;
+}
+.mball-row{
+  display:flex;align-items:center;gap:10px;background:#fff;padding:8px 12px;border-radius:12px;border:1.5px solid #eedc82;
+  flex-wrap:wrap;
+}
+.mball-label{font-size:13px;font-weight:900;min-width:96px}
+.mball-top-row .mball-label{color:#c62828}
+.mball-bottom-row .mball-label{color:#1565c0}
+.mball-icons-group{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+
+/* Turtwig -> Torterra Maze Track */
+.torterra-maze-track{
+  display:grid;grid-template-columns:repeat(5, 1fr);gap:8px;margin:12px 0;
+}
+.maze-step{
+  position:relative;height:54px;background:#fff;border:2.5px solid #81c784;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#2e7d32;
+  box-shadow:0 2px 4px rgba(0,0,0,0.06);transition:all 0.2s;
+}
+.maze-step.blank{
+  background:#fffde7;border:2.5px dashed #fbc02d;color:#e65100;
+}
+.maze-step.solved{
+  background:#e8f5e9;border:3px solid #2e7d32;color:#1b5e20;box-shadow:0 0 10px rgba(76,175,80,0.5);
+}
+.maze-avatar{
+  position:absolute;top:-10px;width:34px;height:34px;object-fit:contain;filter:drop-shadow(0 2px 3px rgba(0,0,0,0.3));
+}
+.maze-avatar.start{left:-8px}
+.maze-avatar.goal{right:-8px}
+
+/* Crocalor Food Tap */
+.b24-section{border-radius:14px;padding:12px;margin:8px 0}
+.b24-section.green-sec{background:#e8f5e9;border:2px solid #a5d6a7}
+.b24-section.blue-sec{background:#e3f2fd;border:2px solid #90caf9}
+.b24-sec-title{font-size:14px;font-weight:900;margin-bottom:8px;color:#333}
+.b24-food-grid{display:flex;flex-wrap:wrap;gap:6px}
+.food-tap-btn{
+  position:relative;width:42px;height:42px;background:#fff;border:2px solid #ccc;border-radius:10px;
+  cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center;transition:all 0.15s;
+}
+.food-tap-btn.selected{border-color:#2e7d32;background:#c8e6c9;transform:scale(1.08)}
+.food-check{position:absolute;top:1px;right:1px;font-size:10px;color:#2e7d32;display:none;font-weight:900}
+.food-tap-btn.selected .food-check{display:block}
+.b24-counter{font-size:13px;font-weight:900;margin-top:6px}
+
+/* Cramorant Scenic Scene */
+.cramo-scenic-field{
+  border-radius:18px;overflow:hidden;border:3px solid #64b5f6;box-shadow:0 3px 8px rgba(0,0,0,0.12);
+  margin:10px 0;
+}
+.cramo-sky{
+  background:linear-gradient(180deg, #b3e5fc 0%, #e1f5fe 100%);padding:12px;border-bottom:3px solid #81d4fa;
+}
+.cramo-ground{
+  background:linear-gradient(180deg, #c8e6c9 0%, #a5d6a7 100%);padding:12px;
+}
+.cramo-badge{
+  font-size:13px;font-weight:900;color:#0277bd;margin-bottom:6px;
+}
+.cramo-badge.ground-b{color:#2e7d32}
+.cramo-group{display:flex;flex-wrap:wrap;gap:8px}
+.cramo-btn{
+  position:relative;width:52px;height:52px;background:rgba(255,255,255,0.85);border:2px solid #fff;border-radius:12px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;box-shadow:0 2px 4px rgba(0,0,0,0.1);
+}
+.cramo-btn img{width:44px;height:44px;object-fit:contain}
+.cramo-btn.selected{border-color:#ff9800;background:#fff8db;box-shadow:0 0 8px rgba(255,152,0,0.6);transform:scale(1.08)}
+.cramo-check{position:absolute;top:2px;right:2px;font-size:12px;display:none}
+.cramo-btn.selected .cramo-check{display:block}
+.cramo-counter{font-size:12px;font-weight:900;margin-top:6px}
+
+/* Universal White Blank Box for Drill */
+.drill-blank-row{
+  display:flex;align-items:center;gap:6px;margin:8px 0;font-size:18px;font-weight:900;color:#222;
+}
+.drill-blank-box{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:48px;height:46px;padding:0 8px;margin:0 4px;
+  background:#fff;border:3px solid #2a4b7c;border-radius:12px;
+  font-size:24px;font-weight:900;color:#c9283a;
+  box-shadow:inset 0 2px 4px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.05);
+  vertical-align:middle;transition:all 0.2s;
+}
+.drill-blank-box.filled{
+  background:#fff8db;border-color:#ff9800;color:#e65100;box-shadow:0 0 8px rgba(255,152,0,0.4);
+}
+
 </style>
 </head>
 <body>
@@ -2241,6 +2369,36 @@ function scrollToCurrent(){
 
 
 // --- Visual Helpers for faithful drill reproduction ---
+
+function makeMonsterBallSvg(size = 32) {
+  return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 100 100" style="vertical-align:middle;filter:drop-shadow(0 2px 3px rgba(0,0,0,0.2))">' +
+    '<circle cx="50" cy="50" r="46" fill="#f5f5f5" stroke="#222" stroke-width="6"/>' +
+    '<path d="M 4 50 A 46 46 0 0 1 96 50 Z" fill="#e53935" stroke="#222" stroke-width="6"/>' +
+    '<line x1="4" y1="50" x2="96" y2="50" stroke="#222" stroke-width="6"/>' +
+    '<circle cx="50" cy="50" r="14" fill="#ffffff" stroke="#222" stroke-width="6"/>' +
+    '<circle cx="50" cy="50" r="6" fill="#f0f0f0" stroke="#222" stroke-width="2"/>' +
+  '</svg>';
+}
+
+function makeMonsterBallBox(count) {
+  const loose = count - 10;
+  let topBalls = '';
+  for(let i = 0; i < 10; i++) topBalls += makeMonsterBallSvg(30);
+  let botBalls = '';
+  for(let i = 0; i < loose; i++) botBalls += makeMonsterBallSvg(30);
+  
+  return '<div class="mball-question-box">' +
+    '<div class="mball-row mball-top-row">' +
+      '<span class="mball-label">上だん (10こ):</span>' +
+      '<div class="mball-icons-group">' + topBalls + '</div>' +
+    '</div>' +
+    '<div class="mball-row mball-bottom-row">' +
+      '<span class="mball-label">下だん (ばら):</span>' +
+      '<div class="mball-icons-group">' + botBalls + '</div>' +
+    '</div>' +
+  '</div>';
+}
+
 function makeClockSvg(hour, minute, size = 110) {
   const cx = 60, cy = 60;
   const hourAngle = ((hour % 12) + minute / 60) * 30;
@@ -2543,74 +2701,68 @@ function buildStageQuestions(row){
     ];
   }
 
-  // Battle 21: アブリボン 10よりおおきいかず
+  // Battle 21: アブリボン 10よりおおきいかず（14体選択・10個の丸・数字選択）
   if(bId === 'Battle21'){
     return [
-      { qNum: 1, desc: 'アブリボンは ぜんぶで なんびき いるかな？', ans: '14', choices: ['12', '13', '14', '15'] }
+      { qNum: 1, desc: '① アブリボンを 10ぴき タップして、10の まとまりを つくろう！', ans: '10', choices: ['10'], isInteractiveOnly: true },
+      { qNum: 2, desc: '② 10の まとまりの ぶんだけ、したの ○を 10こ タップして ぬろう！', ans: '10', choices: ['10'], isInteractiveOnly: true },
+      { qNum: 3, desc: '③ 10の まとまりの なかには、アブリボンが なんびき いるかな？', ans: '10', choices: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'], blankLabel: '10の まとまり：', blankUnit: 'ひき' },
+      { qNum: 4, desc: '④ 10ぴきと ばらの 4ひきで、ぜんぶで なんびき かな？', ans: '14', choices: ['11', '12', '13', '14', '15'], blankLabel: 'ぜんぶで：', blankUnit: 'ひき' }
     ];
   }
 
   // =========================================================================
   // BATTLES 22 〜 55_2 (+ Minigame): 原本ドリルスキャン完全準拠・忠実再現
-  // （CSVの誤ったprompt/こたえは無視し、ドリルの本物画像の内容を100%忠実に出題）
   // =========================================================================
 
-  // Battle 22: ウオノラゴン 11から15のかず（10のまとまり＋ばらのボール）
+  // Battle 22: ウオノラゴン 11から20（上段10個・下段残り・ランダム出題・1ドリル統合）
   if(bId === 'Battle22'){
-    return [11, 12, 13, 14, 15].map((n, idx) => ({
+    // ランダム順（13, 11, 16, 14, 18, 12, 17, 15, 19）
+    const shuffledCounts = [13, 11, 16, 14, 18, 12, 17, 15, 19];
+    return shuffledCounts.map((n, idx) => ({
       qNum: idx + 1,
-      desc: ['①', '②', '③', '④', '⑤'][idx] + ' 10の まとまりと ばらの モンスターボールを かぞえて、すうじを えらぼう。',
+      desc: ['①', '②', '③', '④', '⑤', '⑥', '⑦', '⑧', '⑨'][idx] + ' モンスターボールを かぞえて、したの しかく [ ？ ] に すうじを えらぼう。',
       ans: String(n),
-      choices: ['11', '12', '13', '14', '15'],
-      isPaperRow: true,
-      pokemon: 'モンスターボール',
-      count: n,
-      pokeId: 882
+      choices: ['10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'],
+      customHtml: makeMonsterBallBox(n),
+      blankLabel: 'モンスターボール：',
+      blankUnit: 'こ'
     }));
   }
 
-  // Battle 22_2: ウオノラゴン 16から20のかず（10のまとまり＋ばらのボール）
-  if(bId === 'Battle22_2'){
-    return [16, 17, 18, 19, 20].map((n, idx) => ({
-      qNum: idx + 1,
-      desc: ['①', '②', '③', '④', '⑤'][idx] + ' 10の まとまりと ばらの モンスターボールを かぞえて、すうじを えらぼう。',
-      ans: String(n),
-      choices: ['16', '17', '18', '19', '20'],
-      isPaperRow: true,
-      pokemon: 'モンスターボール',
-      count: n,
-      pokeId: 882
-    }));
-  }
-
-  // Battle 23: ナエトル〜ドダイトス 1から20のならび
+  // Battle 23: ナエトル〜ドダイトス 1から20のめいろ
   if(bId === 'Battle23'){
     return [
-      { qNum: 1, desc: '① 1の つぎの [ ？ ] に入る すうじは なにかな？', ans: '2', choices: ['2', '3', '5', '6'], customHtml: makeTrackHtml(['1', '？', '3', '4'], 1) },
-      { qNum: 2, desc: '② 4の つぎの [ ？ ] に入る すうじは なにかな？', ans: '5', choices: ['3', '5', '6', '8'], customHtml: makeTrackHtml(['4', '？', '6', '7'], 1) },
-      { qNum: 3, desc: '③ 7の つぎの [ ？ ] に入る すうじは なにかな？', ans: '8', choices: ['6', '8', '10', '11'], customHtml: makeTrackHtml(['7', '？', '9', '10'], 1) },
-      { qNum: 4, desc: '④ 9の つぎの [ ？ ] に入る すうじは なにかな？', ans: '10', choices: ['8', '10', '11', '12'], customHtml: makeTrackHtml(['9', '？', '11', '12'], 1) },
-      { qNum: 5, desc: '⑤ 13の つぎの [ ？ ] に入る すうじは なにかな？', ans: '14', choices: ['12', '14', '16', '17'], customHtml: makeTrackHtml(['13', '？', '15', '16'], 1) },
-      { qNum: 6, desc: '⑥ 18の つぎの [ ？ ] に入る すうじは なにかな？', ans: '19', choices: ['16', '17', '19', '20'], customHtml: makeTrackHtml(['17', '18', '？', '20'], 2) }
+      { qNum: 1, desc: '① 1の つぎの [ ？ ] に入る すうじは なにかな？', ans: '2', choices: ['1', '2', '3', '4', '5'], blankLabel: 'マスに入る すうじ：', blankUnit: '' },
+      { qNum: 2, desc: '② 2の つぎの [ ？ ] に入る すうじは なにかな？', ans: '3', choices: ['2', '3', '4', '5', '6'], blankLabel: 'マスに入る すうじ：', blankUnit: '' },
+      { qNum: 3, desc: '③ 4の つぎの [ ？ ] に入る すうじは なにかな？', ans: '5', choices: ['3', '4', '5', '6', '7'], blankLabel: 'マスに入る すうじ：', blankUnit: '' },
+      { qNum: 4, desc: '④ 5の つぎの [ ？ ] に入る すうじは なにかな？', ans: '6', choices: ['4', '5', '6', '7', '8'], blankLabel: 'マスに入る すうじ：', blankUnit: '' },
+      { qNum: 5, desc: '⑤ 7の つぎの [ ？ ] に入る すうじは なにかな？', ans: '8', choices: ['6', '7', '8', '9', '10'], blankLabel: 'マスに入る すうじ：', blankUnit: '' },
+      { qNum: 6, desc: '⑥ 9の つぎの [ ？ ] に入る すうじは なにかな？', ans: '10', choices: ['8', '9', '10', '11', '12'], blankLabel: 'マスに入る すうじ：', blankUnit: '' },
+      { qNum: 7, desc: '⑦ 13の つぎの [ ？ ] に入る すうじは なにかな？', ans: '14', choices: ['12', '13', '14', '15', '16'], blankLabel: 'マスに入る すうじ：', blankUnit: '' },
+      { qNum: 8, desc: '⑧ 15の つぎの [ ？ ] に入る すうじは なにかな？', ans: '16', choices: ['14', '15', '16', '17', '18'], blankLabel: 'マスに入る すうじ：', blankUnit: '' },
+      { qNum: 9, desc: '⑨ 16の つぎの [ ？ ] に入る すうじは なにかな？', ans: '17', choices: ['15', '16', '17', '18', '19'], blankLabel: 'マスに入る すうじ：', blankUnit: '' },
+      { qNum: 10, desc: '⑩ 18の つぎの [ ？ ] に入る すうじは なにかな？', ans: '19', choices: ['17', '18', '19', '20'], blankLabel: 'マスに入る すうじ：', blankUnit: '' },
+      { qNum: 11, desc: '⑪ 19の つぎの [ ？ ]（ドダイトスのゴール！）に入る すうじは なにかな？', ans: '20', choices: ['18', '19', '20', '21'], blankLabel: 'マスに入る すうじ：', blankUnit: '' }
     ];
   }
 
-  // Battle 24: アチゲータ どちらがおおい（20まで）
+  // Battle 24: アチゲータ どちらがおおい（パンとおさら・ハイライト機能つき）
   if(bId === 'Battle24'){
     return [
-      { qNum: 1, desc: '① みどりの エリア：メロンパン（14こ）と おさら（12まい）、どちらが おおいかな？', ans: 'メロンパン', choices: ['メロンパン', 'おさら'], customHtml: '<div style="background:#e8f5e9;padding:10px;border-radius:12px;margin:8px 0;display:flex;gap:12px;justify-content:space-around;font-weight:900"><div>🍈 メロンパン: 14こ</div><div>🍽️ おさら: 12まい</div></div>' },
-      { qNum: 2, desc: '② メロンパンと おさら、どちらが なんこ おおいかな？（14 － 12 ＝ ？）', ans: '2こ', choices: ['1こ', '2こ', '3こ', '4こ'] },
-      { qNum: 3, desc: '③ あおの エリア：まるいパン（16こ）と おさら（17まい）、どちらが おおいかな？', ans: 'おさら', choices: ['まるいパン', 'おさら'], customHtml: '<div style="background:#e3f2fd;padding:10px;border-radius:12px;margin:8px 0;display:flex;gap:12px;justify-content:space-around;font-weight:900"><div>🍞 まるいパン: 16こ</div><div>🍽️ おさら: 17まい</div></div>' },
-      { qNum: 4, desc: '④ まるいパンと おさら、どちらが なんこ おおいかな？（17 － 16 ＝ ？）', ans: '1こ', choices: ['1こ', '2こ', '3こ', '4こ'] }
+      { qNum: 1, desc: '① みどりの エリア：メロンパン（14こ）とおさら（12まい）を かぞえよう。メロンパンは なんこ かな？', ans: '14', choices: ['11', '12', '13', '14', '15'], blankLabel: '🍈 メロンパン：', blankUnit: 'こ' },
+      { qNum: 2, desc: '② みどりの エリア：メロンパンと おさら、どちらが おおいかな？', ans: 'メロンパン', choices: ['メロンパン', 'おさら'] },
+      { qNum: 3, desc: '③ あおの エリア：まるいパン（16こ）とおさら（17まい）を かぞえよう。まるいパンは なんこ かな？', ans: '16', choices: ['14', '15', '16', '17', '18'], blankLabel: '🍞 まるいパン：', blankUnit: 'こ' },
+      { qNum: 4, desc: '④ あおの エリア：まるいパンと おさら、どちらが おおいかな？', ans: 'おさら', choices: ['まるいパン', 'おさら'] }
     ];
   }
 
-  // Battle 25: ウッウ あわせて10（たしざんのきそ）
+  // Battle 25: ウッウ あわせていくつ（青空と水辺・原本再現）
   if(bId === 'Battle25'){
     return [
-      { qNum: 1, desc: '① みずべに いる ウッウは なんびき かな？', ans: '4', choices: ['3', '4', '5', '6'], customHtml: '<div style="background:#e0f7fa;padding:10px;border-radius:12px;margin:8px 0;text-align:center;font-weight:900">💧 みずべに いる ウッウ：4ひき</div>' },
-      { qNum: 2, desc: '② そらを とんでいる ウッウは なんびき かな？', ans: '6', choices: ['4', '5', '6', '7'], customHtml: '<div style="background:#e1f5fe;padding:10px;border-radius:12px;margin:8px 0;text-align:center;font-weight:900">☁️ そらを とぶ ウッウ：6ひき</div>' },
-      { qNum: 3, desc: '③ みずに いる 4ひきと そらの 6ひき、あわせて なんびき かな？（4 ＋ 6 ＝ ？）', ans: '10', choices: ['8', '9', '10', '11'] }
+      { qNum: 1, desc: '① じめんに いる ウッウは なんびき かな？', ans: '4', choices: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'], blankLabel: 'じめんに いる ウッウ：', blankUnit: 'ひき' },
+      { qNum: 2, desc: '② そらを とんでいる ウッウは なんびき かな？', ans: '6', choices: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'], blankLabel: 'そらを とんでいる ウッウ：', blankUnit: 'ひき' },
+      { qNum: 3, desc: '③ じめんの 4ひきと そらの 6ひき、あわせて なんびき かな？（4 ＋ 6 ＝ ？）', ans: '10', choices: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'], blankLabel: 'あわせて：', blankUnit: 'ひき' }
     ];
   }
 
@@ -3352,6 +3504,127 @@ function renderInteractiveStage(row){
     initBattle11Compare();
   }
 
+
+  if(bId === 'Battle21'){
+    // アブリボン 10のまとまり作り
+    let riboHtml = '';
+    for(let k = 0; k < 14; k++){
+      riboHtml += '<button type="button" class="ribo-btn" data-idx="' + k + '">' +
+        '<img src="' + ART(743) + '" alt="アブリボン">' +
+        '<span class="ribo-check">✔</span>' +
+      '</button>';
+    }
+    let circHtml = '';
+    for(let k = 0; k < 10; k++){
+      circHtml += '<button type="button" class="circ-slot-btn" data-idx="' + k + '">◯</button>';
+    }
+    card.innerHTML = 
+      '<div class="card interactive-stage">' +
+        '<h3>🌸 アブリボンを 10ぴき えらんで、10の まとまりを つくろう！</h3>' +
+        '<p style="font-size:15px;color:#555;margin:0 0 10px">アブリボンを タップすると ○で かこめるよ（10ぴき えらんでね）</p>' +
+        '<div class="ribo-grid" id="riboGrid">' + riboHtml + '</div>' +
+        '<div class="inter-counter-box">' +
+          'えらんだ アブリボン: <span id="riboCount" style="color:#e91e63;font-size:24px;font-weight:900">0</span> / 10 ぴき ' +
+          '<span id="riboDoneMsg" style="display:none;color:#2e7d32;font-weight:900">🎉 10ぴき えらべたよ！</span>' +
+        '</div>' +
+        '<div style="margin-top:16px;border-top:2px dashed #f48fb1;padding-top:12px">' +
+          '<div style="font-weight:900;font-size:15px;color:#333;margin-bottom:6px">② 10の まとまりの ぶんだけ、したの ○を 10こ タップして ぬろう！</div>' +
+          '<div class="circ-grid" id="circGrid">' + circHtml + '</div>' +
+          '<div class="inter-counter-box">' +
+            'ぬった ○: <span id="circCount" style="color:#d32f2f;font-size:24px;font-weight:900">0</span> / 10 こ ' +
+            '<span id="circDoneMsg" style="display:none;color:#2e7d32;font-weight:900">🎉 10こ ぬれたよ！</span>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    initRibombeeStage();
+  } else if(bId === 'Battle23'){
+    // ナエトルからドダイトスまでのめいろ
+    const printedNums = {1:1, 4:4, 7:7, 9:9, 13:13, 15:15, 18:18};
+    let tilesHtml = '';
+    for(let s = 1; s <= 20; s++){
+      const isPrinted = printedNums[s] !== undefined;
+      let extra = '';
+      if(s === 1) extra = '<img src="' + ART(387) + '" class="maze-avatar start" alt="ナエトル">';
+      if(s === 20) extra = '<img src="' + ART(389) + '" class="maze-avatar goal" alt="ドダイトス">';
+      tilesHtml += '<div class="maze-step ' + (isPrinted ? 'printed' : 'blank') + '" id="mazeStep_' + s + '">' +
+        extra +
+        '<span class="maze-step-num">' + (isPrinted ? s : '？') + '</span>' +
+      '</div>';
+    }
+    card.innerHTML = 
+      '<div class="card interactive-stage">' +
+        '<h3>🐢 ナエトルから ドダイトスまでの すうじの めいろ！</h3>' +
+        '<p style="font-size:15px;color:#555;margin:0 0 10px">空いている マス [ ？ ] に 入る すうじを 下の もんだいで えらぼう！</p>' +
+        '<div class="torterra-maze-track">' + tilesHtml + '</div>' +
+      '</div>';
+  } else if(bId === 'Battle24'){
+    // アチゲータ：パンとお皿のタップハイライト
+    let melonHtml = '';
+    for(let k = 0; k < 14; k++){
+      melonHtml += '<button type="button" class="food-tap-btn melon-btn" data-type="melon"><span class="food-icon">🍈</span><span class="food-check">✔</span></button>';
+    }
+    let plate1Html = '';
+    for(let k = 0; k < 12; k++){
+      plate1Html += '<button type="button" class="food-tap-btn plate-btn" data-type="plate1"><span class="food-icon">🍽️</span><span class="food-check">✔</span></button>';
+    }
+    let roundHtml = '';
+    for(let k = 0; k < 16; k++){
+      roundHtml += '<button type="button" class="food-tap-btn round-btn" data-type="round"><span class="food-icon">🍞</span><span class="food-check">✔</span></button>';
+    }
+    let plate2Html = '';
+    for(let k = 0; k < 17; k++){
+      plate2Html += '<button type="button" class="food-tap-btn plate-btn" data-type="plate2"><span class="food-icon">🍽️</span><span class="food-check">✔</span></button>';
+    }
+    card.innerHTML = 
+      '<div class="card interactive-stage">' +
+        '<h3>🐊 パンとお皿を タップして かぞえよう！</h3>' +
+        '<p style="font-size:15px;color:#555;margin:0 0 10px">タップすると チェックが ついて かぞえやすくなるよ！</p>' +
+        '<div class="b24-section green-sec">' +
+          '<div class="b24-sec-title">みどりの エリア (メロンパンとおさら)</div>' +
+          '<div class="b24-food-grid">' + melonHtml + '</div>' +
+          '<div class="b24-counter">🍈 メロンパン: <span id="cntMelon" style="color:#2e7d32;font-size:22px;font-weight:900">0</span> / 14こ</div>' +
+          '<div class="b24-food-grid" style="margin-top:8px">' + plate1Html + '</div>' +
+          '<div class="b24-counter">🍽️ おさら: <span id="cntPlate1" style="color:#1565c0;font-size:22px;font-weight:900">0</span> / 12まい</div>' +
+        '</div>' +
+        '<div class="b24-section blue-sec" style="margin-top:14px">' +
+          '<div class="b24-sec-title">あおの エリア (まるいパンとおさら)</div>' +
+          '<div class="b24-food-grid">' + roundHtml + '</div>' +
+          '<div class="b24-counter">🍞 まるいパン: <span id="cntRound" style="color:#e65100;font-size:22px;font-weight:900">0</span> / 16こ</div>' +
+          '<div class="b24-food-grid" style="margin-top:8px">' + plate2Html + '</div>' +
+          '<div class="b24-counter">🍽️ おさら: <span id="cntPlate2" style="color:#1565c0;font-size:22px;font-weight:900">0</span> / 17まい</div>' +
+        '</div>' +
+      '</div>';
+    initB24FoodTap();
+  } else if(bId === 'Battle25'){
+    // ウッウ：原本スキャンの青空と水辺背景
+    let skyBirds = '';
+    for(let k = 0; k < 6; k++){
+      skyBirds += '<button type="button" class="cramo-btn sky" data-idx="' + k + '"><img src="' + ART(845) + '" alt="ウッウ"><span class="cramo-check">✨</span></button>';
+    }
+    let groundBirds = '';
+    for(let k = 0; k < 4; k++){
+      groundBirds += '<button type="button" class="cramo-btn ground" data-idx="' + k + '"><img src="' + ART(845) + '" alt="ウッウ"><span class="cramo-check">✨</span></button>';
+    }
+    card.innerHTML = 
+      '<div class="card interactive-stage">' +
+        '<h3>🐟 ウッウを タップして かぞえよう！</h3>' +
+        '<p style="font-size:15px;color:#555;margin:0 0 10px">空と 地面（水辺）にいる ウッウを タップして かぞえてみよう！</p>' +
+        '<div class="cramo-scenic-field">' +
+          '<div class="cramo-sky">' +
+            '<div class="cramo-badge">☁️ そらを とんでいる ウッウ (6ひき)</div>' +
+            '<div class="cramo-group">' + skyBirds + '</div>' +
+            '<div class="cramo-counter">タップした数: <span id="cntSky" style="color:#0288d1;font-weight:900;font-size:20px">0</span> / 6</div>' +
+          '</div>' +
+          '<div class="cramo-ground">' +
+            '<div class="cramo-badge ground-b">💧 じめんに いる ウッウ (4ひき)</div>' +
+            '<div class="cramo-group">' + groundBirds + '</div>' +
+            '<div class="cramo-counter">タップした数: <span id="cntGround" style="color:#2e7d32;font-weight:900;font-size:20px">0</span> / 4</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    initCramoTap();
+  }
+
   if(card.innerHTML.trim()){
     card.style.display = 'block';
   } else {
@@ -3819,6 +4092,131 @@ function initBondTrees(row, totalNum){
   });
 }
 
+
+function initRibombeeStage(){
+  const riboBtns = document.querySelectorAll('.ribo-btn');
+  const riboCountEl = $('riboCount');
+  const riboDoneMsg = $('riboDoneMsg');
+  let riboSelected = new Set();
+
+  riboBtns.forEach(btn => {
+    btn.onclick = () => {
+      const idx = btn.dataset.idx;
+      if(riboSelected.has(idx)){
+        riboSelected.delete(idx);
+        btn.classList.remove('selected');
+      } else {
+        if(riboSelected.size < 10){
+          riboSelected.add(idx);
+          btn.classList.add('selected');
+        }
+      }
+      if(riboCountEl) riboCountEl.textContent = riboSelected.size;
+      if(riboSelected.size === 10){
+        if(riboDoneMsg) riboDoneMsg.style.display = 'inline';
+        (S.answers[curIdx] = S.answers[curIdx] || {})[0] = '10';
+        save(); updateThrow(); speak('10ぴき えらべたね！ 10の まとまりが できたよ！');
+      } else {
+        if(riboDoneMsg) riboDoneMsg.style.display = 'none';
+        speak(riboSelected.size + 'ひき！');
+      }
+    };
+  });
+
+  const circBtns = document.querySelectorAll('.circ-slot-btn');
+  const circCountEl = $('circCount');
+  const circDoneMsg = $('circDoneMsg');
+  let circSelected = new Set();
+
+  circBtns.forEach(btn => {
+    btn.onclick = () => {
+      const idx = btn.dataset.idx;
+      if(circSelected.has(idx)){
+        circSelected.delete(idx);
+        btn.classList.remove('filled');
+        btn.textContent = '◯';
+      } else {
+        circSelected.add(idx);
+        btn.classList.add('filled');
+        btn.textContent = '●';
+      }
+      if(circCountEl) circCountEl.textContent = circSelected.size;
+      if(circSelected.size === 10){
+        if(circDoneMsg) circDoneMsg.style.display = 'inline';
+        (S.answers[curIdx] = S.answers[curIdx] || {})[1] = '10';
+        save(); updateThrow(); speak('10こ ぬれたね！');
+      } else {
+        if(circDoneMsg) circDoneMsg.style.display = 'none';
+        speak(circSelected.size + 'こ！');
+      }
+    };
+  });
+}
+
+function initB24FoodTap(){
+  const melonBtns = document.querySelectorAll('.melon-btn');
+  const plate1Btns = document.querySelectorAll('.plate-btn[data-type="plate1"]');
+  const roundBtns = document.querySelectorAll('.round-btn');
+  const plate2Btns = document.querySelectorAll('.plate-btn[data-type="plate2"]');
+
+  let melonSel = 0, plate1Sel = 0, roundSel = 0, plate2Sel = 0;
+
+  melonBtns.forEach(b => {
+    b.onclick = () => {
+      b.classList.toggle('selected');
+      melonSel = document.querySelectorAll('.melon-btn.selected').length;
+      const el = $('cntMelon'); if(el) el.textContent = melonSel;
+      speak('メロンパン ' + melonSel + 'こ！');
+    };
+  });
+  plate1Btns.forEach(b => {
+    b.onclick = () => {
+      b.classList.toggle('selected');
+      plate1Sel = document.querySelectorAll('.plate-btn[data-type="plate1"].selected').length;
+      const el = $('cntPlate1'); if(el) el.textContent = plate1Sel;
+      speak('おさら ' + plate1Sel + 'まい！');
+    };
+  });
+  roundBtns.forEach(b => {
+    b.onclick = () => {
+      b.classList.toggle('selected');
+      roundSel = document.querySelectorAll('.round-btn.selected').length;
+      const el = $('cntRound'); if(el) el.textContent = roundSel;
+      speak('まるいパン ' + roundSel + 'こ！');
+    };
+  });
+  plate2Btns.forEach(b => {
+    b.onclick = () => {
+      b.classList.toggle('selected');
+      plate2Sel = document.querySelectorAll('.plate-btn[data-type="plate2"].selected').length;
+      const el = $('cntPlate2'); if(el) el.textContent = plate2Sel;
+      speak('おさら ' + plate2Sel + 'まい！');
+    };
+  });
+}
+
+function initCramoTap(){
+  const skyBtns = document.querySelectorAll('.cramo-btn.sky');
+  const groundBtns = document.querySelectorAll('.cramo-btn.ground');
+
+  skyBtns.forEach(b => {
+    b.onclick = () => {
+      b.classList.toggle('selected');
+      const count = document.querySelectorAll('.cramo-btn.sky.selected').length;
+      const el = $('cntSky'); if(el) el.textContent = count;
+      speak('そらのウッウ ' + count + 'ひき！');
+    };
+  });
+  groundBtns.forEach(b => {
+    b.onclick = () => {
+      b.classList.toggle('selected');
+      const count = document.querySelectorAll('.cramo-btn.ground.selected').length;
+      const el = $('cntGround'); if(el) el.textContent = count;
+      speak('じめんのウッウ ' + count + 'ひき！');
+    };
+  });
+}
+
 function renderQuestionCards(row){
   const box = $('bQuestionCards');
   box.innerHTML = '';
@@ -3971,6 +4369,16 @@ function renderQuestionCards(row){
         '<span class="pd-write-num" id="qWrite_' + qi + '">' + (currentVal || '') + '</span>' +
       '</div>';
 
+    let blankHtml = '';
+    if(q.blankLabel || q.blankUnit){
+      blankHtml = 
+        '<div class="drill-blank-row">' +
+          '<span class="drill-blank-label">' + (q.blankLabel || '') + '</span>' +
+          '<span class="drill-blank-box ' + (currentVal ? 'filled' : '') + '" id="blank_' + qi + '">' + (currentVal || '？') + '</span>' +
+          '<span class="drill-blank-unit">' + (q.blankUnit || '') + '</span>' +
+        '</div>';
+    }
+
     card.innerHTML = 
       '<div class="q-header">' +
         '<span class="q-badge">もんだい ' + q.qNum + '</span>' +
@@ -3978,6 +4386,7 @@ function renderQuestionCards(row){
         '<button class="q-voice" aria-label="もんだいをよみあげる">🔊</button>' +
       '</div>' +
       (q.customHtml || '') +
+      blankHtml +
       treeHtml +
       '<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:10px;flex-wrap:wrap">' +
         '<div class="choices" style="flex:1"></div>' +
@@ -4001,6 +4410,17 @@ function renderQuestionCards(row){
         choicesBox.querySelectorAll('.choice').forEach(x => x.classList.remove('sel'));
         b.classList.add('sel');
         if(writeBox) writeBox.textContent = ch;
+        const blankBox = card.querySelector('#blank_' + qi);
+        if(blankBox){
+          blankBox.textContent = ch;
+          blankBox.classList.add('filled');
+        }
+        const mazeStep = document.querySelector('#mazeStep_' + ch);
+        if(mazeStep){
+          mazeStep.classList.add('solved');
+          const span = mazeStep.querySelector('.maze-step-num');
+          if(span) span.textContent = ch;
+        }
         if(qtreeTarget){
           qtreeTarget.textContent = ch;
           qtreeTarget.classList.add('filled');
@@ -4207,7 +4627,7 @@ function init(){
 
     // CSVパース＆全72バトル起動
     const rawCsv = $('csv-data').textContent;
-    ROWS = parseCSV(rawCsv).filter(r => /^(Battle|Minigame)/i.test(r.battle));
+    ROWS = parseCSV(rawCsv).filter(r => /^(Battle|Minigame)/i.test(r.battle) && r.battle !== 'Battle22_2');
 
     layoutMap();
     setTimeout(scrollToCurrent, 100);

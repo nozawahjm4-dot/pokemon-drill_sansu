@@ -1586,6 +1586,41 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
 
 
 /* カード内埋め込み数の分解ツリー */
+.qtree-card {
+  width: 100% !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  margin: 0 auto !important;
+}
+.qtree-frame-wrapper {
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: center !important;
+  align-items: center !important;
+  text-align: center !important;
+  margin: 14px auto 16px !important;
+  box-sizing: border-box !important;
+}
+.qtree-frame-box {
+  margin: 0 auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  border: 2.5px dashed #60a5fa !important;
+  border-radius: 24px !important;
+  background: #ffffff !important;
+  padding: 20px 36px !important;
+  box-shadow: 0 4px 14px rgba(96, 165, 250, 0.16) !important;
+  box-sizing: border-box !important;
+  max-width: 100% !important;
+}
 .qtree-container {
   display: flex;
   flex-direction: column;
@@ -4851,16 +4886,16 @@ function renderInteractiveStage(row){
       const targetIconColor = isFilled ? 'inherit' : '#ef4444';
 
       treesHtml += 
-        '<div class="qtree-card" style="background:#fff;border:2.5px solid #fed7aa;border-radius:18px;padding:16px 20px;text-align:center;box-shadow:0 3px 6px rgba(0,0,0,0.05);width:100%;box-sizing:border-box">' +
-          '<div style="font-size:16px;font-weight:900;color:#9a3412;margin-bottom:10px">もんだい ' + g + '：' + meta.total + 'は ' + g + 'と いくつかな？</div>' +
+        '<div class="qtree-card" style="background:#fff;border:2.5px solid #fed7aa;border-radius:18px;padding:18px 20px;text-align:center;box-shadow:0 3px 6px rgba(0,0,0,0.05);width:100%;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center">' +
+          '<div style="font-size:16px;font-weight:900;color:#9a3412;margin-bottom:10px;text-align:center;width:100%">もんだい ' + g + '：' + meta.total + 'は ' + g + 'と いくつかな？</div>' +
           
           '<!-- 添付画像通りの青い破線フレーム（中央配置） -->' +
-          '<div style="text-align:center;margin:8px 0 14px">' +
-            '<div class="qtree-frame-box" style="display:inline-flex;flex-direction:column;align-items:center;justify-content:center;border:2.5px dashed #60a5fa;border-radius:22px;background:#ffffff;padding:20px 32px;box-shadow:0 4px 12px rgba(96,165,250,0.12)">' +
+          '<div class="qtree-frame-wrapper" style="width:100%;display:flex;justify-content:center;align-items:center;text-align:center;margin:12px auto 16px;box-sizing:border-box">' +
+            '<div class="qtree-frame-box" style="margin:0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border:2.5px dashed #60a5fa;border-radius:24px;background:#ffffff;padding:20px 36px;box-shadow:0 4px 14px rgba(96,165,250,0.16);box-sizing:border-box">' +
               '<!-- 上段の数＆絵 -->' +
-              '<div style="text-align:center">' +
+              '<div style="text-align:center;margin:0 auto;display:flex;flex-direction:column;align-items:center">' +
                 '<div class="qtree-top" style="width:58px;height:58px;border:3px solid #1e293b;border-radius:14px;background:#f0f7ff;color:#2563eb;font-size:32px;font-weight:900;box-shadow:0 4px 0 #1e293b;display:flex;align-items:center;justify-content:center;margin:0 auto">' + meta.total + '</div>' +
-                '<div style="font-size:20px;line-height:1.2;margin:10px 0 4px;letter-spacing:2px">' + meta.icon.repeat(meta.total) + '</div>' +
+                '<div style="font-size:20px;line-height:1.2;margin:10px auto 4px;letter-spacing:2px;text-align:center">' + meta.icon.repeat(meta.total) + '</div>' +
               '</div>' +
               '<!-- 枝分かれの線 -->' +
               '<svg viewBox="0 0 90 26" style="width:90px;height:26px;margin:2px auto;display:block">' +
@@ -4868,21 +4903,21 @@ function renderInteractiveStage(row){
                 '<line x1="45" y1="2" x2="70" y2="24" stroke="#1e293b" stroke-width="3" stroke-linecap="round"/>' +
               '</svg>' +
               '<!-- 下段の左右ボックス -->' +
-              '<div style="display:flex;align-items:flex-start;justify-content:center;gap:32px;margin-top:2px">' +
-                '<div style="text-align:center">' +
+              '<div style="display:flex;align-items:flex-start;justify-content:center;gap:32px;margin:2px auto 0;text-align:center">' +
+                '<div style="text-align:center;display:flex;flex-direction:column;align-items:center">' +
                   '<div class="qtree-box given" style="width:54px;height:54px;border:3px solid #1e293b;border-radius:14px;background:#f8fafc;color:#1e293b;font-size:28px;font-weight:900;box-shadow:0 4px 0 #1e293b;display:flex;align-items:center;justify-content:center;margin:0 auto">' + g + '</div>' +
-                  '<div style="font-size:20px;margin-top:8px">' + meta.icon.repeat(g) + '</div>' +
+                  '<div style="font-size:20px;margin-top:8px;text-align:center">' + meta.icon.repeat(g) + '</div>' +
                 '</div>' +
-                '<div style="text-align:center">' +
+                '<div style="text-align:center;display:flex;flex-direction:column;align-items:center">' +
                   '<div class="qtree-box target' + (isFilled ? ' filled' : '') + '" id="treeTarget_' + qIdx + '" style="' + targetBoxStyle + '">' + (currentAns || '?') + '</div>' +
-                  '<div style="font-size:20px;margin-top:8px;font-weight:900;color:' + targetIconColor + '" id="treeTargetIcons_' + qIdx + '">' + targetIconTxt + '</div>' +
+                  '<div style="font-size:20px;margin-top:8px;font-weight:900;color:' + targetIconColor + ';text-align:center" id="treeTargetIcons_' + qIdx + '">' + targetIconTxt + '</div>' +
                 '</div>' +
               '</div>' +
             '</div>' +
           '</div>' +
 
-          '<div style="font-size:14px;font-weight:900;color:#475569;margin:10px 0 6px">すうじを えらぼう：</div>' +
-          '<div class="choices" id="treeChoices_' + qIdx + '" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">' + chHtml + '</div>' +
+          '<div style="font-size:15px;font-weight:900;color:#475569;margin:10px auto 6px;text-align:center;width:100%">すうじを えらぼう：</div>' +
+          '<div class="choices" id="treeChoices_' + qIdx + '" style="display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap;margin:0 auto">' + chHtml + '</div>' +
         '</div>';
     }
     treesHtml += '</div>';
@@ -10321,7 +10356,7 @@ function renderQuestionCards(row){
       const totalIcons = (iconStr && q.total) ? ('<div style="font-size:15px;margin-top:4px">' + Array(q.total).fill(iconStr).join(' ') + '</div>') : '';
       const givenIcons = (iconStr && q.given) ? ('<div style="font-size:15px;margin-top:4px">' + Array(q.given).fill(iconStr).join(' ') + '</div>') : '';
       treeHtml = 
-        '<div class="qtree-container" style="display:flex;flex-direction:column;align-items:center;margin:12px 0">' +
+        '<div class="qtree-container" style="display:flex;flex-direction:column;align-items:center;margin:12px auto">' +
           '<div style="text-align:center;margin-bottom:4px">' +
             '<div class="qtree-top" style="margin:0 auto"><div>' + q.total + '</div></div>' +
             totalIcons +

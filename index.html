@@ -3161,8 +3161,8 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
 
 /* Battle 27 あとからきたミルタンクの歩行 */
 @keyframes miltankWalkIn {
-  0%, 100% { transform: scaleX(1) translateX(0) translateY(0); }
-  50% { transform: scaleX(1) translateX(-10px) translateY(-5px); }
+  0%, 100% { transform: scaleX(-1) translateX(0) translateY(0); }
+  50% { transform: scaleX(-1) translateX(10px) translateY(-5px); }
 }
 .b27-cow-walking {
   animation: miltankWalkIn 1.5s ease-in-out infinite;
@@ -3542,6 +3542,7 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
   <span class="pt" id="pt">🪙 0 pt</span>
   <button class="hbtn" id="btnKana">📋 あいうえお表</button>
   <button class="hbtn" id="btnZukan">📖 ずかん</button>
+  <button class="hbtn" id="btnResetProgress" style="background:#fef2f2;border-color:#fca5a5;color:#b91c1c;font-weight:900" title="さいしょから やりなおす">🔄 さいしょから</button>
   <button class="hbtn" id="btnQuit">🚪 おわる</button>
 </header>
 
@@ -4170,15 +4171,30 @@ function makeDrillBookFooter(pokeName, zukanText, typeText, heightText, weightTe
 
 // 「たいへんよくできました！」スタンプ押印
 function stampDrillSuccess() {
+  const page = document.querySelector('.drill-book-page');
+  if (page && !page.querySelector('.drill-success-banner')) {
+    const banner = document.createElement('div');
+    banner.className = 'drill-success-banner';
+    banner.style.cssText = 'background:#fef9c3;border:3px solid #facc15;border-radius:18px;padding:12px 16px;text-align:center;font-size:18px;font-weight:900;color:#854d0e;margin:12px auto;max-width:440px;box-shadow:0 4px 12px rgba(234,179,8,0.25);animation:bundlePop 0.4s ease-out';
+    banner.innerHTML = '🎉 ぜんぶ せいかい！ たいへん よくできました！ 💮';
+    const tray = page.querySelector('.num-choice-tray');
+    if (tray) {
+      page.insertBefore(banner, tray);
+    } else {
+      page.appendChild(banner);
+    }
+  }
+
   const slot = document.getElementById('drillSealSlot');
   if (slot && !slot.querySelector('.drill-stamp-seal')) {
     slot.innerHTML = '<div class="drill-stamp-seal">' +
       '<span class="seal-star">★</span>' +
       '<span class="seal-txt">たいへん<br>よくできました</span>' +
     '</div>';
-    playPikaanSound();
-    playFanfare();
   }
+  playPikaanSound();
+  playFanfare();
+  toast('🎉 たいへん よくできました！ 💮', 2200);
 }
 
 // 汎用「田」マス＋数字トレイ入力コントローラー
@@ -4238,7 +4254,16 @@ function setupMathBoxController(container, expectedAnswers, onComplete, customNu
       // 正誤判定
       const currentAnswers = boxes.map(b => b.dataset.val || '');
       const allFilled = currentAnswers.every(v => v !== '');
-      const allCorrect = allFilled && currentAnswers.every((v, i) => v === expectedAnswers[i]);
+      // Battle 25: 5と9（原本準拠）、または3と7（CSV表記）のどちらでも正解可能
+      let allCorrect = false;
+      if (allFilled) {
+        if (expectedAnswers.length === 2 && expectedAnswers[0] === '5' && expectedAnswers[1] === '9') {
+          allCorrect = (currentAnswers[0] === '5' && currentAnswers[1] === '9') ||
+                       (currentAnswers[0] === '3' && currentAnswers[1] === '7');
+        } else {
+          allCorrect = currentAnswers.every((v, i) => v === expectedAnswers[i]);
+        }
+      }
 
       if (allCorrect) {
         boxes.forEach(b => b.classList.add('correct'));
@@ -4300,7 +4325,7 @@ function cleanSpeechText(text) {
     .replace(/[＝=]/g, ' は ')
     // 田, [ ？ ], □ -> しかく
     .replace(/\[\s*？\s*\]|【\s*？\s*】|\[\s*　\s*\]|[田□]/g, ' しかく ')
-    .replace(/[？\?]/g, ' はてな ')
+    .replace(/[？\?]/g, '')
     .replace(/[〜～]/g, ' から ');
 
   // 3. Phonetic conversion of Katakana/Hiragana prolonged sound mark ー to proper vowel
@@ -5973,7 +5998,7 @@ function renderInteractiveStage(row){
     ];
     standPos.forEach((p, idx) => {
       standCows += '<div class="b29-cat-item" data-group="stand" data-idx="' + idx + '" style="bottom:' + p.bottom + '%;left:' + p.left + '%">' +
-        '<img src="' + ART(241) + '" alt="ミルタンク" style="width:68px;height:68px;object-fit:contain;filter:drop-shadow(0 3px 5px rgba(0,0,0,0.18))">' +
+        '<img src="' + ART(241) + '" alt="ミルタンク" style="width:82px;height:82px;object-fit:contain;filter:drop-shadow(0 3px 5px rgba(0,0,0,0.18))">' +
       '</div>';
     });
 
@@ -5982,8 +6007,7 @@ function renderInteractiveStage(row){
     ];
     runPos.forEach((p, idx) => {
       runCows += '<div class="b29-cat-item b27-cow-walking" data-group="run" data-idx="' + idx + '" style="bottom:' + p.bottom + '%;left:' + p.left + '%;animation-delay:' + (idx * 0.3) + 's">' +
-        '<span style="position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:900;background:#ffedd5;color:#c2410c;padding:1px 6px;border-radius:8px;white-space:nowrap;border:1px solid #fdba74">🏃 てくてく</span>' +
-        '<img src="' + ART(241) + '" alt="ミルタンク" style="width:68px;height:68px;object-fit:contain;filter:drop-shadow(0 3px 5px rgba(0,0,0,0.18))">' +
+        '<img src="' + ART(241) + '" alt="ミルタンク" style="width:82px;height:82px;object-fit:contain;transform:scaleX(-1);filter:drop-shadow(0 3px 5px rgba(0,0,0,0.18))">' +
       '</div>';
     });
 
@@ -6088,17 +6112,16 @@ function renderInteractiveStage(row){
     ];
     rPos.forEach((p, idx) => {
       remainCats += '<div class="b29-cat-item" data-group="remain" data-idx="' + idx + '" style="top:' + p.top + '%;left:' + p.left + '%">' +
-        '<img src="' + ART(431) + '" alt="ニャルマー" style="width:62px;height:62px;object-fit:contain;filter:drop-shadow(0 3px 5px rgba(0,0,0,0.18))">' +
+        '<img src="' + ART(431) + '" alt="ニャルマー" style="width:78px;height:78px;object-fit:contain;filter:drop-shadow(0 3px 5px rgba(0,0,0,0.18))">' +
       '</div>';
     });
 
     const lPos = [
-      { top: 52, left: 66 }, { top: 62, left: 76 }, { top: 72, left: 86 }
+      { top: 50, left: 66 }, { top: 60, left: 76 }, { top: 70, left: 86 }
     ];
     lPos.forEach((p, idx) => {
       leaveCats += '<div class="b29-cat-item b29-departing" data-group="leave" data-idx="' + idx + '" style="top:' + p.top + '%;left:' + p.left + '%;animation-delay:' + (idx * 0.35) + 's">' +
-        '<span style="position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:900;color:#9d174d;background:#fce7f3;padding:1px 6px;border-radius:8px;white-space:nowrap;border:1px solid #f472b6">ばいばい 🐾</span>' +
-        '<img src="' + ART(431) + '" alt="ニャルマー" style="width:62px;height:62px;object-fit:contain;filter:drop-shadow(0 3px 5px rgba(0,0,0,0.18))">' +
+        '<img src="' + ART(431) + '" alt="ニャルマー" style="width:78px;height:78px;object-fit:contain;filter:drop-shadow(0 3px 5px rgba(0,0,0,0.18))">' +
       '</div>';
     });
 
@@ -11177,14 +11200,15 @@ function onCaught(){
   if(first){
     S.cleared.push(curIdx);
     if(S.currentBattleIndex === curIdx) S.currentBattleIndex = Math.min(curIdx + 1, ROWS.length);
-    S.points += POINT_PER_CLEAR;
     if(!S.caught.includes(name)) S.caught.push(name);
-    save();
-    updatePoints(true);
   }
+  // ポケモンをゲットしたら毎回10pt入る
+  S.points += POINT_PER_CLEAR;
+  save();
+  updatePoints(true);
 
   playPikaanSound();
-  toast(`🎉 ${name} ゲット！${first ? `<br>🪙 +${POINT_PER_CLEAR} pt` : ''}`, 1800);
+  toast(`🎉 ${name} ゲット！<br>🪙 +${POINT_PER_CLEAR} pt`, 1800);
   setTimeout(() => { backToMap(); checkRewards(); }, 1900);
 }
 
@@ -11259,6 +11283,31 @@ function init(){
 
     $('btnKana').onclick = () => openModal('mKana');
     $('btnZukan').onclick = () => { buildZukan(); openModal('mZukan'); };
+        const rBtn = $('btnResetProgress');
+    if(rBtn){
+      rBtn.onclick = () => openModal('mResetModal');
+    }
+    document.querySelectorAll('.reset-quiz-opt').forEach(b => {
+      b.onclick = () => {
+        if(b.dataset.val === '81'){
+          playFanfare();
+          S.cleared = [];
+          S.caught = [];
+          S.answers = {};
+          S.currentBattleIndex = 0;
+          S.points = 0;
+          S.rewardsGiven = 0;
+          save();
+          toast('🔄 データを リセットしました！ さいしょから はじめます。', 2000);
+          setTimeout(() => location.reload(), 1200);
+        } else {
+          playMarimbaPop(0.7);
+          toast('ちがうよ！ リセットを キャンセルしました。', 1500);
+          closeModal(b);
+        }
+      };
+    });
+
     $('btnQuit').onclick = () => {
       if(confirm('きょうは ここまでに する？\n（きろくは ほぞん されているよ）')){
         if('speechSynthesis' in window) speechSynthesis.cancel();
@@ -11302,5 +11351,27 @@ if(document.readyState === 'loading'){
   init();
 }
 </script>
+<!-- リセット保護クイズモーダル（9×9） -->
+<div class="modal" id="mResetModal">
+  <div class="modal-box" style="max-width:440px;text-align:center">
+    <div style="font-size:32px;margin-bottom:6px">🔒</div>
+    <h3 style="margin:0 0 8px;font-size:20px;color:#991b1b">ほごしゃのかたへ</h3>
+    <p style="font-size:14px;color:#4b5563;line-height:1.6;margin-bottom:16px">
+      すべての データを リセットして さいしょから やりなおしますか？<br>
+      あやまって リセットするのを ふせぐため、つぎの もんだいに こたえてください。
+    </p>
+    <div style="background:#fef2f2;border:2px dashed #f87171;border-radius:14px;padding:12px;margin-bottom:16px">
+      <div style="font-size:24px;font-weight:900;color:#dc2626;margin-bottom:8px">9 × 9 は なに？</div>
+      <div style="display:grid;grid-template-columns:repeat(2, 1fr);gap:10px;max-width:280px;margin:0 auto">
+        <button type="button" class="mbtn reset-quiz-opt" data-val="72" style="background:#fff;color:#1f2937;border:2px solid #cbd5e1;font-size:18px;font-weight:900;padding:10px">72</button>
+        <button type="button" class="mbtn reset-quiz-opt" data-val="81" style="background:#fff;color:#1f2937;border:2px solid #cbd5e1;font-size:18px;font-weight:900;padding:10px">81</button>
+        <button type="button" class="mbtn reset-quiz-opt" data-val="64" style="background:#fff;color:#1f2937;border:2px solid #cbd5e1;font-size:18px;font-weight:900;padding:10px">64</button>
+        <button type="button" class="mbtn reset-quiz-opt" data-val="90" style="background:#fff;color:#1f2937;border:2px solid #cbd5e1;font-size:18px;font-weight:900;padding:10px">90</button>
+      </div>
+    </div>
+    <button type="button" class="mbtn" data-close style="background:#e5e7eb;color:#374151;font-weight:900;padding:8px 20px">キャンセル</button>
+  </div>
+</div>
+
 </body>
 </html>

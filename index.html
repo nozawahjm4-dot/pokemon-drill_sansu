@@ -4843,30 +4843,45 @@ function renderInteractiveStage(row){
         chHtml += '<button type="button" class="choice' + selCls + '" data-q="' + qIdx + '" data-val="' + c + '" style="font-size:20px;font-weight:900;min-width:48px;height:48px;padding:0 14px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center">' + c + '</button>';
       }
 
+      const isFilled = Boolean(currentAns);
+      const targetBoxStyle = isFilled 
+        ? 'width:54px;height:54px;border:3px solid #10b981;border-radius:14px;background:#ecfdf5;color:#047857;font-size:28px;font-weight:900;box-shadow:0 4px 0 #059669;display:flex;align-items:center;justify-content:center;margin:0 auto;'
+        : 'width:54px;height:54px;border:3px dashed #ef4444;border-radius:14px;background:#fff5f5;color:#ef4444;font-size:28px;font-weight:900;box-shadow:0 4px 0 #1e293b;display:flex;align-items:center;justify-content:center;margin:0 auto;';
+      const targetIconTxt = isFilled ? meta.icon.repeat(parseInt(currentAns, 10)) : '?';
+      const targetIconColor = isFilled ? 'inherit' : '#ef4444';
+
       treesHtml += 
-        '<div class="qtree-card" style="background:#fff;border:2.5px solid #fed7aa;border-radius:16px;padding:16px 20px;text-align:center;box-shadow:0 3px 6px rgba(0,0,0,0.05);width:100%;box-sizing:border-box">' +
-          '<div style="font-size:15px;font-weight:900;color:#9a3412;margin-bottom:10px">もんだい ' + g + '：' + meta.total + 'は ' + g + 'と いくつかな？</div>' +
-          '<div class="qtree-container" style="display:flex;flex-direction:column;align-items:center;margin:10px 0">' +
-            '<div style="text-align:center">' +
-              '<div class="qtree-top" style="margin:0 auto"><div>' + meta.total + '</div></div>' +
-              '<div style="font-size:16px;margin-top:4px">' + meta.icon.repeat(meta.total) + '</div>' +
-            '</div>' +
-            '<svg class="qtree-branch-svg" viewBox="0 0 90 22" style="width:90px;height:22px;margin:2px 0">' +
-              '<line x1="45" y1="0" x2="22" y2="22" stroke="#222" stroke-width="2.5" stroke-linecap="round"/>' +
-              '<line x1="45" y1="0" x2="68" y2="22" stroke="#222" stroke-width="2.5" stroke-linecap="round"/>' +
-            '</svg>' +
-            '<div class="qtree-bottom-row" style="display:flex;align-items:flex-start;justify-content:center;gap:24px">' +
+        '<div class="qtree-card" style="background:#fff;border:2.5px solid #fed7aa;border-radius:18px;padding:16px 20px;text-align:center;box-shadow:0 3px 6px rgba(0,0,0,0.05);width:100%;box-sizing:border-box">' +
+          '<div style="font-size:16px;font-weight:900;color:#9a3412;margin-bottom:10px">もんだい ' + g + '：' + meta.total + 'は ' + g + 'と いくつかな？</div>' +
+          
+          '<!-- 添付画像通りの青い破線フレーム（中央配置） -->' +
+          '<div style="text-align:center;margin:8px 0 14px">' +
+            '<div class="qtree-frame-box" style="display:inline-flex;flex-direction:column;align-items:center;justify-content:center;border:2.5px dashed #60a5fa;border-radius:22px;background:#ffffff;padding:20px 32px;box-shadow:0 4px 12px rgba(96,165,250,0.12)">' +
+              '<!-- 上段の数＆絵 -->' +
               '<div style="text-align:center">' +
-                '<div class="qtree-box given" style="margin:0 auto"><div>' + g + '</div></div>' +
-                '<div style="font-size:15px;margin-top:4px">' + meta.icon.repeat(g) + '</div>' +
+                '<div class="qtree-top" style="width:58px;height:58px;border:3px solid #1e293b;border-radius:14px;background:#f0f7ff;color:#2563eb;font-size:32px;font-weight:900;box-shadow:0 4px 0 #1e293b;display:flex;align-items:center;justify-content:center;margin:0 auto">' + meta.total + '</div>' +
+                '<div style="font-size:20px;line-height:1.2;margin:10px 0 4px;letter-spacing:2px">' + meta.icon.repeat(meta.total) + '</div>' +
               '</div>' +
-              '<div style="text-align:center">' +
-                '<div class="qtree-box target' + (currentAns ? ' filled' : '') + '" id="treeTarget_' + qIdx + '" style="margin:0 auto">' + (currentAns || '?') + '</div>' +
-                '<div style="font-size:15px;margin-top:4px" id="treeTargetIcons_' + qIdx + '">' + (currentAns ? meta.icon.repeat(parseInt(currentAns, 10)) : '❓') + '</div>' +
+              '<!-- 枝分かれの線 -->' +
+              '<svg viewBox="0 0 90 26" style="width:90px;height:26px;margin:2px auto;display:block">' +
+                '<line x1="45" y1="2" x2="20" y2="24" stroke="#1e293b" stroke-width="3" stroke-linecap="round"/>' +
+                '<line x1="45" y1="2" x2="70" y2="24" stroke="#1e293b" stroke-width="3" stroke-linecap="round"/>' +
+              '</svg>' +
+              '<!-- 下段の左右ボックス -->' +
+              '<div style="display:flex;align-items:flex-start;justify-content:center;gap:32px;margin-top:2px">' +
+                '<div style="text-align:center">' +
+                  '<div class="qtree-box given" style="width:54px;height:54px;border:3px solid #1e293b;border-radius:14px;background:#f8fafc;color:#1e293b;font-size:28px;font-weight:900;box-shadow:0 4px 0 #1e293b;display:flex;align-items:center;justify-content:center;margin:0 auto">' + g + '</div>' +
+                  '<div style="font-size:20px;margin-top:8px">' + meta.icon.repeat(g) + '</div>' +
+                '</div>' +
+                '<div style="text-align:center">' +
+                  '<div class="qtree-box target' + (isFilled ? ' filled' : '') + '" id="treeTarget_' + qIdx + '" style="' + targetBoxStyle + '">' + (currentAns || '?') + '</div>' +
+                  '<div style="font-size:20px;margin-top:8px;font-weight:900;color:' + targetIconColor + '" id="treeTargetIcons_' + qIdx + '">' + targetIconTxt + '</div>' +
+                '</div>' +
               '</div>' +
             '</div>' +
           '</div>' +
-          '<div style="font-size:14px;font-weight:900;color:#475569;margin:12px 0 6px">すうじを えらぼう：</div>' +
+
+          '<div style="font-size:14px;font-weight:900;color:#475569;margin:10px 0 6px">すうじを えらぼう：</div>' +
           '<div class="choices" id="treeChoices_' + qIdx + '" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">' + chHtml + '</div>' +
         '</div>';
     }
@@ -8334,10 +8349,15 @@ function initBattleTreeUnified(meta){
       if(targetBox){
         targetBox.textContent = val;
         targetBox.classList.add('filled');
+        targetBox.style.border = '3px solid #10b981';
+        targetBox.style.background = '#ecfdf5';
+        targetBox.style.color = '#047857';
+        targetBox.style.boxShadow = '0 4px 0 #059669';
       }
       const iconsBox = $('treeTargetIcons_' + q);
       if(iconsBox){
         iconsBox.textContent = meta.icon.repeat(parseInt(val, 10));
+        iconsBox.style.color = 'inherit';
       }
 
       (S.answers[curIdx] = S.answers[curIdx] || {})[q] = val;

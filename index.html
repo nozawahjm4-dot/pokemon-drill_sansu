@@ -4606,19 +4606,15 @@ function renderInteractiveStage(row){
         chHtml += '<button type="button" class="pd-btn choice' + selCls + '" data-q="' + idx + '" data-val="' + ch + '">' + ch + '</button>';
       });
       cardsHtml += 
-        '<div class="pd-card" style="margin-bottom:12px">' +
+        '<div class="pd-card" style="margin-bottom:12px;display:flex;align-items:center;justify-content:space-around;gap:16px;padding:12px 18px">' +
           '<div class="pd-left">' +
             '<div class="pd-icons">' + pokeHtml + '</div>' +
             '<div class="pd-label">パチリス</div>' +
             '<div class="pd-ten-frame">' + dotsHtml + '</div>' +
           '</div>' +
-          '<div class="pd-choices-box">' +
-            '<div class="pd-choices-title">すうじを えらぼう</div>' +
-            '<div class="pd-choices" id="b3_choices_' + idx + '">' + chHtml + '</div>' +
-          '</div>' +
-          '<div class="pd-write-box">' +
-            '<span class="pd-write-label">かいた すうじ</span>' +
-            '<span class="pd-write-num" id="pdWrite_b3_' + idx + '">' + (saved[idx] || '') + '</span>' +
+          '<div class="pd-choices-box" style="flex:1;display:flex;flex-direction:column;align-items:center">' +
+            '<div class="pd-choices-title" style="font-size:13px;font-weight:900;color:#475569;margin-bottom:8px">すうじを えらぼう</div>' +
+            '<div class="pd-choices" id="b3_choices_' + idx + '" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">' + chHtml + '</div>' +
           '</div>' +
         '</div>';
     });
@@ -4659,9 +4655,9 @@ function renderInteractiveStage(row){
     const topCount2 = isB5 ? 2 : 4;
 
     let p1_apples1 = '';
-    for(let k=0; k<topCount1; k++) p1_apples1 += '<span class="plate-apple">🍎</span>';
+    for(let k=0; k<topCount1; k++) p1_apples1 += '<span class="plate-apple" style="font-size:24px;line-height:1;margin:2px">🍎</span>';
     let p2_apples1 = '';
-    for(let k=0; k<topCount2; k++) p2_apples1 += '<span class="plate-apple">🍎</span>';
+    for(let k=0; k<topCount2; k++) p2_apples1 += '<span class="plate-apple" style="font-size:24px;line-height:1;margin:2px">🍎</span>';
 
     card.innerHTML = 
       '<div class="drill-book-page">' +
@@ -4673,21 +4669,21 @@ function renderInteractiveStage(row){
             '<span style="background:#ea580c;color:#fff;font-weight:900;border-radius:8px;padding:3px 10px;font-size:14px">もんだい ①</span>' +
             '<span style="font-weight:900;font-size:16px;color:#1e293b">' + (isB5 ? 'おさら1に 1こ あります。全部で5にするには おさら2に なんこ ひつよう？' : 'おさら1に 3こ あります。全部で5にするには おさら2に なんこ ひつよう？') + '</span>' +
           '</div>' +
-          '<div style="display:flex;align-items:center;justify-content:center;gap:14px;background:#fff7ed;border-radius:14px;padding:12px;margin-bottom:12px">' +
+          '<div style="display:flex;align-items:center;justify-content:center;gap:14px;background:#fff7ed;border-radius:14px;padding:14px;margin-bottom:12px">' +
             '<div style="text-align:center">' +
               '<div style="font-weight:900;color:#0284c7;font-size:13px;margin-bottom:4px">おさら 1</div>' +
-              '<div class="plate-dish" style="width:110px;height:65px;background:#fff;border:3px solid #38bdf8;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px">' + p1_apples1 + '</div>' +
+              '<div class="plate-dish" style="width:160px;min-height:95px;height:95px;background:#fff;border:3.5px solid #38bdf8;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px;padding:8px 16px;box-sizing:border-box;box-shadow:0 4px 8px rgba(0,0,0,0.06);overflow:hidden">' + p1_apples1 + '</div>' +
             '</div>' +
-            '<div style="font-size:26px;font-weight:900;color:#ea580c">＋</div>' +
+            '<div style="font-size:28px;font-weight:900;color:#ea580c">＋</div>' +
             '<div style="text-align:center">' +
               '<div style="font-weight:900;color:#0284c7;font-size:13px;margin-bottom:4px">おさら 2</div>' +
-              '<div class="plate-dish" id="p1_plateBot" style="width:110px;height:65px;background:#fff;border:3px solid #38bdf8;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px"></div>' +
+              '<div class="plate-dish" id="p1_plateBot" style="width:160px;min-height:95px;height:95px;background:#fff;border:3.5px solid #38bdf8;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px;padding:8px 16px;box-sizing:border-box;box-shadow:0 4px 8px rgba(0,0,0,0.06);overflow:hidden"></div>' +
             '</div>' +
           '</div>' +
           '<div style="text-align:center;margin-bottom:12px">' +
-            '<button type="button" class="plate-btn" id="p1_btnAdd" style="background:#ea580c;color:#fff;border:none;border-radius:10px;padding:7px 16px;font-weight:900;font-size:14px;cursor:pointer">🍎 りんごを おく</button> ' +
-            '<button type="button" class="plate-btn" id="p1_btnRemove" style="background:#64748b;color:#fff;border:none;border-radius:10px;padding:7px 16px;font-weight:900;font-size:14px;cursor:pointer">↩️ もどす</button>' +
-            '<div style="font-size:15px;font-weight:900;margin-top:6px;color:#1e293b">ぜんぶで: <span id="p1_total" style="color:#ea580c;font-size:22px">' + topCount1 + '</span> こ</div>' +
+            '<button type="button" class="plate-btn" id="p1_btnAdd" style="background:#ea580c;color:#fff;border:none;border-radius:10px;padding:8px 18px;font-weight:900;font-size:15px;cursor:pointer">🍎 りんごを おく</button> ' +
+            '<button type="button" class="plate-btn" id="p1_btnRemove" style="background:#64748b;color:#fff;border:none;border-radius:10px;padding:8px 18px;font-weight:900;font-size:15px;cursor:pointer">↩️ もどす</button>' +
+            '<div style="font-size:16px;font-weight:900;margin-top:8px;color:#1e293b">ぜんぶで: <span id="p1_total" style="color:#ea580c;font-size:24px">' + topCount1 + '</span> こ</div>' +
           '</div>' +
           '<div style="text-align:center;border-top:2px dashed #fed7aa;padding-top:12px">' +
             '<div style="font-size:14px;font-weight:900;color:#475569;margin-bottom:8px">おさら2の かずを えらぼう：</div>' +
@@ -4701,21 +4697,21 @@ function renderInteractiveStage(row){
             '<span style="background:#ea580c;color:#fff;font-weight:900;border-radius:8px;padding:3px 10px;font-size:14px">もんだい ②</span>' +
             '<span style="font-weight:900;font-size:16px;color:#1e293b">' + (isB5 ? 'おさら1に 2こ あります。全部で5にするには おさら2に なんこ ひつよう？' : 'おさら1に 4こ あります。全部で5にするには おさら2に なんこ ひつよう？') + '</span>' +
           '</div>' +
-          '<div style="display:flex;align-items:center;justify-content:center;gap:14px;background:#fff7ed;border-radius:14px;padding:12px;margin-bottom:12px">' +
+          '<div style="display:flex;align-items:center;justify-content:center;gap:14px;background:#fff7ed;border-radius:14px;padding:14px;margin-bottom:12px">' +
             '<div style="text-align:center">' +
               '<div style="font-weight:900;color:#0284c7;font-size:13px;margin-bottom:4px">おさら 1</div>' +
-              '<div class="plate-dish" style="width:110px;height:65px;background:#fff;border:3px solid #38bdf8;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px">' + p2_apples1 + '</div>' +
+              '<div class="plate-dish" style="width:160px;min-height:95px;height:95px;background:#fff;border:3.5px solid #38bdf8;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px;padding:8px 16px;box-sizing:border-box;box-shadow:0 4px 8px rgba(0,0,0,0.06);overflow:hidden">' + p2_apples1 + '</div>' +
             '</div>' +
-            '<div style="font-size:26px;font-weight:900;color:#ea580c">＋</div>' +
+            '<div style="font-size:28px;font-weight:900;color:#ea580c">＋</div>' +
             '<div style="text-align:center">' +
               '<div style="font-weight:900;color:#0284c7;font-size:13px;margin-bottom:4px">おさら 2</div>' +
-              '<div class="plate-dish" id="p2_plateBot" style="width:110px;height:65px;background:#fff;border:3px solid #38bdf8;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px"></div>' +
+              '<div class="plate-dish" id="p2_plateBot" style="width:160px;min-height:95px;height:95px;background:#fff;border:3.5px solid #38bdf8;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px;padding:8px 16px;box-sizing:border-box;box-shadow:0 4px 8px rgba(0,0,0,0.06);overflow:hidden"></div>' +
             '</div>' +
           '</div>' +
           '<div style="text-align:center;margin-bottom:12px">' +
-            '<button type="button" class="plate-btn" id="p2_btnAdd" style="background:#ea580c;color:#fff;border:none;border-radius:10px;padding:7px 16px;font-weight:900;font-size:14px;cursor:pointer">🍎 りんごを おく</button> ' +
-            '<button type="button" class="plate-btn" id="p2_btnRemove" style="background:#64748b;color:#fff;border:none;border-radius:10px;padding:7px 16px;font-weight:900;font-size:14px;cursor:pointer">↩️ もどす</button>' +
-            '<div style="font-size:15px;font-weight:900;margin-top:6px;color:#1e293b">ぜんぶで: <span id="p2_total" style="color:#ea580c;font-size:22px">' + topCount2 + '</span> こ</div>' +
+            '<button type="button" class="plate-btn" id="p2_btnAdd" style="background:#ea580c;color:#fff;border:none;border-radius:10px;padding:8px 18px;font-weight:900;font-size:15px;cursor:pointer">🍎 りんごを おく</button> ' +
+            '<button type="button" class="plate-btn" id="p2_btnRemove" style="background:#64748b;color:#fff;border:none;border-radius:10px;padding:8px 18px;font-weight:900;font-size:15px;cursor:pointer">↩️ もどす</button>' +
+            '<div style="font-size:16px;font-weight:900;margin-top:8px;color:#1e293b">ぜんぶで: <span id="p2_total" style="color:#ea580c;font-size:24px">' + topCount2 + '</span> こ</div>' +
           '</div>' +
           '<div style="text-align:center;border-top:2px dashed #fed7aa;padding-top:12px">' +
             '<div style="font-size:14px;font-weight:900;color:#475569;margin-bottom:8px">おさら2の かずを えらぼう：</div>' +
@@ -4742,19 +4738,15 @@ function renderInteractiveStage(row){
         chHtml += '<button type="button" class="pd-btn choice' + selCls + '" data-q="' + idx + '" data-val="' + ch + '">' + ch + '</button>';
       });
       cardsHtml += 
-        '<div class="pd-card" style="margin-bottom:12px">' +
+        '<div class="pd-card" style="margin-bottom:12px;display:flex;align-items:center;justify-content:space-around;gap:16px;padding:12px 18px">' +
           '<div class="pd-left">' +
             '<div class="pd-icons">' + pokeHtml + '</div>' +
             '<div class="pd-label">アンノーン</div>' +
             '<div class="pd-ten-frame">' + dotsHtml + '</div>' +
           '</div>' +
-          '<div class="pd-choices-box">' +
-            '<div class="pd-choices-title">すうじを えらぼう</div>' +
-            '<div class="pd-choices" id="b7_choices_' + idx + '">' + chHtml + '</div>' +
-          '</div>' +
-          '<div class="pd-write-box">' +
-            '<span class="pd-write-label">かいた すうじ</span>' +
-            '<span class="pd-write-num" id="pdWrite_b7_' + idx + '">' + (saved[idx] || '') + '</span>' +
+          '<div class="pd-choices-box" style="flex:1;display:flex;flex-direction:column;align-items:center">' +
+            '<div class="pd-choices-title" style="font-size:13px;font-weight:900;color:#475569;margin-bottom:8px">すうじを えらぼう</div>' +
+            '<div class="pd-choices" id="b7_choices_' + idx + '" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">' + chHtml + '</div>' +
           '</div>' +
         '</div>';
     });
@@ -4839,7 +4831,7 @@ function renderInteractiveStage(row){
       Battle16: { num: 16, name: 'ゴーゴート', furi: 'ごーごーと', id: 673, total: 10, icon: '🍃', zukan: 'ライドポケモン', type: 'くさ', h: '1.7m', w: '91.0kg', adv: '算数の要である「10の分解（1と9、2と8、3と7、4と6、5と5）」の完全マスターを目指します。' }
     }[bId];
 
-    let treesHtml = '<div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:14px;margin-bottom:14px">';
+    let treesHtml = '<div style="display:flex;flex-direction:column;gap:14px;margin-bottom:14px;width:100%">';
     for(let g=1; g<meta.total; g++){
       const qIdx = g - 1;
       const targetAns = meta.total - g;
@@ -4848,34 +4840,34 @@ function renderInteractiveStage(row){
       let chHtml = '';
       for(let c=1; c<meta.total; c++){
         const selCls = currentAns === String(c) ? ' sel' : '';
-        chHtml += '<button type="button" class="choice' + selCls + '" data-q="' + qIdx + '" data-val="' + c + '" style="font-size:16px;padding:6px 10px"><span style="font-weight:900">' + c + '</span><span style="font-size:12px;margin-left:4px">' + meta.icon.repeat(c) + '</span></button>';
+        chHtml += '<button type="button" class="choice' + selCls + '" data-q="' + qIdx + '" data-val="' + c + '" style="font-size:20px;font-weight:900;min-width:48px;height:48px;padding:0 14px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center">' + c + '</button>';
       }
 
       treesHtml += 
-        '<div class="qtree-card" style="background:#fff;border:2.5px solid #fed7aa;border-radius:16px;padding:14px;text-align:center;box-shadow:0 3px 6px rgba(0,0,0,0.05)">' +
-          '<div style="font-size:14px;font-weight:900;color:#9a3412;margin-bottom:8px">もんだい ' + g + '：' + meta.total + 'は ' + g + 'と いくつかな？</div>' +
-          '<div class="qtree-container" style="display:flex;flex-direction:column;align-items:center;margin:8px 0">' +
+        '<div class="qtree-card" style="background:#fff;border:2.5px solid #fed7aa;border-radius:16px;padding:16px 20px;text-align:center;box-shadow:0 3px 6px rgba(0,0,0,0.05);width:100%;box-sizing:border-box">' +
+          '<div style="font-size:15px;font-weight:900;color:#9a3412;margin-bottom:10px">もんだい ' + g + '：' + meta.total + 'は ' + g + 'と いくつかな？</div>' +
+          '<div class="qtree-container" style="display:flex;flex-direction:column;align-items:center;margin:10px 0">' +
             '<div style="text-align:center">' +
               '<div class="qtree-top" style="margin:0 auto"><div>' + meta.total + '</div></div>' +
-              '<div style="font-size:14px;margin-top:3px">' + meta.icon.repeat(meta.total) + '</div>' +
+              '<div style="font-size:16px;margin-top:4px">' + meta.icon.repeat(meta.total) + '</div>' +
             '</div>' +
             '<svg class="qtree-branch-svg" viewBox="0 0 90 22" style="width:90px;height:22px;margin:2px 0">' +
               '<line x1="45" y1="0" x2="22" y2="22" stroke="#222" stroke-width="2.5" stroke-linecap="round"/>' +
               '<line x1="45" y1="0" x2="68" y2="22" stroke="#222" stroke-width="2.5" stroke-linecap="round"/>' +
             '</svg>' +
-            '<div class="qtree-bottom-row" style="display:flex;align-items:flex-start;justify-content:center;gap:20px">' +
+            '<div class="qtree-bottom-row" style="display:flex;align-items:flex-start;justify-content:center;gap:24px">' +
               '<div style="text-align:center">' +
                 '<div class="qtree-box given" style="margin:0 auto"><div>' + g + '</div></div>' +
-                '<div style="font-size:13px;margin-top:3px">' + meta.icon.repeat(g) + '</div>' +
+                '<div style="font-size:15px;margin-top:4px">' + meta.icon.repeat(g) + '</div>' +
               '</div>' +
               '<div style="text-align:center">' +
                 '<div class="qtree-box target' + (currentAns ? ' filled' : '') + '" id="treeTarget_' + qIdx + '" style="margin:0 auto">' + (currentAns || '?') + '</div>' +
-                '<div style="font-size:13px;margin-top:3px" id="treeTargetIcons_' + qIdx + '">' + (currentAns ? meta.icon.repeat(parseInt(currentAns, 10)) : '❓') + '</div>' +
+                '<div style="font-size:15px;margin-top:4px" id="treeTargetIcons_' + qIdx + '">' + (currentAns ? meta.icon.repeat(parseInt(currentAns, 10)) : '❓') + '</div>' +
               '</div>' +
             '</div>' +
           '</div>' +
-          '<div style="font-size:13px;font-weight:900;color:#64748b;margin:8px 0 4px">すうじを えらぼう：</div>' +
-          '<div class="choices" id="treeChoices_' + qIdx + '" style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap">' + chHtml + '</div>' +
+          '<div style="font-size:14px;font-weight:900;color:#475569;margin:12px 0 6px">すうじを えらぼう：</div>' +
+          '<div class="choices" id="treeChoices_' + qIdx + '" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">' + chHtml + '</div>' +
         '</div>';
     }
     treesHtml += '</div>';
@@ -4898,9 +4890,8 @@ function renderInteractiveStage(row){
     qs.forEach((q, idx) => {
       let chHtml = '';
       q.choices.forEach(ch => {
-        const n = parseInt(ch, 10);
         const selCls = saved[idx] === ch ? ' sel' : '';
-        chHtml += '<button type="button" class="choice' + selCls + '" data-q="' + idx + '" data-val="' + ch + '" style="font-size:16px;padding:6px 12px"><span style="font-weight:900">' + ch + '</span><span style="font-size:13px;margin-left:4px">' + '🥚'.repeat(n) + '</span></button>';
+        chHtml += '<button type="button" class="choice' + selCls + '" data-q="' + idx + '" data-val="' + ch + '" style="font-size:20px;font-weight:900;min-width:48px;height:48px;padding:0 14px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center">' + ch + '</button>';
       });
       qsHtml += 
         '<div style="background:#fff;border:2.5px solid #fbcfe8;border-radius:16px;padding:14px">' +
@@ -4934,9 +4925,8 @@ function renderInteractiveStage(row){
     qs.forEach((q, idx) => {
       let chHtml = '';
       q.choices.forEach(ch => {
-        const n = parseInt(ch, 10);
         const selCls = saved[idx] === ch ? ' sel' : '';
-        chHtml += '<button type="button" class="choice' + selCls + '" data-q="' + idx + '" data-val="' + ch + '" style="font-size:16px;padding:6px 12px"><span style="font-weight:900">' + ch + '</span><span style="font-size:13px;margin-left:4px">' + '🍎'.repeat(n) + '</span></button>';
+        chHtml += '<button type="button" class="choice' + selCls + '" data-q="' + idx + '" data-val="' + ch + '" style="font-size:20px;font-weight:900;min-width:48px;height:48px;padding:0 14px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center">' + ch + '</button>';
       });
       qsHtml += 
         '<div style="background:#fff;border:2.5px solid #fed7aa;border-radius:16px;padding:14px">' +
@@ -4969,10 +4959,8 @@ function renderInteractiveStage(row){
     qs.forEach((q, idx) => {
       let chHtml = '';
       q.choices.forEach(ch => {
-        const n = parseInt(ch, 10);
-        const iconTxt = n === 0 ? ' (0こ)' : (' ' + q.icon.repeat(n));
         const selCls = saved[idx] === ch ? ' sel' : '';
-        chHtml += '<button type="button" class="choice' + selCls + '" data-q="' + idx + '" data-val="' + ch + '" style="font-size:16px;padding:6px 12px"><span style="font-weight:900">' + ch + '</span><span style="font-size:13px;margin-left:4px">' + iconTxt + '</span></button>';
+        chHtml += '<button type="button" class="choice' + selCls + '" data-q="' + idx + '" data-val="' + ch + '" style="font-size:20px;font-weight:900;min-width:48px;height:48px;padding:0 14px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center">' + ch + '</button>';
       });
       qsHtml += 
         '<div style="background:#fff;border:2.5px solid #cbd5e1;border-radius:16px;padding:14px">' +
@@ -8281,8 +8269,6 @@ function initBattle3Unified(shuffledNums){
       btn.classList.add('sel');
       playMarimbaPop(1.2);
 
-      const writeEl = $('pdWrite_b3_' + q);
-      if(writeEl) writeEl.textContent = val;
 
       (S.answers[curIdx] = S.answers[curIdx] || {})[q] = val;
       save();
@@ -8318,8 +8304,6 @@ function initBattle7Unified(shuffledNums){
       btn.classList.add('sel');
       playMarimbaPop(1.2);
 
-      const writeEl = $('pdWrite_b7_' + q);
-      if(writeEl) writeEl.textContent = val;
 
       (S.answers[curIdx] = S.answers[curIdx] || {})[q] = val;
       save();
@@ -8446,13 +8430,13 @@ function initAppleSplitSequential(isB5) {
 
   function renderP1() {
     let h = '';
-    for(let k=0; k<bot1; k++) h += '<span class="plate-apple">🍎</span>';
+    for(let k=0; k<bot1; k++) h += '<span class="plate-apple" style="font-size:24px;line-height:1;margin:2px">🍎</span>';
     if(p1Bot) p1Bot.innerHTML = h;
     if(p1Total) p1Total.textContent = top1 + bot1;
   }
   function renderP2() {
     let h = '';
-    for(let k=0; k<bot2; k++) h += '<span class="plate-apple">🍎</span>';
+    for(let k=0; k<bot2; k++) h += '<span class="plate-apple" style="font-size:24px;line-height:1;margin:2px">🍎</span>';
     if(p2Bot) p2Bot.innerHTML = h;
     if(p2Total) p2Total.textContent = top2 + bot2;
   }
@@ -8501,8 +8485,12 @@ function initAppleSplitSequential(isB5) {
       b.className = 'choice';
       b.style.fontSize = '17px';
       b.style.padding = '8px 14px';
-      const n = parseInt(ch, 10);
-      b.innerHTML = '<span style="font-weight:900">' + ch + '</span><span style="font-size:13px;margin-left:4px">' + '🍎'.repeat(n) + '</span>';
+      b.innerHTML = '<span style="font-weight:900;font-size:20px">' + ch + '</span>';
+      b.style.minWidth = '52px';
+      b.style.height = '48px';
+      b.style.display = 'inline-flex';
+      b.style.alignItems = 'center';
+      b.style.justifyContent = 'center';
       if(saved[0] === ch) b.classList.add('sel');
       b.onclick = () => {
         playMarimbaPop(1.2);
@@ -8526,8 +8514,12 @@ function initAppleSplitSequential(isB5) {
       b.className = 'choice';
       b.style.fontSize = '17px';
       b.style.padding = '8px 14px';
-      const n = parseInt(ch, 10);
-      b.innerHTML = '<span style="font-weight:900">' + ch + '</span><span style="font-size:13px;margin-left:4px">' + '🍎'.repeat(n) + '</span>';
+      b.innerHTML = '<span style="font-weight:900;font-size:20px">' + ch + '</span>';
+      b.style.minWidth = '52px';
+      b.style.height = '48px';
+      b.style.display = 'inline-flex';
+      b.style.alignItems = 'center';
+      b.style.justifyContent = 'center';
       if(saved[1] === ch) b.classList.add('sel');
       b.onclick = () => {
         playMarimbaPop(1.2);
@@ -10252,10 +10244,6 @@ function renderQuestionCards(row){
         '<div class="pd-choices-box">' +
           '<div class="pd-choices-title">すうじを えらぼう</div>' +
           '<div class="pd-choices">' + choicesHtml + '</div>' +
-        '</div>' +
-        '<div class="pd-write-box">' +
-          '<span class="pd-write-label">かいた すうじ</span>' +
-          '<span class="pd-write-num" id="pdWrite_' + qi + '">' + (currentVal || '') + '</span>' +
         '</div>';
 
       // ○のタップで色塗りトグル（まる塗りインタラクション）

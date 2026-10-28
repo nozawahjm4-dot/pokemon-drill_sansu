@@ -3753,7 +3753,7 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
 <div id="bg-image-layer"></div>
 
 <header id="hdr">
-  <h1>⚡ ポケモンずかんドリル<small>入学準備 さんすう</small></h1>
+  <h1>⚡ ポケモンずかんドリル<small>入学準備 さんすう <span style="background:#dcfce7;color:#15803d;padding:1px 6px;border-radius:6px;font-size:11px;font-weight:900">Ver 2.5 最新版</span></small></h1>
   <div class="hdr-spacer"></div>
   <span class="pt" id="pt">🪙 0 pt</span>
   <button class="hbtn" id="btnKana">📋 あいうえお表</button>
@@ -4031,7 +4031,12 @@ const typeList = t => (t||'ノーマル').split(/[・/、]/).map(s=>s.trim()).fi
 
 /* ================= 状態管理 ================= */
 const LS_KEY = 'pokeZukanDrill_v3';
-let S = safeGetStorage(LS_KEY, null) || { name:'', points:0, rewardsGiven:0, currentBattleIndex:0, answers:{}, cleared:[], caught:[], allClearRewarded:false };
+let S = safeGetStorage(LS_KEY, null) || { name:'', points:0, rewardsGiven:0, currentBattleIndex:0, answers:{}, cleared:[], caught:[], allClearRewarded:false, version:'2.5' };
+if(!S.version || S.version !== '2.5'){
+  S.version = '2.5';
+  S.answers = {};
+  save();
+}
 const save = () => safeSetStorage(LS_KEY, S);
 
 // 古いフォーマットの複数解答文字列（「1と7, 2と6...」など）をクリーンアップ
@@ -4441,6 +4446,7 @@ function openCatchCeremony() {
     btn.style.display = 'inline-block';
   }
   modal.classList.add('open');
+  modal.style.display = 'flex';
 }
 
 function executeThrowInDrill() {
@@ -8021,6 +8027,7 @@ function initThreeColMatch(nums, pokeId, pokeName){
           save();
           updateThrow();
           speak('ぜんぶの せんが つながったよ！ すばらしい！');
+          stampDrillSuccess();
         }
       } else {
         toast('かずが ちがうよ！ もういちど かぞえてみよう');
@@ -8105,6 +8112,7 @@ function initSequenceFill(board, correctAnswers, paletteChips){
         save();
         updateThrow();
         speak('ぜんぶの マスが ただしく ならんだよ！ すばらしい！');
+        stampDrillSuccess();
       } else {
         toast('どこかの すうじが ちがうよ！ もういちど かんがえてみよう');
       }
@@ -8236,7 +8244,10 @@ function initBattle11Compare(){
         (S.answers[curIdx] = S.answers[curIdx] || {})[sec.qIndex] = val;
         save();
         updateThrow();
-        // answer tap (no tts)
+        const a = S.answers[curIdx] || {};
+        if(a[0] === 'ユキメノコ' && a[1] === 'ユキカブリ'){
+          stampDrillSuccess();
+        }
       };
     });
 
@@ -9168,13 +9179,12 @@ function checkUnifiedCompletion(neededCount) {
 function initAchamoMatchUnified(){
   initAchamoMatch();
   // もんだい②と③の選択肢ボタン
-  const saved = S.answers[curIdx] || {};
   const q2Box = $('b1_q2_choices');
   if(q2Box){
     q2Box.innerHTML = '';
     ['りんご', 'アチャモ'].forEach(ch => {
       const b = document.createElement('button');
-      b.className = 'choice' + (saved[1] === ch ? ' sel' : '');
+      b.className = 'choice' + ((S.answers[curIdx]||{})[1] === ch ? ' sel' : '');
       b.textContent = ch;
       b.style.fontSize = '16px';
       b.style.padding = '8px 16px';
@@ -9185,7 +9195,8 @@ function initAchamoMatchUnified(){
         (S.answers[curIdx] = S.answers[curIdx] || {})[1] = ch;
         save();
         updateThrow();
-        if(saved[1] === 'りんご' && saved[2] === 'たりる') stampDrillSuccess();
+        const a = S.answers[curIdx] || {};
+        if(a[1] === 'りんご' && a[2] === 'たりる') stampDrillSuccess();
       };
       q2Box.appendChild(b);
     });
@@ -9196,7 +9207,7 @@ function initAchamoMatchUnified(){
     q3Box.innerHTML = '';
     ['たりる', 'たりない'].forEach(ch => {
       const b = document.createElement('button');
-      b.className = 'choice' + (saved[2] === ch ? ' sel' : '');
+      b.className = 'choice' + ((S.answers[curIdx]||{})[2] === ch ? ' sel' : '');
       b.textContent = ch;
       b.style.fontSize = '16px';
       b.style.padding = '8px 16px';
@@ -9207,7 +9218,8 @@ function initAchamoMatchUnified(){
         (S.answers[curIdx] = S.answers[curIdx] || {})[2] = ch;
         save();
         updateThrow();
-        if(saved[1] === 'りんご' && saved[2] === 'たりる') stampDrillSuccess();
+        const a = S.answers[curIdx] || {};
+        if(a[1] === 'りんご' && a[2] === 'たりる') stampDrillSuccess();
       };
       q3Box.appendChild(b);
     });
@@ -9216,13 +9228,12 @@ function initAchamoMatchUnified(){
 
 function initBattle2Unified(){
   initBattle2Count();
-  const saved = S.answers[curIdx] || {};
   const q1Box = $('b2_q1_choices');
   if(q1Box){
     q1Box.innerHTML = '';
     ['4', '5', '6', '7'].forEach(ch => {
       const b = document.createElement('button');
-      b.className = 'choice' + (saved[0] === ch ? ' sel' : '');
+      b.className = 'choice' + ((S.answers[curIdx]||{})[0] === ch ? ' sel' : '');
       b.textContent = ch + 'ひき';
       b.style.fontSize = '16px';
       b.style.padding = '8px 14px';
@@ -9233,7 +9244,8 @@ function initBattle2Unified(){
         (S.answers[curIdx] = S.answers[curIdx] || {})[0] = ch;
         save();
         updateThrow();
-        if(saved[0] === '6' && saved[1] === '7') stampDrillSuccess();
+        const a = S.answers[curIdx] || {};
+        if(a[0] === '6' && a[1] === '7') stampDrillSuccess();
       };
       q1Box.appendChild(b);
     });
@@ -9244,7 +9256,7 @@ function initBattle2Unified(){
     q2Box.innerHTML = '';
     ['5', '6', '7', '8'].forEach(ch => {
       const b = document.createElement('button');
-      b.className = 'choice' + (saved[1] === ch ? ' sel' : '');
+      b.className = 'choice' + ((S.answers[curIdx]||{})[1] === ch ? ' sel' : '');
       b.textContent = ch + 'ひき';
       b.style.fontSize = '16px';
       b.style.padding = '8px 14px';
@@ -9255,7 +9267,8 @@ function initBattle2Unified(){
         (S.answers[curIdx] = S.answers[curIdx] || {})[1] = ch;
         save();
         updateThrow();
-        if(saved[0] === '6' && saved[1] === '7') stampDrillSuccess();
+        const a = S.answers[curIdx] || {};
+        if(a[0] === '6' && a[1] === '7') stampDrillSuccess();
       };
       q2Box.appendChild(b);
     });
@@ -9517,6 +9530,10 @@ function initAppleSplitSequential(isB5) {
         S.answers[curIdx][0] = ch;
         save();
         updateThrow();
+        const a = S.answers[curIdx] || {};
+        const exp1 = String(5 - top1);
+        const exp2 = String(5 - top2);
+        if(a[0] === exp1 && a[1] === exp2) stampDrillSuccess();
       };
       p1Box.appendChild(b);
     });
@@ -9546,6 +9563,10 @@ function initAppleSplitSequential(isB5) {
         S.answers[curIdx][1] = ch;
         save();
         updateThrow();
+        const a = S.answers[curIdx] || {};
+        const exp1 = String(5 - top1);
+        const exp2 = String(5 - top2);
+        if(a[0] === exp1 && a[1] === exp2) stampDrillSuccess();
       };
       p2Box.appendChild(b);
     });
@@ -9586,6 +9607,7 @@ function initSequenceFill(board, correctAnswers, paletteChips){
         save();
         updateThrow();
         speak('ぜんぶの マスが ただしく ならんだよ！ すばらしい！');
+        stampDrillSuccess();
       } else {
         toast('どこかの すうじが ちがうよ！ もういちど かんがえてみよう');
       }
@@ -9717,7 +9739,10 @@ function initBattle11Compare(){
         (S.answers[curIdx] = S.answers[curIdx] || {})[sec.qIndex] = val;
         save();
         updateThrow();
-        // answer tap (no tts)
+        const a = S.answers[curIdx] || {};
+        if(a[0] === 'ユキメノコ' && a[1] === 'ユキカブリ'){
+          stampDrillSuccess();
+        }
       };
     });
 
@@ -11391,60 +11416,7 @@ function backToMap(){
 }
 
 function throwBall(){
-  const a = S.answers[curIdx] || {};
-  const neededQs = curQs.filter(q => !q.isInteractiveOnly);
-  if(!neededQs.every(q => a[curQs.indexOf(q)] != null)) return;
-
-  const wrong = neededQs.some(q => a[curQs.indexOf(q)] !== q.ans);
-  if(wrong){
-    alert('おしい！もう一度考えてみて！');
-    return;
-  }
-
-  $('btnThrow').disabled = true;
-  const btn = $('btnThrow').getBoundingClientRect();
-  const img = (document.querySelector('#bInteractiveCard .drill-header-avatar')) || $('bPoke');
-  img.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-  setTimeout(() => {
-    const p = img.getBoundingClientRect();
-    const ball = document.createElement('div');
-    ball.className = 'ball';
-    document.body.appendChild(ball);
-
-    const sx = btn.left + btn.width / 2 - 28, sy = btn.top - 28;
-    const ex = p.left + p.width / 2 - 28, ey = p.top + p.height / 2 - 28;
-
-    ball.animate([
-      { transform: `translate(${sx}px,${sy}px) rotate(0)` },
-      { transform: `translate(${(sx+ex)/2}px,${Math.min(sy,ey)-160}px) rotate(540deg)` },
-      { transform: `translate(${ex}px,${ey}px) rotate(1080deg)` }
-    ], { duration: 800, easing: 'ease-out', fill: 'forwards' })
-    .onfinish = () => {
-      img.classList.add('caught');
-      ball.style.transform = '';
-      ball.style.left = ex + 'px';
-      ball.style.top = (ey + 40) + 'px';
-      ball.getAnimations().forEach(x => x.cancel());
-      ball.classList.add('shake');
-
-      setTimeout(() => {
-        for(let k = 0; k < 8; k++){
-          const s = document.createElement('div');
-          s.className = 'stars';
-          s.textContent = '⭐';
-          s.style.left = (ex + 14) + 'px';
-          s.style.top = (ey + 50) + 'px';
-          s.style.setProperty('--dx', (Math.cos(k / 8 * 6.28) * 110) + 'px');
-          s.style.setProperty('--dy', (Math.sin(k / 8 * 6.28) * 110) + 'px');
-          document.body.appendChild(s);
-          setTimeout(() => s.remove(), 1000);
-        }
-        ball.remove();
-        onCaught();
-      }, 1600);
-    };
-  }, 350);
+  openCatchCeremony();
 }
 
 function onCaught(){

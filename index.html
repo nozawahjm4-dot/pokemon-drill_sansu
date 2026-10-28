@@ -2710,6 +2710,146 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
   z-index: 1;
 }
 
+/* ===== BATTLE 20: ピカチュウ 道路迷路スタイル ===== */
+.b20-road-h {
+  flex: 1;
+  height: 28px;
+  background: #fef08a;
+  border-top: 3px solid #ca8a04;
+  border-bottom: 3px solid #ca8a04;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  z-index: 1;
+}
+.b20-road-h::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 50%;
+  border-top: 2.5px dashed #b45309;
+}
+
+/* ===== BATTLE 21: アブリボン拡大＆10のまとまり ===== */
+.b21-ribombee-card {
+  width: 72px;
+  height: 72px;
+  background: #ffffff;
+  border: 3px solid #fde047;
+  border-radius: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 5px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.06);
+  position: relative;
+  user-select: none;
+}
+.b21-ribombee-card img {
+  width: 58px;
+  height: 58px;
+  object-fit: contain;
+  transition: transform 0.2s;
+  pointer-events: none;
+}
+.b21-ribombee-card:hover {
+  transform: translateY(-2px) scale(1.05);
+}
+.b21-ribombee-card.selected {
+  background: #fef9c3 !important;
+  border-color: #ca8a04 !important;
+  box-shadow: 0 0 0 3px #facc15, 0 4px 8px rgba(202, 138, 4, 0.3) !important;
+  transform: scale(1.08);
+}
+.b21-ribombee-card.selected::after {
+  content: "✓";
+  position: absolute;
+  top: 2px;
+  right: 4px;
+  font-size: 13px;
+  font-weight: 900;
+  color: #ca8a04;
+}
+.b21-bundle-wrap {
+  border: 3.5px dashed #16a34a !important;
+  background: rgba(220, 252, 231, 0.7) !important;
+  border-radius: 22px !important;
+  padding: 10px 14px !important;
+  box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.2), 0 8px 16px rgba(22, 163, 74, 0.15) !important;
+}
+
+/* ===== BATTLE 23: 方向矢印バッジ ===== */
+.b23-dir-arrow {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  font-size: 11px;
+  font-weight: 900;
+  color: #ca8a04;
+  opacity: 0.9;
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* ===== BATTLE 24: 比較ボタン＆パン枠 ===== */
+.b24-bundle-ring {
+  border: 3.5px dashed #16a34a !important;
+  border-radius: 18px !important;
+  background: rgba(220, 252, 231, 0.5) !important;
+  box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.2) !important;
+  padding: 6px !important;
+}
+.b24-tap-item {
+  font-size: 32px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin: 3px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+  transition: all 0.15s;
+  user-select: none;
+}
+.b24-tap-item:hover {
+  transform: scale(1.1);
+}
+.b24-tap-item.selected {
+  background: #fef9c3 !important;
+  border-color: #f59e0b !important;
+  box-shadow: 0 0 0 3px #fbbf24 !important;
+  transform: scale(1.12);
+}
+.b24-comp-btn {
+  background: #ffffff;
+  border: 3px solid #cbd5e1;
+  border-radius: 14px;
+  padding: 10px 24px;
+  font-size: 19px;
+  font-weight: 900;
+  color: #1e293b;
+  box-shadow: 0 4px 0 #94a3b8;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.b24-comp-btn:hover {
+  transform: translateY(-2px);
+}
+.b24-comp-btn.selected {
+  background: #dbeafe !important;
+  border-color: #2563eb !important;
+  color: #1e40af !important;
+  box-shadow: 0 4px 0 #1d4ed8 !important;
+  transform: translateY(2px);
+}
+
 /* ===== BATTLE 29: ニャルマー 虹とはらっぱ風景 ===== */
 .b29-scene-card {
   position: relative;
@@ -5034,9 +5174,9 @@ function renderInteractiveStage(row){
       '</div>';
     initBattle19Unified(qs);
   } else if(bId === 'Battle20'){
-    // ピカチュウ 1〜10のまとめ 7つの数の木迷路（原本Battle20.jpg完全再現・t-math-box & テンキートレイ連携）
+    // ピカチュウ 1〜10のまとめ 7つの数の木迷路（道路迷路・原本Battle20.jpg完全再現）
     function makeMazeTree(total, given, ans, stepNum) {
-      return '<div style="background:#fff;border:3px solid #f59e0b;border-radius:14px;padding:8px 6px;text-align:center;box-shadow:0 3px 6px rgba(0,0,0,0.08);min-width:96px">' +
+      return '<div style="background:#fff;border:3px solid #f59e0b;border-radius:14px;padding:8px 6px;text-align:center;box-shadow:0 3px 6px rgba(0,0,0,0.08);min-width:96px;position:relative">' +
         '<div style="background:#fbcfe8;border:2px solid #db2777;border-radius:8px;font-size:22px;font-weight:900;color:#9d174d;width:42px;margin:0 auto 3px">' + total + '</div>' +
         '<svg width="54" height="16" viewBox="0 0 54 16" style="display:block;margin:0 auto">' +
           '<line x1="27" y1="0" x2="14" y2="16" stroke="#333" stroke-width="2.5"/>' +
@@ -5058,47 +5198,51 @@ function renderInteractiveStage(row){
     card.innerHTML = 
       '<div class="drill-book-page">' +
         makeDrillBookHeader(20, 'ピカチュウ', 'ぴかちゅう', '1〜10の まとめ', '□の かずは、それぞれ いくつと いくつでしょう。すうじを いれて、スタートから ゴールまで すすみましょう。', 25) +
-        '<div style="background:#bbf7d0;border:3px solid #16a34a;border-radius:20px;padding:16px 12px;margin-bottom:14px;box-shadow:inset 0 2px 6px rgba(0,0,0,0.08)">' +
-          '<!-- Row 1: スタート -> 6(1, 5) -> 9(3, 6) -->' +
-          '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">' +
-            '<div style="display:flex;flex-direction:column;align-items:center">' +
-              '<span style="font-size:13px;font-weight:900;color:#dc2626;background:#fff;padding:2px 6px;border-radius:6px;border:2px solid #dc2626">🚩 スタート</span>' +
-              '<img src="' + ART(25) + '" alt="ピカチュウ" style="width:58px;height:58px;object-fit:contain">' +
+        '<div style="background:#86efac;border:3.5px solid #15803d;border-radius:24px;padding:16px 12px;margin-bottom:14px;box-shadow:inset 0 3px 8px rgba(0,0,0,0.1);position:relative">' +
+          '<!-- Row 1: スタート ➔ 6(1, 5) ➔ 9(3, 6) -->' +
+          '<div style="display:flex;align-items:center;justify-content:space-between;position:relative">' +
+            '<div style="display:flex;flex-direction:column;align-items:center;z-index:2;background:#fff;border:3px solid #dc2626;border-radius:14px;padding:6px 10px;box-shadow:0 3px 6px rgba(0,0,0,0.1)">' +
+              '<span style="font-size:12px;font-weight:900;color:#dc2626">🚩 スタート</span>' +
+              '<img src="' + ART(25) + '" alt="ピカチュウ" style="width:52px;height:52px;object-fit:contain">' +
             '</div>' +
-            '<span style="font-size:20px;font-weight:900;color:#15803d">➡️</span>' +
-            makeMazeTree(6, 1, '5', 1) +
-            '<span style="font-size:20px;font-weight:900;color:#15803d">➡️</span>' +
-            makeMazeTree(9, 3, '6', 2) +
+            '<div class="b20-road-h"></div>' +
+            '<div style="z-index:2">' + makeMazeTree(6, 1, '5', 1) + '</div>' +
+            '<div class="b20-road-h"></div>' +
+            '<div style="z-index:2">' + makeMazeTree(9, 3, '6', 2) + '</div>' +
           '</div>' +
 
-          '<!-- 右端の折り返し下向き矢印 -->' +
-          '<div style="text-align:right;padding-right:45px;margin:-4px 0">' +
-            '<span style="font-size:22px;font-weight:900;color:#15803d">⬇️</span>' +
+          '<!-- 右端の折り返し道路 -->' +
+          '<div style="display:flex;justify-content:flex-end;padding-right:32px;margin:-4px 0">' +
+            '<div style="width:36px;height:42px;border-right:26px solid #fef08a;border-top:3px solid #ca8a04;border-bottom:3px solid #ca8a04;border-right:3px solid #ca8a04;border-radius:0 24px 24px 0;background:#fef08a;position:relative">' +
+              '<div style="position:absolute;right:8px;top:0;bottom:0;border-right:2.5px dashed #b45309"></div>' +
+            '</div>' +
           '</div>' +
 
-          '<!-- Row 2: 7(5, 2) -> 10(7, 3) -> 8(4, 4) -->' +
-          '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">' +
-            makeMazeTree(7, 5, '2', 3) +
-            '<span style="font-size:20px;font-weight:900;color:#15803d">➡️</span>' +
-            makeMazeTree(10, 7, '3', 4) +
-            '<span style="font-size:20px;font-weight:900;color:#15803d">➡️</span>' +
-            makeMazeTree(8, 4, '4', 5) +
+          '<!-- Row 2: 7(5, 2) 🠔 10(7, 3) 🠔 8(4, 4) -->' +
+          '<div style="display:flex;align-items:center;justify-content:space-between;position:relative;flex-direction:row-reverse">' +
+            '<div style="z-index:2">' + makeMazeTree(8, 4, '4', 3) + '</div>' +
+            '<div class="b20-road-h"></div>' +
+            '<div style="z-index:2">' + makeMazeTree(10, 7, '3', 4) + '</div>' +
+            '<div class="b20-road-h"></div>' +
+            '<div style="z-index:2">' + makeMazeTree(7, 5, '2', 5) + '</div>' +
           '</div>' +
 
-          '<!-- 左端の折り返し下向き矢印 -->' +
-          '<div style="text-align:right;padding-right:45px;margin:-4px 0">' +
-            '<span style="font-size:22px;font-weight:900;color:#15803d">⬇️</span>' +
+          '<!-- 左端の折り返し道路 -->' +
+          '<div style="display:flex;justify-content:flex-start;padding-left:32px;margin:-4px 0">' +
+            '<div style="width:36px;height:42px;border-left:26px solid #fef08a;border-top:3px solid #ca8a04;border-bottom:3px solid #ca8a04;border-left:3px solid #ca8a04;border-radius:24px 0 0 24px;background:#fef08a;position:relative">' +
+              '<div style="position:absolute;left:8px;top:0;bottom:0;border-left:2.5px dashed #b45309"></div>' +
+            '</div>' +
           '</div>' +
 
-          '<!-- Row 3: 9(5, 4) -> 10(8, 2) -> ゴール -->' +
-          '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px">' +
-            makeMazeTree(9, 5, '4', 6) +
-            '<span style="font-size:20px;font-weight:900;color:#15803d">➡️</span>' +
-            makeMazeTree(10, 8, '2', 7) +
-            '<span style="font-size:20px;font-weight:900;color:#15803d">➡️</span>' +
-            '<div style="display:flex;flex-direction:column;align-items:center">' +
-              '<span style="font-size:13px;font-weight:900;color:#2563eb;background:#fff;padding:2px 6px;border-radius:6px;border:2px solid #2563eb">🏆 ゴール！</span>' +
-              '<img src="' + ART(25) + '" alt="ピカチュウ" style="width:64px;height:64px;object-fit:contain;transform:scaleX(-1)">' +
+          '<!-- Row 3: 9(5, 4) ➔ 10(8, 2) ➔ ゴール -->' +
+          '<div style="display:flex;align-items:center;justify-content:space-between;position:relative">' +
+            '<div style="z-index:2">' + makeMazeTree(9, 5, '4', 6) + '</div>' +
+            '<div class="b20-road-h"></div>' +
+            '<div style="z-index:2">' + makeMazeTree(10, 8, '2', 7) + '</div>' +
+            '<div class="b20-road-h"></div>' +
+            '<div style="display:flex;flex-direction:column;align-items:center;z-index:2;background:#fff;border:3px solid #2563eb;border-radius:14px;padding:6px 10px;box-shadow:0 3px 6px rgba(0,0,0,0.1)">' +
+              '<span style="font-size:12px;font-weight:900;color:#2563eb">🏆 ゴール！</span>' +
+              '<img src="' + ART(25) + '" alt="ピカチュウ" style="width:52px;height:52px;object-fit:contain;transform:scaleX(-1)">' +
             '</div>' +
           '</div>' +
         '</div>' +
@@ -5108,14 +5252,12 @@ function renderInteractiveStage(row){
 
     initBattle20Pikachu();
   } else if(bId === 'Battle21'){
-    // アブリボン 10よりおおきいかず（原本Battle21.jpg完全再現・タッチで10のまとまり枠出現・余計な丸排除・t-math-box連携）
-    let tenHtml = '';
-    for(let k = 0; k < 10; k++){
-      tenHtml += '<img src="' + ART(743) + '" alt="アブリボン" style="width:44px;height:44px;object-fit:contain;margin:2px">';
-    }
-    let fourHtml = '';
-    for(let k = 0; k < 4; k++){
-      fourHtml += '<img src="' + ART(743) + '" alt="アブリボン" style="width:44px;height:44px;object-fit:contain;margin:2px">';
+    // アブリボン 10よりおおきいかず（原本Battle21.jpg完全再現・14体拡大・10匹選択で枠出現・t-math-box / 選択肢連携）
+    let ribombeeHtml = '';
+    for(let k = 0; k < 14; k++){
+      ribombeeHtml += '<div class="b21-ribombee-card" data-idx="' + k + '">' +
+        '<img src="' + ART(743) + '" alt="アブリボン">' +
+      '</div>';
     }
 
     let trayHtml = '<div class="num-choice-tray" style="margin-top:14px;justify-content:center;gap:8px">';
@@ -5126,26 +5268,23 @@ function renderInteractiveStage(row){
 
     card.innerHTML = 
       '<div class="drill-book-page">' +
-        makeDrillBookHeader(21, 'アブリボン', 'あぶりぼん', '10より おおきい かず', '□の なかの アブリボンを 10の まとまりで かこみましょう。アブリボンの かずは ぜんぶで なんびきかな？', 743) +
-        '<div id="b21RibombeeArea" style="background:#fefce8;border:3px solid #facc15;border-radius:20px;padding:14px;margin-bottom:14px;cursor:pointer;text-align:center">' +
-          '<div style="font-size:14px;font-weight:900;color:#854d0e;margin-bottom:10px">👆 ここを タッチすると、10の まとまりの わくが でてくるよ！</div>' +
-          '<div style="display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:16px">' +
-            '<div id="b21Bundle10" style="border:3px dashed #94a3b8;border-radius:18px;padding:8px 12px;background:rgba(255,255,255,0.7);transition:all .3s;max-width:260px">' +
-              '<div style="display:flex;flex-wrap:wrap;justify-content:center;gap:4px">' + tenHtml + '</div>' +
-              '<div style="font-size:12px;font-weight:900;color:#15803d;margin-top:4px">10の まとまり</div>' +
-            '</div>' +
-            '<div style="border:2px solid transparent;padding:8px;max-width:120px">' +
-              '<div style="display:flex;flex-wrap:wrap;justify-content:center;gap:4px">' + fourHtml + '</div>' +
-              '<div style="font-size:12px;font-weight:900;color:#b45309;margin-top:4px">ばら 4ひき</div>' +
-            '</div>' +
+        makeDrillBookHeader(21, 'アブリボン', 'あぶりぼん', '10より おおきい かず', 'アブリボンを 10ぴき タッチして 10の まとまりを つくろう。ぜんぶで なんびきかな？', 743) +
+        '<div id="b21RibombeeArea" style="background:#fefce8;border:3px solid #facc15;border-radius:20px;padding:16px 14px;margin-bottom:14px;text-align:center">' +
+          '<div style="font-size:15px;font-weight:900;color:#854d0e;margin-bottom:12px">' +
+            '👆 アブリボンを タップして 10ぴき えらぼう（えらんだかず：<span id="b21Count" style="color:#d97706;font-size:22px;margin:0 4px">0</span> / 10 ぴき）' +
           '</div>' +
-          '<div id="b21LoopMsg" style="display:none;margin-top:10px;font-size:15px;font-weight:900;color:#15803d">✨ 10の まとまりが できたよ！（10と 4で…？）</div>' +
+          '<div id="b21CardsWrap" style="display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px;max-width:560px;margin:0 auto;padding:8px;border-radius:18px;transition:all 0.3s">' +
+            ribombeeHtml +
+          '</div>' +
+          '<div id="b21LoopMsg" style="display:none;margin-top:12px;font-size:16px;font-weight:900;color:#15803d;background:#dcfce7;border:2px solid #86efac;border-radius:12px;padding:8px 14px;display:inline-block">' +
+            '✨ 10の まとまりが できたよ！（10と のこり 4ひきで…？）' +
+          '</div>' +
         '</div>' +
 
-        '<div style="background:#fff;border:2.5px solid #cbd5e1;border-radius:16px;padding:14px;text-align:center;margin-bottom:14px">' +
-          '<div style="font-size:18px;font-weight:900;color:#1e293b;display:flex;align-items:center;justify-content:center;gap:8px">' +
+        '<div style="background:#fff;border:2.5px solid #cbd5e1;border-radius:16px;padding:16px;text-align:center;margin-bottom:14px">' +
+          '<div style="font-size:19px;font-weight:900;color:#1e293b;display:flex;align-items:center;justify-content:center;gap:10px">' +
             '<span>アブリボンの かずは、</span>' +
-            '<div class="t-math-box" data-target="14" style="width:64px;height:56px;font-size:26px;border:2.5px dashed #2563eb;border-radius:8px;background:#eff6ff;display:flex;align-items:center;justify-content:center;cursor:pointer">？</div>' +
+            '<div class="t-math-box" data-target="14" style="width:68px;height:58px;font-size:28px;border:2.5px dashed #2563eb;border-radius:10px;background:#eff6ff;display:flex;align-items:center;justify-content:center;cursor:pointer">？</div>' +
             '<span>ひき です。</span>' +
           '</div>' +
         '</div>' +
@@ -5154,50 +5293,100 @@ function renderInteractiveStage(row){
       '</div>';
 
     initBattle21Ribombee();
+  } else if(bId === 'Battle22'){
+    // ウオノラゴン 11から20のかず（原本完全再現・教科書UI・モンスターボール10のまとまり）
+    const qs = [
+      { qNum: 1, count: 11, ans: '11', choices: ['11', '12', '13', '14', '15'] },
+      { qNum: 2, count: 12, ans: '12', choices: ['11', '12', '13', '14', '15'] },
+      { qNum: 3, count: 13, ans: '13', choices: ['11', '12', '13', '14', '15'] },
+      { qNum: 4, count: 14, ans: '14', choices: ['11', '12', '13', '14', '15'] },
+      { qNum: 5, count: 15, ans: '15', choices: ['11', '12', '13', '14', '15'] }
+    ];
+
+    let qsHtml = '<div style="display:flex;flex-direction:column;gap:16px;margin-bottom:14px;width:100%">';
+    qs.forEach((q, idx) => {
+      const currentAns = saved[idx] || '';
+      let chHtml = '';
+      q.choices.forEach(ch => {
+        const selCls = currentAns === ch ? ' sel' : '';
+        chHtml += '<button type="button" class="choice' + selCls + '" data-q="' + idx + '" data-val="' + ch + '" style="font-size:20px;font-weight:900;min-width:48px;height:48px;padding:0 14px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center">' + ch + '</button>';
+      });
+
+      qsHtml += 
+        '<div class="b22-card" style="background:#fff;border:2.5px solid #fed7aa;border-radius:18px;padding:16px 18px;box-shadow:0 3px 6px rgba(0,0,0,0.05);text-align:center">' +
+          '<div style="font-size:16px;font-weight:900;color:#9a3412;margin-bottom:8px;text-align:left">もんだい ' + ['①','②','③','④','⑤'][idx] + '：モンスターボールを かぞえて、すうじを えらぼう。</div>' +
+          makeMonsterBallBox(q.count) +
+          '<div style="display:flex;align-items:center;justify-content:center;gap:12px;margin:12px 0;flex-wrap:wrap">' +
+            '<span style="font-size:16px;font-weight:900;color:#1e293b">モンスターボール：</span>' +
+            '<div class="drill-blank-box' + (currentAns ? ' filled' : '') + '" id="b22_target_' + idx + '" style="min-width:54px;height:48px;font-size:24px;font-weight:900;display:inline-flex;align-items:center;justify-content:center;border-radius:10px">' + (currentAns || '？') + '</div>' +
+            '<span style="font-size:16px;font-weight:900;color:#1e293b">こ</span>' +
+          '</div>' +
+          '<div style="font-size:14px;font-weight:900;color:#475569;margin:8px 0 6px">すうじを えらぼう：</div>' +
+          '<div class="choices" id="b22_choices_' + idx + '" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">' + chHtml + '</div>' +
+        '</div>';
+    });
+    qsHtml += '</div>';
+
+    card.innerHTML = 
+      '<div class="drill-book-page">' +
+        makeDrillBookHeader(22, 'ウオノラゴン', 'うおのらごん', '11から 20の かず', 'モンスターボールを かぞえて、したの しかく [ ？ ] に すうじを えらぼう。', 882) +
+        qsHtml +
+        makeDrillBookFooter('ウオノラゴン', 'かせきポケモン', 'みず・ドラゴン', '2.3m', '215.0kg', '10のまとまりと、あといくつあるかで、11から20までの数を正しく数えられるようにします。', 882) +
+      '</div>';
+
+    initBattle22Unified(qs);
   } else if(bId === 'Battle23'){
-    // ドダイトス 5x5草地めいろ（原本完全再現）
+    // ドダイトス 5x5草地めいろ（原本完全再現・1〜20接続ライン＆矢印表示）
     const pathCells = [
-      { step: 1, r: 0, c: 1, printed: 1 },
-      { step: 2, r: 0, c: 2, blank: 2 },
-      { step: 3, r: 0, c: 3, blank: 3 },
-      { step: 4, r: 0, c: 4, printed: 4 },
-      { step: 5, r: 1, c: 4, blank: 5 },
-      { step: 6, r: 2, c: 4, blank: 6 },
-      { step: 7, r: 2, c: 3, printed: 7 },
-      { step: 8, r: 1, c: 3, blank: 8 },
-      { step: 9, r: 1, c: 2, printed: 9 },
-      { step: 10, r: 1, c: 1, blank: 10 },
-      { step: 11, r: 1, c: 0, blank: 11 },
-      { step: 12, r: 2, c: 0, blank: 12 },
-      { step: 13, r: 2, c: 1, printed: 13 },
-      { step: 14, r: 2, c: 2, blank: 14 },
-      { step: 15, r: 3, c: 2, printed: 15 },
-      { step: 16, r: 3, c: 1, blank: 16 },
-      { step: 17, r: 3, c: 0, blank: 17 },
-      { step: 18, r: 4, c: 0, printed: 18 },
-      { step: 19, r: 4, c: 1, blank: 19 },
-      { step: 20, r: 4, c: 2, blank: 20 }
+      { step: 1, r: 0, c: 1, printed: 1, dir: '➔' },
+      { step: 2, r: 0, c: 2, blank: 2, dir: '➔' },
+      { step: 3, r: 0, c: 3, blank: 3, dir: '➔' },
+      { step: 4, r: 0, c: 4, printed: 4, dir: '⬇️' },
+      { step: 5, r: 1, c: 4, blank: 5, dir: '⬇️' },
+      { step: 6, r: 2, c: 4, blank: 6, dir: '⬅️' },
+      { step: 7, r: 2, c: 3, printed: 7, dir: '⬆️' },
+      { step: 8, r: 1, c: 3, blank: 8, dir: '⬅️' },
+      { step: 9, r: 1, c: 2, printed: 9, dir: '⬅️' },
+      { step: 10, r: 1, c: 1, blank: 10, dir: '⬅️' },
+      { step: 11, r: 1, c: 0, blank: 11, dir: '⬇️' },
+      { step: 12, r: 2, c: 0, blank: 12, dir: '➔' },
+      { step: 13, r: 2, c: 1, printed: 13, dir: '➔' },
+      { step: 14, r: 2, c: 2, blank: 14, dir: '⬇️' },
+      { step: 15, r: 3, c: 2, printed: 15, dir: '⬅️' },
+      { step: 16, r: 3, c: 1, blank: 16, dir: '⬅️' },
+      { step: 17, r: 3, c: 0, blank: 17, dir: '⬇️' },
+      { step: 18, r: 4, c: 0, printed: 18, dir: '➔' },
+      { step: 19, r: 4, c: 1, blank: 19, dir: '➔' },
+      { step: 20, r: 4, c: 2, blank: 20, dir: '➔' }
     ];
 
     let gridHtml = '';
+    // SVG road overlay connecting 1 to 20
+    gridHtml += '<svg viewBox="0 0 500 500" class="b23-road-svg" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1">' +
+      '<path d="M 50,50 L 150,50 L 250,50 L 350,50 L 450,50 L 450,150 L 450,250 L 350,250 L 350,150 L 250,150 L 150,150 L 50,150 L 50,250 L 150,250 L 250,250 L 250,350 L 150,350 L 50,350 L 50,450 L 150,450 L 250,450 L 400,400" fill="none" stroke="#ca8a04" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>' +
+      '<path d="M 50,50 L 150,50 L 250,50 L 350,50 L 450,50 L 450,150 L 450,250 L 350,250 L 350,150 L 250,150 L 150,150 L 50,150 L 50,250 L 150,250 L 250,250 L 250,350 L 150,350 L 50,350 L 50,450 L 150,450 L 250,450 L 400,400" fill="none" stroke="#fef08a" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>' +
+      '<path d="M 50,50 L 150,50 L 250,50 L 350,50 L 450,50 L 450,150 L 450,250 L 350,250 L 350,150 L 250,150 L 150,150 L 50,150 L 50,250 L 150,250 L 250,250 L 250,350 L 150,350 L 50,350 L 50,450 L 150,450 L 250,450 L 400,400" fill="none" stroke="#b45309" stroke-width="3" stroke-dasharray="8 6" stroke-linecap="round" stroke-linejoin="round"/>' +
+    '</svg>';
+
     // (0,0) Start Turtwig
-    gridHtml += '<div class="b23-cell b23-start-cell" style="grid-column:1;grid-row:1">' +
+    gridHtml += '<div class="b23-cell b23-start-cell" style="grid-column:1;grid-row:1;z-index:2">' +
       '<img src="' + ART(387) + '" alt="ナエトル">' +
       '<span class="b23-start-label">スタート➔</span>' +
     '</div>';
 
-    // 20 path cells
+    // 20 path cells with direction arrows
     pathCells.forEach(p => {
       const isPr = p.printed !== undefined;
       const col = p.c + 1;
       const rowNum = p.r + 1;
-      gridHtml += '<div class="b23-cell ' + (isPr ? 'printed' : 'blank') + '" id="b23_cell_' + p.step + '" data-step="' + p.step + '" data-ans="' + (isPr ? p.printed : p.blank) + '" style="grid-column:' + col + ';grid-row:' + rowNum + '">' +
+      gridHtml += '<div class="b23-cell ' + (isPr ? 'printed' : 'blank') + '" id="b23_cell_' + p.step + '" data-step="' + p.step + '" data-ans="' + (isPr ? p.printed : p.blank) + '" style="grid-column:' + col + ';grid-row:' + rowNum + ';z-index:2">' +
+        '<span class="b23-dir-arrow">' + p.dir + '</span>' +
         (isPr ? p.printed : '？') +
       '</div>';
     });
 
     // (3,3)-(4,4) Goal Torterra (2x2)
-    gridHtml += '<div class="b23-goal-zone" style="grid-column:4/span 2;grid-row:4/span 2">' +
+    gridHtml += '<div class="b23-goal-zone" style="grid-column:4/span 2;grid-row:4/span 2;z-index:2">' +
       '<span class="b23-goal-tag">ゴール！🏆</span>' +
       '<img src="' + ART(389) + '" id="b23TorterraGoal" alt="ドダイトス">' +
     '</div>';
@@ -5216,7 +5405,7 @@ function renderInteractiveStage(row){
       '<div class="drill-book-page">' +
         makeDrillBookHeader(23, 'ドダイトス', 'どだいとす', 'すうじの じゅん', '<ruby>すうじ<rt>すうじ</rt></ruby>が じゅんに ならぶように、ぬけて いる <span class="t-math-box-icon">田</span> に あてはまる すうじを えらぼう！', 389) +
         '<div class="b23-maze-outer">' +
-          '<div class="b23-grid" id="b23Grid">' + gridHtml + '</div>' +
+          '<div class="b23-grid" id="b23Grid" style="position:relative">' + gridHtml + '</div>' +
         '</div>' +
         trayHtml +
         makeDrillBookFooter('ドダイトス', 'たいりくポケモン', 'くさ・じめん', '2.2m', '310.0kg', '1から20までの数列です。声に出して読みながら進みましょう。', 389) +
@@ -5224,62 +5413,104 @@ function renderInteractiveStage(row){
 
     initBattle23Maze();
   } else if(bId === 'Battle24'){
-    // アチゲータ 10のまとまりと大小比較（原本完全再現）
+    // アチゲータ 10のまとまりと大小比較（原本完全再現・パン10個選択枠・数の選択肢・個数なし比較）
     let baguettes = '', plates1 = '';
-    for(let i=0; i<16; i++) baguettes += '<div class="b24-tap-item" data-type="bag">🥖</div>';
-    for(let i=0; i<14; i++) plates1 += '<div class="b24-tap-item" data-type="pl1">🍽️</div>';
+    for(let i=0; i<16; i++) baguettes += '<div class="b24-tap-item b24-bag-item" data-idx="' + i + '">🥖</div>';
+    for(let i=0; i<14; i++) plates1 += '<div class="b24-tap-item" style="cursor:default">🍽️</div>';
 
     let buns = '', plates2 = '';
-    for(let i=0; i<17; i++) buns += '<div class="b24-tap-item" data-type="bun">🍞</div>';
-    for(let i=0; i<16; i++) plates2 += '<div class="b24-tap-item" data-type="pl2">🍽️</div>';
+    for(let i=0; i<17; i++) buns += '<div class="b24-tap-item b24-bun-item" data-idx="' + i + '">🍞</div>';
+    for(let i=0; i<16; i++) plates2 += '<div class="b24-tap-item" style="cursor:default">🍽️</div>';
 
-    const trayNums = ['12', '14', '16', '17', '18'];
-    let trayHtml = '<div class="num-choice-tray">';
-    trayNums.forEach(n => {
-      trayHtml += '<button type="button" class="num-choice-btn" data-val="' + n + '">' + n + '</button>';
-    });
-    trayHtml += '<button type="button" class="num-choice-btn erase" data-val="erase">⌫ けす</button></div>';
+    // Choice buttons for counts
+    function makeChoicesHtml(qKey, choices) {
+      let h = '<div class="choices b24-count-choices" data-q="' + qKey + '" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:4px 0">';
+      choices.forEach(c => {
+        h += '<button type="button" class="choice" data-val="' + c + '" style="font-size:18px;font-weight:900;min-width:44px;height:42px;padding:0 12px;border-radius:10px">' + c + '</button>';
+      });
+      h += '</div>';
+      return h;
+    }
 
     card.innerHTML = 
       '<div class="drill-book-page">' +
-        makeDrillBookHeader(24, 'アチゲータ', 'あちげえた', 'どちらが おおいかな', '10の まとまりを せんで かこみましょう。かずを かぞえて、<span class="t-math-box-icon">田</span> に すうじを かきましょう。', 910) +
-        // Section 1
-        '<div class="b24-panel green">' +
-          '<div style="font-weight:900;font-size:15px;color:#166534;margin-bottom:8px">① みどりの エリア（パンとおさら）</div>' +
-          '<div class="b24-food-row">' +
-            '<div class="b24-food-column" id="b24ColBag"><div class="b24-items-wrap">' + baguettes + '</div></div>' +
-            '<div class="b24-food-column" id="b24ColPl1"><div class="b24-items-wrap">' + plates1 + '</div></div>' +
+        makeDrillBookHeader(24, 'アチゲータ', 'あちげえた', 'どちらが おおいかな', '10の まとまりを つくって、かずを かぞえよう。かずが おおい ほうを えらびましょう。', 910) +
+        // Section 1: みどりの エリア
+        '<div class="b24-panel green" style="background:#f0fdf4;border:3px solid #86efac;border-radius:20px;padding:16px;margin-bottom:16px">' +
+          '<div style="font-weight:900;font-size:16px;color:#166534;margin-bottom:10px">① みどりの エリア（パンとおさら）</div>' +
+          '<div style="font-size:13px;font-weight:900;color:#15803d;margin-bottom:8px">👆 パンを タップして 10こ えらぼう（えらんだパン：<span id="b24BagCount" style="font-size:18px;color:#b45309">0</span> / 10 こ）</div>' +
+          '<div class="b24-food-row" style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:12px">' +
+            '<div class="b24-food-column" id="b24ColBag" style="background:#fff;border:2.5px solid #cbd5e1;border-radius:16px;padding:12px;transition:all 0.3s;max-width:260px">' +
+              '<div style="font-size:13px;font-weight:900;color:#92400e;margin-bottom:6px">🥖 パン（ぜんぶで 16こ）</div>' +
+              '<div class="b24-items-wrap" style="display:flex;flex-wrap:wrap;justify-content:center">' + baguettes + '</div>' +
+            '</div>' +
+            '<div class="b24-food-column" id="b24ColPl1" style="background:#fff;border:2.5px solid #cbd5e1;border-radius:16px;padding:12px;max-width:260px">' +
+              '<div style="font-size:13px;font-weight:900;color:#475569;margin-bottom:6px">🍽️ おさら（ぜんぶで 14まい）</div>' +
+              '<div class="b24-items-wrap" style="display:flex;flex-wrap:wrap;justify-content:center">' + plates1 + '</div>' +
+            '</div>' +
           '</div>' +
-          '<div style="text-align:center;margin:6px 0"><button type="button" class="hbtn" id="btnRing1" style="background:#bbf7d0;font-size:13px">✏️ 10の まとまりを かこむ</button></div>' +
-          '<div class="t-math-sentence">' +
-            '<span>🥖 パン：</span><span class="t-math-box" data-idx="0">？</span><span>こ</span>' +
-            '<span style="margin-left:14px">🍽️ おさら：</span><span class="t-math-box" data-idx="1">？</span><span>まい</span>' +
+          '<div id="b24BagRingMsg" style="display:none;text-align:center;font-size:15px;font-weight:900;color:#166534;margin-bottom:12px;background:#dcfce7;border:2px solid #86efac;border-radius:10px;padding:6px 12px">' +
+            '✨ パンの 10の まとまりが できたよ！（のこりは 6こ）' +
           '</div>' +
-          '<div style="font-size:14px;font-weight:900;margin-top:6px">かずが おおい ほうを 〇で かこみましょう。</div>' +
-          '<div class="b24-choice-row">' +
-            '<button type="button" class="b24-choice-card" data-group="g1" data-val="bread">🥖 パン（16こ）<span class="circle-mark" style="display:none">⭕</span></button>' +
-            '<button type="button" class="b24-choice-card" data-group="g1" data-val="plate">🍽️ おさら（14まい）<span class="circle-mark" style="display:none">⭕</span></button>' +
+
+          '<!-- Section 1 Count Questions -->' +
+          '<div style="background:#fff;border:2px solid #bbf7d0;border-radius:14px;padding:12px;margin-bottom:12px">' +
+            '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:8px">' +
+              '<span style="font-size:15px;font-weight:900;color:#1e293b">🥖 パンのかず：<span class="drill-blank-box" id="b24_ans_0">？</span> こ</span>' +
+              makeChoicesHtml('0', ['14', '15', '16', '17']) +
+            '</div>' +
+            '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">' +
+              '<span style="font-size:15px;font-weight:900;color:#1e293b">🍽️ おさらのかず：<span class="drill-blank-box" id="b24_ans_1">？</span> まい</span>' +
+              makeChoicesHtml('1', ['12', '13', '14', '15']) +
+            '</div>' +
+          '</div>' +
+
+          '<!-- Section 1 Comparison -->' +
+          '<div style="font-size:15px;font-weight:900;color:#166534;margin-bottom:8px;text-align:center">かずが おおい ほうを えらびましょう：</div>' +
+          '<div class="b24-choice-row" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">' +
+            '<button type="button" class="b24-comp-btn" data-group="g1" data-val="bread">🥖 パン</button>' +
+            '<button type="button" class="b24-comp-btn" data-group="g1" data-val="plate">🍽️ おさら</button>' +
           '</div>' +
         '</div>' +
-        // Section 2
-        '<div class="b24-panel blue">' +
-          '<div style="font-weight:900;font-size:15px;color:#1e40af;margin-bottom:8px">② あおの エリア（まるいパンとおさら）</div>' +
-          '<div class="b24-food-row">' +
-            '<div class="b24-food-column" id="b24ColBun"><div class="b24-items-wrap">' + buns + '</div></div>' +
-            '<div class="b24-food-column" id="b24ColPl2"><div class="b24-items-wrap">' + plates2 + '</div></div>' +
+
+        // Section 2: あおの エリア
+        '<div class="b24-panel blue" style="background:#eff6ff;border:3px solid #93c5fd;border-radius:20px;padding:16px;margin-bottom:16px">' +
+          '<div style="font-weight:900;font-size:16px;color:#1e40af;margin-bottom:10px">② あおの エリア（まるいパンとおさら）</div>' +
+          '<div style="font-size:13px;font-weight:900;color:#1d4ed8;margin-bottom:8px">👆 まるいパンを タップして 10こ えらぼう（えらんだパン：<span id="b24BunCount" style="font-size:18px;color:#b45309">0</span> / 10 こ）</div>' +
+          '<div class="b24-food-row" style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:12px">' +
+            '<div class="b24-food-column" id="b24ColBun" style="background:#fff;border:2.5px solid #cbd5e1;border-radius:16px;padding:12px;transition:all 0.3s;max-width:260px">' +
+              '<div style="font-size:13px;font-weight:900;color:#92400e;margin-bottom:6px">🍞 まるいパン（ぜんぶで 17こ）</div>' +
+              '<div class="b24-items-wrap" style="display:flex;flex-wrap:wrap;justify-content:center">' + buns + '</div>' +
+            '</div>' +
+            '<div class="b24-food-column" id="b24ColPl2" style="background:#fff;border:2.5px solid #cbd5e1;border-radius:16px;padding:12px;max-width:260px">' +
+              '<div style="font-size:13px;font-weight:900;color:#475569;margin-bottom:6px">🍽️ おさら（ぜんぶで 16まい）</div>' +
+              '<div class="b24-items-wrap" style="display:flex;flex-wrap:wrap;justify-content:center">' + plates2 + '</div>' +
+            '</div>' +
           '</div>' +
-          '<div style="text-align:center;margin:6px 0"><button type="button" class="hbtn" id="btnRing2" style="background:#bfdbfe;font-size:13px">✏️ 10の まとまりを かこむ</button></div>' +
-          '<div class="t-math-sentence">' +
-            '<span>🍞 まるいパン：</span><span class="t-math-box" data-idx="2">？</span><span>こ</span>' +
-            '<span style="margin-left:14px">🍽️ おさら：</span><span class="t-math-box" data-idx="3">？</span><span>まい</span>' +
+          '<div id="b24BunRingMsg" style="display:none;text-align:center;font-size:15px;font-weight:900;color:#1e40af;margin-bottom:12px;background:#dbeafe;border:2px solid #93c5fd;border-radius:10px;padding:6px 12px">' +
+            '✨ まるいパンの 10の まとまりが できたよ！（のこりは 7こ）' +
           '</div>' +
-          '<div style="font-size:14px;font-weight:900;margin-top:6px">かずが おおい ほうを 〇で かこみましょう。</div>' +
-          '<div class="b24-choice-row">' +
-            '<button type="button" class="b24-choice-card" data-group="g2" data-val="bread">🍞 まるいパン（17こ）<span class="circle-mark" style="display:none">⭕</span></button>' +
-            '<button type="button" class="b24-choice-card" data-group="g2" data-val="plate">🍽️ おさら（16まい）<span class="circle-mark" style="display:none">⭕</span></button>' +
+
+          '<!-- Section 2 Count Questions -->' +
+          '<div style="background:#fff;border:2px solid #bfdbfe;border-radius:14px;padding:12px;margin-bottom:12px">' +
+            '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:8px">' +
+              '<span style="font-size:15px;font-weight:900;color:#1e293b">🍞 まるいパンのかず：<span class="drill-blank-box" id="b24_ans_2">？</span> こ</span>' +
+              makeChoicesHtml('2', ['15', '16', '17', '18']) +
+            '</div>' +
+            '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">' +
+              '<span style="font-size:15px;font-weight:900;color:#1e293b">🍽️ おさらのかず：<span class="drill-blank-box" id="b24_ans_3">？</span> まい</span>' +
+              makeChoicesHtml('3', ['14', '15', '16', '17']) +
+            '</div>' +
+          '</div>' +
+
+          '<!-- Section 2 Comparison -->' +
+          '<div style="font-size:15px;font-weight:900;color:#1e40af;margin-bottom:8px;text-align:center">かずが おおい ほうを えらびましょう：</div>' +
+          '<div class="b24-choice-row" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">' +
+            '<button type="button" class="b24-comp-btn" data-group="g2" data-val="bread">🍞 まるいパン</button>' +
+            '<button type="button" class="b24-comp-btn" data-group="g2" data-val="plate">🍽️ おさら</button>' +
           '</div>' +
         '</div>' +
-        trayHtml +
+
         makeDrillBookFooter('アチゲータ', 'ほのおワニポケモン', 'ほのお', '1.0m', '30.7kg', '10のまとまりを作って、10といくつかを数える練習です。10のまとまりを線で囲んでから数えると、大小比べもわかりやすくなります。', 910) +
       '</div>';
 
@@ -7809,82 +8040,121 @@ function initBattle24Crocalor() {
   const container = document.querySelector('.drill-book-page');
   if (!container) return;
 
-  // Tap to count items
-  container.querySelectorAll('.b24-tap-item').forEach(item => {
+  // 1. Tapping Baguettes (🥖) -> 10 makes bundle ring
+  let selectedBags = new Set();
+  const colBag = document.getElementById('b24ColBag');
+  const bagCountEl = document.getElementById('b24BagCount');
+  const bagMsg = document.getElementById('b24BagRingMsg');
+
+  container.querySelectorAll('.b24-bag-item').forEach(item => {
     item.onclick = () => {
-      playMarimbaPop(1.15);
-      item.classList.toggle('counted');
-      if (item.classList.contains('counted')) {
-        item.style.filter = 'drop-shadow(0 0 6px rgba(255,152,0,0.8))';
-        item.style.transform = 'scale(1.15)';
+      const idx = item.dataset.idx;
+      if (selectedBags.has(idx)) {
+        selectedBags.delete(idx);
+        item.classList.remove('selected');
+        playMarimbaPop(1.0);
       } else {
-        item.style.filter = '';
-        item.style.transform = '';
+        selectedBags.add(idx);
+        item.classList.add('selected');
+        playMarimbaPop(1.15);
+      }
+      if (bagCountEl) bagCountEl.textContent = selectedBags.size;
+      if (selectedBags.size === 10) {
+        if (colBag) colBag.classList.add('b24-bundle-ring');
+        if (bagMsg) bagMsg.style.display = 'block';
+        playMarimbaPop(1.4);
+      } else {
+        if (colBag) colBag.classList.remove('b24-bundle-ring');
+        if (bagMsg) bagMsg.style.display = 'none';
       }
     };
   });
 
-  // Bundle 10 buttons
-  const r1 = document.getElementById('btnRing1');
-  if (r1) {
-    r1.onclick = () => {
-      playMarimbaPop(1.3);
-      const colBag = document.getElementById('b24ColBag');
-      const colPl1 = document.getElementById('b24ColPl1');
-      colBag?.classList.toggle('b24-bundle-ring');
-      colPl1?.classList.toggle('b24-bundle-ring');
-    };
-  }
-  const r2 = document.getElementById('btnRing2');
-  if (r2) {
-    r2.onclick = () => {
-      playMarimbaPop(1.3);
-      const colBun = document.getElementById('b24ColBun');
-      const colPl2 = document.getElementById('b24ColPl2');
-      colBun?.classList.toggle('b24-bundle-ring');
-      colPl2?.classList.toggle('b24-bundle-ring');
-    };
-  }
+  // 2. Tapping Round Buns (🍞) -> 10 makes bundle ring
+  let selectedBuns = new Set();
+  const colBun = document.getElementById('b24ColBun');
+  const bunCountEl = document.getElementById('b24BunCount');
+  const bunMsg = document.getElementById('b24BunRingMsg');
 
-  // Comparison selection
-  let choiceG1 = null;
-  let choiceG2 = null;
-
-  container.querySelectorAll('.b24-choice-card').forEach(btn => {
-    btn.onclick = () => {
-      playMarimbaPop(1.25);
-      const g = btn.dataset.group;
-      const v = btn.dataset.val;
-      container.querySelectorAll('.b24-choice-card[data-group="' + g + '"]').forEach(b => {
-        b.classList.remove('selected');
-        const c = b.querySelector('.circle-mark');
-        if (c) c.style.display = 'none';
-      });
-      btn.classList.add('selected');
-      const mark = btn.querySelector('.circle-mark');
-      if (mark) mark.style.display = 'inline';
-
-      if (g === 'g1') choiceG1 = v;
-      if (g === 'g2') choiceG2 = v;
-      checkComplete();
+  container.querySelectorAll('.b24-bun-item').forEach(item => {
+    item.onclick = () => {
+      const idx = item.dataset.idx;
+      if (selectedBuns.has(idx)) {
+        selectedBuns.delete(idx);
+        item.classList.remove('selected');
+        playMarimbaPop(1.0);
+      } else {
+        selectedBuns.add(idx);
+        item.classList.add('selected');
+        playMarimbaPop(1.15);
+      }
+      if (bunCountEl) bunCountEl.textContent = selectedBuns.size;
+      if (selectedBuns.size === 10) {
+        if (colBun) colBun.classList.add('b24-bundle-ring');
+        if (bunMsg) bunMsg.style.display = 'block';
+        playMarimbaPop(1.4);
+      } else {
+        if (colBun) colBun.classList.remove('b24-bundle-ring');
+        if (bunMsg) bunMsg.style.display = 'none';
+      }
     };
   });
 
-  // Math box answers: [16, 14, 17, 16]
-  setupMathBoxController(container, ['16', '14', '17', '16'], checkComplete);
+  const st = S.answers[curIdx] = S.answers[curIdx] || {};
 
-  function checkComplete() {
-    const boxes = Array.from(container.querySelectorAll('.t-math-box'));
-    const boxesCorrect = boxes.every((b, i) => b.dataset.val === ['16', '14', '17', '16'][i]);
-    const choicesCorrect = (choiceG1 === 'bread' && choiceG2 === 'bread');
-
-    if (boxesCorrect && choicesCorrect) {
-      stampDrillSuccess();
-      (S.answers[curIdx] = S.answers[curIdx] || {})._completed = true;
-      save();
-      updateThrow();
+  function checkDone() {
+    if (st[0] === '16' && st[1] === '14' && st.comp1 === 'bread' &&
+        st[2] === '17' && st[3] === '16' && st.comp2 === 'bread') {
+      playCrystalSparkle();
+      completeBookDrill();
     }
   }
+
+  // 3. Count choices
+  container.querySelectorAll('.b24-count-choices').forEach(group => {
+    const qKey = group.dataset.q;
+    group.querySelectorAll('.choice').forEach(btn => {
+      if (st[qKey] === btn.dataset.val) {
+        btn.classList.add('sel');
+        const box = document.getElementById('b24_ans_' + qKey);
+        if (box) {
+          box.textContent = btn.dataset.val;
+          box.classList.add('filled');
+        }
+      }
+      btn.onclick = () => {
+        playMarimbaPop(1.2);
+        group.querySelectorAll('.choice').forEach(b => b.classList.remove('sel'));
+        btn.classList.add('sel');
+        st[qKey] = btn.dataset.val;
+        const box = document.getElementById('b24_ans_' + qKey);
+        if (box) {
+          box.textContent = btn.dataset.val;
+          box.classList.add('filled');
+        }
+        save();
+        updateThrow();
+        checkDone();
+      };
+    });
+  });
+
+  // 4. Comparison buttons (No red circle mark, toggle .selected)
+  container.querySelectorAll('.b24-comp-btn').forEach(btn => {
+    const grp = btn.dataset.group;
+    const compKey = grp === 'g1' ? 'comp1' : 'comp2';
+    if (st[compKey] === btn.dataset.val) btn.classList.add('selected');
+
+    btn.onclick = () => {
+      playMarimbaPop(1.25);
+      container.querySelectorAll('.b24-comp-btn[data-group="' + grp + '"]').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      st[compKey] = btn.dataset.val;
+      save();
+      updateThrow();
+      checkDone();
+    };
+  });
 }
 
 function initBattle25Cramorant() {
@@ -9186,82 +9456,121 @@ function initBattle24Crocalor() {
   const container = document.querySelector('.drill-book-page');
   if (!container) return;
 
-  // Tap to count items
-  container.querySelectorAll('.b24-tap-item').forEach(item => {
+  // 1. Tapping Baguettes (🥖) -> 10 makes bundle ring
+  let selectedBags = new Set();
+  const colBag = document.getElementById('b24ColBag');
+  const bagCountEl = document.getElementById('b24BagCount');
+  const bagMsg = document.getElementById('b24BagRingMsg');
+
+  container.querySelectorAll('.b24-bag-item').forEach(item => {
     item.onclick = () => {
-      playMarimbaPop(1.15);
-      item.classList.toggle('counted');
-      if (item.classList.contains('counted')) {
-        item.style.filter = 'drop-shadow(0 0 6px rgba(255,152,0,0.8))';
-        item.style.transform = 'scale(1.15)';
+      const idx = item.dataset.idx;
+      if (selectedBags.has(idx)) {
+        selectedBags.delete(idx);
+        item.classList.remove('selected');
+        playMarimbaPop(1.0);
       } else {
-        item.style.filter = '';
-        item.style.transform = '';
+        selectedBags.add(idx);
+        item.classList.add('selected');
+        playMarimbaPop(1.15);
+      }
+      if (bagCountEl) bagCountEl.textContent = selectedBags.size;
+      if (selectedBags.size === 10) {
+        if (colBag) colBag.classList.add('b24-bundle-ring');
+        if (bagMsg) bagMsg.style.display = 'block';
+        playMarimbaPop(1.4);
+      } else {
+        if (colBag) colBag.classList.remove('b24-bundle-ring');
+        if (bagMsg) bagMsg.style.display = 'none';
       }
     };
   });
 
-  // Bundle 10 buttons
-  const r1 = document.getElementById('btnRing1');
-  if (r1) {
-    r1.onclick = () => {
-      playMarimbaPop(1.3);
-      const colBag = document.getElementById('b24ColBag');
-      const colPl1 = document.getElementById('b24ColPl1');
-      colBag?.classList.toggle('b24-bundle-ring');
-      colPl1?.classList.toggle('b24-bundle-ring');
-    };
-  }
-  const r2 = document.getElementById('btnRing2');
-  if (r2) {
-    r2.onclick = () => {
-      playMarimbaPop(1.3);
-      const colBun = document.getElementById('b24ColBun');
-      const colPl2 = document.getElementById('b24ColPl2');
-      colBun?.classList.toggle('b24-bundle-ring');
-      colPl2?.classList.toggle('b24-bundle-ring');
-    };
-  }
+  // 2. Tapping Round Buns (🍞) -> 10 makes bundle ring
+  let selectedBuns = new Set();
+  const colBun = document.getElementById('b24ColBun');
+  const bunCountEl = document.getElementById('b24BunCount');
+  const bunMsg = document.getElementById('b24BunRingMsg');
 
-  // Comparison selection
-  let choiceG1 = null;
-  let choiceG2 = null;
-
-  container.querySelectorAll('.b24-choice-card').forEach(btn => {
-    btn.onclick = () => {
-      playMarimbaPop(1.25);
-      const g = btn.dataset.group;
-      const v = btn.dataset.val;
-      container.querySelectorAll('.b24-choice-card[data-group="' + g + '"]').forEach(b => {
-        b.classList.remove('selected');
-        const c = b.querySelector('.circle-mark');
-        if (c) c.style.display = 'none';
-      });
-      btn.classList.add('selected');
-      const mark = btn.querySelector('.circle-mark');
-      if (mark) mark.style.display = 'inline';
-
-      if (g === 'g1') choiceG1 = v;
-      if (g === 'g2') choiceG2 = v;
-      checkComplete();
+  container.querySelectorAll('.b24-bun-item').forEach(item => {
+    item.onclick = () => {
+      const idx = item.dataset.idx;
+      if (selectedBuns.has(idx)) {
+        selectedBuns.delete(idx);
+        item.classList.remove('selected');
+        playMarimbaPop(1.0);
+      } else {
+        selectedBuns.add(idx);
+        item.classList.add('selected');
+        playMarimbaPop(1.15);
+      }
+      if (bunCountEl) bunCountEl.textContent = selectedBuns.size;
+      if (selectedBuns.size === 10) {
+        if (colBun) colBun.classList.add('b24-bundle-ring');
+        if (bunMsg) bunMsg.style.display = 'block';
+        playMarimbaPop(1.4);
+      } else {
+        if (colBun) colBun.classList.remove('b24-bundle-ring');
+        if (bunMsg) bunMsg.style.display = 'none';
+      }
     };
   });
 
-  // Math box answers: [16, 14, 17, 16]
-  setupMathBoxController(container, ['16', '14', '17', '16'], checkComplete);
+  const st = S.answers[curIdx] = S.answers[curIdx] || {};
 
-  function checkComplete() {
-    const boxes = Array.from(container.querySelectorAll('.t-math-box'));
-    const boxesCorrect = boxes.every((b, i) => b.dataset.val === ['16', '14', '17', '16'][i]);
-    const choicesCorrect = (choiceG1 === 'bread' && choiceG2 === 'bread');
-
-    if (boxesCorrect && choicesCorrect) {
-      stampDrillSuccess();
-      (S.answers[curIdx] = S.answers[curIdx] || {})._completed = true;
-      save();
-      updateThrow();
+  function checkDone() {
+    if (st[0] === '16' && st[1] === '14' && st.comp1 === 'bread' &&
+        st[2] === '17' && st[3] === '16' && st.comp2 === 'bread') {
+      playCrystalSparkle();
+      completeBookDrill();
     }
   }
+
+  // 3. Count choices
+  container.querySelectorAll('.b24-count-choices').forEach(group => {
+    const qKey = group.dataset.q;
+    group.querySelectorAll('.choice').forEach(btn => {
+      if (st[qKey] === btn.dataset.val) {
+        btn.classList.add('sel');
+        const box = document.getElementById('b24_ans_' + qKey);
+        if (box) {
+          box.textContent = btn.dataset.val;
+          box.classList.add('filled');
+        }
+      }
+      btn.onclick = () => {
+        playMarimbaPop(1.2);
+        group.querySelectorAll('.choice').forEach(b => b.classList.remove('sel'));
+        btn.classList.add('sel');
+        st[qKey] = btn.dataset.val;
+        const box = document.getElementById('b24_ans_' + qKey);
+        if (box) {
+          box.textContent = btn.dataset.val;
+          box.classList.add('filled');
+        }
+        save();
+        updateThrow();
+        checkDone();
+      };
+    });
+  });
+
+  // 4. Comparison buttons (No red circle mark, toggle .selected)
+  container.querySelectorAll('.b24-comp-btn').forEach(btn => {
+    const grp = btn.dataset.group;
+    const compKey = grp === 'g1' ? 'comp1' : 'comp2';
+    if (st[compKey] === btn.dataset.val) btn.classList.add('selected');
+
+    btn.onclick = () => {
+      playMarimbaPop(1.25);
+      container.querySelectorAll('.b24-comp-btn[data-group="' + grp + '"]').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      st[compKey] = btn.dataset.val;
+      save();
+      updateThrow();
+      checkDone();
+    };
+  });
 }
 
 function initBattle25Cramorant() {
@@ -9647,7 +9956,7 @@ function initAppleSplitTabs(isB5) {
 function initBattle20Pikachu() {
   const p = document.querySelector('.drill-book-page');
   if (!p) return;
-  setupMathBoxController(p, ['5', '6', '2', '3', '4', '4', '2'], () => {
+  setupMathBoxController(p, ['5', '6', '4', '3', '2', '4', '2'], () => {
     playCrystalSparkle();
     completeBookDrill();
   });
@@ -9656,23 +9965,83 @@ function initBattle20Pikachu() {
 function initBattle21Ribombee() {
   const p = document.querySelector('.drill-book-page');
   if (!p) return;
-  const area = document.getElementById('b21RibombeeArea');
-  const bundle = document.getElementById('b21Bundle10');
+  const cardsWrap = document.getElementById('b21CardsWrap');
+  const countEl = document.getElementById('b21Count');
   const msg = document.getElementById('b21LoopMsg');
 
-  if (area && bundle) {
-    area.onclick = () => {
-      playMarimbaPop(1.4);
-      bundle.style.border = '4px solid #16a34a';
-      bundle.style.background = '#dcfce7';
-      bundle.style.boxShadow = '0 0 0 6px rgba(34, 197, 94, 0.3)';
-      if (msg) msg.style.display = 'block';
+  let selectedSet = new Set();
+
+  p.querySelectorAll('.b21-ribombee-card').forEach(card => {
+    card.onclick = () => {
+      const idx = card.dataset.idx;
+      if (selectedSet.has(idx)) {
+        selectedSet.delete(idx);
+        card.classList.remove('selected');
+        playMarimbaPop(1.0);
+      } else {
+        selectedSet.add(idx);
+        card.classList.add('selected');
+        playMarimbaPop(1.2);
+      }
+
+      if (countEl) countEl.textContent = selectedSet.size;
+
+      if (selectedSet.size === 10) {
+        if (cardsWrap) cardsWrap.classList.add('b21-bundle-wrap');
+        if (msg) msg.style.display = 'inline-block';
+        playMarimbaPop(1.5);
+      } else {
+        if (cardsWrap) cardsWrap.classList.remove('b21-bundle-wrap');
+        if (msg) msg.style.display = 'none';
+      }
     };
-  }
+  });
 
   setupMathBoxController(p, ['14'], () => {
     playCrystalSparkle();
     completeBookDrill();
+  });
+}
+
+function initBattle22Unified(qs) {
+  const st = S.answers[curIdx] = S.answers[curIdx] || {};
+  document.querySelectorAll('.drill-book-page .choice[data-q]').forEach(btn => {
+    const q = parseInt(btn.dataset.q, 10);
+    const val = btn.dataset.val;
+    if (st[q] === val) {
+      btn.classList.add('sel');
+      const targetBox = document.getElementById('b22_target_' + q);
+      if (targetBox) {
+        targetBox.textContent = val;
+        targetBox.classList.add('filled');
+      }
+    }
+    btn.onclick = () => {
+      const parent = document.getElementById('b22_choices_' + q);
+      if (parent) parent.querySelectorAll('.choice').forEach(b => b.classList.remove('sel'));
+      btn.classList.add('sel');
+      playMarimbaPop(1.2);
+
+      const targetBox = document.getElementById('b22_target_' + q);
+      if (targetBox) {
+        targetBox.textContent = val;
+        targetBox.classList.add('filled');
+      }
+
+      st[q] = val;
+      save();
+      updateThrow();
+
+      // Check all 5 correct
+      let allCorrect = true;
+      qs.forEach((item, idx) => {
+        if (st[idx] !== item.ans) allCorrect = false;
+      });
+      if (allCorrect) {
+        playCrystalSparkle();
+        completeBookDrill();
+      }
+    };
   });
 }
 

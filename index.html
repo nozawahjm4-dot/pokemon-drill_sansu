@@ -4398,12 +4398,12 @@ function openBattle(i){
   $('battle').classList.add('active');
   window.scrollTo(0, 0);
 
-  // 原本再現ドリル（Battle 20, 21, 23〜55_2）のときは重複するヘッダーカードを隠し、リアル紙面をトップに表示
-  const isBookDrill = /^(Battle(20|21|2[3-9]|[3-5][0-9]|55(_[23])?)|Minigame)$/i.test(row.battle);
+  // 全ドリル共通：教科書風UI（drill-book-page）に統一するため、旧ヘッダーカードは常に隠す
+  const isBookDrill = true;
   const pCard = $('bPokeStageCard');
   const dCard = $('bDescCard');
-  if(pCard) pCard.style.display = isBookDrill ? 'none' : '';
-  if(dCard) dCard.style.display = isBookDrill ? 'none' : '';
+  if(pCard) pCard.style.display = 'none';
+  if(dCard) dCard.style.display = 'none';
 
   // ポケモンステージ
   const pid = pokeId(row.pokemon_name);
@@ -4530,69 +4530,124 @@ function renderInteractiveStage(row){
   card.innerHTML = '';
   card.style.display = 'none';
   const bId = row.battle;
+  const saved = S.answers[curIdx] || {};
 
   if(bId === 'Battle1'){
-    // アチャモの線結びUI
+    // バトル1：アチャモ たりるかな（原本完全再現・教科書UI）
     card.innerHTML = 
-      '<div class="card interactive-stage">' +
-        '<h3>✏️ てで せんを むすんでみよう！（アチャモとりんご）</h3>' +
-        '<p style="font-size:15px;color:#555;margin:0 0 10px">アチャモを タップして、そのあと りんごを タップしてね！</p>' +
-        '<div class="match-container" id="matchBox">' +
-          '<div class="match-col" id="colAchamo"></div>' +
-          '<div class="match-col" id="colApple"></div>' +
-          '<svg class="match-svg" id="matchLines"></svg>' +
+      '<div class="drill-book-page">' +
+        makeDrillBookHeader(1, 'アチャモ', 'あちゃも', 'たりるかな', 'アチャモと りんごを せんで むすびましょう。りんごは たりますか？', 255) +
+        '<div style="background:#fff7ed;border:2px solid #fed7aa;border-radius:18px;padding:14px;margin-bottom:14px">' +
+          '<div style="font-size:15px;font-weight:900;color:#9a3412;margin-bottom:10px;text-align:center">✏️ アチャモを タップして、そのあと りんごを タップして せんで むすぼう！</div>' +
+          '<div class="match-container" id="matchBox">' +
+            '<div class="match-col" id="colAchamo"></div>' +
+            '<div class="match-col" id="colApple"></div>' +
+            '<svg class="match-svg" id="matchLines"></svg>' +
+          '</div>' +
+          '<div class="match-status" id="matchDoneMsg" style="margin-top:10px">🎉 7くみ むすべたよ！ りんごが 1こ あまったね！</div>' +
         '</div>' +
-        '<div class="match-status" id="matchDoneMsg">🎉 7くみ むすべたよ！ りんごが 1こ あまったね！</div>' +
+        '<div class="drill-sub-questions" style="display:flex;flex-direction:column;gap:12px;margin-bottom:14px">' +
+          '<div style="background:#fff;border:2.5px solid #fed7aa;border-radius:14px;padding:12px 16px">' +
+            '<div style="font-size:15px;font-weight:900;color:#1e293b;margin-bottom:8px">もんだい ②: アチャモと りんごは、どちらが おおいでしょう。おおい ほうを えらびましょう。</div>' +
+            '<div class="choices" id="b1_q2_choices" style="display:flex;gap:10px;flex-wrap:wrap"></div>' +
+          '</div>' +
+          '<div style="background:#fff;border:2.5px solid #fed7aa;border-radius:14px;padding:12px 16px">' +
+            '<div style="font-size:15px;font-weight:900;color:#1e293b;margin-bottom:8px">もんだい ③: りんごは、たりますか。「たりる」「たりない」を えらびましょう。</div>' +
+            '<div class="choices" id="b1_q3_choices" style="display:flex;gap:10px;flex-wrap:wrap"></div>' +
+          '</div>' +
+        '</div>' +
+        makeDrillBookFooter('アチャモ', 'ひよこポケモン', 'ほのお', '0.4m', '2.5kg', '1対1対応（アチャモとりんごを1本ずつ結ぶ）を通じて、数を数える前の基礎となる「どちらが多いか・足りるか」の数量感覚を養います。', 255) +
       '</div>';
-    initAchamoMatch();
+    initAchamoMatchUnified();
   } else if(bId === 'Battle2'){
-    // ヨーテリー＆チラーミィ (答えになる「〇ひき」は非表示、丸のみ点灯)
+    // バトル2：ヨーテリー ポケモンをかぞえよう（原本完全再現・教科書UI）
     card.innerHTML = 
-      '<div class="card interactive-stage">' +
-        '<h3>👆 ポケモンを タップして かぞえよう！</h3>' +
-        '<div class="b2-header">' +
-          '<div class="b2-col">' +
-            '<div class="b2-score-title"><img src="' + ART(506) + '" alt="ヨーテリー"> ヨーテリー</div>' +
-            '<div class="b2-dots" id="dotsYork"></div>' +
+      '<div class="drill-book-page">' +
+        makeDrillBookHeader(2, 'ヨーテリー', 'よーてりー', 'ポケモンを かぞえよう', 'わくの なかの ヨーテリーと チラーミィを かぞえて、すうじを えらびましょう。', 506) +
+        '<div style="background:#f0fdf4;border:2px solid #bbf7d0;border-radius:18px;padding:14px;margin-bottom:14px">' +
+          '<div style="font-size:15px;font-weight:900;color:#166534;margin-bottom:10px;text-align:center">👆 くさむらの ポケモンを タップして かぞえよう！</div>' +
+          '<div class="b2-header">' +
+            '<div class="b2-col">' +
+              '<div class="b2-score-title"><img src="' + ART(506) + '" alt="ヨーテリー"> ヨーテリー</div>' +
+              '<div class="b2-dots" id="dotsYork"></div>' +
+            '</div>' +
+            '<div class="b2-col">' +
+              '<div class="b2-score-title"><img src="' + ART(572) + '" alt="チラーミィ"> チラーミィ</div>' +
+              '<div class="b2-dots" id="dotsMinc"></div>' +
+            '</div>' +
           '</div>' +
-          '<div class="b2-col">' +
-            '<div class="b2-score-title"><img src="' + ART(572) + '" alt="チラーミィ"> チラーミィ</div>' +
-            '<div class="b2-dots" id="dotsMinc"></div>' +
+          '<div class="count-field" id="countArea"></div>' +
+        '</div>' +
+        '<div class="drill-sub-questions" style="display:flex;flex-direction:column;gap:12px;margin-bottom:14px">' +
+          '<div style="background:#fff;border:2.5px solid #bbf7d0;border-radius:14px;padding:12px 16px">' +
+            '<div style="font-size:15px;font-weight:900;color:#1e293b;margin-bottom:8px">もんだい ①: わくの なかの ヨーテリーは なんびき いましたか？</div>' +
+            '<div class="choices" id="b2_q1_choices" style="display:flex;gap:10px;flex-wrap:wrap"></div>' +
+          '</div>' +
+          '<div style="background:#fff;border:2.5px solid #bbf7d0;border-radius:14px;padding:12px 16px">' +
+            '<div style="font-size:15px;font-weight:900;color:#1e293b;margin-bottom:8px">もんだい ②: わくの なかの チラーミィは なんびき いましたか？</div>' +
+            '<div class="choices" id="b2_q2_choices" style="display:flex;gap:10px;flex-wrap:wrap"></div>' +
           '</div>' +
         '</div>' +
-        '<div class="count-field" id="countArea"></div>' +
+        makeDrillBookFooter('ヨーテリー', 'こいぬポケモン', 'ノーマル', '0.4m', '4.1kg', '画面に散らばった複数のポケモンを数え落としや重複なく数え上げ、数字と結びつける計数学習です。指先で1匹ずつ数えるように促してあげてください。', 506) +
       '</div>';
-    initBattle2Count();
-  } else if(bId === 'Battle4'){
-    // ピッピ 3列線結び (1〜5)
+    initBattle2Unified();
+  } else if(bId === 'Battle3'){
+    // バトル3：パチリス 1から5のすうじ（原本完全再現・教科書UI・タップ塗り丸）
+    const shuffledNums = [3, 1, 4, 2, 5];
+    let cardsHtml = '';
+    shuffledNums.forEach((n, idx) => {
+      let pokeHtml = '';
+      for(let k=0; k<n; k++) pokeHtml += '<img src="' + ART(417) + '" alt="パチリス" style="width:52px;height:52px;object-fit:contain;margin:2px">';
+      let dotsHtml = '';
+      for(let d=0; d<10; d++) dotsHtml += '<div class="pd-dot tap-dot" data-q="' + idx + '" data-dot="' + d + '"></div>';
+      let chHtml = '';
+      ['1', '2', '3', '4', '5'].forEach(ch => {
+        const selCls = saved[idx] === ch ? ' sel' : '';
+        chHtml += '<button type="button" class="pd-btn choice' + selCls + '" data-q="' + idx + '" data-val="' + ch + '">' + ch + '</button>';
+      });
+      cardsHtml += 
+        '<div class="pd-card" style="margin-bottom:12px">' +
+          '<div class="pd-left">' +
+            '<div class="pd-icons">' + pokeHtml + '</div>' +
+            '<div class="pd-label">パチリス</div>' +
+            '<div class="pd-ten-frame">' + dotsHtml + '</div>' +
+          '</div>' +
+          '<div class="pd-choices-box">' +
+            '<div class="pd-choices-title">すうじを えらぼう</div>' +
+            '<div class="pd-choices" id="b3_choices_' + idx + '">' + chHtml + '</div>' +
+          '</div>' +
+          '<div class="pd-write-box">' +
+            '<span class="pd-write-label">かいた すうじ</span>' +
+            '<span class="pd-write-num" id="pdWrite_b3_' + idx + '">' + (saved[idx] || '') + '</span>' +
+          '</div>' +
+        '</div>';
+    });
+
     card.innerHTML = 
-      '<div class="card interactive-stage">' +
-        '<h3>✏️ ピッピと ●と すうじを せんで つなごう！</h3>' +
-        '<p style="font-size:15px;color:#555;margin:0 0 10px">左のピッピ ➔ 真ん中の● ➔ 右のすうじ を じゅんびんに タップしてね！</p>' +
-        '<div class="three-col-container" id="tcContainer">' +
-          '<div class="three-col" id="tcCol1"></div>' +
-          '<div class="three-col" id="tcCol2"></div>' +
-          '<div class="three-col" id="tcCol3"></div>' +
-          '<svg class="tc-lines-svg" id="tcSvg"></svg>' +
+      '<div class="drill-book-page">' +
+        makeDrillBookHeader(3, 'パチリス', 'ぱちりす', '1から 5の すうじを かこう', 'パチリスいっぴきぶんだけ〇をぬって、すうじをえらびましょう。', 417) +
+        '<div style="margin-bottom:14px">' + cardsHtml + '</div>' +
+        makeDrillBookFooter('パチリス', 'でんきりすポケモン', 'でんき', '0.4m', '3.9kg', '1から5までの具体物（パチリス）の数だけ丸を塗り、対応する数字を選びます。5までの数の大きさを視覚的に把握する基礎を作ります。', 417) +
+      '</div>';
+    initBattle3Unified(shuffledNums);
+  } else if(bId === 'Battle4'){
+    // バトル4：ピッピ せんでむすぼう（原本完全再現・教科書UI）
+    card.innerHTML = 
+      '<div class="drill-book-page">' +
+        makeDrillBookHeader(4, 'ピッピ', 'ぴっぴ', 'せんで むすぼう', 'かずが おなじに なるように、ピッピと ●と すうじを せんで つなぎましょう。', 35) +
+        '<div style="background:#fdf4ff;border:2px solid #f0abfc;border-radius:18px;padding:14px;margin-bottom:14px">' +
+          '<div style="font-size:15px;font-weight:900;color:#86198f;margin-bottom:10px;text-align:center">✏️ 左のピッピ ➔ 真ん中の● ➔ 右のすうじ を じゅんびんに タップしてね！</div>' +
+          '<div class="three-col-container" id="tcContainer">' +
+            '<div class="three-col" id="tcCol1"></div>' +
+            '<div class="three-col" id="tcCol2"></div>' +
+            '<div class="three-col" id="tcCol3"></div>' +
+            '<svg class="tc-lines-svg" id="tcSvg"></svg>' +
+          '</div>' +
+          '<div class="match-status" id="tcDoneMsg" style="margin-top:10px">🎉 5くみ ぜんぶ つながったよ！ ピッピを つかまえよう！</div>' +
         '</div>' +
-        '<div class="match-status" id="tcDoneMsg">🎉 5くみ ぜんぶ つながったよ！ ピッピを つかまえよう！</div>' +
+        makeDrillBookFooter('ピッピ', 'ようせいポケモン', 'フェアリー', '0.6m', '7.5kg', '「ピッピの数」「赤丸の数」「数字」の3つを結ぶことで、具体物・半具体物（ドット）・抽象的な数字の3者の対応関係を確実に定着させます。', 35) +
       '</div>';
     initThreeColMatch([1, 2, 3, 4, 5], 35, 'ピッピ');
-  } else if(bId === 'Battle8'){
-    // ケロマツ 3列線結び (6〜10)
-    card.innerHTML = 
-      '<div class="card interactive-stage">' +
-        '<h3>✏️ ケロマツと ●と すうじを せんで つなごう！</h3>' +
-        '<p style="font-size:15px;color:#555;margin:0 0 10px">左のケロマツ ➔ 真ん中の● ➔ 右のすうじ を じゅんびんに タップしてね！</p>' +
-        '<div class="three-col-container" id="tcContainer">' +
-          '<div class="three-col" id="tcCol1"></div>' +
-          '<div class="three-col" id="tcCol2"></div>' +
-          '<div class="three-col" id="tcCol3"></div>' +
-          '<svg class="tc-lines-svg" id="tcSvg"></svg>' +
-        '</div>' +
-        '<div class="match-status" id="tcDoneMsg">🎉 5くみ ぜんぶ つながったよ！ ケロマツを つかまえよう！</div>' +
-      '</div>';
-    initThreeColMatch([6, 7, 8, 9, 10], 656, 'ケロマツ');
   } else if(bId === 'Battle5' || bId === 'Battle6'){
     // おさら1とおさら2の分解（フシギソウ・ジヘッド）- 2問連続縦並び・上限遵守・5個ポップアップ撤去
     const isB5 = bId === 'Battle5';
@@ -4672,15 +4727,75 @@ function renderInteractiveStage(row){
       '</div>';
 
     initAppleSplitSequential(isB5);
-  } else if(bId === 'Battle9'){
-    // エテボースのすごろく
+  } else if(bId === 'Battle7'){
+    // バトル7：アンノーン 6から10のすうじ（原本完全再現・教科書UI・タップ塗り丸）
+    const shuffledNums = [8, 6, 10, 7, 9];
+    let cardsHtml = '';
+    shuffledNums.forEach((n, idx) => {
+      let pokeHtml = '';
+      for(let k=0; k<n; k++) pokeHtml += '<img src="' + ART(201) + '" alt="アンノーン" style="width:48px;height:48px;object-fit:contain;margin:2px">';
+      let dotsHtml = '';
+      for(let d=0; d<10; d++) dotsHtml += '<div class="pd-dot tap-dot" data-q="' + idx + '" data-dot="' + d + '"></div>';
+      let chHtml = '';
+      ['6', '7', '8', '9', '10'].forEach(ch => {
+        const selCls = saved[idx] === ch ? ' sel' : '';
+        chHtml += '<button type="button" class="pd-btn choice' + selCls + '" data-q="' + idx + '" data-val="' + ch + '">' + ch + '</button>';
+      });
+      cardsHtml += 
+        '<div class="pd-card" style="margin-bottom:12px">' +
+          '<div class="pd-left">' +
+            '<div class="pd-icons">' + pokeHtml + '</div>' +
+            '<div class="pd-label">アンノーン</div>' +
+            '<div class="pd-ten-frame">' + dotsHtml + '</div>' +
+          '</div>' +
+          '<div class="pd-choices-box">' +
+            '<div class="pd-choices-title">すうじを えらぼう</div>' +
+            '<div class="pd-choices" id="b7_choices_' + idx + '">' + chHtml + '</div>' +
+          '</div>' +
+          '<div class="pd-write-box">' +
+            '<span class="pd-write-label">かいた すうじ</span>' +
+            '<span class="pd-write-num" id="pdWrite_b7_' + idx + '">' + (saved[idx] || '') + '</span>' +
+          '</div>' +
+        '</div>';
+    });
+
     card.innerHTML = 
-      '<div class="card interactive-stage">' +
-        '<h3>🐒 あいている マスに すうじを いれよう！(1〜10)</h3>' +
-        '<p style="font-size:14px;color:#666;margin:0 0 8px">したのすうじをタップして、マスをえらんでね。はいっているマスをタップすると、やりなおせるよ！</p>' +
-        '<div class="seq-track" id="seqTrack"></div>' +
-        '<div class="seq-palette" id="seqPalette"></div>' +
-        '<div class="match-status" id="seqDoneMsg">🎉 1から 10まで ぜんぶ ならんだよ！</div>' +
+      '<div class="drill-book-page">' +
+        makeDrillBookHeader(7, 'アンノーン', 'あんのーん', '6から 10の すうじを かこう', 'アンノーンの かずだけ ○を ぬって、すうじを えらびましょう。', 201) +
+        '<div style="margin-bottom:14px">' + cardsHtml + '</div>' +
+        makeDrillBookFooter('アンノーン', 'シンボルポケモン', 'エスパー', '0.5m', '5.0kg', '6から10までの少し大きな数を数え、10フレームの丸を塗って対応する数字を選びます。5のまとまりを意識して数えるとスムーズです。', 201) +
+      '</div>';
+    initBattle7Unified(shuffledNums);
+  } else if(bId === 'Battle8'){
+    // バトル8：ケロマツ せんでむすぼう（原本完全再現・教科書UI）
+    card.innerHTML = 
+      '<div class="drill-book-page">' +
+        makeDrillBookHeader(8, 'ケロマツ', 'けろまつ', 'せんで むすぼう', 'かずが おなじに なるように、ケロマツと ●と すうじを せんで つなぎましょう。', 656) +
+        '<div style="background:#f0f9ff;border:2px solid #bae6fd;border-radius:18px;padding:14px;margin-bottom:14px">' +
+          '<div style="font-size:15px;font-weight:900;color:#0369a1;margin-bottom:10px;text-align:center">✏️ 左のケロマツ ➔ 真ん中の● ➔ 右のすうじ を じゅんびんに タップしてね！</div>' +
+          '<div class="three-col-container" id="tcContainer">' +
+            '<div class="three-col" id="tcCol1"></div>' +
+            '<div class="three-col" id="tcCol2"></div>' +
+            '<div class="three-col" id="tcCol3"></div>' +
+            '<svg class="tc-lines-svg" id="tcSvg"></svg>' +
+          '</div>' +
+          '<div class="match-status" id="tcDoneMsg" style="margin-top:10px">🎉 5くみ ぜんぶ つながったよ！ ケロマツを つかまえよう！</div>' +
+        '</div>' +
+        makeDrillBookFooter('ケロマツ', 'あわがえるポケモン', 'みず', '0.3m', '5.0kg', '6から10までの「ケロマツ」「黒丸」「数字」の3者マッチングです。10フレーム上のまとまりと数字が一致していることを確認しながら進めましょう。', 656) +
+      '</div>';
+    initThreeColMatch([6, 7, 8, 9, 10], 656, 'ケロマツ');
+  } else if(bId === 'Battle9'){
+    // バトル9：エテボース ぬけているすうじをかこう（原本完全再現・教科書UI）
+    card.innerHTML = 
+      '<div class="drill-book-page">' +
+        makeDrillBookHeader(9, 'エテボース', 'えてぼーす', 'ぬけている すうじを かこう', 'すうじが 1から 10まで じゅんばんに ならぶように、あいている マスに すうじを いれましょう。', 424) +
+        '<div style="background:#fefce8;border:2px solid #fef08a;border-radius:18px;padding:14px;margin-bottom:14px">' +
+          '<div style="font-size:15px;font-weight:900;color:#854d0e;margin-bottom:8px;text-align:center">したのすうじをタップして、マスをえらんでね。はいっているマスをタップすると、やりなおせるよ！</div>' +
+          '<div class="seq-track" id="seqTrack"></div>' +
+          '<div class="seq-palette" id="seqPalette"></div>' +
+          '<div class="match-status" id="seqDoneMsg" style="margin-top:10px">🎉 1から 10まで ぜんぶ ならんだよ！</div>' +
+        '</div>' +
+        makeDrillBookFooter('エテボース', 'おながポケモン', 'ノーマル', '1.2m', '20.3kg', '1から10までの数字の順序（順列）を完成させます。空いたマスに入る数を前後から推理することで、数の連続性を身につけます。', 424) +
       '</div>';
     initSequenceFill(
       [1, null, 3, null, null, 6, null, 8, null, 10],
@@ -4688,14 +4803,17 @@ function renderInteractiveStage(row){
       [7, 3, 2, 8, 5, 4, 6, 9, 1]
     );
   } else if(bId === 'Battle10'){
-    // ミミッキュのぎゃくじゅん
+    // バトル10：ミミッキュ ぬけているすうじをかこう（原本完全再現・教科書UI）
     card.innerHTML = 
-      '<div class="card interactive-stage">' +
-        '<h3>👻 10から 1まで ぎゃくに ならべよう！</h3>' +
-        '<p style="font-size:14px;color:#666;margin:0 0 8px">したのすうじをタップして、マスをえらんでね。はいっているマスをタップすると、やりなおせるよ！</p>' +
-        '<div class="seq-track" id="seqTrack"></div>' +
-        '<div class="seq-palette" id="seqPalette"></div>' +
-        '<div class="match-status" id="seqDoneMsg">🎉 10から 1まで カウントダウン できたよ！</div>' +
+      '<div class="drill-book-page">' +
+        makeDrillBookHeader(10, 'ミミッキュ', 'みみっきゅ', 'ぬけている すうじを かこう', 'すうじが 10から 1まで ぎゃくに ならぶように、あいている マスに すうじを いれましょう。', 778) +
+        '<div style="background:#fdf2f8;border:2px solid #fbcfe8;border-radius:18px;padding:14px;margin-bottom:14px">' +
+          '<div style="font-size:15px;font-weight:900;color:#9d174d;margin-bottom:8px;text-align:center">したのすうじをタップして、マスをえらんでね。はいっているマスをタップすると、やりなおせるよ！</div>' +
+          '<div class="seq-track" id="seqTrack"></div>' +
+          '<div class="seq-palette" id="seqPalette"></div>' +
+          '<div class="match-status" id="seqDoneMsg" style="margin-top:10px">🎉 10から 1まで カウントダウン できたよ！</div>' +
+        '</div>' +
+        makeDrillBookFooter('ミミッキュ', 'ばけのかわポケモン', 'ゴースト・フェアリー', '0.2m', '0.7kg', '10から1への逆順（カウントダウン）です。数を減らしていく操作は引き算の直感的なイメージにつながる大切なステップです。', 778) +
       '</div>';
     initSequenceFill(
       [10, 9, null, 7, null, null, 4, null, 2, null],
@@ -4703,13 +4821,180 @@ function renderInteractiveStage(row){
       [6, 2, 8, 7, 3, 5, 9, 1, 4]
     );
   } else if(bId === 'Battle11'){
-    // ユキメノコ どちらがおおいかな
+    // バトル11：ユキメノコ どちらがおおいかな（原本完全再現・教科書UI）
     card.innerHTML = 
-      '<div class="card interactive-stage">' +
-        '<h3>❄️ ポケモンの かずを かぞえて、おおい ほうを えらぼう！</h3>' +
-        '<div id="b11Container"></div>' +
+      '<div class="drill-book-page">' +
+        makeDrillBookHeader(11, 'ユキメノコ', 'ゆきめのこ', 'どちらが おおいかな', 'ポケモンの かずを かぞえて、おおい ほうを えらびましょう。', 478) +
+        '<div id="b11Container" style="margin-bottom:14px"></div>' +
+        makeDrillBookFooter('ユキメノコ', 'ゆきぐにポケモン', 'こおり・ゴースト', '1.3m', '26.6kg', '2つのグループのポケモンを数え比べ、どちらが多いかを判断します。数の大小関係の理解を深めます。', 478) +
       '</div>';
     initBattle11Compare();
+  } else if(bId === 'Battle12' || bId === 'Battle13' || bId === 'Battle14' || bId === 'Battle15' || bId === 'Battle16'){
+    // バトル12〜16：数の木ドリル（原本完全再現・教科書UI・🍎🍒💎🪨🍃アイコン付き）
+    const meta = {
+      Battle12: { num: 12, name: 'バタフリー', furi: 'ばたふりー', id: 12, total: 6, icon: '🍎', zukan: 'ちょうちょポケモン', type: 'むし・ひこう', h: '1.2m', w: '32.0kg', adv: '「6の分解（1と5、2と4、3と3など）」を絵と数の木で学びます。全体の数と部分の数の関係を視覚的にとらえます。' },
+      Battle13: { num: 13, name: 'マリルリ', furi: 'まりるり', id: 184, total: 7, icon: '🍒', zukan: 'みずうさぎポケモン', type: 'みず・フェアリー', h: '0.8m', w: '28.5kg', adv: '「7の分解」を学習します。一方の数が1増えるともう一方が1減るという数の保存とバランスの規則性に気づかせましょう。' },
+      Battle14: { num: 14, name: 'ヤミラミ', furi: 'やみらみ', id: 302, total: 8, icon: '💎', zukan: 'くらやみポケモン', type: 'あく・ゴースト', h: '0.5m', w: '11.0kg', adv: '「8の分解」です。ダイヤの絵を数えながら、あといくつで8になるかを考えることで、足し算・引き算の土台を作ります。' },
+      Battle15: { num: 15, name: 'ギガイアス', furi: 'ぎがいあす', id: 526, total: 9, icon: '🪨', zukan: 'こうあつポケモン', type: 'いわ', h: '1.7m', w: '270.0kg', adv: '「9の分解」です。10の直前の数であり、繰り上がり計算で最も頻出する「9と1で10」を意識しながら解くのがポイントです。' },
+      Battle16: { num: 16, name: 'ゴーゴート', furi: 'ごーごーと', id: 673, total: 10, icon: '🍃', zukan: 'ライドポケモン', type: 'くさ', h: '1.7m', w: '91.0kg', adv: '算数の要である「10の分解（1と9、2と8、3と7、4と6、5と5）」の完全マスターを目指します。' }
+    }[bId];
+
+    let treesHtml = '<div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:14px;margin-bottom:14px">';
+    for(let g=1; g<meta.total; g++){
+      const qIdx = g - 1;
+      const targetAns = meta.total - g;
+      const currentAns = saved[qIdx] || '';
+      
+      let chHtml = '';
+      for(let c=1; c<meta.total; c++){
+        const selCls = currentAns === String(c) ? ' sel' : '';
+        chHtml += '<button type="button" class="choice' + selCls + '" data-q="' + qIdx + '" data-val="' + c + '" style="font-size:16px;padding:6px 10px"><span style="font-weight:900">' + c + '</span><span style="font-size:12px;margin-left:4px">' + meta.icon.repeat(c) + '</span></button>';
+      }
+
+      treesHtml += 
+        '<div class="qtree-card" style="background:#fff;border:2.5px solid #fed7aa;border-radius:16px;padding:14px;text-align:center;box-shadow:0 3px 6px rgba(0,0,0,0.05)">' +
+          '<div style="font-size:14px;font-weight:900;color:#9a3412;margin-bottom:8px">もんだい ' + g + '：' + meta.total + 'は ' + g + 'と いくつかな？</div>' +
+          '<div class="qtree-container" style="display:flex;flex-direction:column;align-items:center;margin:8px 0">' +
+            '<div style="text-align:center">' +
+              '<div class="qtree-top" style="margin:0 auto"><div>' + meta.total + '</div></div>' +
+              '<div style="font-size:14px;margin-top:3px">' + meta.icon.repeat(meta.total) + '</div>' +
+            '</div>' +
+            '<svg class="qtree-branch-svg" viewBox="0 0 90 22" style="width:90px;height:22px;margin:2px 0">' +
+              '<line x1="45" y1="0" x2="22" y2="22" stroke="#222" stroke-width="2.5" stroke-linecap="round"/>' +
+              '<line x1="45" y1="0" x2="68" y2="22" stroke="#222" stroke-width="2.5" stroke-linecap="round"/>' +
+            '</svg>' +
+            '<div class="qtree-bottom-row" style="display:flex;align-items:flex-start;justify-content:center;gap:20px">' +
+              '<div style="text-align:center">' +
+                '<div class="qtree-box given" style="margin:0 auto"><div>' + g + '</div></div>' +
+                '<div style="font-size:13px;margin-top:3px">' + meta.icon.repeat(g) + '</div>' +
+              '</div>' +
+              '<div style="text-align:center">' +
+                '<div class="qtree-box target' + (currentAns ? ' filled' : '') + '" id="treeTarget_' + qIdx + '" style="margin:0 auto">' + (currentAns || '?') + '</div>' +
+                '<div style="font-size:13px;margin-top:3px" id="treeTargetIcons_' + qIdx + '">' + (currentAns ? meta.icon.repeat(parseInt(currentAns, 10)) : '❓') + '</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div style="font-size:13px;font-weight:900;color:#64748b;margin:8px 0 4px">すうじを えらぼう：</div>' +
+          '<div class="choices" id="treeChoices_' + qIdx + '" style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap">' + chHtml + '</div>' +
+        '</div>';
+    }
+    treesHtml += '</div>';
+
+    card.innerHTML = 
+      '<div class="drill-book-page">' +
+        makeDrillBookHeader(meta.num, meta.name, meta.furi, meta.total + 'は いくつと いくつ', meta.total + 'この ' + meta.icon + 'を 2つに わけるよ。□に あてはまる すうじを えらぼう！', meta.id) +
+        treesHtml +
+        makeDrillBookFooter(meta.name, meta.zukan, meta.type, meta.h, meta.w, meta.adv, meta.id) +
+      '</div>';
+    initBattleTreeUnified(meta);
+  } else if(bId === 'Battle17'){
+    // バトル17：トゲピー あといくつで10（原本完全再現・教科書UI・🥚アイコン付き）
+    const qs = [
+      { qNum: 1, desc: 'たまごが 8こ あります。あと いくつで 10に なるかな？', ans: '2', count: 8, choices: ['1', '2', '3', '4'] },
+      { qNum: 2, desc: 'たまごが 5こ あります。あと いくつで 10に なるかな？', ans: '5', count: 5, choices: ['3', '4', '5', '6'] },
+      { qNum: 3, desc: 'たまごが 3こ あります。あと いくつで 10に なるかな？', ans: '7', count: 3, choices: ['5', '6', '7', '8'] }
+    ];
+    let qsHtml = '<div style="display:flex;flex-direction:column;gap:14px;margin-bottom:14px">';
+    qs.forEach((q, idx) => {
+      let chHtml = '';
+      q.choices.forEach(ch => {
+        const n = parseInt(ch, 10);
+        const selCls = saved[idx] === ch ? ' sel' : '';
+        chHtml += '<button type="button" class="choice' + selCls + '" data-q="' + idx + '" data-val="' + ch + '" style="font-size:16px;padding:6px 12px"><span style="font-weight:900">' + ch + '</span><span style="font-size:13px;margin-left:4px">' + '🥚'.repeat(n) + '</span></button>';
+      });
+      qsHtml += 
+        '<div style="background:#fff;border:2.5px solid #fbcfe8;border-radius:16px;padding:14px">' +
+          '<div style="font-size:15px;font-weight:900;color:#9d174d;margin-bottom:8px">もんだい ' + q.qNum + '：' + q.desc + '</div>' +
+          '<div style="background:#fdf2f8;border-radius:12px;padding:8px 12px;display:flex;align-items:center;gap:8px;font-size:18px;margin-bottom:10px">' +
+            '<span>🥚 ' + q.count + 'こ：</span><span>' + '🥚'.repeat(q.count) + '</span>' +
+          '</div>' +
+          '<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">' +
+            '<span style="font-size:14px;font-weight:900;color:#475569">あと いくつ？：</span>' +
+            '<div class="choices" id="b17_choices_' + idx + '" style="display:flex;gap:8px;flex-wrap:wrap">' + chHtml + '</div>' +
+          '</div>' +
+        '</div>';
+    });
+    qsHtml += '</div>';
+
+    card.innerHTML = 
+      '<div class="drill-book-page">' +
+        makeDrillBookHeader(17, 'トゲピー', 'とげぴー', 'あと いくつで 10に なるかな', 'たまごが あります。あと いくつで 10に なるかな？', 175) +
+        qsHtml +
+        makeDrillBookFooter('トゲピー', 'はりたまポケモン', 'フェアリー', '0.3m', '1.5kg', '「あといくつで10」になるかを求める補数計算です。タマゴの絵を見ながら、10を作るペアを瞬時に思い出せるように練習します。', 175) +
+      '</div>';
+    initBattle17Unified(qs);
+  } else if(bId === 'Battle18'){
+    // バトル18：ヤングース あといくつで10（原本完全再現・教科書UI・🍎アイコン付き）
+    const qs = [
+      { qNum: 1, desc: 'りんごが 7こ あります。7は あと いくつで 10に なるかな？', ans: '3', count: 7, choices: ['1', '2', '3', '4'] },
+      { qNum: 2, desc: 'りんごが 9こ あります。9は あと いくつで 10に なるかな？', ans: '1', count: 9, choices: ['1', '2', '3', '4'] },
+      { qNum: 3, desc: 'りんごが 6こ あります。6は あと いくつで 10に なるかな？', ans: '4', count: 6, choices: ['2', '3', '4', '5'] }
+    ];
+    let qsHtml = '<div style="display:flex;flex-direction:column;gap:14px;margin-bottom:14px">';
+    qs.forEach((q, idx) => {
+      let chHtml = '';
+      q.choices.forEach(ch => {
+        const n = parseInt(ch, 10);
+        const selCls = saved[idx] === ch ? ' sel' : '';
+        chHtml += '<button type="button" class="choice' + selCls + '" data-q="' + idx + '" data-val="' + ch + '" style="font-size:16px;padding:6px 12px"><span style="font-weight:900">' + ch + '</span><span style="font-size:13px;margin-left:4px">' + '🍎'.repeat(n) + '</span></button>';
+      });
+      qsHtml += 
+        '<div style="background:#fff;border:2.5px solid #fed7aa;border-radius:16px;padding:14px">' +
+          '<div style="font-size:15px;font-weight:900;color:#9a3412;margin-bottom:8px">もんだい ' + q.qNum + '：' + q.desc + '</div>' +
+          '<div style="background:#fff7ed;border-radius:12px;padding:8px 12px;display:flex;align-items:center;gap:8px;font-size:18px;margin-bottom:10px">' +
+            '<span>🍎 ' + q.count + 'こ：</span><span>' + '🍎'.repeat(q.count) + '</span>' +
+          '</div>' +
+          '<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">' +
+            '<span style="font-size:14px;font-weight:900;color:#475569">あと いくつ？：</span>' +
+            '<div class="choices" id="b18_choices_' + idx + '" style="display:flex;gap:8px;flex-wrap:wrap">' + chHtml + '</div>' +
+          '</div>' +
+        '</div>';
+    });
+    qsHtml += '</div>';
+
+    card.innerHTML = 
+      '<div class="drill-book-page">' +
+        makeDrillBookHeader(18, 'ヤングース', 'やんぐーす', 'あと いくつで 10に なるかな', 'りんごが あります。あと いくつで 10に なるかな？', 734) +
+        qsHtml +
+        makeDrillBookFooter('ヤングース', 'うろつきポケモン', 'ノーマル', '0.4m', '6.0kg', '前問に続き、10の補数を確実にします。絵のりんごの数と合わせて「7ならあと3」「9ならあと1」とリズミカルに答えられるようにしましょう。', 734) +
+      '</div>';
+    initBattle18Unified(qs);
+  } else if(bId === 'Battle19'){
+    // バトル19：イッカネズミ 0というかず（原本完全再現・教科書UI）
+    const qs = [
+      { qNum: 1, desc: 'おさらの なかの りんご：なにも ない おさらの りんごは なんこかな？', ans: '0', icon: '🍎', choices: ['0', '1', '2', '3'] },
+      { qNum: 2, desc: 'わなげ：ひとつも はいっていない ところの わは なんこかな？', ans: '0', icon: '⭕', choices: ['0', '1', '2', '3'] }
+    ];
+    let qsHtml = '<div style="display:flex;flex-direction:column;gap:14px;margin-bottom:14px">';
+    qs.forEach((q, idx) => {
+      let chHtml = '';
+      q.choices.forEach(ch => {
+        const n = parseInt(ch, 10);
+        const iconTxt = n === 0 ? ' (0こ)' : (' ' + q.icon.repeat(n));
+        const selCls = saved[idx] === ch ? ' sel' : '';
+        chHtml += '<button type="button" class="choice' + selCls + '" data-q="' + idx + '" data-val="' + ch + '" style="font-size:16px;padding:6px 12px"><span style="font-weight:900">' + ch + '</span><span style="font-size:13px;margin-left:4px">' + iconTxt + '</span></button>';
+      });
+      qsHtml += 
+        '<div style="background:#fff;border:2.5px solid #cbd5e1;border-radius:16px;padding:14px">' +
+          '<div style="font-size:15px;font-weight:900;color:#1e293b;margin-bottom:8px">もんだい ' + q.qNum + '：' + q.desc + '</div>' +
+          '<div style="background:#f8fafc;border:2px dashed #94a3b8;border-radius:14px;padding:12px;text-align:center;font-size:24px;margin-bottom:10px">' +
+            (idx === 0 ? '🍽️ （お皿のうえには なにも ないよ）' : '🎯 （わは ひとつも はいっていないよ）') +
+          '</div>' +
+          '<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">' +
+            '<span style="font-size:14px;font-weight:900;color:#475569">すうじを えらぼう：</span>' +
+            '<div class="choices" id="b19_choices_' + idx + '" style="display:flex;gap:8px;flex-wrap:wrap">' + chHtml + '</div>' +
+          '</div>' +
+        '</div>';
+    });
+    qsHtml += '</div>';
+
+    card.innerHTML = 
+      '<div class="drill-book-page">' +
+        makeDrillBookHeader(19, 'イッカネズミ', 'いっかねずみ', '0と いう かず', 'ひとつも ない ときは、どんな すうじで あらわすかな？', 925) +
+        qsHtml +
+        makeDrillBookFooter('イッカネズミ', 'ファミリーポケモン', 'ノーマル', '0.3m', '2.8kg', '「なにもない」ことを表す数字「0（ゼロ）」の意味を理解します。具体物がゼロ個である状態を数字の0と正しく結びつけます。', 925) +
+      '</div>';
+    initBattle19Unified(qs);
   } else if(bId === 'Battle20'){
     // ピカチュウ 1〜10のまとめ 7つの数の木迷路（原本Battle20.jpg完全再現・t-math-box & テンキートレイ連携）
     function makeMazeTree(total, given, ans, stepNum) {
@@ -7865,6 +8150,288 @@ function initBattle36Togedemaru() {
 
 /* ===== BATTLES 5, 6, 20, 21 INITIALIZERS ===== */
 
+/* 統一教科書UIコントローラー群（Battle 1〜19） */
+function checkUnifiedCompletion(neededCount) {
+  const a = S.answers[curIdx] || {};
+  let count = 0;
+  for(let i=0; i<neededCount; i++){
+    if(a[i] != null) count++;
+  }
+  if(count === neededCount){
+    stampDrillSuccess();
+    a._completed = true;
+    save();
+    updateThrow();
+  }
+}
+
+function initAchamoMatchUnified(){
+  initAchamoMatch();
+  // もんだい②と③の選択肢ボタン
+  const saved = S.answers[curIdx] || {};
+  const q2Box = $('b1_q2_choices');
+  if(q2Box){
+    q2Box.innerHTML = '';
+    ['りんご', 'アチャモ'].forEach(ch => {
+      const b = document.createElement('button');
+      b.className = 'choice' + (saved[1] === ch ? ' sel' : '');
+      b.textContent = ch;
+      b.style.fontSize = '16px';
+      b.style.padding = '8px 16px';
+      b.onclick = () => {
+        playMarimbaPop(1.2);
+        q2Box.querySelectorAll('.choice').forEach(x => x.classList.remove('sel'));
+        b.classList.add('sel');
+        (S.answers[curIdx] = S.answers[curIdx] || {})[1] = ch;
+        save();
+        updateThrow();
+        if(saved[1] === 'りんご' && saved[2] === 'たりる') stampDrillSuccess();
+      };
+      q2Box.appendChild(b);
+    });
+  }
+
+  const q3Box = $('b1_q3_choices');
+  if(q3Box){
+    q3Box.innerHTML = '';
+    ['たりる', 'たりない'].forEach(ch => {
+      const b = document.createElement('button');
+      b.className = 'choice' + (saved[2] === ch ? ' sel' : '');
+      b.textContent = ch;
+      b.style.fontSize = '16px';
+      b.style.padding = '8px 16px';
+      b.onclick = () => {
+        playMarimbaPop(1.2);
+        q3Box.querySelectorAll('.choice').forEach(x => x.classList.remove('sel'));
+        b.classList.add('sel');
+        (S.answers[curIdx] = S.answers[curIdx] || {})[2] = ch;
+        save();
+        updateThrow();
+        if(saved[1] === 'りんご' && saved[2] === 'たりる') stampDrillSuccess();
+      };
+      q3Box.appendChild(b);
+    });
+  }
+}
+
+function initBattle2Unified(){
+  initBattle2Count();
+  const saved = S.answers[curIdx] || {};
+  const q1Box = $('b2_q1_choices');
+  if(q1Box){
+    q1Box.innerHTML = '';
+    ['4', '5', '6', '7'].forEach(ch => {
+      const b = document.createElement('button');
+      b.className = 'choice' + (saved[0] === ch ? ' sel' : '');
+      b.textContent = ch + 'ひき';
+      b.style.fontSize = '16px';
+      b.style.padding = '8px 14px';
+      b.onclick = () => {
+        playMarimbaPop(1.2);
+        q1Box.querySelectorAll('.choice').forEach(x => x.classList.remove('sel'));
+        b.classList.add('sel');
+        (S.answers[curIdx] = S.answers[curIdx] || {})[0] = ch;
+        save();
+        updateThrow();
+        if(saved[0] === '6' && saved[1] === '7') stampDrillSuccess();
+      };
+      q1Box.appendChild(b);
+    });
+  }
+
+  const q2Box = $('b2_q2_choices');
+  if(q2Box){
+    q2Box.innerHTML = '';
+    ['5', '6', '7', '8'].forEach(ch => {
+      const b = document.createElement('button');
+      b.className = 'choice' + (saved[1] === ch ? ' sel' : '');
+      b.textContent = ch + 'ひき';
+      b.style.fontSize = '16px';
+      b.style.padding = '8px 14px';
+      b.onclick = () => {
+        playMarimbaPop(1.2);
+        q2Box.querySelectorAll('.choice').forEach(x => x.classList.remove('sel'));
+        b.classList.add('sel');
+        (S.answers[curIdx] = S.answers[curIdx] || {})[1] = ch;
+        save();
+        updateThrow();
+        if(saved[0] === '6' && saved[1] === '7') stampDrillSuccess();
+      };
+      q2Box.appendChild(b);
+    });
+  }
+}
+
+function initBattle3Unified(shuffledNums){
+  // まる塗りインタラクション
+  document.querySelectorAll('.drill-book-page .pd-dot.tap-dot').forEach(dot => {
+    dot.onclick = () => {
+      playMarimbaPop(1.3);
+      dot.classList.toggle('filled');
+    };
+  });
+
+  // 数字選択ボタン
+  document.querySelectorAll('.drill-book-page .pd-btn').forEach(btn => {
+    btn.onclick = () => {
+      const q = parseInt(btn.dataset.q, 10);
+      const val = btn.dataset.val;
+      const parent = $('b3_choices_' + q);
+      if(parent) parent.querySelectorAll('.pd-btn').forEach(b => b.classList.remove('sel'));
+      btn.classList.add('sel');
+      playMarimbaPop(1.2);
+
+      const writeEl = $('pdWrite_b3_' + q);
+      if(writeEl) writeEl.textContent = val;
+
+      (S.answers[curIdx] = S.answers[curIdx] || {})[q] = val;
+      save();
+      updateThrow();
+
+      // 正解チェック
+      const a = S.answers[curIdx] || {};
+      let allCorrect = true;
+      for(let i=0; i<shuffledNums.length; i++){
+        if(a[i] !== String(shuffledNums[i])) allCorrect = false;
+      }
+      if(allCorrect) stampDrillSuccess();
+    };
+  });
+}
+
+function initBattle7Unified(shuffledNums){
+  // まる塗りインタラクション
+  document.querySelectorAll('.drill-book-page .pd-dot.tap-dot').forEach(dot => {
+    dot.onclick = () => {
+      playMarimbaPop(1.3);
+      dot.classList.toggle('filled');
+    };
+  });
+
+  // 数字選択ボタン
+  document.querySelectorAll('.drill-book-page .pd-btn').forEach(btn => {
+    btn.onclick = () => {
+      const q = parseInt(btn.dataset.q, 10);
+      const val = btn.dataset.val;
+      const parent = $('b7_choices_' + q);
+      if(parent) parent.querySelectorAll('.pd-btn').forEach(b => b.classList.remove('sel'));
+      btn.classList.add('sel');
+      playMarimbaPop(1.2);
+
+      const writeEl = $('pdWrite_b7_' + q);
+      if(writeEl) writeEl.textContent = val;
+
+      (S.answers[curIdx] = S.answers[curIdx] || {})[q] = val;
+      save();
+      updateThrow();
+
+      // 正解チェック
+      const a = S.answers[curIdx] || {};
+      let allCorrect = true;
+      for(let i=0; i<shuffledNums.length; i++){
+        if(a[i] !== String(shuffledNums[i])) allCorrect = false;
+      }
+      if(allCorrect) stampDrillSuccess();
+    };
+  });
+}
+
+function initBattleTreeUnified(meta){
+  document.querySelectorAll('.drill-book-page .choice[data-q]').forEach(btn => {
+    btn.onclick = () => {
+      const q = parseInt(btn.dataset.q, 10);
+      const val = btn.dataset.val;
+      const parent = $('treeChoices_' + q);
+      if(parent) parent.querySelectorAll('.choice').forEach(b => b.classList.remove('sel'));
+      btn.classList.add('sel');
+      playMarimbaPop(1.2);
+
+      const targetBox = $('treeTarget_' + q);
+      if(targetBox){
+        targetBox.textContent = val;
+        targetBox.classList.add('filled');
+      }
+      const iconsBox = $('treeTargetIcons_' + q);
+      if(iconsBox){
+        iconsBox.textContent = meta.icon.repeat(parseInt(val, 10));
+      }
+
+      (S.answers[curIdx] = S.answers[curIdx] || {})[q] = val;
+      save();
+      updateThrow();
+
+      // 全問正解チェック
+      const a = S.answers[curIdx] || {};
+      let allCorrect = true;
+      for(let g=1; g<meta.total; g++){
+        const expected = String(meta.total - g);
+        if(a[g-1] !== expected) allCorrect = false;
+      }
+      if(allCorrect) stampDrillSuccess();
+    };
+  });
+}
+
+function initBattle17Unified(qs){
+  document.querySelectorAll('.drill-book-page .choice[data-q]').forEach(btn => {
+    btn.onclick = () => {
+      const q = parseInt(btn.dataset.q, 10);
+      const val = btn.dataset.val;
+      const parent = $('b17_choices_' + q);
+      if(parent) parent.querySelectorAll('.choice').forEach(b => b.classList.remove('sel'));
+      btn.classList.add('sel');
+      playMarimbaPop(1.2);
+
+      (S.answers[curIdx] = S.answers[curIdx] || {})[q] = val;
+      save();
+      updateThrow();
+
+      const a = S.answers[curIdx] || {};
+      if(qs.every((item, i) => a[i] === item.ans)) stampDrillSuccess();
+    };
+  });
+}
+
+function initBattle18Unified(qs){
+  document.querySelectorAll('.drill-book-page .choice[data-q]').forEach(btn => {
+    btn.onclick = () => {
+      const q = parseInt(btn.dataset.q, 10);
+      const val = btn.dataset.val;
+      const parent = $('b18_choices_' + q);
+      if(parent) parent.querySelectorAll('.choice').forEach(b => b.classList.remove('sel'));
+      btn.classList.add('sel');
+      playMarimbaPop(1.2);
+
+      (S.answers[curIdx] = S.answers[curIdx] || {})[q] = val;
+      save();
+      updateThrow();
+
+      const a = S.answers[curIdx] || {};
+      if(qs.every((item, i) => a[i] === item.ans)) stampDrillSuccess();
+    };
+  });
+}
+
+function initBattle19Unified(qs){
+  document.querySelectorAll('.drill-book-page .choice[data-q]').forEach(btn => {
+    btn.onclick = () => {
+      const q = parseInt(btn.dataset.q, 10);
+      const val = btn.dataset.val;
+      const parent = $('b19_choices_' + q);
+      if(parent) parent.querySelectorAll('.choice').forEach(b => b.classList.remove('sel'));
+      btn.classList.add('sel');
+      playMarimbaPop(1.2);
+
+      (S.answers[curIdx] = S.answers[curIdx] || {})[q] = val;
+      save();
+      updateThrow();
+
+      const a = S.answers[curIdx] || {};
+      if(qs.every((item, i) => a[i] === item.ans)) stampDrillSuccess();
+    };
+  });
+}
+
 function initAppleSplitSequential(isB5) {
   const top1 = isB5 ? 1 : 3;
   const maxBot1 = isB5 ? 4 : 2;
@@ -9608,10 +10175,8 @@ function renderQuestionCards(row){
   box.innerHTML = '';
   const saved = S.answers[curIdx] || {};
 
-  // Battle 5, Battle 6, Battle 20, 21, 23..55_2 は独自ステージに統合表示のため下部カードは非表示
-  if(row.battle === 'Battle5' || row.battle === 'Battle6' || /^(Battle(20|21|2[3-9]|[3-5][0-9]|55(_[23])?)|Minigame)$/i.test(row.battle)){
-    return;
-  }
+  // 全ドリル（Battle 1〜55_2、Minigame）はすべて教科書風ページ（drill-book-page）に統合表示するため下部重複カードは生成しない
+  return;
 
   // 1. 紙のドリル手本再現モード（Battle 3 パチリス、Battle 7 アンノーン等）
   if(curQs[0] && curQs[0].isPaperRow){

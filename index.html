@@ -3021,6 +3021,222 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
   filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2));
 }
 
+/* ===== ゲット儀式モーダル（全ドリル共通・中央巨大ポケモン出現＆ボール投げ） ===== */
+.drill-catch-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.72);
+  backdrop-filter: blur(5px);
+  z-index: 10000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: fadeIn 0.3s ease-out;
+}
+.drill-catch-modal.open {
+  display: flex !important;
+}
+.drill-catch-card {
+  background: linear-gradient(180deg, #ffffff 0%, #fffbeb 100%);
+  border: 4px solid #f59e0b;
+  border-radius: 28px;
+  padding: 24px 20px;
+  text-align: center;
+  max-width: 440px;
+  width: 92%;
+  box-shadow: 0 20px 45px rgba(0,0,0,0.4);
+  position: relative;
+  animation: catchPopIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes catchPopIn {
+  0% { transform: scale(0.6) translateY(40px); opacity: 0; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+.catch-congrats-tag {
+  background: #fef08a;
+  border: 2px solid #eab308;
+  color: #854d0e;
+  font-size: 15px;
+  font-weight: 900;
+  border-radius: 12px;
+  padding: 6px 12px;
+  display: inline-block;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 6px rgba(234, 179, 8, 0.25);
+}
+.catch-stage-area {
+  position: relative;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0 16px;
+}
+.catch-stage-glow {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(254, 240, 138, 0.7) 0%, rgba(254, 240, 138, 0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: pulseGlow 2s infinite alternate;
+}
+@keyframes pulseGlow {
+  0% { transform: scale(0.9); opacity: 0.6; }
+  100% { transform: scale(1.15); opacity: 1; }
+}
+.catch-target-pokemon {
+  width: 190px;
+  height: 190px;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 18px rgba(0,0,0,0.3));
+  position: relative;
+  z-index: 2;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: pokeBounceFloat 2.4s ease-in-out infinite;
+}
+@keyframes pokeBounceFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.catch-target-pokemon.absorbed {
+  transform: scale(0.05) rotate(360deg) !important;
+  opacity: 0 !important;
+}
+.catch-poke-name {
+  font-size: 18px;
+  font-weight: 900;
+  color: #1e293b;
+  margin-top: 10px;
+  position: relative;
+  z-index: 2;
+}
+.btn-catch-throw {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 900;
+  border: 3px solid #b91c1c;
+  border-radius: 999px;
+  padding: 12px 28px;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(220,38,38,0.35);
+  transition: all 0.15s ease;
+  user-select: none;
+  animation: throwBtnPulse 1.2s infinite alternate;
+}
+.btn-catch-throw:hover {
+  transform: scale(1.06);
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+}
+.btn-catch-throw:active {
+  transform: scale(0.95);
+}
+@keyframes throwBtnPulse {
+  0% { transform: scale(1); box-shadow: 0 4px 12px rgba(220,38,38,0.3); }
+  100% { transform: scale(1.05); box-shadow: 0 8px 20px rgba(220,38,38,0.5); }
+}
+.drill-flying-ball {
+  position: fixed;
+  width: 56px;
+  height: 56px;
+  background: url("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png") center/contain no-repeat;
+  filter: drop-shadow(0 6px 12px rgba(0,0,0,0.35));
+  z-index: 10005;
+  pointer-events: none;
+}
+.drill-flying-ball.ball-shaking {
+  animation: ballWobble 0.6s ease-in-out infinite alternate;
+}
+@keyframes ballWobble {
+  0% { transform: rotate(-25deg); }
+  50% { transform: rotate(0deg); }
+  100% { transform: rotate(25deg); }
+}
+
+/* Battle 37: 1〜30あみだ・トレイル迷路スタイル */
+.b37-grid-outer {
+  background: linear-gradient(180deg, #1e3a8a 0%, #065f46 60%, #14532d 100%);
+  border: 4px solid #f59e0b;
+  border-radius: 20px;
+  padding: 16px 12px;
+  margin: 12px auto;
+  max-width: 460px;
+  position: relative;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  user-select: none;
+}
+.b37-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(7, 1fr);
+  gap: 8px 6px;
+  position: relative;
+  z-index: 2;
+}
+.b37-cell {
+  background: #ffffff;
+  border: 2.5px solid #3b82f6;
+  border-radius: 10px;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 900;
+  color: #1e293b;
+  cursor: pointer;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.12);
+  transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+}
+.b37-cell:hover {
+  transform: scale(1.1);
+  z-index: 5;
+}
+.b37-cell.start-cell {
+  background: #fef08a;
+  border-color: #eab308;
+  color: #854d0e;
+  font-size: 13px;
+  cursor: default;
+}
+.b37-cell.passed {
+  background: #fef9c3 !important;
+  border-color: #eab308 !important;
+  color: #ca8a04 !important;
+  box-shadow: 0 0 0 2px #facc15 !important;
+}
+.b37-cell.current-active {
+  background: #bbf7d0 !important;
+  border-color: #16a34a !important;
+  color: #15803d !important;
+  box-shadow: 0 0 0 4px #4ade80 !important;
+  transform: scale(1.15) !important;
+  animation: cellPulse 0.9s infinite alternate;
+  z-index: 10;
+}
+@keyframes cellPulse {
+  0% { transform: scale(1.08); }
+  100% { transform: scale(1.18); }
+}
+.b37-goal-box {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border: 3.5px solid #d97706;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  grid-column: 4 / span 2;
+  grid-row: 6 / span 2;
+  box-shadow: 0 4px 10px rgba(217, 119, 6, 0.3);
+  position: relative;
+}
+
 /* ===== 読み上げボタン（ドリルヘッダー＆各問題） ===== */
 .drill-voice-btn {
   display: inline-flex;
@@ -4195,6 +4411,90 @@ function stampDrillSuccess() {
   playPikaanSound();
   playFanfare();
   toast('🎉 たいへん よくできました！ 💮', 2200);
+
+  // 正解してシールが貼られたら、ゲットできるポケモンがページ中央に大きく出現！
+  setTimeout(() => {
+    openCatchCeremony();
+  }, 700);
+}
+
+function openCatchCeremony() {
+  const row = ROWS[curIdx];
+  if (!row) return;
+  const modal = document.getElementById('drillCatchModal');
+  const img = document.getElementById('catchPokeImg');
+  const nameEl = document.getElementById('catchPokeName');
+  const btn = document.getElementById('btnCatchThrow');
+  if (!modal || !img) return;
+
+  const pName = row.pokemon_name.replace(/[(（].*$/, '');
+  const pid = pokeId(row.pokemon_name);
+  img.src = pid ? ART(pid) : ART(25);
+  img.classList.remove('absorbed');
+  img.style.display = 'block';
+  img.style.transform = '';
+  img.style.opacity = '1';
+
+  if (nameEl) nameEl.textContent = '🌟 ' + pName + ' が あらわれた！';
+  if (btn) {
+    btn.disabled = false;
+    btn.style.display = 'inline-block';
+  }
+  modal.classList.add('open');
+}
+
+function executeThrowInDrill() {
+  const btn = document.getElementById('btnCatchThrow');
+  const img = document.getElementById('catchPokeImg');
+  const modal = document.getElementById('drillCatchModal');
+  if (!btn || !img || !modal) return;
+
+  btn.disabled = true;
+  playMarimbaPop(1.4);
+
+  const bRect = btn.getBoundingClientRect();
+  const pRect = img.getBoundingClientRect();
+
+  const ball = document.createElement('div');
+  ball.className = 'drill-flying-ball';
+  document.body.appendChild(ball);
+
+  const sx = bRect.left + bRect.width / 2 - 28;
+  const sy = bRect.top - 28;
+  const ex = pRect.left + pRect.width / 2 - 28;
+  const ey = pRect.top + pRect.height / 2 - 28;
+
+  // 放物線を描いてポケモンに向かい、当たるアニメーション
+  ball.animate([
+    { transform: `translate(${sx}px, ${sy}px) rotate(0deg) scale(0.9)` },
+    { transform: `translate(${(sx + ex) / 2}px, ${Math.min(sy, ey) - 180}px) rotate(540deg) scale(1.15)` },
+    { transform: `translate(${ex}px, ${ey}px) rotate(1080deg) scale(1)` }
+  ], {
+    duration: 750,
+    easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+    fill: 'forwards'
+  }).onfinish = () => {
+    // ポケモンに当たる
+    playPikaanSound();
+    img.classList.add('absorbed');
+
+    // ボールが地面に落ちて揺れる
+    ball.style.transform = '';
+    ball.style.left = ex + 'px';
+    ball.style.top = (ey + 30) + 'px';
+    ball.getAnimations().forEach(a => a.cancel());
+    ball.classList.add('ball-shaking');
+
+    setTimeout(() => {
+      ball.classList.remove('ball-shaking');
+      playCrystalSparkle();
+      onCaught();
+      setTimeout(() => {
+        modal.classList.remove('open');
+        ball.remove();
+      }, 1500);
+    }, 1400);
+  };
 }
 
 // 汎用「田」マス＋数字トレイ入力コントローラー
@@ -6325,35 +6625,80 @@ function renderInteractiveStage(row){
       '</div>';
 
     initBattle33Florges();
+  } else if(bId === 'Battle34'){
+    // ハピナス 21から30のすうじ（10問統合版・原本完全再現）
+    let trayHtml = '<div class="num-choice-tray">';
+    ['21', '22', '23', '24', '25', '26', '27', '28', '29', '30'].forEach(n => {
+      trayHtml += '<button type="button" class="num-choice-btn" data-val="' + n + '">' + n + '</button>';
+    });
+    trayHtml += '<button type="button" class="num-choice-btn erase" data-val="erase">⌫ けす</button></div>';
+
+    let tabButtons = '';
+    const qTitles = ['① 21こ', '② 22こ', '③ 23こ', '④ 24こ', '⑤ 25こ', '⑥ 26こ', '⑦ 27こ', '⑧ 28こ', '⑨ 29こ', '⑩ 30こ'];
+    qTitles.forEach((title, idx) => {
+      tabButtons += '<button type="button" class="b34-tab-btn ' + (idx===0 ? 'sel' : '') + '" data-q="' + idx + '" style="padding:6px 10px;font-weight:900;font-size:12px;border-radius:10px;border:2px solid ' + (idx===0 ? '#f43f5e' : '#fda4af') + ';background:' + (idx===0 ? '#f43f5e' : '#fff') + ';color:' + (idx===0 ? '#fff' : '#be123c') + ';cursor:pointer">' + title + '</button>';
+    });
+
+    card.innerHTML = 
+      '<div class="drill-book-page">' +
+        makeDrillBookHeader(34, 'ハピナス', 'はぴなす', '21から 30の すうじ', 'たまごを タッチして 10この パックを つくろう！ かずを かぞえて、<span class="t-math-box-icon">田</span> に すうじを かきましょう。', 242) +
+        '<div style="background:#fff1f2;border:2px solid #fecdd3;border-radius:18px;padding:12px;margin-bottom:12px">' +
+          '<div class="b34-tabs" style="display:flex;gap:5px;flex-wrap:wrap;justify-content:center;margin-bottom:10px">' +
+            tabButtons +
+          '</div>' +
+          '<div style="text-align:center;font-size:13px;font-weight:900;color:#e11d48;margin-bottom:8px" id="b34Instruction">' +
+            '🥚 たまごを タッチしてね（10こ えらぶと パックで かこまれるよ！）' +
+          '</div>' +
+          '<div id="b34EggArea" style="min-height:200px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;background:#fff;border-radius:16px;padding:12px;border:2px solid #fbcfe8"></div>' +
+          '<div style="text-align:center;font-size:12px;font-weight:800;color:#9d174d;margin-top:6px" id="b34EggStatus">タッチした たまご: 0こ</div>' +
+          '<div class="t-math-sentence" style="justify-content:center;margin-top:10px">' +
+            '<span>この もんだいの たまごは ぜんぶで </span>' +
+            '<span class="t-math-box" data-idx="0" id="b34CurrentBox">？</span>' +
+            '<span> こ。</span>' +
+          '</div>' +
+        '</div>' +
+        trayHtml +
+        makeDrillBookFooter('ハピナス', 'しあわせポケモン', 'ノーマル', '1.5m', '46.8kg', '10個入りのパックが2つで20個、そこに端数の数を合わせて21〜30を作る十進法の基本構造を定着させます。', 242) +
+      '</div>';
+
+    initBattle34Eggs();
   } else if(bId === 'Battle35'){
-    // メグロコ 11から30のめいろ（原本完全再現）
+    // メグロコ 11から30のめいろ（バトル23準拠・道路接続＆矢印＆スタート/ゴール完全再現）
     const path35 = [
-      { step: 11, r: 0, c: 0, pr: 11 },
-      { step: 12, r: 0, c: 1, bl: 12 },
-      { step: 13, r: 0, c: 2, bl: 13 },
-      { step: 14, r: 0, c: 3, bl: 14 },
-      { step: 15, r: 0, c: 4, pr: 15 },
-      { step: 16, r: 1, c: 4, bl: 16 },
-      { step: 17, r: 1, c: 3, bl: 17 },
-      { step: 18, r: 1, c: 2, bl: 18 },
-      { step: 19, r: 1, c: 1, pr: 19 },
-      { step: 20, r: 1, c: 0, bl: 20 },
-      { step: 21, r: 2, c: 0, bl: 21 },
-      { step: 22, r: 2, c: 1, pr: 22 },
-      { step: 23, r: 2, c: 2, bl: 23 },
-      { step: 24, r: 2, c: 3, bl: 24 },
-      { step: 25, r: 2, c: 4, bl: 25 },
-      { step: 26, r: 3, c: 4, pr: 26 },
-      { step: 27, r: 3, c: 3, bl: 27 },
-      { step: 28, r: 3, c: 2, pr: 28 },
-      { step: 29, r: 3, c: 1, bl: 29 },
-      { step: 30, r: 3, c: 0, bl: 30 }
+      { step: 11, r: 0, c: 0, pr: 11, dir: '➔' },
+      { step: 12, r: 0, c: 1, bl: 12, dir: '➔' },
+      { step: 13, r: 0, c: 2, bl: 13, dir: '➔' },
+      { step: 14, r: 0, c: 3, bl: 14, dir: '➔' },
+      { step: 15, r: 0, c: 4, pr: 15, dir: '⬇️' },
+      { step: 16, r: 1, c: 4, bl: 16, dir: '⬅️' },
+      { step: 17, r: 1, c: 3, bl: 17, dir: '⬅️' },
+      { step: 18, r: 1, c: 2, bl: 18, dir: '⬅️' },
+      { step: 19, r: 1, c: 1, pr: 19, dir: '⬅️' },
+      { step: 20, r: 1, c: 0, bl: 20, dir: '⬇️' },
+      { step: 21, r: 2, c: 0, bl: 21, dir: '➔' },
+      { step: 22, r: 2, c: 1, pr: 22, dir: '➔' },
+      { step: 23, r: 2, c: 2, bl: 23, dir: '➔' },
+      { step: 24, r: 2, c: 3, bl: 24, dir: '➔' },
+      { step: 25, r: 2, c: 4, bl: 25, dir: '⬇️' },
+      { step: 26, r: 3, c: 4, pr: 26, dir: '⬅️' },
+      { step: 27, r: 3, c: 3, bl: 27, dir: '⬅️' },
+      { step: 28, r: 3, c: 2, pr: 28, dir: '⬅️' },
+      { step: 29, r: 3, c: 1, bl: 29, dir: '⬅️' },
+      { step: 30, r: 3, c: 0, bl: 30, dir: '🏆' }
     ];
 
     let gridHtml = '';
+    // SVG road connecting 11 to 30
+    gridHtml += '<svg viewBox="0 0 500 400" class="b23-road-svg" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1">' +
+      '<path d="M 50,50 L 150,50 L 250,50 L 350,50 L 450,50 L 450,150 L 350,150 L 250,150 L 150,150 L 50,150 L 50,250 L 150,250 L 250,250 L 350,250 L 450,250 L 450,350 L 350,350 L 250,350 L 150,350 L 50,350" fill="none" stroke="#ca8a04" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>' +
+      '<path d="M 50,50 L 150,50 L 250,50 L 350,50 L 450,50 L 450,150 L 350,150 L 250,150 L 150,150 L 50,150 L 50,250 L 150,250 L 250,250 L 350,250 L 450,250 L 450,350 L 350,350 L 250,350 L 150,350 L 50,350" fill="none" stroke="#fef08a" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>' +
+      '<path d="M 50,50 L 150,50 L 250,50 L 350,50 L 450,50 L 450,150 L 350,150 L 250,150 L 150,150 L 50,150 L 50,250 L 150,250 L 250,250 L 350,250 L 450,250 L 450,350 L 350,350 L 250,350 L 150,350 L 50,350" fill="none" stroke="#b45309" stroke-width="3" stroke-dasharray="8 6" stroke-linecap="round" stroke-linejoin="round"/>' +
+    '</svg>';
+
     path35.forEach(p => {
       const isPr = p.pr !== undefined;
-      gridHtml += '<div class="b23-cell ' + (isPr ? 'printed' : 'blank') + '" id="b35_cell_' + p.step + '" data-step="' + p.step + '" data-ans="' + (isPr ? p.pr : p.bl) + '" style="grid-column:' + (p.c + 1) + ';grid-row:' + (p.r + 1) + '">' +
+      gridHtml += '<div class="b23-cell ' + (isPr ? 'printed' : 'blank') + '" id="b35_cell_' + p.step + '" data-step="' + p.step + '" data-ans="' + (isPr ? p.pr : p.bl) + '" style="grid-column:' + (p.c + 1) + ';grid-row:' + (p.r + 1) + ';z-index:2">' +
+        '<span class="b23-dir-arrow">' + p.dir + '</span>' +
         (isPr ? p.pr : '？') +
       '</div>';
     });
@@ -6368,7 +6713,8 @@ function renderInteractiveStage(row){
       '<div class="drill-book-page">' +
         makeDrillBookHeader(35, 'メグロコ', 'めぐろこ', 'すうじの じゅん（11〜30）', '<ruby>すうじ<rt>すうじ</rt></ruby>が じゅんに ならぶように、ぬけて いる <span class="t-math-box-icon">田</span> に あてはまる すうじを えらぼう！', 551) +
         '<div class="b23-maze-outer" style="background:#d97706;border-color:#b45309">' +
-          '<div class="b23-grid" style="grid-template-rows:repeat(4,1fr);max-width:440px">' + gridHtml + '</div>' +
+          '<div style="text-align:center;font-weight:900;color:#fff;margin-bottom:8px">🐊 11から 30まで じゅんに マスを えらんで すすもう！</div>' +
+          '<div class="b23-grid" id="b35Grid" style="grid-template-rows:repeat(4,1fr);max-width:440px;position:relative">' + gridHtml + '</div>' +
         '</div>' +
         trayHtml +
         makeDrillBookFooter('メグロコ', 'さばくワニポケモン', 'じめん・あく', '0.7m', '15.2kg', '20を超えて30までの数の並びを理解する迷路です。20の次は21と、位が繰り上がった後の数の規則性を体感します。', 551) +
@@ -6376,186 +6722,113 @@ function renderInteractiveStage(row){
 
     initBattle35Sandile();
   } else if(bId === 'Battle36'){
-    // トゲデマル おおきいほうへすすむめいろ（原本完全再現）
+    // トゲデマル おおきいほうへすすむめいろ（原本完全再現・左右ランダム配置）
+    const b36Pairs = [
+      { step: 1, v1: 21, v2: 12, swap: Math.random() < 0.5 },
+      { step: 2, v1: 25, v2: 23, swap: Math.random() < 0.5 },
+      { step: 3, v1: 24, v2: 18, swap: Math.random() < 0.5 },
+      { step: 4, v1: 29, v2: 26, swap: Math.random() < 0.5 },
+      { step: 5, v1: 28, v2: 27, swap: Math.random() < 0.5 },
+      { step: 6, v1: 30, v2: 29, swap: Math.random() < 0.5 }
+    ];
+
+    let rowsHtml = '';
+    b36Pairs.forEach(p => {
+      const leftVal = p.swap ? p.v2 : p.v1;
+      const rightVal = p.swap ? p.v1 : p.v2;
+      rowsHtml += '<div class="b36-step-row" data-step="' + p.step + '">' +
+        '<span style="font-weight:900">' + (p.step === 6 ? '⑥（ゴール）' : ['①', '②', '③', '④', '⑤'][p.step-1]) + '</span>' +
+        '<button type="button" class="b36-fork-btn" data-val="' + leftVal + '">' + leftVal + '</button>' +
+        '<span style="font-weight:900;color:#65a30d">vs</span>' +
+        '<button type="button" class="b36-fork-btn" data-val="' + rightVal + '">' + rightVal + '</button>' +
+      '</div>';
+    });
+
     card.innerHTML = 
       '<div class="drill-book-page">' +
         makeDrillBookHeader(36, 'トゲデマル', 'とげでまる', 'どちらが おおきいかな', 'おおきい すうじの ほうを とおって すすみましょう。', 777) +
         '<div class="b36-wire-maze" id="b36Maze">' +
           '<div style="text-align:center;font-weight:900;color:#3f6212;margin-bottom:10px">⚡ 2つの すうじを くらべて、おおきい ほうを タップしよう！</div>' +
-          '<div class="b36-step-row" data-step="1">' +
-            '<span style="font-weight:900">①</span>' +
-            '<button type="button" class="b36-fork-btn" data-val="21">21</button>' +
-            '<span style="font-weight:900;color:#65a30d">vs</span>' +
-            '<button type="button" class="b36-fork-btn" data-val="12">12</button>' +
-          '</div>' +
-          '<div class="b36-step-row" data-step="2">' +
-            '<span style="font-weight:900">②</span>' +
-            '<button type="button" class="b36-fork-btn" data-val="25">25</button>' +
-            '<span style="font-weight:900;color:#65a30d">vs</span>' +
-            '<button type="button" class="b36-fork-btn" data-val="23">23</button>' +
-          '</div>' +
-          '<div class="b36-step-row" data-step="3">' +
-            '<span style="font-weight:900">③</span>' +
-            '<button type="button" class="b36-fork-btn" data-val="24">24</button>' +
-            '<span style="font-weight:900;color:#65a30d">vs</span>' +
-            '<button type="button" class="b36-fork-btn" data-val="18">18</button>' +
-          '</div>' +
-          '<div class="b36-step-row" data-step="4">' +
-            '<span style="font-weight:900">④</span>' +
-            '<button type="button" class="b36-fork-btn" data-val="29">29</button>' +
-            '<span style="font-weight:900;color:#65a30d">vs</span>' +
-            '<button type="button" class="b36-fork-btn" data-val="26">26</button>' +
-          '</div>' +
-          '<div class="b36-step-row" data-step="5">' +
-            '<span style="font-weight:900">⑤</span>' +
-            '<button type="button" class="b36-fork-btn" data-val="28">28</button>' +
-            '<span style="font-weight:900;color:#65a30d">vs</span>' +
-            '<button type="button" class="b36-fork-btn" data-val="27">27</button>' +
-          '</div>' +
-          '<div class="b36-step-row" data-step="6">' +
-            '<span style="font-weight:900">⑥（ゴール）</span>' +
-            '<button type="button" class="b36-fork-btn" data-val="30">30</button>' +
-            '<span style="font-weight:900;color:#65a30d">vs</span>' +
-            '<button type="button" class="b36-fork-btn" data-val="29">29</button>' +
-          '</div>' +
+          rowsHtml +
         '</div>' +
         makeDrillBookFooter('トゲデマル', 'まるまりポケモン', 'でんき・はがね', '0.3m', '3.3kg', '2桁の数の大小比較です。まず十の位を比べ、十の位が同じときは一の位を比べるという数の大小比較の鉄則を遊びながら学びます。', 777) +
       '</div>';
 
     initBattle36Togedemaru();
-  } else if(bId === 'Battle34'){
-    // ハピナス 21から25のすうじ（原本完全再現）
-    let trayHtml = '<div class="num-choice-tray">';
-    ['21', '22', '23', '24', '25'].forEach(n => {
-      trayHtml += '<button type="button" class="num-choice-btn" data-val="' + n + '">' + n + '</button>';
-    });
-    trayHtml += '<button type="button" class="num-choice-btn erase" data-val="erase">⌫ けす</button></div>';
-
-    card.innerHTML = 
-      '<div class="drill-book-page">' +
-        makeDrillBookHeader(34, 'ハピナス', 'はぴなす', '21から 25の すうじ', 'たまごを タッチして 10この パックを つくろう！ かずを かぞえて、<span class="t-math-box-icon">田</span> に すうじを かきましょう。', 242) +
-        '<div style="background:#fff1f2;border:2px solid #fecdd3;border-radius:18px;padding:12px;margin-bottom:12px">' +
-          '<div class="b34-tabs" style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:10px">' +
-            '<button type="button" class="b34-tab-btn sel" data-q="0" style="padding:6px 12px;font-weight:900;font-size:13px;border-radius:12px;border:2px solid #f43f5e;background:#f43f5e;color:#fff;cursor:pointer">① 21こ</button>' +
-            '<button type="button" class="b34-tab-btn" data-q="1" style="padding:6px 12px;font-weight:900;font-size:13px;border-radius:12px;border:2px solid #fda4af;background:#fff;color:#be123c;cursor:pointer">② 22こ</button>' +
-            '<button type="button" class="b34-tab-btn" data-q="2" style="padding:6px 12px;font-weight:900;font-size:13px;border-radius:12px;border:2px solid #fda4af;background:#fff;color:#be123c;cursor:pointer">③ 23こ</button>' +
-            '<button type="button" class="b34-tab-btn" data-q="3" style="padding:6px 12px;font-weight:900;font-size:13px;border-radius:12px;border:2px solid #fda4af;background:#fff;color:#be123c;cursor:pointer">④ 24こ</button>' +
-            '<button type="button" class="b34-tab-btn" data-q="4" style="padding:6px 12px;font-weight:900;font-size:13px;border-radius:12px;border:2px solid #fda4af;background:#fff;color:#be123c;cursor:pointer">⑤ 25こ</button>' +
-          '</div>' +
-          '<div style="text-align:center;font-size:13px;font-weight:900;color:#e11d48;margin-bottom:8px" id="b34Instruction">' +
-            '🥚 たまごを タッチしてね（10こ えらぶと パックで かこまれるよ！）' +
-          '</div>' +
-          '<div id="b34EggArea" style="min-height:200px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;background:#fff;border-radius:16px;padding:12px;border:2px solid #fbcfe8"></div>' +
-          '<div style="text-align:center;font-size:12px;font-weight:800;color:#9d174d;margin-top:6px" id="b34EggStatus">タッチした たまご: 0こ</div>' +
-          '<div class="t-math-sentence" style="justify-content:center;margin-top:10px">' +
-            '<span>この もんだいの たまごは ぜんぶで </span>' +
-            '<span class="t-math-box" data-idx="0" id="b34CurrentBox">？</span>' +
-            '<span> こ。</span>' +
-          '</div>' +
-        '</div>' +
-        trayHtml +
-        makeDrillBookFooter('ハピナス', 'しあわせポケモン', 'ノーマル', '1.5m', '46.8kg', '10個入りのパックが2つで20個、そこに端数の1〜5個を合わせて21〜25を作る十進法の基本構造を定着させます。', 242) +
-      '</div>';
-
-    initBattle34Eggs();
-  } else if(bId === 'Battle34_2'){
-    // ハピナス 26から30のすうじ（原本完全再現）
-    const makeEggRow = (num, idx) => {
-      let cartons = '';
-      if(num === 30) {
-        cartons = '<div style="background:#fdf2f8;border:2px dashed #f472b6;border-radius:10px;padding:4px 8px;font-size:12px;font-weight:900;color:#be185d">🥚 10こ</div>' +
-                  '<div style="background:#fdf2f8;border:2px dashed #f472b6;border-radius:10px;padding:4px 8px;font-size:12px;font-weight:900;color:#be185d">🥚 10こ</div>' +
-                  '<div style="background:#fdf2f8;border:2px dashed #f472b6;border-radius:10px;padding:4px 8px;font-size:12px;font-weight:900;color:#be185d">🥚 10こ</div>';
-      } else {
-        const loose = num - 20;
-        let looseEggs = '';
-        for(let i=0; i<loose; i++) {
-          looseEggs += '<span class="b34-loose-egg" style="font-size:22px;display:inline-block;cursor:pointer" onclick="playMarimbaPop(1.4)">🥚</span>';
-        }
-        cartons = '<div style="background:#fdf2f8;border:2px dashed #f472b6;border-radius:10px;padding:4px 8px;font-size:12px;font-weight:900;color:#be185d">🥚 10こ</div>' +
-                  '<div style="background:#fdf2f8;border:2px dashed #f472b6;border-radius:10px;padding:4px 8px;font-size:12px;font-weight:900;color:#be185d">🥚 10こ</div>' +
-                  '<div style="background:#fff1f2;border:2px solid #fecdd3;border-radius:10px;padding:2px 6px">' + looseEggs + '</div>';
-      }
-      return '<div style="display:flex;align-items:center;justify-content:space-between;background:#fff;border:2px solid #fbcfe8;border-radius:14px;padding:8px 12px;margin-bottom:8px">' +
-        '<div style="font-weight:900;font-size:16px;color:#db2777">(' + (idx+1) + ')</div>' +
-        '<div style="display:flex;gap:6px;align-items:center">' + cartons + '</div>' +
-        '<div style="display:flex;align-items:center;gap:4px">' +
-          '<div class="t-math-box" data-idx="' + idx + '" data-target="' + num + '">？</div>' +
-          '<span style="font-weight:900;font-size:14px;color:#475569">こ</span>' +
-        '</div>' +
-      '</div>';
-    };
-
-    let tray = '<div class="num-choice-tray">';
-    ['26', '27', '28', '29', '30'].forEach(n => {
-      tray += '<button type="button" class="num-choice-btn" data-val="' + n + '">' + n + '</button>';
-    });
-    tray += '<button type="button" class="num-choice-btn erase" data-val="erase">⌫ けす</button></div>';
-
-    card.innerHTML = 
-      '<div class="drill-book-page">' +
-        makeDrillBookHeader(34, 'ハピナス', 'はぴなす', '21から 30の すうじを かこう (26〜30)', 'たまごの パックと ばらの たまごを かぞえて、<span class="t-math-box-icon">田</span> に すうじを かきましょう。10が 3こで 30！', 242) +
-        '<div style="background:#fdf2f8;border:2px solid #fbcfe8;border-radius:18px;padding:12px;margin-bottom:12px">' +
-          [26, 27, 28, 29, 30].map(makeEggRow).join('') +
-        '</div>' +
-        tray +
-        makeDrillBookFooter('ハピナス', 'しあわせポケモン', 'ノーマル', '1.5m', '46.8kg', 'バラの卵が10個集まると新しいパック（10のまとまり）となり、30（10が3つ）になる繰り上がりの素地を育てます。', 242) +
-      '</div>';
-
-    initBattle34_2Eggs();
-
   } else if(bId === 'Battle37'){
-    // シルヴァディ 1〜30 まとめの迷路
-    const stones = [
-      1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-      11, 12, 13, 14, 15, 'blank_16', 17, 18, 19, 20,
-      'blank_21', 22, 23, 24, 'blank_25', 26, 27, 'blank_28', 'blank_29', 30
+    // シルヴァディ 1から30のあみだ・トレイルめいろ（原本Battle37.jpg完全再現）
+    const b37Data = [
+      // Row 0
+      { r: 0, c: 0, isStart: true },
+      { r: 0, c: 1, val: 1 },
+      { r: 0, c: 2, val: 8 },
+      { r: 0, c: 3, val: 3 },
+      { r: 0, c: 4, val: 4 },
+      // Row 1
+      { r: 1, c: 0, val: 11 },
+      { r: 1, c: 1, val: 9 },
+      { r: 1, c: 2, val: 2 },
+      { r: 1, c: 3, val: 7 },
+      { r: 1, c: 4, val: 5 },
+      // Row 2
+      { r: 2, c: 0, val: 10 },
+      { r: 2, c: 1, val: 12 },
+      { r: 2, c: 2, val: 16 },
+      { r: 2, c: 3, val: 18 },
+      { r: 2, c: 4, val: 6 },
+      // Row 3
+      { r: 3, c: 0, val: 13 },
+      { r: 3, c: 1, val: 23 },
+      { r: 3, c: 2, val: 15 },
+      { r: 3, c: 3, val: 17 },
+      { r: 3, c: 4, val: 19 },
+      // Row 4
+      { r: 4, c: 0, val: 24 },
+      { r: 4, c: 1, val: 14 },
+      { r: 4, c: 2, val: 22 },
+      { r: 4, c: 3, val: 21 },
+      { r: 4, c: 4, val: 20 },
+      // Row 5
+      { r: 5, c: 0, val: 27 },
+      { r: 5, c: 1, val: 25 },
+      { r: 5, c: 2, val: 29 },
+      { r: 5, c: 3, isGoal: true },
+      // Row 6
+      { r: 6, c: 0, val: 26 },
+      { r: 6, c: 1, val: 28 },
+      { r: 6, c: 2, val: 30 }
     ];
 
-    let trailHtml = '<div style="display:grid;grid-template-columns:repeat(5, 1fr);gap:8px;background:#f1f5f9;border:3px solid #cbd5e1;border-radius:18px;padding:12px;margin-bottom:12px">';
-    stones.forEach((st, idx) => {
-      if(typeof st === 'string' && st.startsWith('blank_')) {
-        const target = st.replace('blank_', '');
-        trailHtml += '<div class="t-math-box" data-target="' + target + '" style="width:auto;height:52px;font-size:20px;border-radius:12px">？</div>';
+    let gridHtml = '';
+    b37Data.forEach(cell => {
+      if (cell.isStart) {
+        gridHtml += '<div class="b37-cell start-cell" style="grid-column:1;grid-row:1">' +
+          '<span>スタート➔</span>' +
+        '</div>';
+      } else if (cell.isGoal) {
+        gridHtml += '<div class="b37-goal-box" id="b37GoalBox">' +
+          '<span style="font-size:12px;font-weight:900;color:#92400e">ごーる！🏆</span>' +
+          '<img src="' + ART(773) + '" style="width:72px;height:72px;object-fit:contain" alt="シルヴァディ">' +
+          '<span style="font-size:11px;font-weight:900;color:#b45309">シルヴァディ</span>' +
+        '</div>';
       } else {
-        trailHtml += '<div style="display:flex;align-items:center;justify-content:center;height:52px;background:#ffffff;border:2px solid #94a3b8;border-radius:12px;font-weight:900;font-size:18px;color:#1e293b;box-shadow:0 3px 0 #cbd5e1">' + st + '</div>';
+        gridHtml += '<div class="b37-cell ' + (cell.val === 1 ? 'current-active' : '') + '" id="b37_cell_' + cell.val + '" data-val="' + cell.val + '" style="grid-column:' + (cell.c + 1) + ';grid-row:' + (cell.r + 1) + '">' +
+          cell.val +
+        '</div>';
       }
     });
-    trailHtml += '</div>';
-
-    let tray = '<div class="num-choice-tray">';
-    ['16', '21', '25', '28', '29'].forEach(n => {
-      tray += '<button type="button" class="num-choice-btn" data-val="' + n + '">' + n + '</button>';
-    });
-    tray += '<button type="button" class="num-choice-btn erase" data-val="erase">⌫ けす</button></div>';
 
     card.innerHTML = 
       '<div class="drill-book-page">' +
-        makeDrillBookHeader(37, 'シルヴァディ', 'しるゔぁでぃ', 'バトル21〜36の まとめ（1〜30の めいろ）', '1から 30までの すうじの みちだよ。<span class="t-math-box-icon">田</span> に すうじを いれて ゴールを めざそう！', 773) +
-        trailHtml +
-        tray +
-        makeDrillBookFooter('シルヴァディ', 'じんこうポケモン', 'ノーマル', '2.3m', '100.5kg', '1から30までの数の並びの総復習です。前後の数字の手がかりから空欄に入る数を論理的に推論します。', 773) +
+        makeDrillBookHeader(37, 'シルヴァディ', 'しるゔぁでぃ', '1から 30まで じゅんに すすもう', '1から 30まで じゅんに とおって すすみましょう。ゴールまで たどりつけるかな？', 773) +
+        '<div class="b37-grid-outer">' +
+          '<div style="text-align:center;font-size:14px;font-weight:900;color:#fef08a;margin-bottom:10px" id="b37StatusText">⭐ 1 を タッチして スタートしよう！</div>' +
+          '<div class="b37-grid" id="b37Grid">' + gridHtml + '</div>' +
+        '</div>' +
+        makeDrillBookFooter('シルヴァディ', 'じんこうポケモン', 'ノーマル', '2.3m', '100.5kg', 'バトル21から36のまとめテストです。1から30までの数の並びを理解し、格子状の迷路を数字の順に辿ってゴールを目指します。', 773) +
       '</div>';
 
     initBattle37Trail();
-
-  } else if(bId === 'Battle37_2'){
-    // ネッコアラ 1〜30 てんつなぎ
-    card.innerHTML = 
-      '<div class="drill-book-page">' +
-        makeDrillBookHeader(37, 'ネッコアラ', 'ねっこあら', 'バトル21〜36の まとめ（てんつなぎ）', '1から 30までの てんを じゅんばんに タップして せんで つなごう！ どんな ポケモンが でてくるかな？', 775) +
-        '<div class="dot-connect-board" id="b37DotBoard">' +
-          '<svg class="dot-lines-svg" id="b37LinesSvg"></svg>' +
-          '<div id="b37KoalaArt" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.8s ease;z-index:3;pointer-events:none">' +
-            '<img src="' + ART(775) + '" style="width:75%;height:75%;object-fit:contain;filter:drop-shadow(0 8px 16px rgba(0,0,0,0.25))" alt="ネッコアラ">' +
-          '</div>' +
-        '</div>' +
-        '<div style="text-align:center;font-weight:900;font-size:16px;color:#0284c7;margin:8px 0" id="b37PromptText">つぎは 【 1 】 を タップしよう！</div>' +
-        makeDrillBookFooter('ネッコアラ', 'ゆめくいポケモン', 'ノーマル', '0.4m', '19.9kg', '1から30までの数の順序感覚を指先の操作を通じて体得します。完成したときの達成感が次の意欲に繋がります。', 775) +
-      '</div>';
-
-    initBattle37DotToDot();
-
   } else if(bId === 'Battle38'){
     // インテレオン なんばんめ（まえ・うしろ）
     let runnerHtml = '<div class="ordinal-row">';
@@ -8795,15 +9068,18 @@ function initBattle35Sandile() {
       const targetCell = document.getElementById('b35_cell_' + activeStep);
       if (!targetCell) return;
 
+      const arrow = targetCell.querySelector('.b23-dir-arrow');
+      const arrowHtml = arrow ? arrow.outerHTML : '';
+
       if (val === 'erase') {
         playMarimbaPop(0.8);
         delete targetCell.dataset.val;
-        targetCell.textContent = '？';
+        targetCell.innerHTML = arrowHtml + '？';
         targetCell.classList.remove('filled', 'correct');
       } else {
         playMarimbaPop(1.2);
         targetCell.dataset.val = val;
-        targetCell.textContent = val;
+        targetCell.innerHTML = arrowHtml + val;
         targetCell.classList.add('filled');
 
         if (val === targetCell.dataset.ans) {
@@ -8825,10 +9101,7 @@ function initBattle35Sandile() {
       const allCorrect = cells.every(c => c.dataset.val === c.dataset.ans);
       if (allCorrect) {
         cells.forEach(c => c.classList.add('correct'));
-        stampDrillSuccess();
-        (S.answers[curIdx] = S.answers[curIdx] || {})._completed = true;
-        save();
-        updateThrow();
+        completeBookDrill();
       }
     };
   }
@@ -10180,9 +10453,9 @@ function initBattle34Eggs() {
   const boxEl = document.getElementById('b34CurrentBox');
   const tabBtns = container.querySelectorAll('.b34-tab-btn');
   
-  const questionTargets = [21, 22, 23, 24, 25];
+  const questionTargets = [21, 22, 23, 24, 25, 26, 27, 28, 29, 30];
   let curQ = 0;
-  const selections = [new Set(), new Set(), new Set(), new Set(), new Set()];
+  const selections = Array.from({ length: 10 }, () => new Set());
   const answers = S.answers[curIdx] = S.answers[curIdx] || {};
 
   function renderTabs() {
@@ -10219,50 +10492,48 @@ function initBattle34Eggs() {
 
     const pack1 = selectedArr.slice(0, 10);
     const pack2 = selectedArr.length >= 20 ? selectedArr.slice(10, 20) : [];
-    const looseSelected = selectedArr.length >= 20 ? selectedArr.slice(20) : (selectedArr.length >= 10 ? selectedArr.slice(10) : selectedArr);
+    const pack3 = selectedArr.length >= 30 ? selectedArr.slice(20, 30) : [];
+    const looseSelected = selectedArr.length >= 30 ? selectedArr.slice(30) : (selectedArr.length >= 20 ? selectedArr.slice(20) : (selectedArr.length >= 10 ? selectedArr.slice(10) : selectedArr));
 
-    // If 10 or more selected, render Pack 1 frame
     if (pack1.length === 10) {
       const p1Div = document.createElement('div');
       p1Div.className = 'b34-bundle-enclosure';
       p1Div.style.cssText = 'border:3.5px dashed #f43f5e;background:rgba(255,241,242,0.9);border-radius:18px;padding:8px 12px;margin:6px;display:inline-flex;flex-wrap:wrap;max-width:260px;justify-content:center;gap:6px';
       p1Div.innerHTML = '<div style="width:100%;text-align:center;font-size:12px;font-weight:900;color:#e11d48;margin-bottom:4px">🥚 10この パック ① (10こ)</div>';
-      pack1.forEach(id => {
-        p1Div.appendChild(createEggElement(id, true));
-      });
+      pack1.forEach(id => p1Div.appendChild(createEggElement(id, true)));
       eggArea.appendChild(p1Div);
     }
 
-    // If 20 or more selected, render Pack 2 frame
     if (pack2.length === 10) {
       const p2Div = document.createElement('div');
       p2Div.className = 'b34-bundle-enclosure';
       p2Div.style.cssText = 'border:3.5px dashed #f43f5e;background:rgba(255,241,242,0.9);border-radius:18px;padding:8px 12px;margin:6px;display:inline-flex;flex-wrap:wrap;max-width:260px;justify-content:center;gap:6px';
       p2Div.innerHTML = '<div style="width:100%;text-align:center;font-size:12px;font-weight:900;color:#e11d48;margin-bottom:4px">🥚 10この パック ② (10こ)</div>';
-      pack2.forEach(id => {
-        p2Div.appendChild(createEggElement(id, true));
-      });
+      pack2.forEach(id => p2Div.appendChild(createEggElement(id, true)));
       eggArea.appendChild(p2Div);
     }
 
-    // Loose eggs (NO frame!)
-    if (pack1.length < 10) {
-      selectedArr.forEach(id => {
-        eggArea.appendChild(createEggElement(id, true));
-      });
-    } else {
-      looseSelected.forEach(id => {
-        eggArea.appendChild(createEggElement(id, true));
-      });
+    if (pack3.length === 10) {
+      const p3Div = document.createElement('div');
+      p3Div.className = 'b34-bundle-enclosure';
+      p3Div.style.cssText = 'border:3.5px dashed #f43f5e;background:rgba(255,241,242,0.9);border-radius:18px;padding:8px 12px;margin:6px;display:inline-flex;flex-wrap:wrap;max-width:260px;justify-content:center;gap:6px';
+      p3Div.innerHTML = '<div style="width:100%;text-align:center;font-size:12px;font-weight:900;color:#e11d48;margin-bottom:4px">🥚 10この パック ③ (10こ)</div>';
+      pack3.forEach(id => p3Div.appendChild(createEggElement(id, true)));
+      eggArea.appendChild(p3Div);
     }
 
-    unselectedArr.forEach(id => {
-      eggArea.appendChild(createEggElement(id, false));
-    });
+    if (pack1.length < 10) {
+      selectedArr.forEach(id => eggArea.appendChild(createEggElement(id, true)));
+    } else {
+      looseSelected.forEach(id => eggArea.appendChild(createEggElement(id, true)));
+    }
+
+    unselectedArr.forEach(id => eggArea.appendChild(createEggElement(id, false)));
 
     if (eggStatus) {
       eggStatus.innerHTML = 'タッチした たまご: <strong style="font-size:16px;color:#e11d48">' + selSet.size + '</strong> / ' + targetCount + 'こ ' +
-        (selSet.size >= 20 ? '<span style="color:#059669;font-weight:900">✨ 10こパックが 2つ できたよ！のこりは ' + (targetCount - 20) + 'こ！</span>' :
+        (selSet.size >= 30 ? '<span style="color:#059669;font-weight:900">✨ 10こパックが 3つ できたよ！ちょうど 30こ！</span>' :
+         selSet.size >= 20 ? '<span style="color:#059669;font-weight:900">✨ 10こパックが 2つ できたよ！のこりは ' + (targetCount - 20) + 'こ！</span>' :
          selSet.size >= 10 ? '<span style="color:#2563eb;font-weight:900">✨ 10こパックが 1つ できたよ！あと10こ えらぼう！</span>' : '');
     }
 
@@ -10294,11 +10565,8 @@ function initBattle34Eggs() {
     el.onclick = () => {
       playMarimbaPop(isSel ? 1.05 : 1.3);
       const selSet = selections[curQ];
-      if (selSet.has(id)) {
-        selSet.delete(id);
-      } else {
-        selSet.add(id);
-      }
+      if (selSet.has(id)) selSet.delete(id);
+      else selSet.add(id);
       renderEggScene();
     };
     return el;
@@ -10345,7 +10613,6 @@ function initBattle34Eggs() {
 
   renderEggScene();
 }
-
 function initBattle34_2Eggs() {
   const p = document.querySelector('.drill-book-page');
   if(!p) return;
@@ -10353,73 +10620,61 @@ function initBattle34_2Eggs() {
 }
 
 function initBattle37Trail() {
-  const p = document.querySelector('.drill-book-page');
-  if(!p) return;
-  setupMathBoxController(p, ['16', '21', '25', '28', '29'], completeBookDrill);
-}
+  const container = document.querySelector('.drill-book-page');
+  if (!container) return;
 
-function initBattle37DotToDot() {
-  const board = document.getElementById('b37DotBoard');
-  const svg = document.getElementById('b37LinesSvg');
-  const prompt = document.getElementById('b37PromptText');
-  const art = document.getElementById('b37KoalaArt');
-  if(!board || !svg) return;
+  const statusText = document.getElementById('b37StatusText');
+  const cells = container.querySelectorAll('.b37-cell[data-val]');
+  let currentStep = 1;
 
-  const totalDots = 30;
-  let nextExpected = 1;
-  const points = [];
-
-  // Generate 30 points in an oval / sleeping koala perimeter
-  for(let i=0; i<totalDots; i++) {
-    const angle = (i / totalDots) * Math.PI * 2 - Math.PI / 2;
-    const rx = 40 + 6 * Math.sin(angle * 3);
-    const ry = 38 + 5 * Math.cos(angle * 2);
-    const px = 50 + rx * Math.cos(angle);
-    const py = 50 + ry * Math.sin(angle);
-    points.push({ x: px, y: py, num: i + 1 });
+  function updateActive() {
+    cells.forEach(c => {
+      const v = parseInt(c.dataset.val);
+      if (v < currentStep) {
+        c.classList.add('passed');
+        c.classList.remove('current-active');
+      } else if (v === currentStep) {
+        c.classList.add('current-active');
+        c.classList.remove('passed');
+      } else {
+        c.classList.remove('passed', 'current-active');
+      }
+    });
+    if (statusText) {
+      if (currentStep <= 30) {
+        statusText.innerHTML = '⭐ つぎは <strong style="font-size:18px;color:#fff;background:#ea580c;padding:2px 8px;border-radius:8px">' + currentStep + '</strong> を タッチしよう！';
+      } else {
+        statusText.innerHTML = '🎉 ゴール！ シルヴァディの ところに ついたよ！';
+      }
+    }
   }
 
-  points.forEach(pt => {
-    const btn = document.createElement('div');
-    btn.className = 'dot-star-btn';
-    btn.style.left = pt.x + '%';
-    btn.style.top = pt.y + '%';
-    btn.textContent = pt.num;
-
-    btn.onclick = () => {
-      if(pt.num === nextExpected) {
-        playMarimbaPop(1.1 + (pt.num / totalDots) * 0.4);
-        btn.classList.add('connected');
-
-        if(nextExpected > 1) {
-          const prev = points[nextExpected - 2];
-          const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-          line.setAttribute('x1', prev.x + '%');
-          line.setAttribute('y1', prev.y + '%');
-          line.setAttribute('x2', pt.x + '%');
-          line.setAttribute('y2', pt.y + '%');
-          line.setAttribute('stroke', '#06b6d4');
-          line.setAttribute('stroke-width', '4');
-          line.setAttribute('stroke-linecap', 'round');
-          svg.appendChild(line);
-        }
-
-        nextExpected++;
-        if(nextExpected <= totalDots) {
-          if(prompt) prompt.textContent = 'つぎは 【 ' + nextExpected + ' 】 を タップしよう！';
-        } else {
-          if(prompt) prompt.textContent = '🎉 かんせい！ ネッコアラが でてきたよ！';
-          if(art) art.style.opacity = '1';
-          playCrystalSparkle();
+  cells.forEach(c => {
+    c.onclick = () => {
+      const val = parseInt(c.dataset.val);
+      if (val === currentStep) {
+        playMarimbaPop(1.1 + (currentStep % 10) * 0.05);
+        currentStep++;
+        if (currentStep > 30) {
+          updateActive();
+          const goalBox = document.getElementById('b37GoalBox');
+          if (goalBox) {
+            goalBox.style.background = '#86efac';
+            goalBox.style.borderColor = '#16a34a';
+          }
           completeBookDrill();
+        } else {
+          updateActive();
         }
-      } else {
+      } else if (val > currentStep) {
         playMarimbaPop(0.7);
+        c.classList.add('shake');
+        setTimeout(() => c.classList.remove('shake'), 400);
       }
     };
-
-    board.appendChild(btn);
   });
+
+  updateActive();
 }
 
 function initBattle38Ordinal() {
@@ -11331,7 +11586,7 @@ function init(){
 
     // CSVパース＆全72バトル起動
     const rawCsv = $('csv-data').textContent;
-    ROWS = parseCSV(rawCsv).filter(r => /^(Battle|Minigame)/i.test(r.battle) && r.battle !== 'Battle20_2' && r.battle !== 'Battle22_2');
+    ROWS = parseCSV(rawCsv).filter(r => /^Battle\d+$/i.test(r.battle));
 
     layoutMap();
     setTimeout(scrollToCurrent, 100);
@@ -11370,6 +11625,23 @@ if(document.readyState === 'loading'){
       </div>
     </div>
     <button type="button" class="mbtn" data-close style="background:#e5e7eb;color:#374151;font-weight:900;padding:8px 20px">キャンセル</button>
+  </div>
+</div>
+
+<!-- ゲット儀式モーダル（中央巨大ポケモン＆ボール投げ） -->
+<div id="drillCatchModal" class="drill-catch-modal">
+  <div class="drill-catch-card">
+    <div class="catch-congrats-tag">🎉 ぜんぶ せいかい！ たいへん よくできました！ 💮</div>
+    <div class="catch-stage-area">
+      <div class="catch-stage-glow"></div>
+      <img id="catchPokeImg" class="catch-target-pokemon" src="" alt="ポケモン">
+      <div id="catchPokeName" class="catch-poke-name">ポケモン が あらわれた！</div>
+    </div>
+    <div class="catch-action-wrap">
+      <button type="button" class="btn-catch-throw" id="btnCatchThrow" onclick="executeThrowInDrill()">
+        ⚡ モンスターボールを なげる！
+      </button>
+    </div>
   </div>
 </div>
 

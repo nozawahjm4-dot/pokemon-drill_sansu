@@ -3021,6 +3021,80 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
   filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2));
 }
 
+/* ===== 読み上げボタン（ドリルヘッダー＆各問題） ===== */
+.drill-voice-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 2px solid #3b82f6;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 13px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(59, 130, 246, 0.22);
+  transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+  vertical-align: middle;
+  user-select: none;
+  flex-shrink: 0;
+  line-height: 1.2;
+}
+.drill-voice-btn:hover {
+  background: #dbeafe;
+  border-color: #2563eb;
+  transform: scale(1.05);
+}
+.drill-voice-btn:active {
+  transform: scale(0.95);
+}
+.drill-voice-btn.speaking {
+  background: #fee2e2 !important;
+  color: #dc2626 !important;
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.25) !important;
+  animation: voicePulse 0.85s infinite alternate !important;
+}
+@keyframes voicePulse {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.07); }
+}
+
+.drill-header-voice {
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+  border: 2.5px solid #2563eb;
+  color: #1e40af;
+  padding: 6px 14px;
+  font-size: 13px;
+  box-shadow: 0 3px 6px rgba(37, 99, 235, 0.22);
+}
+.drill-header-voice:hover {
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+}
+
+.drill-inline-voice {
+  padding: 3px 9px;
+  font-size: 12px;
+  background: #f8fafc;
+  color: #334155;
+  border: 1.5px solid #94a3b8;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  margin-right: 6px;
+}
+.drill-inline-voice:hover {
+  background: #f1f5f9;
+  border-color: #64748b;
+  color: #0f172a;
+}
+.drill-prompt-wrap {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 8px;
+}
+
 /* ===== BATTLE 26: クチート ギフト袋 ===== */
 .b26-gift-scene {
   display: flex;
@@ -3936,16 +4010,141 @@ function playCookieCrunch() {
 // リアル教科書ヘッダービルダー
 function makeDrillBookHeader(battleNum, targetPokemonName, targetFurigana, title, promptHtml, pokeId) {
   return '<div class="drill-book-header">' +
-    '<div>' +
+    '<div style="flex:1">' +
       '<div class="drill-book-badges">' +
         '<span class="drill-poke-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png" alt="ボール">バトル ' + battleNum + '</span>' +
         '<span class="drill-target-pill"><ruby>' + targetPokemonName + '<rt>' + targetFurigana + '</rt></ruby>を つかまえよう！</span>' +
       '</div>' +
       '<h2 class="drill-book-title">' + title + '</h2>' +
-      '<div class="drill-book-prompt">' + promptHtml + '</div>' +
+      '<div class="drill-prompt-wrap">' +
+        '<button type="button" class="drill-voice-btn drill-header-voice" onclick="speakDrillPrompt(this)" aria-label="せつめいを よみあげる" title="せつめいを きく">' +
+          '<span class="voice-icon">🔊</span><span class="voice-label">せつめいを きく</span>' +
+        '</button>' +
+        '<div class="drill-book-prompt" style="margin:0;flex:1">' + promptHtml + '</div>' +
+      '</div>' +
     '</div>' +
     '<img src="' + ART(pokeId) + '" class="drill-header-avatar" alt="' + targetPokemonName + '">' +
   '</div>';
+}
+
+function speakDrillPrompt(btn) {
+  const page = btn.closest('.drill-book-page');
+  if (!page) return;
+  const title = page.querySelector('.drill-book-title');
+  const prompt = page.querySelector('.drill-book-prompt');
+  let text = '';
+  if (title) text += title.textContent + '。 ';
+  if (prompt) text += prompt.textContent;
+  speak(text, btn);
+}
+
+function createProblemVoiceButton(customLabel = 'きく') {
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'drill-voice-btn drill-inline-voice';
+  btn.setAttribute('aria-label', 'もんだいを よみあげる');
+  btn.title = 'もんだいを きく';
+  btn.onclick = (e) => {
+    e.stopPropagation();
+    speakFromTarget(btn);
+  };
+  btn.innerHTML = '<span class="voice-icon">🔊</span><span class="voice-label">' + customLabel + '</span>';
+  return btn;
+}
+
+function speakFromTarget(btn) {
+  const target = btn.closest('.t-math-sentence, .qtree-card, .qtree-frame-wrapper, .b22-card, .b36-step-row, .b26-gift-scene, .match-status, .tc-poke-row, .ordinal-row, .b24-choice-card, .b5-prob-card, .drill-sub-question, .b34-tabs') || btn.parentElement;
+  if (!target) return;
+
+  const clone = target.cloneNode(true);
+
+  // Remove non-speech UI elements
+  clone.querySelectorAll('.drill-voice-btn, .num-choice-tray, .choices, .match-svg, .match-container, .b26-gift-scene, .b29-scene-card, .b30-platter, .b31-paddock, .b33-garden-area, #b33GardenArea, #b34EggArea, .b28-added-donut, .b27-cow-walking').forEach(el => el.remove());
+
+  // Replace boxes or blanks with "しかく"
+  clone.querySelectorAll('.t-math-box, .drill-blank-box, .t-math-box-icon').forEach(box => {
+    box.textContent = ' しかく ';
+  });
+
+  let text = clone.textContent.trim().replace(/\s+/g, ' ');
+  if (!text) {
+    text = btn.dataset.speech || target.getAttribute('aria-label') || '';
+  }
+  speak(text, btn);
+}
+
+function attachVoiceButtonsToDrill(container) {
+  if (!container) return;
+
+  // 1. Math sentences (.t-math-sentence)
+  container.querySelectorAll('.t-math-sentence').forEach(sentence => {
+    if (!sentence.querySelector('.drill-voice-btn')) {
+      const btn = createProblemVoiceButton();
+      sentence.insertBefore(btn, sentence.firstChild);
+    }
+  });
+
+  // 2. Number trees (Battles 12 to 19: .qtree-card, .qtree-frame-wrapper)
+  container.querySelectorAll('.qtree-card, .qtree-frame-wrapper').forEach(card => {
+    if (!card.querySelector('.drill-voice-btn')) {
+      const topTitle = card.querySelector('div, span, h3, h4');
+      const btn = createProblemVoiceButton();
+      if (topTitle) topTitle.insertBefore(btn, topTitle.firstChild);
+      else card.insertBefore(btn, card.firstChild);
+    }
+  });
+
+  // 3. Battle 22 cards (.b22-card)
+  container.querySelectorAll('.b22-card').forEach(card => {
+    if (!card.querySelector('.drill-voice-btn')) {
+      const title = card.querySelector('div');
+      const btn = createProblemVoiceButton();
+      if (title) title.insertBefore(btn, title.firstChild);
+      else card.insertBefore(btn, card.firstChild);
+    }
+  });
+
+  // 4. Battle 3 & 7 rows (.tc-poke-row)
+  container.querySelectorAll('.tc-poke-row').forEach(row => {
+    if (!row.querySelector('.drill-voice-btn')) {
+      const btn = createProblemVoiceButton();
+      row.insertBefore(btn, row.firstChild);
+    }
+  });
+
+  // 5. Battle 36 step rows (.b36-step-row)
+  container.querySelectorAll('.b36-step-row').forEach(row => {
+    if (!row.querySelector('.drill-voice-btn')) {
+      const btn = createProblemVoiceButton();
+      row.insertBefore(btn, row.firstChild);
+    }
+  });
+
+  // 6. Battle 5 & 6 apple split problems (.b5-prob-card)
+  container.querySelectorAll('.b5-prob-card').forEach(card => {
+    if (!card.querySelector('.drill-voice-btn')) {
+      const btn = createProblemVoiceButton();
+      card.insertBefore(btn, card.firstChild);
+    }
+  });
+
+  // 7. Ordinals and comparisons (.ordinal-row, .b11-compare-row, .b24-choice-card)
+  container.querySelectorAll('.ordinal-row, .b11-compare-row, .b24-choice-card, .drill-sub-question').forEach(item => {
+    if (!item.querySelector('.drill-voice-btn')) {
+      const btn = createProblemVoiceButton();
+      item.insertBefore(btn, item.firstChild);
+    }
+  });
+
+  // 8. Single-problem instruction banners (e.g. Battle 1, 20, 21, 23, 33, 34, 35)
+  container.querySelectorAll('#b33GardenArea, #b34EggArea, #matchBox, #b36Maze, .b23-maze-outer').forEach(area => {
+    const prev = area.previousElementSibling;
+    if (prev && !prev.querySelector('.drill-voice-btn') && prev.textContent.trim().length > 0) {
+      const btn = createProblemVoiceButton('せつめい');
+      btn.style.margin = '0 6px 0 0';
+      prev.insertBefore(btn, prev.firstChild);
+    }
+  });
 }
 
 // リアル教科書フッタービルダー
@@ -4080,7 +4279,17 @@ function cleanSpeechText(text) {
 
   // 2. Correct symbol pronunciations
   t = t
-    .replace(/[①②③④⑤⑥⑦⑧⑨⑩]/g, ' ')
+    .replace(/[①]/g, ' 1ばん、 ')
+    .replace(/[②]/g, ' 2ばん、 ')
+    .replace(/[③]/g, ' 3ばん、 ')
+    .replace(/[④]/g, ' 4ばん、 ')
+    .replace(/[⑤]/g, ' 5ばん、 ')
+    .replace(/[⑥]/g, ' 6ばん、 ')
+    .replace(/[⑦]/g, ' 7ばん、 ')
+    .replace(/[⑧]/g, ' 8ばん、 ')
+    .replace(/[⑨]/g, ' 9ばん、 ')
+    .replace(/[⑩]/g, ' 10ばん、 ')
+    .replace(/\((\d+)\)/g, ' $1ばん、 ')
     // 〇, ⭕, ○, ◯, ●, ◎ -> まる
     .replace(/[〇⭕○◯●◎]/g, ' まる ')
     // ×, ✖ -> ばつ
@@ -4141,6 +4350,7 @@ function cleanSpeechText(text) {
 function speak(text, btn){
   if(!('speechSynthesis' in window)) return;
   speechSynthesis.cancel();
+  document.querySelectorAll('.drill-voice-btn.speaking, .q-voice.speaking').forEach(b => b.classList.remove('speaking'));
   const cleaned = cleanSpeechText(text);
   if(!cleaned) return;
   const u = new SpeechSynthesisUtterance(cleaned);
@@ -7331,6 +7541,7 @@ function renderInteractiveStage(row){
   }
   if(card.innerHTML.trim()){
     card.style.display = 'block';
+    attachVoiceButtonsToDrill(card);
   } else {
     card.style.display = 'none';
   }
@@ -10050,6 +10261,7 @@ function initBattle34Eggs() {
       }
     }
     renderTabs();
+    attachVoiceButtonsToDrill(container);
   }
 
   function createEggElement(id, isSel) {

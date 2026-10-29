@@ -4007,43 +4007,294 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
   filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15));
 }
 
-/* なんばんめ (Battle 38〜42) */
-.ordinal-row {
+/* なんばんめ (Battle 38〜42) 共通スタイル */
+.ordinal-prob-card {
+  background: #ffffff;
+  border: 2.5px solid #cbd5e1;
+  border-radius: 18px;
+  padding: 14px 12px;
+  margin: 14px 0;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.06);
+  transition: all 0.25s ease;
+}
+.ordinal-prob-card.is-correct {
+  border-color: #22c55e;
+  background: #f0fdf4;
+  box-shadow: 0 4px 12px rgba(34,197,94,0.18);
+}
+.ordinal-prob-header {
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+.ordinal-prob-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 900;
+  color: #1e293b;
+  flex: 1;
+}
+.prob-num-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #2563eb;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 900;
+  flex-shrink: 0;
+  box-shadow: 0 2px 4px rgba(37,99,235,0.3);
+}
+.prob-badge-correct {
+  display: none;
+  font-size: 13px;
+  font-weight: 900;
+  color: #15803d;
+  background: #dcfce7;
+  border: 1.5px solid #86efac;
+  border-radius: 9999px;
+  padding: 3px 10px;
+}
+.ordinal-prob-card.is-correct .prob-badge-correct {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* 方向指示バー (前/後ろ、上/下、左/右) */
+.dir-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 6px;
+  margin-bottom: 8px;
+}
+.dir-badge {
+  font-size: 15px;
+  font-weight: 900;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+}
+.dir-badge.dir-front {
+  background: #dbeafe;
+  color: #1d4ed8;
+  border: 2.5px solid #3b82f6;
+}
+.dir-badge.dir-back {
+  background: #f1f5f9;
+  color: #475569;
+  border: 2.5px solid #94a3b8;
+}
+.dir-badge.dir-top {
+  background: #dcfce7;
+  color: #15803d;
+  border: 2.5px solid #22c55e;
+}
+.dir-badge.dir-bottom {
+  background: #fef3c7;
+  color: #b45309;
+  border: 2.5px solid #f59e0b;
+}
+.dir-badge.dir-left {
+  background: #ffedd5;
+  color: #c2410c;
+  border: 2.5px solid #f97316;
+}
+.dir-badge.dir-right {
+  background: #f3e8ff;
+  color: #7e22ce;
+  border: 2.5px solid #a855f7;
+}
+
+/* ポケモンカード行 (6匹) */
+.ordinal-poke-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  background: #f8fafc;
+  border: 2.5px solid #cbd5e1;
+  border-radius: 16px;
+  padding: 10px 8px;
+  touch-action: manipulation;
+}
+.ordinal-poke-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 4px;
+  background: #ffffff;
+  border: 2.5px solid #e2e8f0;
+  border-radius: 14px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s ease;
+  min-width: 0;
+}
+.ordinal-poke-card:active {
+  transform: scale(0.92);
+}
+.ordinal-poke-card img {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 4px rgba(0,0,0,0.15));
+  pointer-events: none;
+}
+@media (min-width: 480px) {
+  .ordinal-poke-card img {
+    width: 62px;
+    height: 62px;
+  }
+}
+.ordinal-circle {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2.5px solid #94a3b8;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 900;
+  color: #ffffff;
+  transition: all 0.15s ease;
+  pointer-events: none;
+}
+.ordinal-poke-card.selected-red {
+  border-color: #ef4444;
+  background: #fef2f2;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.25);
+}
+.ordinal-poke-card.selected-red .ordinal-circle {
+  background: #ef4444;
+  border-color: #b91c1c;
+  box-shadow: 0 2px 4px rgba(239,68,68,0.4);
+}
+.ordinal-poke-card.selected-blue {
+  border-color: #2563eb;
   background: #eff6ff;
-  border: 3px solid #bfdbfe;
-  border-radius: 18px;
-  padding: 12px;
-  margin: 12px 0;
-  overflow-x: auto;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
+}
+.ordinal-poke-card.selected-blue .ordinal-circle {
+  background: #2563eb;
+  border-color: #1d4ed8;
+  box-shadow: 0 2px 4px rgba(37,99,235,0.4);
+}
+
+/* 教室 4x4 (Battle 41) */
+.classroom-grid-wrapper {
+  background: #f8fafc;
+  border: 3px solid #cbd5e1;
+  border-radius: 20px;
+  padding: 14px;
+  margin: 12px auto;
+  max-width: 440px;
+}
+.blackboard-banner {
+  background: #1e3a2f;
+  color: #f0fdf4;
+  border: 2px solid #14532d;
+  border-radius: 10px;
+  padding: 8px 14px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 900;
+  margin-bottom: 12px;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+}
+.classroom-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 8px;
 }
-.ordinal-item {
+.classroom-desk {
+  background: #fffbeb;
+  border: 2px solid #fde68a;
+  border-radius: 12px;
+  padding: 8px 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
   cursor: pointer;
-  padding: 6px 10px;
-  border: 3px solid transparent;
-  border-radius: 14px;
-  background: #fff;
-  box-shadow: 0 3px 0 rgba(0,0,0,0.1);
-  transition: all 0.15s;
+  box-shadow: 0 2px 0 rgba(0,0,0,0.08);
+  transition: all 0.15s ease;
 }
-.ordinal-item:active { transform: scale(0.92); }
-.ordinal-item.selected {
+.classroom-desk:active {
+  transform: scale(0.92);
+}
+.classroom-desk.selected {
   border-color: #ef4444;
   background: #fef2f2;
-  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.3), 0 3px 0 #b91c1c;
+  box-shadow: 0 0 0 3px rgba(239,68,68,0.3);
 }
-.ordinal-item img {
-  width: 64px; height: 64px; object-fit: contain; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.18));
+.classroom-desk-avatar {
+  font-size: 26px;
+  line-height: 1;
 }
-.ordinal-num-badge {
-  font-size: 11px; font-weight: 900; color: #475569;
+.classroom-desk-name {
+  font-size: 11px;
+  font-weight: 900;
+  color: #78350f;
+}
+
+/* ロッカー 3x5 (Battle 42) */
+.locker-grid-wrapper {
+  background: #fdf2f8;
+  border: 3px solid #fbcfe8;
+  border-radius: 20px;
+  padding: 14px;
+  margin: 12px auto;
+  max-width: 460px;
+}
+.locker-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+.locker-cell {
+  background: #ffffff;
+  border: 2.5px solid #cbd5e1;
+  border-radius: 12px;
+  height: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+}
+.locker-cell:active {
+  transform: scale(0.92);
+}
+.locker-cell.selected {
+  border-color: #ef4444;
+  background: #fef2f2;
+  box-shadow: 0 0 0 3px rgba(239,68,68,0.3);
+}
+.locker-item-bag {
+  font-size: 30px;
+  line-height: 1;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2));
 }
 
 /* 点つなぎ (Battle 37_2, 48_2) */
@@ -4176,7 +4427,7 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
 <div id="bg-image-layer"></div>
 
 <header id="hdr">
-  <h1>⚡ ポケモンずかんドリル<small id="hdrTitleSmall">ドリルを えらぼう！ <span class="ver-badge" style="background:#dcfce7;color:#15803d;padding:1px 6px;border-radius:6px;font-size:11px;font-weight:900">Ver 2.8 最新版</span></small></h1>
+  <h1>⚡ ポケモンずかんドリル<small id="hdrTitleSmall">ドリルを えらぼう！ <span class="ver-badge" style="background:#dcfce7;color:#15803d;padding:1px 6px;border-radius:6px;font-size:11px;font-weight:900">Ver 2.9 最新版</span></small></h1>
   <div class="hdr-spacer"></div>
   <button class="hbtn" id="btnHome" style="background:#fef3c7;border-color:#f59e0b;color:#b45309;font-weight:900" title="ドリル選択ホームへ">🏠 ホーム</button>
   <span class="pt" id="pt">🪙 0 pt</span>
@@ -5867,6 +6118,10 @@ function openBattle(i){
   if(!row) return;
 
   $('map').classList.remove('active');
+  const homeEl = $('home');
+  if(homeEl) homeEl.classList.remove('active');
+  const catchModal = $('drillCatchModal');
+  if(catchModal) catchModal.classList.remove('open');
   $('battle').classList.add('active');
   window.scrollTo(0, 0);
 
@@ -7475,147 +7730,156 @@ function renderInteractiveStage(row){
 
     initBattle37Trail();
   } else if(bId === 'Battle38'){
-    // インテレオン なんばんめ（まえ・うしろ）
-    let runnerHtml = '<div class="ordinal-row">';
-    for(let i=1; i<=6; i++) {
-      runnerHtml += '<div class="ordinal-item" data-pos="' + i + '">' +
-        '<img src="' + ART(818) + '" alt="インテレオン">' +
-        '<span class="ordinal-num-badge">' + i + '</span>' +
+    // インテレオン なんばんめ（まえ・うしろ） 4問構成
+    function makeInteleonProbCard(qNum, titleText, colorName) {
+      let rowHtml = '<div class="ordinal-poke-row">';
+      for(let i=1; i<=6; i++) {
+        rowHtml += '<div class="ordinal-poke-card" data-q="' + qNum + '" data-pos="' + i + '">' +
+          '<img src="' + ART(818) + '" alt="インテレオン">' +
+          '<div class="ordinal-circle"></div>' +
+        '</div>';
+      }
+      rowHtml += '</div>';
+
+      return '<div class="ordinal-prob-card" id="b38Prob' + qNum + '" data-q="' + qNum + '">' +
+        '<div class="ordinal-prob-header">' +
+          '<div class="ordinal-prob-title">' +
+            '<span class="prob-num-circle">' + ['①','②','③','④'][qNum-1] + '</span>' +
+            '<span>' + titleText + '</span>' +
+          '</div>' +
+          '<span class="prob-badge-correct">💮 せいかい！</span>' +
+        '</div>' +
+        '<div class="dir-bar">' +
+          '<div class="dir-badge dir-front">⬅ まえ（先頭）</div>' +
+          '<div class="dir-badge dir-back">うしろ ➔</div>' +
+        '</div>' +
+        rowHtml +
       '</div>';
     }
-    runnerHtml += '</div>';
 
     card.innerHTML = 
       '<div class="drill-book-page">' +
-        makeDrillBookHeader(38, 'インテレオン', 'いんてれおん', 'なんばんめ（まえ・うしろ）', 'インテレオンが まえを むいて ならんでいるよ！ もんだいを よんで タップしよう。', 818) +
-        '<div style="display:flex;justify-content:space-between;align-items:center;font-weight:900;font-size:14px;color:#1e40af;margin-bottom:6px">' +
-          '<span>⮜ うしろ</span>' +
-          '<span>まえ（先頭） ➔</span>' +
-        '</div>' +
-        runnerHtml +
-        '<div style="background:#f8fafc;border:2px solid #cbd5e1;border-radius:14px;padding:12px;margin:10px 0" id="b38TaskCard">' +
-          '<div style="font-weight:900;font-size:16px;color:#0284c7" id="b38TaskPrompt">① 【 まえから 4ばんめ 】 の インテレオンを えらぼう！</div>' +
-        '</div>' +
+        makeDrillBookHeader(38, 'インテレオン', 'いんてれおん', 'なんばんめ（まえ・うしろ）', 'インテレオンが 6ぴき ならんでいるよ！ まえとうしろを よくみて えらぼう。', 818) +
+        makeInteleonProbCard(1, 'まえから 4ばんめの インテレオンの ◯を <b style="color:#ef4444">あか</b>で ぬりましょう。', 'red') +
+        makeInteleonProbCard(2, 'うしろから 2ばんめの インテレオンの ◯を <b style="color:#2563eb">あお</b>で ぬりましょう。', 'blue') +
+        makeInteleonProbCard(3, 'まえから 3びきの インテレオンを <b style="color:#ef4444">あか</b>で かこみましょう。', 'red') +
+        makeInteleonProbCard(4, 'うしろから 2ひきの インテレオンを <b style="color:#2563eb">あお</b>で かこみましょう。', 'blue') +
         makeDrillBookFooter('インテレオン', 'エージェントポケモン', 'みず', '1.9m', '45.2kg', '「○番目」という1つの位置を指定する順序数と、「○匹」という全体の量を表す集合数の違いを理解します。', 818) +
       '</div>';
 
     initBattle38Ordinal();
 
   } else if(bId === 'Battle39'){
-    // メガヤンマ なんばんめ（うえ・した）
-    const bugs = [
-      { id: 469, name: 'メガヤンマ' },
-      { id: 12, name: 'バタフリー' },
-      { id: 267, name: 'アゲハント' },
-      { id: 415, name: 'ミツハニー' },
-      { id: 10, name: 'キャタピー' }
-    ];
+    // メガヤンマ なんばんめ（うえ・した） 4問構成
+    function makeMegaYanmaProbCard(qNum, titleText, colorName) {
+      let rowHtml = '<div class="ordinal-poke-row" style="background:#f0fdf4;border-color:#86efac">';
+      for(let i=1; i<=6; i++) {
+        rowHtml += '<div class="ordinal-poke-card" data-q="' + qNum + '" data-pos="' + i + '">' +
+          '<img src="' + ART(469) + '" alt="メガヤンマ">' +
+          '<div class="ordinal-circle"></div>' +
+        '</div>';
+      }
+      rowHtml += '</div>';
 
-    let colHtml = '<div style="display:flex;flex-direction:column;gap:8px;align-items:center;background:#f0fdf4;border:3px solid #bbf7d0;border-radius:18px;padding:12px;margin:10px auto;max-width:280px">';
-    bugs.forEach((b, idx) => {
-      colHtml += '<div class="ordinal-item" data-pos="' + (idx+1) + '" style="width:100%;flex-direction:row;justify-content:space-between;padding:6px 14px">' +
-        '<span style="font-weight:900;font-size:13px;color:#166534">うえから ' + (idx+1) + '</span>' +
-        '<img src="' + ART(b.id) + '" alt="' + b.name + '" style="width:40px;height:40px">' +
-        '<span style="font-weight:900;font-size:13px;color:#166534">' + b.name + '</span>' +
+      return '<div class="ordinal-prob-card" id="b39Prob' + qNum + '" data-q="' + qNum + '">' +
+        '<div class="ordinal-prob-header">' +
+          '<div class="ordinal-prob-title">' +
+            '<span class="prob-num-circle" style="background:#16a34a">' + ['①','②','③','④'][qNum-1] + '</span>' +
+            '<span>' + titleText + '</span>' +
+          '</div>' +
+          '<span class="prob-badge-correct">💮 せいかい！</span>' +
+        '</div>' +
+        '<div class="dir-bar">' +
+          '<div class="dir-badge dir-top">▲ うえ（先頭）</div>' +
+          '<div class="dir-badge dir-bottom">▼ した</div>' +
+        '</div>' +
+        rowHtml +
       '</div>';
-    });
-    colHtml += '</div>';
+    }
 
     card.innerHTML = 
       '<div class="drill-book-page">' +
-        makeDrillBookHeader(39, 'メガヤンマ', 'めがやんま', 'なんばんめ（うえ・した）', 'むしポケモンたちが たてに ならんでいるよ。うえや したから かぞえて えらぼう！', 469) +
-        '<div style="text-align:center;font-weight:900;color:#15803d">▲ うえ（てんじょう）</div>' +
-        colHtml +
-        '<div style="text-align:center;font-weight:900;color:#15803d">▼ した（じめん）</div>' +
-        '<div style="background:#f8fafc;border:2px solid #cbd5e1;border-radius:14px;padding:12px;margin:10px 0" id="b39TaskCard">' +
-          '<div style="font-weight:900;font-size:16px;color:#16a34a" id="b39TaskPrompt">① 【 うえから 2ばんめ 】 の ポケモンを えらぼう！</div>' +
-        '</div>' +
+        makeDrillBookHeader(39, 'メガヤンマ', 'めがやんま', 'なんばんめ（うえ・した）', 'メガヤンマが 6ぴき とんでいるよ！ うえとしたを よくみて えらぼう。', 469) +
+        makeMegaYanmaProbCard(1, 'うえから 3ばんめの メガヤンマの ◯を <b style="color:#ef4444">あか</b>で ぬりましょう。', 'red') +
+        makeMegaYanmaProbCard(2, 'したから 5ばんめの メガヤンマの ◯を <b style="color:#2563eb">あお</b>で ぬりましょう。', 'blue') +
+        makeMegaYanmaProbCard(3, 'うえから 2ひきの メガヤンマを <b style="color:#ef4444">あか</b>で かこみましょう。', 'red') +
+        makeMegaYanmaProbCard(4, 'したから 4ひきの メガヤンマを <b style="color:#2563eb">あお</b>で かこみましょう。', 'blue') +
         makeDrillBookFooter('メガヤンマ', 'オニトンボポケモン', 'むし・ひこう', '1.9m', '51.5kg', '上下方向の順序関係を学びます。「上から」「下から」の基準点の違いを確実に認識させます。', 469) +
       '</div>';
 
     initBattle39Ordinal();
 
   } else if(bId === 'Battle40'){
-    // イーブイ なんばんめ（ひだり・みぎ）
-    let rowHtml = '<div class="ordinal-row">';
-    for(let i=1; i<=6; i++) {
-      rowHtml += '<div class="ordinal-item" data-pos="' + i + '">' +
-        '<img src="' + ART(133) + '" alt="イーブイ">' +
-        '<span class="ordinal-num-badge">' + i + '</span>' +
+    // イーブイ 左右のなんばんめ（ひだり・みぎ） 4問構成
+    function makeEeveeProbCard(qNum, titleText, colorName) {
+      let rowHtml = '<div class="ordinal-poke-row" style="background:#fffbeb;border-color:#fde68a">';
+      for(let i=1; i<=6; i++) {
+        rowHtml += '<div class="ordinal-poke-card" data-q="' + qNum + '" data-pos="' + i + '">' +
+          '<img src="' + ART(133) + '" alt="イーブイ">' +
+          '<div class="ordinal-circle"></div>' +
+        '</div>';
+      }
+      rowHtml += '</div>';
+
+      return '<div class="ordinal-prob-card" id="b40Prob' + qNum + '" data-q="' + qNum + '">' +
+        '<div class="ordinal-prob-header">' +
+          '<div class="ordinal-prob-title">' +
+            '<span class="prob-num-circle" style="background:#ea580c">' + ['①','②','③','④'][qNum-1] + '</span>' +
+            '<span>' + titleText + '</span>' +
+          '</div>' +
+          '<span class="prob-badge-correct">💮 せいかい！</span>' +
+        '</div>' +
+        '<div class="dir-bar">' +
+          '<div class="dir-badge dir-left">⬅ ひだり（先頭）</div>' +
+          '<div class="dir-badge dir-right">みぎ ➔</div>' +
+        '</div>' +
+        rowHtml +
       '</div>';
     }
-    rowHtml += '</div>';
 
     card.innerHTML = 
       '<div class="drill-book-page">' +
-        makeDrillBookHeader(40, 'イーブイ', 'いーぶい', 'なんばんめ（ひだり・みぎ）', 'イーブイたちが ならんでいるよ！ ひだりや みぎから かぞえて タップしよう。', 133) +
-        '<div style="display:flex;justify-content:space-between;align-items:center;font-weight:900;font-size:14px;color:#c2410c;margin-bottom:6px">' +
-          '<span>⬅ ひだり</span>' +
-          '<span>みぎ ➡</span>' +
-        '</div>' +
-        rowHtml +
-        '<div style="background:#fff7ed;border:2px solid #fed7aa;border-radius:14px;padding:12px;margin:10px 0" id="b40TaskCard">' +
-          '<div style="font-weight:900;font-size:16px;color:#ea580c" id="b40TaskPrompt">① 【 ひだりから 5ばんめ 】 の イーブイを えらぼう！</div>' +
-        '</div>' +
-        makeDrillBookFooter('イーブイ', 'しんかポケモン', 'ノーマル', '0.3m', '6.5kg', '日常生活でも極めて重要な左右の識別と、「左から○番目」という相対的な位置づけを学びます。', 133) +
+        makeDrillBookHeader(40, 'イーブイ', 'いーぶい', '左右のなんばんめ（ひだり・みぎ）', 'イーブイが 6ぴき ならんでいるよ！ ひだりとみぎを よくみて えらぼう。', 133) +
+        makeEeveeProbCard(1, 'ひだりから 5ばんめの イーブイの ◯を <b style="color:#ef4444">あか</b>で ぬりましょう。', 'red') +
+        makeEeveeProbCard(2, 'みぎから 4ばんめの イーブイの ◯を <b style="color:#2563eb">あお</b>で ぬりましょう。', 'blue') +
+        makeEeveeProbCard(3, 'ひだりから 2ひきの イーブイを <b style="color:#ef4444">あか</b>で かこみましょう。', 'red') +
+        makeEeveeProbCard(4, 'みぎから 3びきの イーブイを <b style="color:#2563eb">あお</b>で かこみましょう。', 'blue') +
+        makeDrillBookFooter('イーブイ', 'しんかポケモン', 'ノーマル', '0.3m', '6.5kg', '左右の基準点から順序数と集合数を正確に識別する力を養います。', 133) +
       '</div>';
 
     initBattle40Ordinal();
 
   } else if(bId === 'Battle41'){
-    // イオルブ 2次元座標（まえ・うしろ、みぎ・ひだり）
-    const gridPokes = [
-      [ { id: 25, name: 'ピカチュウ' }, { id: 133, name: 'イーブイ' }, { id: 393, name: 'ポッチャマ' } ],
-      [ { id: 4, name: 'ヒトカゲ' }, { id: 1, name: 'フシギダネ' }, { id: 7, name: 'ゼニガメ' } ],
-      [ { id: 722, name: 'モクロー' }, { id: 725, name: 'ニャビー' }, { id: 728, name: 'アシマリ' } ]
+    // イオルブ 教室のなんばんめ（4x4座席・2次元座標）
+    const students = [
+      [ { name: 'けんた', icon: '👦' }, { name: 'ゆうき', icon: '👦' }, { name: 'たくみ', icon: '👦' }, { name: 'さくら', icon: '👧' } ],
+      [ { name: 'りく', icon: '👦' }, { name: 'はると', icon: '👦' }, { name: 'ゆい', icon: '👧' }, { name: 'そうた', icon: '👦' } ],
+      [ { name: 'れん', icon: '👦' }, { name: 'あおい', icon: '👧' }, { name: 'ひなた', icon: '👦' }, { name: 'みさき', icon: '👧' } ],
+      [ { name: 'こうき', icon: '👦' }, { name: 'たいち', icon: '👦' }, { name: 'みお', icon: '👧' }, { name: 'かいと', icon: '👦' } ]
     ];
 
-    let gridHtml = '<div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:10px;background:#f5f3ff;border:3px solid #ddd6fe;border-radius:18px;padding:14px;margin:10px auto;max-width:360px">';
-    for(let r=0; r<3; r++){
-      for(let c=0; c<3; c++){
-        const p = gridPokes[r][c];
-        gridHtml += '<div class="ordinal-item" data-r="' + (r+1) + '" data-c="' + (c+1) + '" style="padding:10px">' +
-          '<img src="' + ART(p.id) + '" alt="' + p.name + '" style="width:48px;height:48px">' +
-          '<span style="font-size:11px;font-weight:900;color:#6b21a8">' + p.name + '</span>' +
+    let gridHtml = '<div class="classroom-grid-wrapper">' +
+      '<div class="blackboard-banner">【 ▲ まえ（こくばん・先生のつくえ） 】</div>' +
+      '<div style="display:flex;justify-content:space-between;font-weight:900;font-size:12px;color:#0369a1;margin-bottom:6px;padding:0 4px">' +
+        '<span>⬅ ひだり</span>' +
+        '<span>みぎ ➔</span>' +
+      '</div>' +
+      '<div class="classroom-grid">';
+    
+    for(let r=0; r<4; r++){
+      for(let c=0; c<4; c++){
+        const st = students[r][c];
+        gridHtml += '<div class="classroom-desk" data-r="' + (r+1) + '" data-c="' + (c+1) + '">' +
+          '<div class="classroom-desk-avatar">' + st.icon + '</div>' +
+          '<div class="classroom-desk-name">' + st.name + '</div>' +
         '</div>';
       }
     }
-    gridHtml += '</div>';
+    gridHtml += '</div>' +
+      '<div style="text-align:center;font-weight:900;font-size:13px;color:#475569;margin-top:10px">【 ▼ うしろ 】</div>' +
+    '</div>';
 
-    card.innerHTML = 
-      '<div class="drill-book-page">' +
-        makeDrillBookHeader(41, 'イオルブ', 'いおるぶ', 'なんばんめ（まえと みぎ・ひだり）', '２つの じょうけんから、ぴったり あう ポケモンを タップしよう！', 826) +
-        '<div style="display:flex;justify-content:space-around;font-weight:900;font-size:12px;color:#7c3aed">' +
-          '<span>ひだりから 1</span><span>ひだりから 2</span><span>ひだりから 3</span>' +
-        '</div>' +
-        gridHtml +
-        '<div style="background:#fdf4ff;border:2px solid #f0abfc;border-radius:14px;padding:12px;margin:10px 0" id="b41TaskCard">' +
-          '<div style="font-weight:900;font-size:16px;color:#a855f7" id="b41TaskPrompt">① 【 まえから 1ばんめ、ひだりから 2ばんめ 】 の ポケモンは？</div>' +
-        '</div>' +
-        makeDrillBookFooter('イオルブ', 'ななほしポケモン', 'むし・エスパー', '0.4m', '0.8kg', '縦の列（前後）と横の行（左右）の2つの基準が交わる点を特定する、2次元座標の基礎概念を育てます。', 826) +
-      '</div>';
-
-    initBattle41Grid();
-
-  } else if(bId === 'Battle42'){
-    // タマンチュラ ロッカーのばしょ
-    let lockersHtml = '<div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:8px;background:#fef2f2;border:3px solid #fecaca;border-radius:16px;padding:12px;margin:10px auto;max-width:380px">';
-    for(let r=1; r<=3; r++){
-      for(let c=1; c<=4; c++){
-        let item = '';
-        if(r === 1 && c === 3) item = '<span style="font-size:24px">🎒</span>';
-        else if(r === 2 && c === 2) item = '<span style="font-size:20px">🧢</span>';
-        else if(r === 3 && c === 4) item = '<span style="font-size:20px">⚽</span>';
-        else item = '<span style="font-size:12px;color:#94a3b8">空</span>';
-
-        lockersHtml += '<div class="ordinal-item" data-r="' + r + '" data-c="' + c + '" style="height:56px;justify-content:center">' +
-          item +
-        '</div>';
-      }
-    }
-    lockersHtml += '</div>';
-
-    let tray = '<div class="num-choice-tray">';
+    let tray = '<div class="num-choice-tray" style="margin-top:8px">';
     ['1', '2', '3', '4'].forEach(n => {
       tray += '<button type="button" class="num-choice-btn" data-val="' + n + '">' + n + '</button>';
     });
@@ -7623,19 +7887,132 @@ function renderInteractiveStage(row){
 
     card.innerHTML = 
       '<div class="drill-book-page">' +
-        makeDrillBookHeader(42, 'タマンチュラ', 'たまんちゅら', 'なんばんめ（ロッカーの ばしょ）', 'ロッカーの ばしょを かぞえよう。あかい ランドセル 🎒 は どこかな？', 917) +
-        lockersHtml +
-        '<div style="background:#fff;border:2px solid #cbd5e1;border-radius:14px;padding:12px;margin:10px 0">' +
-          '<div style="font-weight:900;font-size:15px;color:#1e293b;display:flex;align-items:center;gap:6px;flex-wrap:wrap">' +
-            '<span>あかい ランドセルは、うえから</span>' +
-            '<div class="t-math-box" data-idx="0" data-target="1">？</div>' +
-            '<span>ばんめ、ひだりから</span>' +
-            '<div class="t-math-box" data-idx="1" data-target="3">？</div>' +
-            '<span>ばんめ！</span>' +
+        makeDrillBookHeader(41, 'イオルブ', 'いおるぶ', 'なんばんめ（きょうしつの せき）', 'きょうしつで みんなが すわっているよ！ まえ・うしろ、ひだり・みぎから ばしょを みつけよう。', 826) +
+        gridHtml +
+        '<div class="ordinal-prob-card" id="b41Prob1">' +
+          '<div class="ordinal-prob-header">' +
+            '<div class="ordinal-prob-title"><span class="prob-num-circle">①</span><span>まえから 2ばんめ、ひだりから 2ばんめの ひと（はるとくん）を タップしよう！</span></div>' +
+            '<span class="prob-badge-correct">💮 せいかい！</span>' +
           '</div>' +
         '</div>' +
-        tray +
-        makeDrillBookFooter('タマンチュラ', 'いとまるポケモン', 'むし', '0.3m', '4.0kg', '教室のロッカーや下駄箱の位置など、日常生活でよく使う2次元の位置関係を言語化・数値化します。', 917) +
+        '<div class="ordinal-prob-card" id="b41Prob2">' +
+          '<div class="ordinal-prob-header">' +
+            '<div class="ordinal-prob-title"><span class="prob-num-circle">②</span><span>👧 みさきちゃん（まえから 3ばんめ、ひだりから 4ばんめ）は、</span></div>' +
+            '<span class="prob-badge-correct">💮 せいかい！</span>' +
+          '</div>' +
+          '<div style="display:flex;align-items:center;gap:6px;font-weight:900;font-size:15px;flex-wrap:wrap;padding:4px 0">' +
+            '<span>まえから</span><div class="t-math-box" data-idx="0" data-target="3">？</div><span>ばんめ、みぎから</span><div class="t-math-box" data-idx="1" data-target="1">？</div><span>ばんめです。</span>' +
+          '</div>' +
+          tray +
+        '</div>' +
+        '<div class="ordinal-prob-card" id="b41Prob3">' +
+          '<div class="ordinal-prob-header">' +
+            '<div class="ordinal-prob-title"><span class="prob-num-circle">③</span><span>まえから 1ばんめ、ひだりから 4ばんめ（みぎはし）の ひと（さくらちゃん）を タップしよう！</span></div>' +
+            '<span class="prob-badge-correct">💮 せいかい！</span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="ordinal-prob-card" id="b41Prob4">' +
+          '<div class="ordinal-prob-header">' +
+            '<div class="ordinal-prob-title"><span class="prob-num-circle">④</span><span>うしろから 1ばんめ（まえから4ばんめ）、ひだりから 1ばんめの ひと（こうきくん）を タップしよう！</span></div>' +
+            '<span class="prob-badge-correct">💮 せいかい！</span>' +
+          '</div>' +
+        '</div>' +
+        makeDrillBookFooter('イオルブ', 'ななほしポケモン', 'むし・エスパー', '0.4m', '40.8kg', '行（前後）と列（左右）が交わる位置を特定する2次元座標の基礎概念を理解します。', 826) +
+      '</div>';
+
+    initBattle41Grid();
+
+  } else if(bId === 'Battle42'){
+    // タマンチュラ ロッカーのばしょ（3行×5列・2次元グリッド）
+    function makeRandoseruSvg(color) {
+      return '<svg viewBox="0 0 40 44" style="width:36px;height:40px;filter:drop-shadow(0 2px 3px rgba(0,0,0,0.2))">' +
+        '<path d="M10,8 C10,4 30,4 30,8 L32,38 C32,41 29,42 26,42 L14,42 C11,42 8,41 8,38 Z" fill="' + color + '" stroke="#1e293b" stroke-width="2"/>' +
+        '<path d="M12,12 C12,10 28,10 28,12 L28,26 C28,28 12,28 12,26 Z" fill="' + color + '" filter="brightness(1.15)" stroke="#1e293b" stroke-width="1.5"/>' +
+        '<rect x="18" y="24" width="4" height="6" rx="1" fill="#facc15" stroke="#1e293b" stroke-width="1"/>' +
+        '<path d="M16,8 C16,4 24,4 24,8" fill="none" stroke="#334155" stroke-width="2.5" stroke-linecap="round"/>' +
+      '</svg>';
+    }
+
+    const lockerColors = [
+      ['#ec4899', '#1e293b', '#475569', '#1e40af', '#78350f'],
+      ['#64748b', '#06b6d4', '#ef4444', '#f97316', null],
+      ['#ef4444', null, '#22c55e', '#eab308', '#f472b6']
+    ];
+
+    let lockersHtml = '<div class="locker-grid-wrapper">' +
+      '<div style="text-align:center;font-weight:900;font-size:14px;color:#be185d;margin-bottom:6px">【 ▲ うえ 】</div>' +
+      '<div style="display:flex;justify-content:space-between;font-weight:900;font-size:12px;color:#be185d;margin-bottom:6px;padding:0 4px">' +
+        '<span>⬅ ひだり</span>' +
+        '<span>みぎ ➔</span>' +
+      '</div>' +
+      '<div class="locker-grid">';
+
+    for(let r=1; r<=3; r++){
+      for(let c=1; c<=5; c++){
+        const color = lockerColors[r-1][c-1];
+        let bagHtml = '';
+        if(color) {
+          bagHtml = makeRandoseruSvg(color);
+        } else {
+          bagHtml = '<span style="font-size:11px;font-weight:900;color:#94a3b8">からっぽ</span>';
+        }
+
+        lockersHtml += '<div class="locker-cell" data-r="' + r + '" data-c="' + c + '" id="lockerCell_' + r + '_' + c + '">' +
+          bagHtml +
+        '</div>';
+      }
+    }
+    lockersHtml += '</div>' +
+      '<div style="text-align:center;font-weight:900;font-size:14px;color:#be185d;margin-top:8px">【 ▼ した 】</div>' +
+    '</div>';
+
+    let tray = '<div class="num-choice-tray" style="margin-top:8px">';
+    ['1', '2', '3', '4', '5'].forEach(n => {
+      tray += '<button type="button" class="num-choice-btn" data-val="' + n + '">' + n + '</button>';
+    });
+    tray += '<button type="button" class="num-choice-btn erase" data-val="erase">⌫ けす</button></div>';
+
+    card.innerHTML = 
+      '<div class="drill-book-page">' +
+        makeDrillBookHeader(42, 'タマンチュラ', 'たまんちゅら', 'なんばんめ（ロッカーの ばしょ）', 'きょうしつの ロッカーに ランドセルが はいっているよ！ ばしょを かぞえて こたえよう。', 917) +
+        lockersHtml +
+        '<div class="ordinal-prob-card" id="b42Prob1">' +
+          '<div class="ordinal-prob-header">' +
+            '<div class="ordinal-prob-title"><span class="prob-num-circle">①</span><span>うえから 2ばんめ、ひだりから 3ばんめに はいっている あかい ランドセルを タップしよう！</span></div>' +
+            '<span class="prob-badge-correct">💮 せいかい！</span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="ordinal-prob-card" id="b42Prob2">' +
+          '<div class="ordinal-prob-header">' +
+            '<div class="ordinal-prob-title" style="display:flex;align-items:center;gap:6px">' +
+              '<span class="prob-num-circle">②</span>' +
+              makeRandoseruSvg('#06b6d4') +
+              '<span>みずいろの ランドセルは、</span>' +
+            '</div>' +
+            '<span class="prob-badge-correct">💮 せいかい！</span>' +
+          '</div>' +
+          '<div style="display:flex;align-items:center;gap:6px;font-weight:900;font-size:15px;flex-wrap:wrap;padding:4px 0">' +
+            '<span>したから</span><div class="t-math-box" data-idx="0" data-target="2">？</div><span>ばんめ、みぎから</span><div class="t-math-box" data-idx="1" data-target="4">？</div><span>ばんめです。</span>' +
+          '</div>' +
+          tray +
+        '</div>' +
+        '<div class="ordinal-prob-card" id="b42Prob3">' +
+          '<div class="ordinal-prob-header">' +
+            '<div class="ordinal-prob-title"><span class="prob-num-circle">③</span><span>うえから 3ばんめ、みぎから 3ばんめの 空いているロッカーに ランドセルの シールを はろう！（タップ）</span></div>' +
+            '<span class="prob-badge-correct">💮 せいかい！</span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="ordinal-prob-card" id="b42Prob4">' +
+          '<div class="ordinal-prob-header">' +
+            '<div class="ordinal-prob-title" style="display:flex;align-items:center;gap:6px">' +
+              '<span class="prob-num-circle">④</span>' +
+              makeRandoseruSvg('#ec4899') +
+              '<span>うえから 1ばんめ、ひだりから 1ばんめの ぴんくの ランドセルを タップしよう！</span>' +
+            '</div>' +
+            '<span class="prob-badge-correct">💮 せいかい！</span>' +
+          '</div>' +
+        '</div>' +
+        makeDrillBookFooter('タマンチュラ', 'いとまるポケモン', 'むし', '0.3m', '4.0kg', '3行×5列のロッカーを通して、「上から・下から」「左から・右から」の両方向からの2次元座標を正確に把握します。', 917) +
       '</div>';
 
     initBattle42Locker();
@@ -11449,143 +11826,237 @@ function initBattle37Trail() {
   renderState();
 }
 
-function initBattle38Ordinal() {
+function initOrdinalDrillHelper(config) {
   const p = document.querySelector('.drill-book-page');
   if(!p) return;
-  const items = Array.from(p.querySelectorAll('.ordinal-item'));
-  const prompt = document.getElementById('b38TaskPrompt');
-  let step = 1;
 
-  items.forEach(it => {
-    it.onclick = () => {
-      const pos = parseInt(it.dataset.pos);
-      if(step === 1 && pos === 4) {
-        playMarimbaPop(1.3);
-        it.classList.add('selected');
-        step = 2;
-        if(prompt) prompt.textContent = '② 【 うしろから 2ばんめ 】 の インテレオンを えらぼう！';
-      } else if(step === 2 && pos === 5) {
-        playMarimbaPop(1.4);
-        it.classList.add('selected');
-        step = 3;
-        if(prompt) prompt.textContent = '③ 【 まえから 3びき 】 を ぜんぶ えらぼう！（あと3匹）';
-      } else if(step === 3 && (pos === 1 || pos === 2 || pos === 3)) {
-        playMarimbaPop(1.2);
-        it.classList.add('selected');
-        const selectedFront3 = items.slice(0, 3).every(el => el.classList.contains('selected'));
-        if(selectedFront3) {
-          if(prompt) prompt.textContent = '🎉 ぜんぶ せいかい！ たいへんよくできました！';
-          completeBookDrill();
+  const solved = [false, false, false, false];
+  const selections = [new Set(), new Set(), new Set(), new Set()];
+
+  function checkAllSolved() {
+    if(solved.every(Boolean)) {
+      setTimeout(() => {
+        completeBookDrill();
+      }, 500);
+    }
+  }
+
+  // Set up 4 problems
+  config.problems.forEach((prob, qIdx) => {
+    const cardEl = p.querySelector('#' + config.prefix + 'Prob' + (qIdx + 1));
+    if(!cardEl) return;
+    const pokeCards = Array.from(cardEl.querySelectorAll('.ordinal-poke-card'));
+
+    pokeCards.forEach(pokeEl => {
+      pokeEl.onclick = () => {
+        if(solved[qIdx]) return; // already solved
+        const pos = parseInt(pokeEl.dataset.pos, 10);
+        const sel = selections[qIdx];
+
+        if(prob.isMulti) {
+          // 集合数（複数選択）
+          if(sel.has(pos)) {
+            sel.delete(pos);
+            pokeEl.classList.remove(prob.colorClass);
+            playMarimbaPop(0.9);
+          } else {
+            sel.add(pos);
+            pokeEl.classList.add(prob.colorClass);
+            playMarimbaPop(1.1 + sel.size * 0.1);
+          }
+        } else {
+          // 順序数（単体選択）
+          pokeCards.forEach(c => c.classList.remove(prob.colorClass));
+          sel.clear();
+          sel.add(pos);
+          pokeEl.classList.add(prob.colorClass);
+          playMarimbaPop(1.2);
         }
-      } else {
-        playMarimbaPop(0.7);
-      }
-    };
+
+        // Validate
+        let isCorrect = false;
+        if(prob.isMulti) {
+          isCorrect = sel.size === prob.target.length && prob.target.every(t => sel.has(t));
+        } else {
+          isCorrect = sel.has(prob.target);
+        }
+
+        if(isCorrect) {
+          solved[qIdx] = true;
+          cardEl.classList.add('is-correct');
+          playMarimbaPop(1.6);
+          checkAllSolved();
+        }
+      };
+    });
+  });
+}
+
+function initBattle38Ordinal() {
+  initOrdinalDrillHelper({
+    prefix: 'b38',
+    problems: [
+      { isMulti: false, target: 4, colorClass: 'selected-red' },       // ① まえから 4ばんめ (Pos 4)
+      { isMulti: false, target: 5, colorClass: 'selected-blue' },      // ② うしろから 2ばんめ (Pos 5)
+      { isMulti: true,  target: [1, 2, 3], colorClass: 'selected-red' }, // ③ まえから 3びき (Pos 1, 2, 3)
+      { isMulti: true,  target: [5, 6], colorClass: 'selected-blue' }    // ④ うしろから 2ひき (Pos 5, 6)
+    ]
   });
 }
 
 function initBattle39Ordinal() {
-  const p = document.querySelector('.drill-book-page');
-  if(!p) return;
-  const items = Array.from(p.querySelectorAll('.ordinal-item'));
-  const prompt = document.getElementById('b39TaskPrompt');
-  let step = 1;
-
-  items.forEach(it => {
-    it.onclick = () => {
-      const pos = parseInt(it.dataset.pos);
-      if(step === 1 && pos === 2) {
-        playMarimbaPop(1.3);
-        it.classList.add('selected');
-        step = 2;
-        if(prompt) prompt.textContent = '② 【 したから 1ばんめ 】 の ポケモンを えらぼう！';
-      } else if(step === 2 && pos === 5) {
-        playMarimbaPop(1.4);
-        it.classList.add('selected');
-        step = 3;
-        if(prompt) prompt.textContent = '③ 【 したから 3びき 】 を えらぼう！（あと3匹）';
-      } else if(step === 3 && (pos === 3 || pos === 4 || pos === 5)) {
-        playMarimbaPop(1.2);
-        it.classList.add('selected');
-        const bottom3 = [items[2], items[3], items[4]].every(el => el.classList.contains('selected'));
-        if(bottom3) {
-          if(prompt) prompt.textContent = '🎉 ぜんぶ せいかい！ よくできたね！';
-          completeBookDrill();
-        }
-      } else {
-        playMarimbaPop(0.7);
-      }
-    };
+  initOrdinalDrillHelper({
+    prefix: 'b39',
+    problems: [
+      { isMulti: false, target: 3, colorClass: 'selected-red' },         // ① うえから 3ばんめ (Pos 3)
+      { isMulti: false, target: 2, colorClass: 'selected-blue' },        // ② したから 5ばんめ (Pos 2)
+      { isMulti: true,  target: [1, 2], colorClass: 'selected-red' },    // ③ うえから 2ひき (Pos 1, 2)
+      { isMulti: true,  target: [3, 4, 5, 6], colorClass: 'selected-blue' } // ④ したから 4ひき (Pos 3, 4, 5, 6)
+    ]
   });
 }
 
 function initBattle40Ordinal() {
-  const p = document.querySelector('.drill-book-page');
-  if(!p) return;
-  const items = Array.from(p.querySelectorAll('.ordinal-item'));
-  const prompt = document.getElementById('b40TaskPrompt');
-  let step = 1;
-
-  items.forEach(it => {
-    it.onclick = () => {
-      const pos = parseInt(it.dataset.pos);
-      if(step === 1 && pos === 5) {
-        playMarimbaPop(1.3);
-        it.classList.add('selected');
-        step = 2;
-        if(prompt) prompt.textContent = '② 【 みぎから 4ばんめ 】 の イーブイを えらぼう！';
-      } else if(step === 2 && pos === 3) {
-        playMarimbaPop(1.4);
-        it.classList.add('selected');
-        step = 3;
-        if(prompt) prompt.textContent = '③ 【 ひだりから 3びき 】 を えらぼう！';
-      } else if(step === 3 && (pos === 1 || pos === 2 || pos === 3)) {
-        playMarimbaPop(1.2);
-        it.classList.add('selected');
-        const front3 = [items[0], items[1], items[2]].every(el => el.classList.contains('selected'));
-        if(front3) {
-          if(prompt) prompt.textContent = '🎉 ぜんぶ せいかい！ かんぺき！';
-          completeBookDrill();
-        }
-      } else {
-        playMarimbaPop(0.7);
-      }
-    };
+  initOrdinalDrillHelper({
+    prefix: 'b40',
+    problems: [
+      { isMulti: false, target: 5, colorClass: 'selected-red' },         // ① ひだりから 5ばんめ (Pos 5)
+      { isMulti: false, target: 3, colorClass: 'selected-blue' },        // ② みぎから 4ばんめ (Pos 3)
+      { isMulti: true,  target: [1, 2], colorClass: 'selected-red' },    // ③ ひだりから 2ひき (Pos 1, 2)
+      { isMulti: true,  target: [4, 5, 6], colorClass: 'selected-blue' } // ④ みぎから 3びき (Pos 4, 5, 6)
+    ]
   });
 }
 
 function initBattle41Grid() {
   const p = document.querySelector('.drill-book-page');
   if(!p) return;
-  const items = Array.from(p.querySelectorAll('.ordinal-item'));
-  const prompt = document.getElementById('b41TaskPrompt');
-  let step = 1;
 
-  items.forEach(it => {
-    it.onclick = () => {
-      const r = parseInt(it.dataset.r);
-      const c = parseInt(it.dataset.c);
-      if(step === 1 && r === 1 && c === 2) {
-        playMarimbaPop(1.3);
-        it.classList.add('selected');
-        step = 2;
-        if(prompt) prompt.textContent = '② 【 まえから 2ばんめ、みぎから 1ばんめ 】 の ポケモンは？';
-      } else if(step === 2 && r === 2 && c === 3) {
+  const solved = [false, false, false, false];
+  function checkAll() {
+    if(solved.every(Boolean)) {
+      setTimeout(completeBookDrill, 500);
+    }
+  }
+
+  const desks = Array.from(p.querySelectorAll('.classroom-desk'));
+  const card1 = p.querySelector('#b41Prob1');
+  const card2 = p.querySelector('#b41Prob2');
+  const card3 = p.querySelector('#b41Prob3');
+  const card4 = p.querySelector('#b41Prob4');
+
+  desks.forEach(d => {
+    d.onclick = () => {
+      const r = parseInt(d.dataset.r, 10);
+      const c = parseInt(d.dataset.c, 10);
+
+      // Check for Problem 1: R=2, C=2
+      if(!solved[0] && r === 2 && c === 2) {
+        solved[0] = true;
+        d.classList.add('selected');
+        if(card1) card1.classList.add('is-correct');
         playMarimbaPop(1.5);
-        it.classList.add('selected');
-        if(prompt) prompt.textContent = '🎉 ゼニガメ せいかい！ すばらしい！';
-        completeBookDrill();
-      } else {
-        playMarimbaPop(0.7);
+        checkAll();
+        return;
       }
+      // Check for Problem 3: R=1, C=4
+      if(!solved[2] && r === 1 && c === 4) {
+        solved[2] = true;
+        d.classList.add('selected');
+        if(card3) card3.classList.add('is-correct');
+        playMarimbaPop(1.5);
+        checkAll();
+        return;
+      }
+      // Check for Problem 4: R=4, C=1
+      if(!solved[3] && r === 4 && c === 1) {
+        solved[3] = true;
+        d.classList.add('selected');
+        if(card4) card4.classList.add('is-correct');
+        playMarimbaPop(1.5);
+        checkAll();
+        return;
+      }
+
+      playMarimbaPop(0.8);
     };
   });
+
+  // Problem 2: Math box controller for [3] and [1]
+  if(card2) {
+    setupMathBoxController(card2, ['3', '1'], () => {
+      solved[1] = true;
+      card2.classList.add('is-correct');
+      playMarimbaPop(1.6);
+      checkAll();
+    });
+  }
 }
 
 function initBattle42Locker() {
   const p = document.querySelector('.drill-book-page');
   if(!p) return;
-  setupMathBoxController(p, ['1', '3'], completeBookDrill);
+
+  const solved = [false, false, false, false];
+  function checkAll() {
+    if(solved.every(Boolean)) {
+      setTimeout(completeBookDrill, 500);
+    }
+  }
+
+  const cells = Array.from(p.querySelectorAll('.locker-cell'));
+  const card1 = p.querySelector('#b42Prob1');
+  const card2 = p.querySelector('#b42Prob2');
+  const card3 = p.querySelector('#b42Prob3');
+  const card4 = p.querySelector('#b42Prob4');
+
+  cells.forEach(cell => {
+    cell.onclick = () => {
+      const r = parseInt(cell.dataset.r, 10);
+      const c = parseInt(cell.dataset.c, 10);
+
+      // Problem 1: R=2, C=3 (red bag)
+      if(!solved[0] && r === 2 && c === 3) {
+        solved[0] = true;
+        cell.classList.add('selected');
+        if(card1) card1.classList.add('is-correct');
+        playMarimbaPop(1.5);
+        checkAll();
+        return;
+      }
+      // Problem 3: R=3, C=3 (empty locker: from right 3rd is C=3 in 5 columns!)
+      if(!solved[2] && r === 3 && c === 3) {
+        solved[2] = true;
+        cell.classList.add('selected');
+        cell.innerHTML = '<svg viewBox="0 0 40 44" style="width:36px;height:40px;filter:drop-shadow(0 2px 3px rgba(0,0,0,0.2))"><path d="M10,8 C10,4 30,4 30,8 L32,38 C32,41 29,42 26,42 L14,42 C11,42 8,41 8,38 Z" fill="#06b6d4" stroke="#1e293b" stroke-width="2"/><path d="M12,12 C12,10 28,10 28,12 L28,26 C28,28 12,28 12,26 Z" fill="#06b6d4" filter="brightness(1.15)" stroke="#1e293b" stroke-width="1.5"/><rect x="18" y="24" width="4" height="6" rx="1" fill="#facc15" stroke="#1e293b" stroke-width="1"/><path d="M16,8 C16,4 24,4 24,8" fill="none" stroke="#334155" stroke-width="2.5" stroke-linecap="round"/></svg>';
+        if(card3) card3.classList.add('is-correct');
+        playMarimbaPop(1.5);
+        checkAll();
+        return;
+      }
+      // Problem 4: R=1, C=1 (pink bag)
+      if(!solved[3] && r === 1 && c === 1) {
+        solved[3] = true;
+        cell.classList.add('selected');
+        if(card4) card4.classList.add('is-correct');
+        playMarimbaPop(1.5);
+        checkAll();
+        return;
+      }
+
+      playMarimbaPop(0.8);
+    };
+  });
+
+  // Problem 2: Math box controller for [2] and [4]
+  if(card2) {
+    setupMathBoxController(card2, ['2', '4'], () => {
+      solved[1] = true;
+      card2.classList.add('is-correct');
+      playMarimbaPop(1.6);
+      checkAll();
+    });
+  }
 }
 
 function initBattle43Trail() {
@@ -12168,7 +12639,7 @@ function openHome(){
   $('home').classList.add('active');
 
   updateHomeStats();
-  if($('hdrTitleSmall')) $('hdrTitleSmall').innerHTML = 'ドリルを えらぼう！ <span class="ver-badge" style="background:#dcfce7;color:#15803d;padding:1px 6px;border-radius:6px;font-size:11px;font-weight:900">Ver 2.8 最新版</span>';
+  if($('hdrTitleSmall')) $('hdrTitleSmall').innerHTML = 'ドリルを えらぼう！ <span class="ver-badge" style="background:#dcfce7;color:#15803d;padding:1px 6px;border-radius:6px;font-size:11px;font-weight:900">Ver 2.9 最新版</span>';
 }
 
 function selectDrill(subject){
@@ -12177,7 +12648,7 @@ function selectDrill(subject){
     $('home').classList.remove('active');
     $('battle').classList.remove('active');
     $('map').classList.add('active');
-    if($('hdrTitleSmall')) $('hdrTitleSmall').innerHTML = '入学準備 さんすう <span class="ver-badge" style="background:#dcfce7;color:#15803d;padding:1px 6px;border-radius:6px;font-size:11px;font-weight:900">Ver 2.8 最新版</span>';
+    if($('hdrTitleSmall')) $('hdrTitleSmall').innerHTML = '入学準備 さんすう <span class="ver-badge" style="background:#dcfce7;color:#15803d;padding:1px 6px;border-radius:6px;font-size:11px;font-weight:900">Ver 2.9 最新版</span>';
     layoutMap();
     setTimeout(scrollToCurrent, 80);
   } else {
@@ -12224,7 +12695,7 @@ function backToMap(){
   $('home').classList.remove('active');
   $('battle').classList.remove('active');
   $('map').classList.add('active');
-  if($('hdrTitleSmall')) $('hdrTitleSmall').innerHTML = '入学準備 さんすう <span class="ver-badge" style="background:#dcfce7;color:#15803d;padding:1px 6px;border-radius:6px;font-size:11px;font-weight:900">Ver 2.8 最新版</span>';
+  if($('hdrTitleSmall')) $('hdrTitleSmall').innerHTML = '入学準備 さんすう <span class="ver-badge" style="background:#dcfce7;color:#15803d;padding:1px 6px;border-radius:6px;font-size:11px;font-weight:900">Ver 2.9 最新版</span>';
   layoutMap();
   setTimeout(scrollToCurrent, 80);
 }

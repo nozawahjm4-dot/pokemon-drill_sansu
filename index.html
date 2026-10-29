@@ -3141,20 +3141,56 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
 }
 .drill-flying-ball {
   position: fixed;
-  width: 56px;
-  height: 56px;
-  background: url("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png") center/contain no-repeat;
-  filter: drop-shadow(0 6px 12px rgba(0,0,0,0.35));
+  width: 96px;
+  height: 96px;
+  filter: drop-shadow(0 10px 22px rgba(0,0,0,0.45));
   z-index: 10005;
   pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.drill-ball-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
 }
 .drill-flying-ball.ball-shaking {
-  animation: ballWobble 0.6s ease-in-out infinite alternate;
+  animation: ballWobble 0.36s ease-in-out infinite alternate;
 }
 @keyframes ballWobble {
-  0% { transform: rotate(-25deg); }
-  50% { transform: rotate(0deg); }
-  100% { transform: rotate(25deg); }
+  0% { transform: rotate(-24deg); }
+  100% { transform: rotate(24deg); }
+}
+.drill-flying-ball.ball-caught-flash {
+  animation: ballCaughtPikaan 0.9s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+}
+@keyframes ballCaughtPikaan {
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 10px 22px rgba(0,0,0,0.45));
+  }
+  25% {
+    transform: scale(1.36);
+    filter: drop-shadow(0 0 35px #fef08a) drop-shadow(0 0 70px #f59e0b) brightness(1.95);
+  }
+  55% {
+    transform: scale(1.18);
+    filter: drop-shadow(0 0 25px #fbbf24) drop-shadow(0 0 50px #f59e0b) brightness(1.5);
+  }
+  100% {
+    transform: scale(1.15);
+    filter: drop-shadow(0 8px 22px rgba(245, 158, 11, 0.75));
+  }
+}
+.catch-sparkle-item {
+  position: fixed;
+  font-size: 32px;
+  pointer-events: none;
+  z-index: 10010;
+  filter: drop-shadow(0 0 10px #fef08a);
+  user-select: none;
 }
 
 /* Battle 37: 1〜30あみだ・トレイル迷路スタイル */
@@ -3754,7 +3790,7 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
 <div id="bg-image-layer"></div>
 
 <header id="hdr">
-  <h1>⚡ ポケモンずかんドリル<small>入学準備 さんすう <span style="background:#dcfce7;color:#15803d;padding:1px 6px;border-radius:6px;font-size:11px;font-weight:900">Ver 2.6 最新版</span></small></h1>
+  <h1>⚡ ポケモンずかんドリル<small>入学準備 さんすう <span style="background:#dcfce7;color:#15803d;padding:1px 6px;border-radius:6px;font-size:11px;font-weight:900">Ver 2.7 最新版</span></small></h1>
   <div class="hdr-spacer"></div>
   <span class="pt" id="pt">🪙 0 pt</span>
   <button class="hbtn" id="btnKana">📋 あいうえお表</button>
@@ -4034,7 +4070,7 @@ const typeList = t => (t||'ノーマル').split(/[・/、]/).map(s=>s.trim()).fi
 const LS_KEY = 'pokeZukanDrill_v3';
 let S = safeGetStorage(LS_KEY, null);
 if(!S || typeof S !== 'object'){
-  S = { name:'', points:0, rewardsGiven:0, currentBattleIndex:0, answers:{}, cleared:[], caught:[], allClearRewarded:false, version:'2.6' };
+  S = { name:'', points:0, rewardsGiven:0, currentBattleIndex:0, answers:{}, cleared:[], caught:[], allClearRewarded:false, version:'2.7' };
 }
 if(!Array.isArray(S.cleared)) S.cleared = [];
 if(!Array.isArray(S.caught)) S.caught = [];
@@ -4043,8 +4079,8 @@ if(typeof S.points !== 'number' || isNaN(S.points)) S.points = 0;
 if(typeof S.rewardsGiven !== 'number') S.rewardsGiven = 0;
 if(typeof S.currentBattleIndex !== 'number' || isNaN(S.currentBattleIndex)) S.currentBattleIndex = 0;
 if(typeof S.name !== 'string') S.name = '';
-if(!S.version || S.version !== '2.6'){
-  S.version = '2.6';
+if(!S.version || S.version !== '2.7'){
+  S.version = '2.7';
   S.answers = {};
   safeSetStorage(LS_KEY, S);
 }
@@ -4434,6 +4470,60 @@ function stampDrillSuccess() {
   }, 700);
 }
 
+function createPokeBallSvgMarkup() {
+  return `
+    <svg viewBox="0 0 100 100" class="drill-ball-svg">
+      <defs>
+        <radialGradient id="drillBallGleam" cx="30%" cy="25%" r="65%">
+          <stop offset="0%" stop-color="#ffffff" stop-opacity="0.8"/>
+          <stop offset="45%" stop-color="#ffffff" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="drillBallRed" cx="32%" cy="25%" r="70%">
+          <stop offset="0%" stop-color="#ff7878"/>
+          <stop offset="60%" stop-color="#ef4444"/>
+          <stop offset="100%" stop-color="#991b1b"/>
+        </radialGradient>
+        <radialGradient id="drillBallWhite" cx="32%" cy="40%" r="70%">
+          <stop offset="0%" stop-color="#ffffff"/>
+          <stop offset="70%" stop-color="#e2e8f0"/>
+          <stop offset="100%" stop-color="#94a3b8"/>
+        </radialGradient>
+      </defs>
+      <circle cx="50" cy="50" r="46" fill="url(#drillBallWhite)" stroke="#1e293b" stroke-width="5"/>
+      <path d="M 4 50 A 46 46 0 0 1 96 50 Z" fill="url(#drillBallRed)" stroke="#1e293b" stroke-width="5"/>
+      <line x1="4" y1="50" x2="96" y2="50" stroke="#1e293b" stroke-width="6"/>
+      <circle cx="50" cy="50" r="15" fill="#ffffff" stroke="#1e293b" stroke-width="5"/>
+      <circle cx="50" cy="50" r="7.5" fill="#ffffff" stroke="#64748b" stroke-width="2.5"/>
+      <circle cx="50" cy="50" r="46" fill="url(#drillBallGleam)" pointer-events="none"/>
+    </svg>
+  `;
+}
+
+function spawnCatchSparkles(cx, cy) {
+  const icons = ['✨', '⭐', '🌟', '💫', '✨', '⭐'];
+  for (let i = 0; i < 8; i++) {
+    const sp = document.createElement('div');
+    sp.className = 'catch-sparkle-item';
+    sp.textContent = icons[i % icons.length];
+    const angle = (i / 8) * Math.PI * 2;
+    const dist = 75 + Math.random() * 45;
+    const tx = Math.cos(angle) * dist;
+    const ty = Math.sin(angle) * dist;
+    sp.style.left = cx + 'px';
+    sp.style.top = cy + 'px';
+    document.body.appendChild(sp);
+    sp.animate([
+      { transform: 'translate(-50%, -50%) scale(0.3) rotate(0deg)', opacity: 0 },
+      { transform: `translate(calc(-50% + ${tx * 0.5}px), calc(-50% + ${ty * 0.5}px)) scale(1.6) rotate(180deg)`, opacity: 1, offset: 0.4 },
+      { transform: `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px)) scale(1.1) rotate(360deg)`, opacity: 0 }
+    ], {
+      duration: 1000,
+      easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+      fill: 'forwards'
+    }).onfinish = () => sp.remove();
+  }
+}
+
 function openCatchCeremony() {
   const row = ROWS[curIdx];
   if (!row) return;
@@ -4464,7 +4554,11 @@ function executeThrowInDrill() {
   const btn = document.getElementById('btnCatchThrow');
   const img = document.getElementById('catchPokeImg');
   const modal = document.getElementById('drillCatchModal');
+  const nameEl = document.getElementById('catchPokeName');
   if (!btn || !img || !modal) return;
+
+  const row = ROWS[curIdx];
+  const pName = row ? row.pokemon_name.replace(/[(（].*$/, '') : 'ポケモン';
 
   btn.disabled = true;
   playMarimbaPop(1.4);
@@ -4472,45 +4566,59 @@ function executeThrowInDrill() {
   const bRect = btn.getBoundingClientRect();
   const pRect = img.getBoundingClientRect();
 
+  const BALL_SIZE = 96;
   const ball = document.createElement('div');
   ball.className = 'drill-flying-ball';
+  ball.innerHTML = createPokeBallSvgMarkup();
   document.body.appendChild(ball);
 
-  const sx = bRect.left + bRect.width / 2 - 28;
-  const sy = bRect.top - 28;
-  const ex = pRect.left + pRect.width / 2 - 28;
-  const ey = pRect.top + pRect.height / 2 - 28;
+  const sx = bRect.left + bRect.width / 2 - BALL_SIZE / 2;
+  const sy = bRect.top - BALL_SIZE / 2;
+  const ex = pRect.left + pRect.width / 2 - BALL_SIZE / 2;
+  const ey = pRect.top + pRect.height / 2 - BALL_SIZE / 2;
+  const peakY = Math.min(sy, ey) - 200;
 
   // 放物線を描いてポケモンに向かい、当たるアニメーション
   ball.animate([
-    { transform: `translate(${sx}px, ${sy}px) rotate(0deg) scale(0.9)` },
-    { transform: `translate(${(sx + ex) / 2}px, ${Math.min(sy, ey) - 180}px) rotate(540deg) scale(1.15)` },
-    { transform: `translate(${ex}px, ${ey}px) rotate(1080deg) scale(1)` }
+    { transform: `translate(${sx}px, ${sy}px) rotate(0deg) scale(0.85)` },
+    { transform: `translate(${(sx + ex) / 2}px, ${peakY}px) rotate(540deg) scale(1.3)` },
+    { transform: `translate(${ex}px, ${ey}px) rotate(1080deg) scale(1.05)` }
   ], {
     duration: 750,
     easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
     fill: 'forwards'
   }).onfinish = () => {
-    // ポケモンに当たる
+    // ポケモンに当たる＆ボールに吸収される
     playPikaanSound();
     img.classList.add('absorbed');
 
     // ボールが地面に落ちて揺れる
     ball.style.transform = '';
     ball.style.left = ex + 'px';
-    ball.style.top = (ey + 30) + 'px';
+    ball.style.top = (ey + 36) + 'px';
     ball.getAnimations().forEach(a => a.cancel());
     ball.classList.add('ball-shaking');
 
+    // 揺れたあとにボールがピカッと光るアニメーション＆ファンファーレ
     setTimeout(() => {
       ball.classList.remove('ball-shaking');
-      playCrystalSparkle();
-      onCaught();
+      ball.classList.add('ball-caught-flash');
+      playFanfare();
+      spawnCatchSparkles(ex + BALL_SIZE / 2, ey + 36 + BALL_SIZE / 2);
+
+      if (nameEl) {
+        nameEl.innerHTML = '<span style="color:#d97706;font-size:22px;font-weight:900">✨ やったー！ ' + pName + ' を つかまえた！ ✨</span>';
+      }
+
+      // 演出完了後、モーダルを完全に閉じてマップ画面に自動復帰する
       setTimeout(() => {
         modal.classList.remove('open');
+        modal.style.display = 'none';
         ball.remove();
+        document.querySelectorAll('.drill-flying-ball, .catch-sparkle-item').forEach(el => el.remove());
+        onCaught();
       }, 1500);
-    }, 1400);
+    }, 1200);
   };
 }
 
@@ -11435,10 +11543,17 @@ function updateThrow(){
 }
 function backToMap(){
   if('speechSynthesis' in window) speechSynthesis.cancel();
+  const catchModal = document.getElementById('drillCatchModal');
+  if(catchModal){
+    catchModal.classList.remove('open');
+    catchModal.style.display = 'none';
+  }
+  document.querySelectorAll('.drill-flying-ball, .catch-sparkle-item').forEach(el => el.remove());
+
   $('battle').classList.remove('active');
   $('map').classList.add('active');
   layoutMap();
-  setTimeout(scrollToCurrent, 60);
+  setTimeout(scrollToCurrent, 80);
 }
 
 function throwBall(){
@@ -11447,12 +11562,13 @@ function throwBall(){
 
 function onCaught(){
   const row = ROWS[curIdx];
+  if (!row) { backToMap(); return; }
   const first = !S.cleared.includes(curIdx);
   const name = row.pokemon_name.replace(/[(（].*$/, '');
 
   if(first){
     S.cleared.push(curIdx);
-    if(S.currentBattleIndex === curIdx) S.currentBattleIndex = Math.min(curIdx + 1, ROWS.length);
+    if(S.currentBattleIndex === curIdx) S.currentBattleIndex = Math.min(curIdx + 1, ROWS.length - 1);
     if(!S.caught.includes(name)) S.caught.push(name);
   }
   // ポケモンをゲットしたら毎回10pt入る
@@ -11460,9 +11576,9 @@ function onCaught(){
   save();
   updatePoints(true);
 
-  playPikaanSound();
-  toast(`🎉 ${name} ゲット！<br>🪙 +${POINT_PER_CLEAR} pt`, 1800);
-  setTimeout(() => { backToMap(); checkRewards(); }, 1900);
+  toast(`🎉 ${name} ゲット！<br>🪙 +${POINT_PER_CLEAR} pt`, 2200);
+  backToMap();
+  checkRewards();
 }
 
 /* ================= ごほうび ================= */

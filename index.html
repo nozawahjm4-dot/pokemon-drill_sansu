@@ -93,12 +93,13 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
 }
 
 #map-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2;filter:drop-shadow(0 4px 8px rgba(0,0,0,.45))}
+#tiles-container{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:6}
 
 /* バトルマス */
 .tile{position:absolute;width:56px;height:56px;border-radius:18px;transform:translate(-50%,-50%);
   background:#fff;border:4px solid var(--blue);display:flex;align-items:center;justify-content:center;
   font-weight:900;font-size:20px;color:var(--blue-d);box-shadow:0 5px 0 #1e4fb8,0 8px 16px rgba(0,0,0,.35);
-  transition:transform .12s, box-shadow .12s;z-index:5}
+  transition:transform .12s, box-shadow .12s;pointer-events:auto;cursor:pointer;z-index:6}
 .tile:active{transform:translate(-50%,-46%) scale(.95);box-shadow:0 2px 0 #1e4fb8}
 .tile.cleared{background:var(--green);border-color:var(--green-d);color:#fff;box-shadow:0 5px 0 var(--green-d),0 8px 16px rgba(0,0,0,.35)}
 .tile.cleared::after{content:"✓";position:absolute;right:-6px;bottom:-6px;background:#fff;color:var(--green-d);border:3px solid var(--green-d);
@@ -3753,7 +3754,7 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
 <div id="bg-image-layer"></div>
 
 <header id="hdr">
-  <h1>⚡ ポケモンずかんドリル<small>入学準備 さんすう <span style="background:#dcfce7;color:#15803d;padding:1px 6px;border-radius:6px;font-size:11px;font-weight:900">Ver 2.5 最新版</span></small></h1>
+  <h1>⚡ ポケモンずかんドリル<small>入学準備 さんすう <span style="background:#dcfce7;color:#15803d;padding:1px 6px;border-radius:6px;font-size:11px;font-weight:900">Ver 2.6 最新版</span></small></h1>
   <div class="hdr-spacer"></div>
   <span class="pt" id="pt">🪙 0 pt</span>
   <button class="hbtn" id="btnKana">📋 あいうえお表</button>
@@ -4031,11 +4032,21 @@ const typeList = t => (t||'ノーマル').split(/[・/、]/).map(s=>s.trim()).fi
 
 /* ================= 状態管理 ================= */
 const LS_KEY = 'pokeZukanDrill_v3';
-let S = safeGetStorage(LS_KEY, null) || { name:'', points:0, rewardsGiven:0, currentBattleIndex:0, answers:{}, cleared:[], caught:[], allClearRewarded:false, version:'2.5' };
-if(!S.version || S.version !== '2.5'){
-  S.version = '2.5';
+let S = safeGetStorage(LS_KEY, null);
+if(!S || typeof S !== 'object'){
+  S = { name:'', points:0, rewardsGiven:0, currentBattleIndex:0, answers:{}, cleared:[], caught:[], allClearRewarded:false, version:'2.6' };
+}
+if(!Array.isArray(S.cleared)) S.cleared = [];
+if(!Array.isArray(S.caught)) S.caught = [];
+if(typeof S.answers !== 'object' || S.answers === null) S.answers = {};
+if(typeof S.points !== 'number' || isNaN(S.points)) S.points = 0;
+if(typeof S.rewardsGiven !== 'number') S.rewardsGiven = 0;
+if(typeof S.currentBattleIndex !== 'number' || isNaN(S.currentBattleIndex)) S.currentBattleIndex = 0;
+if(typeof S.name !== 'string') S.name = '';
+if(!S.version || S.version !== '2.6'){
+  S.version = '2.6';
   S.answers = {};
-  save();
+  safeSetStorage(LS_KEY, S);
 }
 const save = () => safeSetStorage(LS_KEY, S);
 
@@ -4721,72 +4732,87 @@ function computeMapTiles(total){
 }
 
 function layoutMap(){
-  const n = ROWS.length;
-  if(!n) return;
-  const wrap = $('map-wrapper');
-  const tilesBox = $('tiles-container');
-  tilesBox.innerHTML = '';
+  try {
+    const wrap = $('map-wrapper');
+    const tilesBox = $('tiles-container');
+    const svg = $('map-svg');
+    if(!wrap || !tilesBox || !svg) return;
 
-  const pts = computeMapTiles(n);
+    if(!ROWS || !ROWS.length){
+      const rawCsv = $('csv-data') ? $('csv-data').textContent : '';
+      if(rawCsv){
+        ROWS = parseCSV(rawCsv).filter(r => /^Battle\d+$/i.test(r.battle));
+      }
+    }
+    const n = ROWS ? ROWS.length : 0;
+    if(!n) return;
 
-  /* SVGで美しい石畳の道を描画 */
-  const svg = $('map-svg');
-  const W = wrap.clientWidth || window.innerWidth;
-  const H = 2800;
-  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    tilesBox.innerHTML = '';
 
-  const d = pts.map((p, i) => {
-    const px = (p.x / 100) * W;
-    return `${i === 0 ? 'M' : 'L'} ${px} ${p.y}`;
-  }).join(' ');
+    const pts = computeMapTiles(n);
+    const W = wrap.clientWidth || window.innerWidth || 800;
+    const H = 2800;
+    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
 
-  svg.innerHTML = `
-    <!-- 背景の道（影＋石畳＋敷石） -->
-    <path d="${d}" fill="none" stroke="rgba(0,0,0,0.55)" stroke-width="88" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="${d}" fill="none" stroke="#d5c48b" stroke-width="74" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="${d}" fill="none" stroke="#fff8dc" stroke-width="58" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="${d}" fill="none" stroke="#bfa369" stroke-width="52" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="10 16"/>
-  `;
+    const d = pts.map((p, i) => {
+      const px = (p.x / 100) * W;
+      return `${i === 0 ? 'M' : 'L'} ${px} ${p.y}`;
+    }).join(' ');
 
-  /* 全72個のマスを道の真上に配置 */
-  pts.forEach((p, i) => {
-    const row = ROWS[i];
-    const t = document.createElement('button');
-    t.className = 'tile';
-    t.id = 'tile-' + (i + 1);
-    t.style.left = p.x + '%';
-    t.style.top = p.y + 'px';
-    t.textContent = i + 1;
+    svg.innerHTML = `
+      <!-- 背景の道（影＋石畳＋敷石） -->
+      <path d="${d}" fill="none" stroke="rgba(0,0,0,0.55)" stroke-width="88" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="${d}" fill="none" stroke="#d5c48b" stroke-width="74" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="${d}" fill="none" stroke="#fff8dc" stroke-width="58" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="${d}" fill="none" stroke="#bfa369" stroke-width="52" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="10 16"/>
+    `;
 
-    if(S.cleared.includes(i)) t.classList.add('cleared');
-    else if(i === S.currentBattleIndex) t.classList.add('current');
-    else if(i > S.currentBattleIndex) t.classList.add('locked');
+    const clearedArr = Array.isArray(S && S.cleared) ? S.cleared : [];
+    const curIdx = (S && typeof S.currentBattleIndex === 'number') ? S.currentBattleIndex : 0;
 
-    // 本物の公式タイプバッジ
-    const tpList = typeList(row.pokemon_type);
-    const primaryType = tpList[0] || 'ノーマル';
-    const badgeFile = TYPE_MAP[primaryType] || 'normal.png';
+    pts.forEach((p, i) => {
+      const row = ROWS[i];
+      if(!row) return;
 
-    const bWrap = document.createElement('div');
-    bWrap.className = 'badge-wrap';
-    bWrap.title = row.pokemon_type;
-    bWrap.style.animationDelay = (i % 6 * 0.35) + 's';
+      const t = document.createElement('button');
+      t.className = 'tile';
+      t.id = 'tile-' + (i + 1);
+      t.style.left = p.x + '%';
+      t.style.top = p.y + 'px';
+      t.textContent = i + 1;
 
-    const bImg = document.createElement('img');
-    bImg.className = 'badge-img';
-    bImg.src = 'badges/' + badgeFile;
-    bImg.alt = primaryType;
-    bImg.style.animationDelay = (i % 5 * 0.6) + 's';
+      if(clearedArr.includes(i)) t.classList.add('cleared');
+      else if(i === curIdx) t.classList.add('current');
+      else if(i > curIdx) t.classList.add('locked');
 
-    bWrap.appendChild(bImg);
-    t.appendChild(bWrap);
+      const pType = (row.pokemon_type || 'ノーマル').trim();
+      const tpList = typeList(pType);
+      const primaryType = tpList[0] || 'ノーマル';
+      const badgeFile = TYPE_MAP[primaryType] || 'normal.png';
 
-    t.onclick = () => {
-      playPikaanSound();
-      openBattle(i);
-    };
-    tilesBox.appendChild(t);
-  });
+      const bWrap = document.createElement('div');
+      bWrap.className = 'badge-wrap';
+      bWrap.title = pType;
+      bWrap.style.animationDelay = (i % 6 * 0.35) + 's';
+
+      const bImg = document.createElement('img');
+      bImg.className = 'badge-img';
+      bImg.src = 'badges/' + badgeFile;
+      bImg.alt = primaryType;
+      bImg.style.animationDelay = (i % 5 * 0.6) + 's';
+
+      bWrap.appendChild(bImg);
+      t.appendChild(bWrap);
+
+      t.onclick = () => {
+        playPikaanSound();
+        openBattle(i);
+      };
+      tilesBox.appendChild(t);
+    });
+  } catch(err) {
+    console.error('layoutMap error:', err);
+  }
 }
 
 function scrollToCurrent(){
@@ -11497,23 +11523,77 @@ function updatePoints(bump){
 /* ================= 初期化 ================= */
 function init(){
   try {
-    $('bg-image-layer').style.backgroundImage = `url("${BG_LIST[Math.random() * BG_LIST.length | 0]}")`;
-    const setH = () => document.documentElement.style.setProperty('--hdr', $('hdr').offsetHeight + 'px');
-    setH();
-    window.addEventListener('resize', () => {
+    // 1. 最優先：CSVパース＆マップ・マスの即時レイアウト（他のUIでエラーが起きても確実にマスを描画）
+    try {
+      const rawCsv = $('csv-data') ? $('csv-data').textContent : '';
+      if(rawCsv){
+        ROWS = parseCSV(rawCsv).filter(r => /^Battle\d+$/i.test(r.battle));
+      }
+      layoutMap();
+      setTimeout(scrollToCurrent, 80);
+    } catch(mapErr) {
+      console.error('Initial map layout error:', mapErr);
+    }
+
+    // 2. ヘッダーと背景の調整
+    try {
+      const bgLayer = $('bg-image-layer');
+      if(bgLayer && typeof BG_LIST !== 'undefined' && BG_LIST.length){
+        bgLayer.style.backgroundImage = `url("${BG_LIST[Math.random() * BG_LIST.length | 0]}")`;
+      }
+      const setH = () => {
+        const hdr = $('hdr');
+        if(hdr) document.documentElement.style.setProperty('--hdr', hdr.offsetHeight + 'px');
+      };
       setH();
-      if($('map').classList.contains('active')) layoutMap();
+      window.addEventListener('resize', () => {
+        setH();
+        const mapEl = $('map');
+        if(mapEl && mapEl.classList.contains('active')) layoutMap();
+      });
+    } catch(uiErr) {
+      console.error('UI setup error:', uiErr);
+    }
+
+    // 3. ポイントとかな表
+    try {
+      updatePoints();
+      buildKana();
+    } catch(ptErr) {
+      console.error('Points/Kana error:', ptErr);
+    }
+
+    // 4. ボタンのバインド（個別guard）
+    const bindClick = (id, fn) => {
+      const el = $(id);
+      if(el) el.onclick = fn;
+    };
+
+    bindClick('btnKana', () => openModal('mKana'));
+    bindClick('btnZukan', () => { buildZukan(); openModal('mZukan'); });
+    bindClick('btnResetProgress', () => openModal('mResetModal'));
+    bindClick('btnBack', backToMap);
+    bindClick('btnThrow', throwBall);
+
+    bindClick('btnQuit', () => {
+      if(confirm('きょうは ここまでに する？\n（きろくは ほぞん されているよ）')){
+        if('speechSynthesis' in window) speechSynthesis.cancel();
+        document.body.innerHTML = `<div class="loading" style="background:#fff"><img src="${ART(151)}" style="width:200px"><div>${S.name || ''}さん、またね！👋</div><button class="mbtn" onclick="location.reload()">もういちど あそぶ</button></div>`;
+      }
     });
 
-    updatePoints();
-    buildKana();
+    bindClick('btnStart', () => {
+      const nameInput = $('nameInput');
+      const n = nameInput ? nameInput.value.trim() : '';
+      if(!n){ toast('おなまえを いれてね'); return; }
+      S.name = n;
+      save();
+      const welcome = $('mWelcome');
+      if(welcome) welcome.classList.remove('open');
+      speak(`みゅう！ ${n}さん、いっしょに ぼうけんに でかけよう！`);
+      toast(`🌟 ${n}さん、ぼうけんの はじまりだ！`);
+    });
 
-    $('btnKana').onclick = () => openModal('mKana');
-    $('btnZukan').onclick = () => { buildZukan(); openModal('mZukan'); };
-        const rBtn = $('btnResetProgress');
-    if(rBtn){
-      rBtn.onclick = () => openModal('mResetModal');
-    }
     document.querySelectorAll('.reset-quiz-opt').forEach(b => {
       b.onclick = () => {
         if(b.dataset.val === '81'){
@@ -11535,35 +11615,16 @@ function init(){
       };
     });
 
-    $('btnQuit').onclick = () => {
-      if(confirm('きょうは ここまでに する？\n（きろくは ほぞん されているよ）')){
-        if('speechSynthesis' in window) speechSynthesis.cancel();
-        document.body.innerHTML = `<div class="loading" style="background:#fff"><img src="${ART(151)}" style="width:200px"><div>${S.name || ''}さん、またね！👋</div><button class="mbtn" onclick="location.reload()">もういちど あそぶ</button></div>`;
+    // 5. 音声エンジンの準備（エラーが出ても無視）
+    try {
+      if('speechSynthesis' in window && typeof speechSynthesis.getVoices === 'function'){
+        speechSynthesis.getVoices();
       }
-    };
-    $('btnBack').onclick = backToMap;
-    $('btnThrow').onclick = throwBall;
+    } catch(vErr) {}
 
-    $('btnStart').onclick = () => {
-      const n = $('nameInput').value.trim();
-      if(!n){ toast('おなまえを いれてね'); return; }
-      S.name = n;
-      save();
-      $('mWelcome').classList.remove('open');
-      speak(`みゅう！ ${n}さん、いっしょに ぼうけんに でかけよう！`);
-      toast(`🌟 ${n}さん、ぼうけんの はじまりだ！`);
-    };
-
-    if('speechSynthesis' in window) speechSynthesis.getVoices();
-
-    // CSVパース＆全72バトル起動
-    const rawCsv = $('csv-data').textContent;
-    ROWS = parseCSV(rawCsv).filter(r => /^Battle\d+$/i.test(r.battle));
-
-    layoutMap();
-    setTimeout(scrollToCurrent, 100);
-
+    // 6. 名前未設定ならウェルカムモーダル表示
     if(!S.name) openModal('mWelcome');
+
   } catch(err) {
     console.error('Init error:', err);
   } finally {
@@ -11577,6 +11638,15 @@ if(document.readyState === 'loading'){
 } else {
   init();
 }
+
+window.addEventListener('load', () => {
+  if(!ROWS || !ROWS.length){
+    const rawCsv = $('csv-data') ? $('csv-data').textContent : '';
+    if(rawCsv) ROWS = parseCSV(rawCsv).filter(r => /^Battle\d+$/i.test(r.battle));
+  }
+  layoutMap();
+  setTimeout(scrollToCurrent, 100);
+});
 </script>
 <!-- リセット保護クイズモーダル（9×9） -->
 <div class="modal" id="mResetModal">

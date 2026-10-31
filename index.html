@@ -4421,13 +4421,232 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
   font-weight: 900;
 }
 
+
+/* バトル19：0というかず スタイル */
+.b19-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin: 12px 0;
+}
+@media (max-width: 520px) {
+  .b19-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.b19-item-card {
+  background: #ffffff;
+  border: 2.5px solid #cbd5e1;
+  border-radius: 16px;
+  padding: 10px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.05);
+  transition: all 0.2s;
+}
+.b19-item-card.is-correct {
+  border-color: #22c55e;
+  background: #f0fdf4;
+}
+.b19-btn-group {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.b19-choice-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: 2px solid #94a3b8;
+  background: #f8fafc;
+  color: #1e293b;
+  font-size: 18px;
+  font-weight: 900;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+.b19-choice-btn:active { transform: scale(0.92); }
+.b19-choice-btn.selected {
+  background: #3b82f6;
+  border-color: #1d4ed8;
+  color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
+/* 自由時計ウィジェット スタイル */
+.free-clock-card {
+  background: #fffbeb;
+  border: 3px solid #f59e0b;
+  border-radius: 20px;
+  padding: 14px;
+  margin: 12px auto 16px;
+  max-width: 440px;
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.15);
+}
+.free-clock-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.free-clock-title-badge {
+  font-size: 15px;
+  font-weight: 900;
+  color: #b45309;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-fc-toggle {
+  background: #fef3c7;
+  border: 1.5px solid #f59e0b;
+  border-radius: 8px;
+  padding: 3px 8px;
+  font-size: 12px;
+  font-weight: 900;
+  color: #92400e;
+  cursor: pointer;
+}
+.free-clock-svg-wrap {
+  position: relative;
+  width: 210px;
+  height: 210px;
+  margin: 0 auto 10px;
+  touch-action: none;
+  user-select: none;
+}
+.free-clock-time-display {
+  background: #ffffff;
+  border: 2px solid #fde68a;
+  border-radius: 12px;
+  padding: 8px 12px;
+  font-size: 17px;
+  font-weight: 900;
+  color: #92400e;
+  text-align: center;
+  margin-bottom: 8px;
+}
+.free-clock-guide {
+  display: flex;
+  justify-content: space-around;
+  font-size: 12px;
+  font-weight: 800;
+  margin-bottom: 10px;
+  background: #ffffff;
+  padding: 6px;
+  border-radius: 10px;
+  border: 1px solid #fef3c7;
+}
+.fc-btn-tray {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: center;
+}
+.fc-btn {
+  background: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 5px 8px;
+  font-size: 12px;
+  font-weight: 900;
+  color: #334155;
+  cursor: pointer;
+}
+.fc-btn:active { transform: scale(0.92); }
+.fc-btn.preset { background: #eff6ff; border-color: #93c5fd; color: #1d4ed8; }
+
+/* 数直線バー (Battle 44) */
+.numline-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 8px;
+  border-radius: 16px;
+  margin: 8px 0;
+  background: #f1f5f9;
+  border: 2px solid #e2e8f0;
+  gap: 6px;
+}
+.numline-row.cyan { background: #ecfeff; border-color: #a5f3fc; }
+.numline-row.pink { background: #fdf2f8; border-color: #fbcfe8; }
+.numline-row.green { background: #f0fdf4; border-color: #bbf7d0; }
+.numline-row.blue { background: #eff6ff; border-color: #bfdbfe; }
+.numline-row.yellow { background: #fefce8; border-color: #fef08a; }
+
+.numline-cell {
+  flex: 1;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border: 2px solid #cbd5e1;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: 900;
+  color: #1e293b;
+  box-shadow: 0 2px 0 rgba(0,0,0,0.06);
+}
+.numline-cell.fixed {
+  background: #f8fafc;
+  color: #0f172a;
+  border-color: #94a3b8;
+}
+
+/* グラフ・表 (Battle 50) */
+.b50-graph-container {
+  display: flex;
+  justify-content: space-around;
+  gap: 8px;
+  background: #ffffff;
+  border: 2.5px solid #cbd5e1;
+  border-radius: 16px;
+  padding: 12px 6px;
+  margin: 12px 0;
+}
+.b50-graph-col {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+}
+.b50-graph-cell {
+  width: 100%;
+  max-width: 48px;
+  height: 28px;
+  border: 2px solid #cbd5e1;
+  border-radius: 6px;
+  background: #f8fafc;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  transition: all 0.15s;
+}
+.b50-graph-cell.filled {
+  background: #3b82f6;
+  border-color: #1d4ed8;
+  color: #ffffff;
+}
+
 </style>
 </head>
 <body>
 <div id="bg-image-layer"></div>
 
 <header id="hdr">
-  <h1>⚡ ポケモンずかんドリル<small id="hdrTitleSmall">ドリルを えらぼう！ <span class="ver-badge" style="background:#dcfce7;color:#15803d;padding:1px 6px;border-radius:6px;font-size:11px;font-weight:900">Ver 2.9 最新版</span></small></h1>
+  <h1>⚡ ポケモンずかんドリル<small id="hdrTitleSmall">ドリルを えらぼう！ <span class="ver-badge" style="background:#dcfce7;color:#15803d;padding:1px 6px;border-radius:6px;font-size:11px;font-weight:900">Ver 3.0 最新版</span></small></h1>
   <div class="hdr-spacer"></div>
   <button class="hbtn" id="btnHome" style="background:#fef3c7;border-color:#f59e0b;color:#b45309;font-weight:900" title="ドリル選択ホームへ">🏠 ホーム</button>
   <span class="pt" id="pt">🪙 0 pt</span>
@@ -5025,6 +5244,336 @@ function playCookieCrunch() {
     gain.connect(ctx.destination);
     noise.start(now);
   } catch(e) {}
+}
+
+
+// ==================== 算数ドリル 共通グラフィック・SVGヘルパー ====================
+
+// お皿とりんごSVG (Battle 19)
+function makeApplePlateSvg(count) {
+  let apples = '';
+  function singleApple(x, y) {
+    return '<g transform="translate(' + (x-15) + ',' + (y-15) + ')">' +
+      '<path d="M15,4 Q17,0 21,-2" fill="none" stroke="#78350f" stroke-width="2" stroke-linecap="round"/>' +
+      '<path d="M17,1 Q23,0 23,-6 Q17,-4 17,1" fill="#22c55e" stroke="#15803d" stroke-width="0.8"/>' +
+      '<path d="M15,5 C9,5 3,10 3,18 C3,26 9,30 15,30 C21,30 27,26 27,18 C27,10 21,5 15,5 Z" fill="#ef4444" stroke="#b91c1c" stroke-width="1.5"/>' +
+      '<ellipse cx="10" cy="13" rx="2.5" ry="3.5" transform="rotate(-25 10 13)" fill="#fca5a5" opacity="0.8"/>' +
+    '</g>';
+  }
+
+  if (count === 3) {
+    apples = singleApple(52, 42) + singleApple(80, 36) + singleApple(108, 42);
+  } else if (count === 2) {
+    apples = singleApple(65, 38) + singleApple(95, 38);
+  } else if (count === 1) {
+    apples = singleApple(80, 38);
+  }
+
+  return '<svg viewBox="0 0 160 85" style="width:100%;max-width:130px;height:70px;display:block;margin:0 auto">' +
+    '<ellipse cx="80" cy="58" rx="70" ry="18" fill="rgba(0,0,0,0.07)"/>' +
+    '<ellipse cx="80" cy="53" rx="68" ry="22" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>' +
+    '<ellipse cx="80" cy="49" rx="58" ry="16" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>' +
+    '<ellipse cx="80" cy="51" rx="50" ry="12" fill="#f8fafc"/>' +
+    apples +
+  '</svg>';
+}
+
+// 輪投げ台SVG (Battle 19)
+function makeRingStickSvg(count) {
+  function singleRing(y, color, strokeColor) {
+    return '<ellipse cx="60" cy="' + y + '" rx="30" ry="9" fill="none" stroke="' + strokeColor + '" stroke-width="6"/>' +
+      '<ellipse cx="60" cy="' + y + '" rx="30" ry="9" fill="none" stroke="' + color + '" stroke-width="4"/>';
+  }
+
+  let rings = '';
+  if (count === 1) {
+    rings = singleRing(96, '#ef4444', '#b91c1c');
+  } else if (count === 3) {
+    rings = singleRing(98, '#ef4444', '#b91c1c') + singleRing(86, '#2563eb', '#1d4ed8') + singleRing(74, '#22c55e', '#15803d');
+  } else if (count === 2) {
+    rings = singleRing(98, '#ef4444', '#b91c1c') + singleRing(86, '#2563eb', '#1d4ed8');
+  }
+
+  return '<svg viewBox="0 0 120 125" style="width:100%;max-width:100px;height:90px;display:block;margin:0 auto">' +
+    '<ellipse cx="60" cy="114" rx="46" ry="10" fill="rgba(0,0,0,0.08)"/>' +
+    '<ellipse cx="60" cy="108" rx="44" ry="13" fill="#b45309" stroke="#78350f" stroke-width="2"/>' +
+    '<ellipse cx="60" cy="104" rx="40" ry="10" fill="#f59e0b" stroke="#d97706" stroke-width="1.5"/>' +
+    '<rect x="54" y="25" width="12" height="80" rx="6" fill="#d97706" stroke="#78350f" stroke-width="2"/>' +
+    '<ellipse cx="60" cy="25" rx="6" ry="3" fill="#fde68a"/>' +
+    rings +
+  '</svg>';
+}
+
+// 静的アナログ時計盤SVG生成 (Battle 45, 46等)
+function makeStaticClockSvg(hour, minute, options = {}) {
+  const size = options.size || 180;
+  const showGuides = options.showGuides !== false;
+  const showOuterNums = options.showOuterNums || false;
+  const highlightHourArc = options.highlightHourArc || false; // 1時半などの扇形ハイライト
+
+  const minAngle = minute * 6;
+  const hourAngle = ((hour % 12) + minute / 60) * 30;
+
+  let ticks = '';
+  for (let i = 0; i < 60; i++) {
+    const angle = i * 6 * Math.PI / 180;
+    const isMajor = i % 5 === 0;
+    const r1 = isMajor ? 80 : 84;
+    const r2 = 88;
+    const x1 = 100 + r1 * Math.sin(angle);
+    const y1 = 100 - r1 * Math.cos(angle);
+    const x2 = 100 + r2 * Math.sin(angle);
+    const y2 = 100 - r2 * Math.cos(angle);
+    ticks += '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="' + (isMajor ? '#334155' : '#cbd5e1') + '" stroke-width="' + (isMajor ? '2' : '1') + '"/>';
+  }
+
+  let numbers = '';
+  for (let h = 1; h <= 12; h++) {
+    const angle = h * 30 * Math.PI / 180;
+    const r = 68;
+    const x = 100 + r * Math.sin(angle);
+    const y = 100 - r * Math.cos(angle) + 5;
+    numbers += '<text x="' + x + '" y="' + y + '" text-anchor="middle" font-size="15" font-weight="900" fill="#1e293b">' + h + '</text>';
+  }
+
+  let outerNums = '';
+  if (showOuterNums) {
+    for (let h = 1; h <= 11; h++) {
+      const angle = h * 30 * Math.PI / 180;
+      const r = 96;
+      const x = 100 + r * Math.sin(angle);
+      const y = 100 - r * Math.cos(angle) + 4;
+      const mVal = h * 5;
+      outerNums += '<text x="' + x + '" y="' + y + '" text-anchor="middle" font-size="9" font-weight="900" fill="#2563eb">' + mVal + '</text>';
+    }
+  }
+
+  let arcHtml = '';
+  if (highlightHourArc) {
+    // 1時から2時の間を扇形ハイライト (例: 1時半)
+    // 1時の角度30度, 2時の角度60度
+    arcHtml = '<path d="M100,100 L135,39.4 A75,75 0 0,1 164.95,62.5 Z" fill="#fef08a" opacity="0.6"/>';
+  }
+
+  return '<svg viewBox="0 0 200 200" style="width:' + size + 'px;height:' + size + 'px;display:block;margin:0 auto;filter:drop-shadow(0 3px 6px rgba(0,0,0,0.12))">' +
+    '<circle cx="100" cy="100" r="96" fill="#fef3c7" stroke="#d97706" stroke-width="5"/>' +
+    '<circle cx="100" cy="100" r="89" fill="#ffffff" stroke="#f59e0b" stroke-width="1.5"/>' +
+    arcHtml +
+    ticks +
+    numbers +
+    outerNums +
+    // 短針（赤）
+    '<g transform="rotate(' + hourAngle + ' 100 100)">' +
+      '<path d="M97,100 L98.5,50 L100,44 L101.5,50 L103,100 Z" fill="#ef4444" stroke="#b91c1c" stroke-width="1.5"/>' +
+      '<line x1="100" y1="100" x2="100" y2="112" stroke="#ef4444" stroke-width="4" stroke-linecap="round"/>' +
+    '</g>' +
+    // 長針（青）
+    '<g transform="rotate(' + minAngle + ' 100 100)">' +
+      '<path d="M98,100 L99,28 L100,20 L101,28 L102,100 Z" fill="#2563eb" stroke="#1d4ed8" stroke-width="1.5"/>' +
+      '<line x1="100" y1="100" x2="100" y2="116" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/>' +
+    '</g>' +
+    // 軸
+    '<circle cx="100" cy="100" r="5" fill="#f59e0b" stroke="#78350f" stroke-width="1.5"/>' +
+    '<circle cx="100" cy="100" r="2" fill="#ffffff"/>' +
+  '</svg>';
+}
+
+// 自由時計ウィジェット HTML生成
+function makeFreeClockWidgetHtml() {
+  return '<div class="free-clock-card" id="freeClockCard">' +
+    '<div class="free-clock-header">' +
+      '<div class="free-clock-title-badge">🕒 じゆうに うごかせる とけい</div>' +
+      '<button type="button" class="btn-fc-toggle" id="btnFcToggle">とじる</button>' +
+    '</div>' +
+    '<div id="fcBodyWrap">' +
+      '<div class="free-clock-svg-wrap" id="fcSvgWrap">' +
+        '<svg viewBox="0 0 240 240" id="fcClockSvg" style="width:100%;height:100%">' +
+          '<circle cx="120" cy="120" r="115" fill="#fef3c7" stroke="#d97706" stroke-width="6"/>' +
+          '<circle cx="120" cy="120" r="106" fill="#ffffff" stroke="#f59e0b" stroke-width="2"/>' +
+          '<g id="fcDials"></g>' +
+          '<g id="fcHourHandGroup" style="transform-origin: 120px 120px; cursor: grab;">' +
+            '<path d="M116,120 L118,58 L120,52 L122,58 L124,120 Z" fill="#ef4444" stroke="#b91c1c" stroke-width="1.5"/>' +
+            '<line x1="120" y1="120" x2="120" y2="135" stroke="#ef4444" stroke-width="6" stroke-linecap="round"/>' +
+          '</g>' +
+          '<g id="fcMinHandGroup" style="transform-origin: 120px 120px; cursor: grab;">' +
+            '<path d="M117,120 L118.5,32 L120,24 L121.5,32 L123,120 Z" fill="#2563eb" stroke="#1d4ed8" stroke-width="1.5"/>' +
+            '<circle cx="120" cy="28" r="8" fill="#60a5fa" opacity="0.4"/>' +
+            '<line x1="120" y1="120" x2="120" y2="140" stroke="#2563eb" stroke-width="5" stroke-linecap="round"/>' +
+          '</g>' +
+          '<circle cx="120" cy="120" r="7" fill="#f59e0b" stroke="#78350f" stroke-width="2"/>' +
+          '<circle cx="120" cy="120" r="3" fill="#ffffff"/>' +
+        '</svg>' +
+      '</div>' +
+      '<div class="free-clock-time-display">' +
+        'いま： <span id="fcTimeText" style="color:#d97706;font-size:19px">7 じ 00 ふん （ちょうど）</span>' +
+      '</div>' +
+      '<div class="free-clock-guide">' +
+        '<span style="color:#dc2626;font-weight:900" id="fcHourDesc">🔴 みじかいはり： 7 の ところ</span>' +
+        '<span style="color:#2563eb;font-weight:900" id="fcMinDesc">🔵 ながいはり： 12 （0ふん）</span>' +
+      '</div>' +
+      '<div class="fc-btn-tray">' +
+        '<button type="button" class="fc-btn" onclick="fcAdjust(-60)">-1じかん</button>' +
+        '<button type="button" class="fc-btn" onclick="fcAdjust(-10)">-10ふん</button>' +
+        '<button type="button" class="fc-btn" onclick="fcAdjust(-5)">-5ふん</button>' +
+        '<button type="button" class="fc-btn" onclick="fcAdjust(-1)">-1ふん</button>' +
+        '<button type="button" class="fc-btn" onclick="fcAdjust(1)">+1ふん</button>' +
+        '<button type="button" class="fc-btn" onclick="fcAdjust(5)">+5ふん</button>' +
+        '<button type="button" class="fc-btn" onclick="fcAdjust(10)">+10ふん</button>' +
+        '<button type="button" class="fc-btn" onclick="fcAdjust(60)">+1じかん</button>' +
+        '<button type="button" class="fc-btn preset" onclick="fcReset(7, 30)">⏰ 7じはん</button>' +
+        '<button type="button" class="fc-btn preset" onclick="fcReset(12, 0)">🔄 12じ</button>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
+}
+
+// 自由時計ウィジェット 初期化 & 操作ハンドラ
+let fcCurMinutes = 7 * 60; // 7:00
+
+function initFreeClockWidget() {
+  const card = document.getElementById('freeClockCard');
+  if (!card) return;
+
+  const btnToggle = document.getElementById('btnFcToggle');
+  const bodyWrap = document.getElementById('fcBodyWrap');
+  if (btnToggle && bodyWrap) {
+    btnToggle.onclick = () => {
+      const isHidden = bodyWrap.style.display === 'none';
+      bodyWrap.style.display = isHidden ? 'block' : 'none';
+      btnToggle.textContent = isHidden ? 'とじる' : 'ひらく';
+    };
+  }
+
+  // 文字盤目盛り
+  const g = document.getElementById('fcDials');
+  if (g) {
+    let html = '';
+    for (let i = 0; i < 60; i++) {
+      const angle = i * 6 * Math.PI / 180;
+      const isMajor = i % 5 === 0;
+      const r1 = isMajor ? 96 : 100;
+      const r2 = 104;
+      const x1 = 120 + r1 * Math.sin(angle);
+      const y1 = 120 - r1 * Math.cos(angle);
+      const x2 = 120 + r2 * Math.sin(angle);
+      const y2 = 120 - r2 * Math.cos(angle);
+      html += '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="' + (isMajor ? '#475569' : '#cbd5e1') + '" stroke-width="' + (isMajor ? 2.5 : 1) + '"/>';
+    }
+    for (let h = 1; h <= 12; h++) {
+      const angle = h * 30 * Math.PI / 180;
+      const r = 80;
+      const x = 120 + r * Math.sin(angle);
+      const y = 120 - r * Math.cos(angle) + 6;
+      html += '<text x="' + x + '" y="' + y + '" text-anchor="middle" font-size="18" font-weight="900" fill="#1e293b">' + h + '</text>';
+
+      const mVal = (h * 5) % 60;
+      const mr = 98;
+      const mx = 120 + mr * Math.sin(angle);
+      const my = 120 - mr * Math.cos(angle) + 3;
+      html += '<text x="' + mx + '" y="' + my + '" text-anchor="middle" font-size="8" font-weight="900" fill="#3b82f6">' + mVal + '</text>';
+    }
+    g.innerHTML = html;
+  }
+
+  window.fcUpdateClock = function() {
+    fcCurMinutes = (fcCurMinutes % 720 + 720) % 720;
+    const m = Math.round(fcCurMinutes % 60);
+    let h = Math.floor(fcCurMinutes / 60);
+    if (h === 0) h = 12;
+
+    const minAngle = m * 6;
+    const hourAngle = (fcCurMinutes / 60) * 30;
+
+    const minHand = document.getElementById('fcMinHandGroup');
+    const hourHand = document.getElementById('fcHourHandGroup');
+    if (minHand) minHand.style.transform = 'rotate(' + minAngle + 'deg)';
+    if (hourHand) hourHand.style.transform = 'rotate(' + hourAngle + 'deg)';
+
+    const tText = document.getElementById('fcTimeText');
+    if (tText) {
+      const mStr = m < 10 ? '0' + m : m;
+      let text = h + ' じ ' + mStr + ' ふん';
+      if (m === 30) text += ' （' + h + 'じはん）';
+      if (m === 0) text += ' （ちょうど）';
+      tText.textContent = text;
+    }
+
+    const hDesc = document.getElementById('fcHourDesc');
+    if (hDesc) {
+      if (m === 0) hDesc.textContent = '🔴 みじかいはり： ' + h + ' の ところ';
+      else {
+        const nextH = h % 12 + 1;
+        hDesc.textContent = '🔴 みじかいはり： ' + h + ' と ' + nextH + ' の あいだ';
+      }
+    }
+
+    const mDesc = document.getElementById('fcMinDesc');
+    if (mDesc) {
+      if (m === 0) mDesc.textContent = '🔵 ながいはり： 12 （0ふん）';
+      else if (m === 30) mDesc.textContent = '🔵 ながいはり： 6 （30ふん・はん）';
+      else mDesc.textContent = '🔵 ながいはり： ' + m + ' ふん';
+    }
+  };
+
+  window.fcAdjust = function(delta) {
+    fcCurMinutes += delta;
+    playMarimbaPop(1.1);
+    window.fcUpdateClock();
+  };
+
+  window.fcReset = function(h, m) {
+    fcCurMinutes = (h % 12) * 60 + m;
+    playMarimbaPop(1.3);
+    window.fcUpdateClock();
+  };
+
+  // ドラッグ操作
+  const wrap = document.getElementById('fcSvgWrap');
+  if (wrap) {
+    let isDragging = false;
+    let lastAngle = null;
+
+    function getAngle(e) {
+      const rect = wrap.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      const dx = clientX - cx;
+      const dy = clientY - cy;
+      let deg = Math.atan2(dx, -dy) * 180 / Math.PI;
+      if (deg < 0) deg += 360;
+      return deg;
+    }
+
+    wrap.onpointerdown = (e) => {
+      isDragging = true;
+      lastAngle = getAngle(e);
+      wrap.setPointerCapture(e.pointerId);
+    };
+
+    wrap.onpointermove = (e) => {
+      if (!isDragging) return;
+      const currentAngle = getAngle(e);
+      let diff = currentAngle - lastAngle;
+      if (diff > 180) diff -= 360;
+      if (diff < -180) diff += 360;
+      fcCurMinutes += diff / 6;
+      lastAngle = currentAngle;
+      window.fcUpdateClock();
+    };
+
+    wrap.onpointerup = (e) => {
+      if (isDragging) {
+        fcCurMinutes = Math.round(fcCurMinutes);
+        window.fcUpdateClock();
+      }
+      isDragging = false;
+      try { wrap.releasePointerCapture(e.pointerId); } catch(err) {}
+    };
+  }
+
+  window.fcUpdateClock();
 }
 
 // リアル教科書ヘッダービルダー
@@ -6692,39 +7241,69 @@ function renderInteractiveStage(row){
       '</div>';
     initBattle18Unified(qs);
   } else if(bId === 'Battle19'){
-    // バトル19：イッカネズミ 0というかず（原本完全再現・教科書UI）
-    const qs = [
-      { qNum: 1, desc: 'おさらの なかの りんご：なにも ない おさらの りんごは なんこかな？', ans: '0', icon: '🍎', choices: ['0', '1', '2', '3'] },
-      { qNum: 2, desc: 'わなげ：ひとつも はいっていない ところの わは なんこかな？', ans: '0', icon: '⭕', choices: ['0', '1', '2', '3'] }
-    ];
-    let qsHtml = '<div style="display:flex;flex-direction:column;gap:14px;margin-bottom:14px">';
-    qs.forEach((q, idx) => {
-      let chHtml = '';
-      q.choices.forEach(ch => {
-        const selCls = saved[idx] === ch ? ' sel' : '';
-        chHtml += '<button type="button" class="choice' + selCls + '" data-q="' + idx + '" data-val="' + ch + '" style="font-size:20px;font-weight:900;min-width:48px;height:48px;padding:0 14px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center">' + ch + '</button>';
+    // バトル19：イッカネズミ 0というかず（原本完全再現・お皿と輪投げ）
+    function makeB19ChoiceBtns(qId) {
+      let bHtml = '<div class="b19-btn-group" id="b19_group_' + qId + '">';
+      [0, 1, 2, 3].forEach(n => {
+        bHtml += '<button type="button" class="b19-choice-btn" data-qid="' + qId + '" data-val="' + n + '">' + n + '</button>';
       });
-      qsHtml += 
-        '<div style="background:#fff;border:2.5px solid #cbd5e1;border-radius:16px;padding:14px">' +
-          '<div style="font-size:15px;font-weight:900;color:#1e293b;margin-bottom:8px">もんだい ' + q.qNum + '：' + q.desc + '</div>' +
-          '<div style="background:#f8fafc;border:2px dashed #94a3b8;border-radius:14px;padding:12px;text-align:center;font-size:24px;margin-bottom:10px">' +
-            (idx === 0 ? '🍽️ （お皿のうえには なにも ないよ）' : '🎯 （わは ひとつも はいっていないよ）') +
-          '</div>' +
-          '<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">' +
-            '<span style="font-size:14px;font-weight:900;color:#475569">すうじを えらぼう：</span>' +
-            '<div class="choices" id="b19_choices_' + idx + '" style="display:flex;gap:8px;flex-wrap:wrap">' + chHtml + '</div>' +
-          '</div>' +
-        '</div>';
-    });
-    qsHtml += '</div>';
+      bHtml += '</div>';
+      return bHtml;
+    }
+
+    const platesHtml = '<div class="b19-row">' +
+      '<div class="b19-item-card" id="b19_card_0">' +
+        makeApplePlateSvg(3) +
+        makeB19ChoiceBtns('plate_0') +
+      '</div>' +
+      '<div class="b19-item-card" id="b19_card_1">' +
+        makeApplePlateSvg(2) +
+        makeB19ChoiceBtns('plate_1') +
+      '</div>' +
+      '<div class="b19-item-card" id="b19_card_2">' +
+        makeApplePlateSvg(1) +
+        makeB19ChoiceBtns('plate_2') +
+      '</div>' +
+      '<div class="b19-item-card" id="b19_card_3">' +
+        makeApplePlateSvg(0) +
+        makeB19ChoiceBtns('plate_3') +
+      '</div>' +
+    '</div>';
+
+    const ringsHtml = '<div class="b19-row">' +
+      '<div class="b19-item-card" id="b19_card_4">' +
+        makeRingStickSvg(1) +
+        makeB19ChoiceBtns('ring_0') +
+      '</div>' +
+      '<div class="b19-item-card" id="b19_card_5">' +
+        makeRingStickSvg(3) +
+        makeB19ChoiceBtns('ring_1') +
+      '</div>' +
+      '<div class="b19-item-card" id="b19_card_6">' +
+        makeRingStickSvg(0) +
+        makeB19ChoiceBtns('ring_2') +
+      '</div>' +
+      '<div class="b19-item-card" id="b19_card_7">' +
+        makeRingStickSvg(2) +
+        makeB19ChoiceBtns('ring_3') +
+      '</div>' +
+    '</div>';
 
     card.innerHTML = 
       '<div class="drill-book-page">' +
-        makeDrillBookHeader(19, 'イッカネズミ', 'いっかねずみ', '0と いう かず', 'ひとつも ない ときは、どんな すうじで あらわすかな？', 925) +
-        qsHtml +
-        makeDrillBookFooter('イッカネズミ', 'ファミリーポケモン', 'ノーマル', '0.3m', '2.8kg', '「なにもない」ことを表す数字「0（ゼロ）」の意味を理解します。具体物がゼロ個である状態を数字の0と正しく結びつけます。', 925) +
+        makeDrillBookHeader(19, 'イッカネズミ', 'いっかねずみ', '0 と い う か ず', 'おさらの りんご や、わなげの わの かずを かぞえよう！ なにも ないときは【0】だよ。', 925) +
+        '<div style="background:#fff;border:2.5px solid #cbd5e1;border-radius:18px;padding:14px;margin-bottom:14px">' +
+          '<div style="font-size:15px;font-weight:900;color:#1e293b;margin-bottom:8px">① おさらの うえの りんごの かずを かぞえて、すうじを えらびましょう。</div>' +
+          platesHtml +
+        '</div>' +
+        '<div style="background:#fff;border:2.5px solid #cbd5e1;border-radius:18px;padding:14px;margin-bottom:14px">' +
+          '<div style="font-size:15px;font-weight:900;color:#1e293b;margin-bottom:8px">② わなげで はいった わの かずを かぞえて、すうじを えらびましょう。</div>' +
+          ringsHtml +
+        '</div>' +
+        makeDrillBookFooter('イッカネズミ', 'ファミリーポケモン', 'ノーマル', '0.3m', '2.8kg', '「なにもない」状態を表す数字「0」の概念を学びます。具体物が0個であることを理解し、数字の0を正しく結びつけます。', 925) +
       '</div>';
-    initBattle19Unified(qs);
+
+    initBattle19New();
   } else if(bId === 'Battle20'){
     // ピカチュウ 1〜10のまとめ 7つの数の木迷路（道路迷路・原本Battle20.jpg完全再現）
     function makeMazeTree(total, given, ans, stepNum) {
@@ -8076,523 +8655,650 @@ function renderInteractiveStage(row){
     initBattle43_2Trail();
 
   } else if(bId === 'Battle44'){
-    // ヒヒダルマ あてはまるすうじ（きそくせい）
-    const rows = [
-      { prompt: '① 10とびの すうじ', items: ['10', '20', 'blank_30', '40', 'blank_50', '60'] },
-      { prompt: '② 5とびの すうじ', items: ['15', '20', 'blank_25', '30', '35', 'blank_40'] },
-      { prompt: '③ 2とびの すうじ', items: ['32', '34', 'blank_36', '38', '40'] }
+    // バトル44：ヒヒダルマ あてはまる すうじを かこう（1ずつ増減・数直線）
+    const rowsConfig = [
+      { type: 'cyan', nums: ['31', null, '33', null, '35'], ans: ['32', '34'] },
+      { type: 'cyan', nums: ['42', null, null, '45', null], ans: ['43', '44', '46'] },
+      { type: 'cyan', nums: ['48', null, null, null, '52'], ans: ['49', '50', '51'] },
+      { type: 'cyan', nums: ['56', null, '58', null, null], ans: ['57', '59', '60'] },
+      { type: 'pink', nums: ['37', null, '35', null, '33'], ans: ['36', '34'], desc: '（したへ カウントダウン！）' },
+      { type: 'pink', nums: ['60', null, '58', null, null], ans: ['59', '57', '56'], desc: '（したへ カウントダウン！）' }
     ];
 
-    let patternHtml = '<div style="background:#fff7ed;border:2px solid #fdba74;border-radius:18px;padding:12px;margin-bottom:12px">';
-    rows.forEach((r, ri) => {
-      patternHtml += '<div style="margin-bottom:10px">' +
-        '<div style="font-weight:900;font-size:14px;color:#c2410c;margin-bottom:4px">' + r.prompt + '</div>' +
-        '<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">';
-      r.items.forEach(it => {
-        if(it.startsWith('blank_')) {
-          const target = it.replace('blank_', '');
-          patternHtml += '<div class="t-math-box" data-target="' + target + '" style="width:48px;height:48px;font-size:18px">？</div>';
+    let linesHtml = '<div style="margin:10px 0">';
+    let boxIdx = 0;
+    const expected = [];
+
+    rowsConfig.forEach((r, rowI) => {
+      linesHtml += '<div class="numline-row ' + r.type + '">';
+      r.nums.forEach((val) => {
+        if(val !== null) {
+          linesHtml += '<div class="numline-cell fixed">' + val + '</div>';
         } else {
-          patternHtml += '<div style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:#fff;border:2px solid #ea580c;border-radius:10px;font-weight:900;color:#c2410c">' + it + '</div>';
+          const target = r.ans.shift();
+          expected.push(target);
+          linesHtml += '<div class="t-math-box numline-cell" data-idx="' + boxIdx + '" data-target="' + target + '">？</div>';
+          boxIdx++;
         }
       });
-      patternHtml += '</div></div>';
+      linesHtml += '</div>';
     });
-    patternHtml += '</div>';
+    linesHtml += '</div>';
 
-    let tray = '<div class="num-choice-tray">';
-    ['25', '30', '36', '40', '50'].forEach(n => {
+    let tray = '<div class="num-choice-tray" style="margin-top:10px">';
+    ['32','34','36','43','44','46','49','50','51','56','57','59','60'].forEach(n => {
       tray += '<button type="button" class="num-choice-btn" data-val="' + n + '">' + n + '</button>';
     });
     tray += '<button type="button" class="num-choice-btn erase" data-val="erase">⌫ けす</button></div>';
 
     card.innerHTML = 
       '<div class="drill-book-page">' +
-        makeDrillBookHeader(44, 'ヒヒダルマ', 'ひひだるま', 'あてはまる すうじ（きそくせい）', 'ならびの きそくを みつけて、<span class="t-math-box-icon">田</span> に すうじを いれよう！', 555) +
-        patternHtml +
+        makeDrillBookHeader(44, 'ヒヒダルマ', 'ひひだるま', 'あてはまる すうじを かこう', 'すうじが じゅんに ならぶように、□に あてはまる すうじを いれよう！', 555) +
+        linesHtml +
         tray +
-        makeDrillBookFooter('ヒヒダルマ', 'えんじょうポケモン', 'ほのお', '1.3m', '92.9kg', '10飛び、5飛び、2飛びの規則性を見つけ出すことで、九九や掛け算に繋がる数のまとまり感覚を養います。', 555) +
+        makeDrillBookFooter('ヒヒダルマ', 'えんじょうポケモン', 'ほのお', '1.3m', '92.9kg', '30〜60の連続した数の並びを理解し、1ずつ増える規則性、1ずつ減る規則性を習熟します。', 555) +
       '</div>';
 
-    initBattle44Pattern();
+    setupMathBoxController(card, expected, completeBookDrill);
 
   } else if(bId === 'Battle44_2'){
-    // ヒヒダルマ あてはまるすうじ（おおきさくらべ）
-    const qs = [
-      { desc: '① 49より 1 おおきい かずは？', ans: '50' },
-      { desc: '② 55より 1 ちいさい かずは？', ans: '54' },
-      { desc: '③ 38と 40の あいだの かずは？', ans: '39' },
-      { desc: '④ どちらが おおきい？（48 と 51）', ans: '51' }
+    // バトル44_2：ヒヒダルマ 5とび・2とび・10とびのすうじ
+    const rowsConfig = [
+      { type: 'green', label: '5とび', nums: ['5', '10', null, null, '25'], ans: ['15', '20'] },
+      { type: 'green', label: '5とび', nums: ['20', '25', null, '35', null], ans: ['30', '40'] },
+      { type: 'green', label: '5とび', nums: ['40', null, null, '55', null], ans: ['45', '50', '60'] },
+      { type: 'blue',  label: '2とび', nums: ['14', '16', null, null, '22'], ans: ['18', '20'] },
+      { type: 'blue',  label: '2とび', nums: ['52', null, '56', null, '60'], ans: ['54', '58'] },
+      { type: 'yellow',label: '10とび', nums: ['20', '30', '40', null, null], ans: ['50', '60'] }
     ];
 
-    let qsHtml = '<div style="background:#fff7ed;border:2px solid #fdba74;border-radius:18px;padding:12px;margin-bottom:12px">';
-    qs.forEach((q, idx) => {
-      qsHtml += '<div style="display:flex;align-items:center;justify-content:space-between;background:#fff;border:2px solid #fed7aa;border-radius:12px;padding:8px 12px;margin-bottom:8px">' +
-        '<div style="font-weight:900;font-size:14px;color:#9a3412">' + q.desc + '</div>' +
-        '<div class="t-math-box" data-idx="' + idx + '" data-target="' + q.ans + '">？</div>' +
-      '</div>';
-    });
-    qsHtml += '</div>';
+    let linesHtml = '<div style="margin:10px 0">';
+    let boxIdx = 0;
+    const expected = [];
 
-    let tray = '<div class="num-choice-tray">';
-    ['39', '50', '51', '54'].forEach(n => {
+    rowsConfig.forEach((r) => {
+      linesHtml += '<div style="font-size:12px;font-weight:900;color:#475569;margin-top:6px">【 ' + r.label + ' 】</div>' +
+        '<div class="numline-row ' + r.type + '">';
+      r.nums.forEach((val) => {
+        if(val !== null) {
+          linesHtml += '<div class="numline-cell fixed">' + val + '</div>';
+        } else {
+          const target = r.ans.shift();
+          expected.push(target);
+          linesHtml += '<div class="t-math-box numline-cell" data-idx="' + boxIdx + '" data-target="' + target + '">？</div>';
+          boxIdx++;
+        }
+      });
+      linesHtml += '</div>';
+    });
+    linesHtml += '</div>';
+
+    let tray = '<div class="num-choice-tray" style="margin-top:10px">';
+    ['15','18','20','30','40','45','50','54','58','60'].forEach(n => {
       tray += '<button type="button" class="num-choice-btn" data-val="' + n + '">' + n + '</button>';
     });
     tray += '<button type="button" class="num-choice-btn erase" data-val="erase">⌫ けす</button></div>';
 
     card.innerHTML = 
       '<div class="drill-book-page">' +
-        makeDrillBookHeader(44, 'ヒヒダルマ', 'ひひだるま', 'あてはまる すうじ（おおきさくらべ）', 'もんだいを よく よんで、あてはまる すうじを <span class="t-math-box-icon">田</span> に いれよう！', 555) +
-        qsHtml +
+        makeDrillBookHeader(44, 'ヒヒダルマ', 'ひひだるま', 'あてはまる すうじを かこう (2)', '5とび、2とび、10とびの きまりを みつけて すうじを いれよう！', 555) +
+        linesHtml +
         tray +
-        makeDrillBookFooter('ヒヒダルマ', 'えんじょうポケモン', 'ほのお', '1.3m', '92.9kg', '「〜より1大きい」「〜と〜の間」など、数直線上での数の位置関係を正確に把握します。', 555) +
+        makeDrillBookFooter('ヒヒダルマ', 'えんじょうポケモン', 'ほのお', '1.3m', '92.9kg', '「5とび」「2とび」「10とび」の数の規則性を体得し、掛け算九九や位取り記数法の基礎を育みます。', 555) +
       '</div>';
 
-    initBattle44_2Range();
+    setupMathBoxController(card, expected, completeBookDrill);
 
   } else if(bId === 'Battle45'){
-    // ホーホー とけい（なんじ なんじはん）
-    const clocks = [
-      { h: 4, m: 0, text: 'じ', ans: '4' },
-      { h: 8, m: 30, text: 'じ はん', ans: '8' },
-      { h: 11, m: 0, text: 'じ', ans: '11' }
-    ];
+    // バトル45：ホーホー とけい（何時・何時半、短い針と長い針の読み取り）
+    const expected = ['7', '12', '7', '1', '2', '6', '1'];
 
-    let clockHtml = '<div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:10px;margin-bottom:12px">';
-    clocks.forEach((c, idx) => {
-      clockHtml += '<div style="display:flex;flex-direction:column;align-items:center;background:#fff;border:2px solid #bae6fd;border-radius:16px;padding:8px">' +
-        makeClockSvg(c.h, c.m) +
-        '<div style="display:flex;align-items:center;gap:4px;margin-top:6px">' +
-          '<div class="t-math-box" data-idx="' + idx + '" data-target="' + c.ans + '">？</div>' +
-          '<span style="font-weight:900;font-size:13px;color:#0369a1">' + c.text + '</span>' +
-        '</div>' +
-      '</div>';
-    });
-    clockHtml += '</div>';
-
-    let tray = '<div class="num-choice-tray">';
-    ['4', '8', '11'].forEach(n => {
+    let tray = '<div class="num-choice-tray" style="margin-top:10px">';
+    ['1','2','3','4','5','6','7','8','9','10','11','12'].forEach(n => {
       tray += '<button type="button" class="num-choice-btn" data-val="' + n + '">' + n + '</button>';
     });
     tray += '<button type="button" class="num-choice-btn erase" data-val="erase">⌫ けす</button></div>';
 
     card.innerHTML = 
       '<div class="drill-book-page">' +
-        makeDrillBookHeader(45, 'ホーホー', 'ほーほー', 'とけい（なんじ なんじはん）', 'ホーホーの とけいとう！ なんじか よんで、<span class="t-math-box-icon">田</span> に すうじを いれよう。', 163) +
-        clockHtml +
+        makeDrillBookHeader(45, 'ホーホー', 'ほーほー', 'と け い', 'とけいを みて、□に あてはまる すうじを かきましょう。', 163) +
+        makeFreeClockWidgetHtml() +
+        '<div style="background:#fff;border:2.5px solid #cbd5e1;border-radius:18px;padding:14px;margin:12px 0">' +
+          '<div style="font-weight:900;font-size:15px;color:#1e293b;margin-bottom:8px">① なんじかな？</div>' +
+          makeStaticClockSvg(7, 0, { size: 160 }) +
+          '<div style="background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:10px;padding:8px 12px;margin:10px 0;font-size:13px;font-weight:800;color:#1d4ed8">' +
+            '💡 ながい はりが「12」を さして いる ときは、みじかい はりで なんじかを よみます。' +
+          '</div>' +
+          '<div style="display:flex;align-items:center;gap:6px;font-size:15px;font-weight:900;flex-wrap:wrap">' +
+            '<span>みじかい はりが</span><div class="t-math-box" data-idx="0" data-target="7">？</div>' +
+            '<span>、ながい はりが</span><div class="t-math-box" data-idx="1" data-target="12">？</div><span>を さして いるので、</span>' +
+            '<div class="t-math-box" data-idx="2" data-target="7">？</div><span>じ。</span>' +
+          '</div>' +
+        '</div>' +
+        '<div style="background:#fff;border:2.5px solid #cbd5e1;border-radius:18px;padding:14px;margin:12px 0">' +
+          '<div style="font-weight:900;font-size:15px;color:#1e293b;margin-bottom:8px">② なんじはんかな？</div>' +
+          makeStaticClockSvg(1, 30, { size: 160, highlightHourArc: true }) +
+          '<div style="background:#fef2f2;border:1.5px solid #fecaca;border-radius:10px;padding:8px 12px;margin:10px 0;font-size:13px;font-weight:800;color:#b91c1c">' +
+            '💡 みじかい はりが すうじの あいだを さして いる ときは、ちいさい ほうを よみます。<br>ながい はりが「6」を さして いる ときは、「はん」です。' +
+          '</div>' +
+          '<div style="display:flex;align-items:center;gap:6px;font-size:15px;font-weight:900;flex-wrap:wrap">' +
+            '<span>みじかい はりが</span><div class="t-math-box" data-idx="3" data-target="1">？</div>' +
+            '<span>と</span><div class="t-math-box" data-idx="4" data-target="2">？</div><span>の あいだ、</span>' +
+            '<span>ながい はりが</span><div class="t-math-box" data-idx="5" data-target="6">？</div><span>を さして いるので、</span>' +
+            '<div class="t-math-box" data-idx="6" data-target="1">？</div><span>じはん。</span>' +
+          '</div>' +
+        '</div>' +
         tray +
-        makeDrillBookFooter('ホーホー', 'ふくろうポケモン', 'ノーマル・ひこう', '0.7m', '21.2kg', '短針が指す数字（時）と長針の向き（12ならちょうど、6なら「はん」）を正しく読み取ります。', 163) +
+        makeDrillBookFooter('ホーホー', 'ふくろうポケモン', 'ノーマル・ひこう', '0.7m', '21.2kg', 'アナログ時計の「短い針（時）」と「長い針（分）」の役割を理解し、ちょうど（正時）と半（30分）の時刻を正確に読み取ります。', 163) +
       '</div>';
 
-    initBattle45Clock();
+    initFreeClockWidget();
+    setupMathBoxController(card, expected, completeBookDrill);
 
   } else if(bId === 'Battle45_2'){
-    // ホーホー とけい（1にちの せいかつ）
-    const schedule = [
-      { title: '① あさ おきる じかん', h: 7, m: 0, text: 'じ', ans: '7' },
-      { title: '② おひるごはんの じかん', h: 12, m: 30, text: 'じ はん', ans: '12' },
-      { title: '③ よる ねる じかん', h: 9, m: 30, text: 'じ はん', ans: '9' }
-    ];
-
-    let schedHtml = '<div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:10px;margin-bottom:12px">';
-    schedule.forEach((s, idx) => {
-      schedHtml += '<div style="display:flex;flex-direction:column;align-items:center;background:#fff;border:2px solid #bae6fd;border-radius:16px;padding:8px">' +
-        '<div style="font-weight:900;font-size:11px;color:#0369a1;margin-bottom:4px;text-align:center">' + s.title + '</div>' +
-        makeClockSvg(s.h, s.m) +
-        '<div style="display:flex;align-items:center;gap:4px;margin-top:6px">' +
-          '<div class="t-math-box" data-idx="' + idx + '" data-target="' + s.ans + '">？</div>' +
-          '<span style="font-weight:900;font-size:13px;color:#0369a1">' + s.text + '</span>' +
-        '</div>' +
-      '</div>';
-    });
-    schedHtml += '</div>';
-
-    let tray = '<div class="num-choice-tray">';
-    ['7', '9', '12'].forEach(n => {
-      tray += '<button type="button" class="num-choice-btn" data-val="' + n + '">' + n + '</button>';
-    });
-    tray += '<button type="button" class="num-choice-btn erase" data-val="erase">⌫ けす</button></div>';
-
+    // バトル45_2：ホーホー 生活場面と時計（線つなぎ・マッチング）
     card.innerHTML = 
       '<div class="drill-book-page">' +
-        makeDrillBookHeader(45, 'ホーホー', 'ほーほー', 'とけい（1にちの せいかつ）', 'ホーホーの 1にちの すけじゅーる！ なんじか よんでみよう。', 163) +
-        schedHtml +
-        tray +
-        makeDrillBookFooter('ホーホー', 'ふくろうポケモン', 'ノーマル・ひこう', '0.7m', '21.2kg', '日々の生活場面と時刻を結びつけ、時間についての感覚を具体的に身につけます。', 163) +
+        makeDrillBookHeader(45, 'ホーホー', 'ほーほー', 'と け い (2)', 'とけいの じこくと おなじ じこくを せんで つなごう！', 163) +
+        makeFreeClockWidgetHtml() +
+        '<div style="background:#fff;border:2.5px solid #cbd5e1;border-radius:18px;padding:14px;margin:12px 0">' +
+          '<div style="font-weight:900;font-size:15px;color:#1e293b;margin-bottom:12px">とけいを タップしてから、したの おなじ じこくを タップしよう！</div>' +
+          '<div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:8px;text-align:center" id="b45_clocks_row">' +
+            '<div class="b24-choice-card" data-key="wake" style="padding:10px 4px">' +
+              '<span style="font-size:12px;font-weight:900;background:#fef3c7;color:#b45309;padding:2px 8px;border-radius:8px">あさ おきる</span>' +
+              makeStaticClockSvg(7, 30, { size: 100 }) +
+            '</div>' +
+            '<div class="b24-choice-card" data-key="lunch" style="padding:10px 4px">' +
+              '<span style="font-size:12px;font-weight:900;background:#ffedd5;color:#c2410c;padding:2px 8px;border-radius:8px">ひるごはん</span>' +
+              makeStaticClockSvg(12, 0, { size: 100 }) +
+            '</div>' +
+            '<div class="b24-choice-card" data-key="bath" style="padding:10px 4px">' +
+              '<span style="font-size:12px;font-weight:900;background:#dbeafe;color:#1e40af;padding:2px 8px;border-radius:8px">おふろ</span>' +
+              makeStaticClockSvg(6, 30, { size: 100 }) +
+            '</div>' +
+          '</div>' +
+          '<div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:8px;margin-top:14px" id="b45_labels_row">' +
+            '<button type="button" class="fc-btn" data-val="bath" style="padding:12px 6px;font-size:15px;font-weight:900;border-radius:12px">6じはん</button>' +
+            '<button type="button" class="fc-btn" data-val="wake" style="padding:12px 6px;font-size:15px;font-weight:900;border-radius:12px">7じはん</button>' +
+            '<button type="button" class="fc-btn" data-val="lunch" style="padding:12px 6px;font-size:15px;font-weight:900;border-radius:12px">12じ</button>' +
+          '</div>' +
+        '</div>' +
+        makeDrillBookFooter('ホーホー', 'ふくろうポケモン', 'ノーマル・ひこう', '0.7m', '21.2kg', '日常の生活行動と時刻（何時・何時半）を結びつけ、時間への関心と生活習慣のリズムを養います。', 163) +
       '</div>';
 
-    initBattle45_2Schedule();
+    initFreeClockWidget();
+    initBattle45_2Match();
 
   } else if(bId === 'Battle46'){
-    // ギギギアル とけい（なんじ なんぷん）
-    const gearClocks = [
-      { h: 3, m: 15, ansH: '3', ansM: '15' },
-      { h: 7, m: 20, ansH: '7', ansM: '20' },
-      { h: 10, m: 45, ansH: '10', ansM: '45' }
-    ];
+    // バトル46：ギギギアル 5分刻みの時計読み取り
+    const expected = ['15', '20', '25', '35', '40', '45', '50', '55', '11', '25'];
 
-    let gearHtml = '<div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:10px;margin-bottom:12px">';
-    gearClocks.forEach((gc, idx) => {
-      gearHtml += '<div style="display:flex;flex-direction:column;align-items:center;background:#fff;border:2px solid #cbd5e1;border-radius:16px;padding:8px">' +
-        makeClockSvg(gc.h, gc.m) +
-        '<div style="display:flex;align-items:center;gap:3px;margin-top:6px;flex-wrap:wrap;justify-content:center">' +
-          '<div class="t-math-box" data-target="' + gc.ansH + '" style="width:36px;height:42px;font-size:16px">？</div>' +
-          '<span style="font-weight:900;font-size:12px">じ</span>' +
-          '<div class="t-math-box" data-target="' + gc.ansM + '" style="width:44px;height:42px;font-size:16px">？</div>' +
-          '<span style="font-weight:900;font-size:12px">ふん</span>' +
-        '</div>' +
-      '</div>';
-    });
-    gearHtml += '</div>';
-
-    let tray = '<div class="num-choice-tray">';
-    ['3', '7', '10', '15', '20', '45'].forEach(n => {
+    let tray = '<div class="num-choice-tray" style="margin-top:10px">';
+    ['5','10','11','15','20','25','30','35','40','45','50','55'].forEach(n => {
       tray += '<button type="button" class="num-choice-btn" data-val="' + n + '">' + n + '</button>';
     });
     tray += '<button type="button" class="num-choice-btn erase" data-val="erase">⌫ けす</button></div>';
 
     card.innerHTML = 
       '<div class="drill-book-page">' +
-        makeDrillBookHeader(46, 'ギギギアル', 'ぎぎぎある', 'とけい（なんじ なんぷん）', 'ギギギアルの はぐるまとけい！ なんじ なんぷんか よんで すうじを いれよう。', 601) +
-        gearHtml +
+        makeDrillBookHeader(46, 'ギギギアル', 'ぎぎぎある', 'と け い', 'とけいの めもりを みて、なんじ なんふんかを よみとろう！', 601) +
+        makeFreeClockWidgetHtml() +
+        '<div style="background:#fff;border:2.5px solid #cbd5e1;border-radius:18px;padding:14px;margin:12px 0">' +
+          '<div style="font-weight:900;font-size:15px;color:#1e293b;margin-bottom:8px">とけいを よみましょう。まわりの □ に すうじを いれよう！</div>' +
+          makeStaticClockSvg(11, 25, { size: 190, showOuterNums: true }) +
+          '<div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;padding:8px 12px;margin:10px 0;font-size:13px;font-weight:800;color:#166534">' +
+            '💡 ながい はりの 1めもりは 1ぷんです。5ふんごとに おおきな めもりが あります。' +
+          '</div>' +
+          '<div style="display:flex;align-items:center;justify-content:center;gap:6px;font-size:17px;font-weight:900;margin-top:12px">' +
+            '<span>うえの とけいは、</span>' +
+            '<div class="t-math-box" data-idx="8" data-target="11">？</div><span>じ</span>' +
+            '<div class="t-math-box" data-idx="9" data-target="25">？</div><span>ふんです。</span>' +
+          '</div>' +
+          '<div style="margin-top:12px;font-size:13px;font-weight:900;color:#475569;text-align:center">【 まわりの 5ふんきざみ目盛り 】</div>' +
+          '<div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:6px">' +
+            '<span>3のところ:</span><div class="t-math-box" data-idx="0" data-target="15">？</div>' +
+            '<span>4のところ:</span><div class="t-math-box" data-idx="1" data-target="20">？</div>' +
+            '<span>5のところ:</span><div class="t-math-box" data-idx="2" data-target="25">？</div>' +
+            '<span>7のところ:</span><div class="t-math-box" data-idx="3" data-target="35">？</div>' +
+            '<span>8のところ:</span><div class="t-math-box" data-idx="4" data-target="40">？</div>' +
+            '<span>9のところ:</span><div class="t-math-box" data-idx="5" data-target="45">？</div>' +
+            '<span>10のところ:</span><div class="t-math-box" data-idx="6" data-target="50">？</div>' +
+            '<span>11のところ:</span><div class="t-math-box" data-idx="7" data-target="55">？</div>' +
+          '</div>' +
+        '</div>' +
         tray +
-        makeDrillBookFooter('ギギギアル', 'はぐるまポケモン', 'はがね', '0.6m', '81.0kg', '長針の1目盛りが1分、数字1つ分が5分という時計の仕組みを理解して何時何分を読みます。', 601) +
+        makeDrillBookFooter('ギギギアル', 'はぐるまポケモン', 'はがね', '0.6m', '81.0kg', '5分刻みの目盛り（5, 10, 15…55分）の読み方を理解し、「何時何分」を正確に読む力を養成します。', 601) +
       '</div>';
 
-    initBattle46GearClock();
+    initFreeClockWidget();
+    setupMathBoxController(card, expected, completeBookDrill);
 
   } else if(bId === 'Battle46_2'){
-    // ギギギアル じかんの けいさん（まえと あと）
-    const timeQs = [
-      { text: '① 2じの 1じかん ご', ans: '3' },
-      { text: '② 4じの 2じかん ご', ans: '6' },
-      { text: '③ 9じの 1じかん まえ', ans: '8' }
+    // バトル46_2：ギギギアル 6つの時計の読み取り
+    const clocks = [
+      { h: 2, m: 40, targetH: '2', targetM: '40' },
+      { h: 7, m: 15, targetH: '7', targetM: '15' },
+      { h: 9, m: 5,  targetH: '9', targetM: '5' },
+      { h: 6, m: 55, targetH: '6', targetM: '55' },
+      { h: 3, m: 45, targetH: '3', targetM: '45' },
+      { h: 10, m: 20, targetH: '10', targetM: '20' }
     ];
 
-    let timeHtml = '<div style="background:#f8fafc;border:2px solid #cbd5e1;border-radius:18px;padding:12px;margin-bottom:12px">';
-    timeQs.forEach((t, idx) => {
-      timeHtml += '<div style="display:flex;align-items:center;justify-content:space-between;background:#fff;border:2px solid #e2e8f0;border-radius:12px;padding:10px 14px;margin-bottom:8px">' +
-        '<div style="font-weight:900;font-size:15px;color:#334155">' + t.text + '</div>' +
-        '<div style="display:flex;align-items:center;gap:4px">' +
-          '<div class="t-math-box" data-idx="' + idx + '" data-target="' + t.ans + '">？</div>' +
-          '<span style="font-weight:900;font-size:15px;color:#334155">じ</span>' +
+    let clocksHtml = '<div style="display:grid;grid-template-columns:repeat(2, 1fr);gap:10px;margin:10px 0">';
+    const expected = [];
+    let bIdx = 0;
+
+    clocks.forEach((c, idx) => {
+      expected.push(c.targetH);
+      expected.push(c.targetM);
+      clocksHtml += '<div style="background:#fff;border:2px solid #cbd5e1;border-radius:14px;padding:8px 4px;text-align:center">' +
+        makeStaticClockSvg(c.h, c.m, { size: 120, showOuterNums: idx < 3 }) +
+        '<div style="display:flex;align-items:center;justify-content:center;gap:4px;font-size:14px;font-weight:900;margin-top:6px">' +
+          '<div class="t-math-box" data-idx="' + bIdx + '" data-target="' + c.targetH + '">？</div><span>じ</span>' +
+          '<div class="t-math-box" data-idx="' + (bIdx+1) + '" data-target="' + c.targetM + '">？</div><span>ふん</span>' +
         '</div>' +
       '</div>';
+      bIdx += 2;
     });
-    timeHtml += '</div>';
+    clocksHtml += '</div>';
 
-    let tray = '<div class="num-choice-tray">';
-    ['3', '6', '8'].forEach(n => {
+    let tray = '<div class="num-choice-tray" style="margin-top:10px">';
+    ['2','3','5','6','7','9','10','15','20','40','45','55'].forEach(n => {
       tray += '<button type="button" class="num-choice-btn" data-val="' + n + '">' + n + '</button>';
     });
     tray += '<button type="button" class="num-choice-btn erase" data-val="erase">⌫ けす</button></div>';
 
     card.innerHTML = 
       '<div class="drill-book-page">' +
-        makeDrillBookHeader(46, 'ギギギアル', 'ぎぎぎある', 'とけい（まえと あと）', 'なんじかん ご、なんじかん まえの じかんを こたえよう！', 601) +
-        timeHtml +
+        makeDrillBookHeader(46, 'ギギギアル', 'ぎぎぎある', 'と け い (2)', '6つの とけいを よんで、なんじ なんふんか すうじを いれよう！', 601) +
+        makeFreeClockWidgetHtml() +
+        clocksHtml +
         tray +
-        makeDrillBookFooter('ギギギアル', 'はぐるまポケモン', 'はがね', '0.6m', '81.0kg', '時間の進み（後）と戻り（前）を足し算・引き算と関連づけて直感的に捉えます。', 601) +
+        makeDrillBookFooter('ギギギアル', 'はぐるまポケモン', 'はがね', '0.6m', '81.0kg', '様々な時刻の時計盤を見て、短針と長針の位置から素早く何時何分かを読み取れるようにします。', 601) +
       '</div>';
 
-    initBattle46_2Elapsed();
+    initFreeClockWidget();
+    setupMathBoxController(card, expected, completeBookDrill);
 
   } else if(bId === 'Battle47'){
-    // サーナイト くらべよう（ながさくらべ）
+    // バトル47：サーナイト ながさくらべ（直接比較と方眼マス）
     card.innerHTML = 
       '<div class="drill-book-page">' +
-        makeDrillBookHeader(47, 'サーナイト', 'さーないと', 'くらべよう（ながさくらべ）', 'どちらが ながいかな？ ながい ほうを タップして <span style="color:#ef4444;font-weight:900">⭕</span> を つけよう！', 282) +
-        '<div style="background:#fdf4ff;border:2px solid #f0abfc;border-radius:18px;padding:14px;margin-bottom:12px">' +
-          '<div style="font-weight:900;font-size:15px;color:#86198f;margin-bottom:10px">① えんぴつの ながさくらべ（マス目を みよう）</div>' +
-          '<div style="display:flex;flex-direction:column;gap:8px" id="b47Pencils">' +
-            '<div class="b24-choice-card" data-val="red" style="padding:10px;justify-content:flex-start;gap:12px">' +
-              '<span style="font-weight:900;color:#ef4444">あか</span>' +
-              '<div style="width:140px;height:18px;background:#ef4444;border-radius:4px;border:2px solid #b91c1c"></div>' +
-              '<span style="font-size:12px;color:#64748b">（5マス分）</span>' +
+        makeDrillBookHeader(47, 'サーナイト', 'さーないと', 'な が さ く ら べ', 'どちらが ながいかな？ はしっこを そろえたり マスを かぞえて こたえよう！', 282) +
+        '<div class="ordinal-prob-card" id="b47Prob1">' +
+          '<div class="ordinal-prob-header">' +
+            '<div class="ordinal-prob-title"><span class="prob-num-circle">①</span><span>どちらが ながいでしょう。ながい ほうを タップしよう！</span></div>' +
+            '<span class="prob-badge-correct">💮 せいかい！</span>' +
+          '</div>' +
+          '<div style="display:flex;flex-direction:column;gap:12px;background:#f8fafc;padding:12px;border-radius:12px;border:2px solid #e2e8f0">' +
+            '<div class="b24-choice-card" data-val="blue" style="display:flex;align-items:center;gap:10px;padding:8px 12px;cursor:pointer">' +
+              '<div style="width:24px;height:24px;border:2px solid #94a3b8;border-radius:6px;display:flex;align-items:center;justify-content:center" class="b47-check"></div>' +
+              '<div style="flex:1;height:20px;background:linear-gradient(to right, #3b82f6 85%, #fbbf24 85%, #f59e0b 95%, #1e40af 95%);border-radius:4px;border:1.5px solid #1d4ed8"></div>' +
             '</div>' +
-            '<div class="b24-choice-card" data-val="blue" style="padding:10px;justify-content:flex-start;gap:12px">' +
-              '<span style="font-weight:900;color:#3b82f6">あお</span>' +
-              '<div style="width:200px;height:18px;background:#3b82f6;border-radius:4px;border:2px solid #1d4ed8"></div>' +
-              '<span style="font-size:12px;color:#64748b">（7マス分）</span>' +
+            '<div class="b24-choice-card" data-val="red" style="display:flex;align-items:center;gap:10px;padding:8px 12px;cursor:pointer">' +
+              '<div style="width:24px;height:24px;border:2px solid #94a3b8;border-radius:6px;display:flex;align-items:center;justify-content:center" class="b47-check"></div>' +
+              '<div style="width:65%;height:20px;background:linear-gradient(to right, #ef4444 85%, #fbbf24 85%, #f59e0b 95%, #b91c1c 95%);border-radius:4px;border:1.5px solid #b91c1c"></div>' +
             '</div>' +
           '</div>' +
-          '<div style="margin-top:14px;border-top:2px dashed #e9d5ff;padding-top:10px;display:flex;align-items:center;gap:6px">' +
-            '<span style="font-weight:900;font-size:14px;color:#86198f">② えんぴつの ながさは けしごむ</span>' +
-            '<div class="t-math-box" data-idx="0" data-target="5">？</div>' +
-            '<span style="font-weight:900;font-size:14px;color:#86198f">こぶん！</span>' +
+        '</div>' +
+        '<div class="ordinal-prob-card" id="b47Prob2">' +
+          '<div class="ordinal-prob-header">' +
+            '<div class="ordinal-prob-title"><span class="prob-num-circle">②</span><span>いちばん ながい いろえんぴつ（マス目が一番多い）を タップしよう！</span></div>' +
+            '<span class="prob-badge-correct">💮 せいかい！</span>' +
+          '</div>' +
+          '<div style="background:#f8fafc;border:2px solid #cbd5e1;border-radius:12px;padding:10px;position:relative">' +
+            '<div style="display:flex;flex-direction:column;gap:8px">' +
+              '<div class="b24-choice-card" data-penc="blue" style="display:flex;align-items:center;gap:8px;padding:6px;cursor:pointer">' +
+                '<span style="font-size:12px;font-weight:900;width:55px">青 (7マス)</span>' +
+                '<div style="width:70%;height:16px;background:#3b82f6;border-radius:3px"></div>' +
+              '</div>' +
+              '<div class="b24-choice-card" data-penc="pink" style="display:flex;align-items:center;gap:8px;padding:6px;cursor:pointer">' +
+                '<span style="font-size:12px;font-weight:900;width:55px">桃 (6マス)</span>' +
+                '<div style="width:60%;height:16px;background:#ec4899;border-radius:3px"></div>' +
+              '</div>' +
+              '<div class="b24-choice-card" data-penc="green" style="display:flex;align-items:center;gap:8px;padding:6px;cursor:pointer">' +
+                '<span style="font-size:12px;font-weight:900;width:55px">緑 (9マス)</span>' +
+                '<div style="width:90%;height:16px;background:#22c55e;border-radius:3px"></div>' +
+              '</div>' +
+              '<div class="b24-choice-card" data-penc="yellow" style="display:flex;align-items:center;gap:8px;padding:6px;cursor:pointer">' +
+                '<span style="font-size:12px;font-weight:900;width:55px">黄 (5マス)</span>' +
+                '<div style="width:50%;height:16px;background:#eab308;border-radius:3px"></div>' +
+              '</div>' +
+              '<div class="b24-choice-card" data-penc="red" style="display:flex;align-items:center;gap:8px;padding:6px;cursor:pointer">' +
+                '<span style="font-size:12px;font-weight:900;width:55px;color:#dc2626">赤 (10マス)</span>' +
+                '<div style="width:100%;height:16px;background:#ef4444;border-radius:3px"></div>' +
+              '</div>' +
+            '</div>' +
           '</div>' +
         '</div>' +
-        '<div class="num-choice-tray">' +
-          '<button type="button" class="num-choice-btn" data-val="5">5</button>' +
-          '<button type="button" class="num-choice-btn erase" data-val="erase">⌫ けす</button>' +
-        '</div>' +
-        makeDrillBookFooter('サーナイト', 'ほうようポケモン', 'エスパー・フェアリー', '1.6m', '48.4kg', '端を揃えて長さを比べる直接比較と、マス目や消しゴムの個数で数える任意単位の測定基礎です。', 282) +
+        makeDrillBookFooter('サーナイト', 'ほうようポケモン', 'エスパー・フェアリー', '1.6m', '48.4kg', '端をそろえて直接比べる方法と、任意単位（マス目）のいくつ分かで間接比較する方法を学びます。', 282) +
       '</div>';
 
-    initBattle47Length();
+    initBattle47Drill();
 
   } else if(bId === 'Battle47_2'){
-    // サーナイト くらべよう（かさくらべ）
+    // バトル47_2：サーナイト かさくらべ（水のかさ）
     card.innerHTML = 
       '<div class="drill-book-page">' +
-        makeDrillBookHeader(47, 'サーナイト', 'さーないと', 'くらべよう（かさくらべ）', 'どちらに おおく はいるかな？ コップの かずを かぞえて タップしよう！', 282) +
-        '<div style="background:#f0fdfa;border:2px solid #99f6e4;border-radius:18px;padding:14px;margin-bottom:12px">' +
-          '<div style="font-weight:900;font-size:15px;color:#0f766e;margin-bottom:10px">① 水色のポットに入る ジュースの かさ</div>' +
-          '<div style="display:flex;gap:10px" id="b47_2Pitchers">' +
-            '<div class="b24-choice-card" data-val="A" style="flex:1;padding:12px;flex-direction:column;gap:6px">' +
-              '<span style="font-weight:900">ポット A</span>' +
-              '<div style="font-size:24px">🫖</div>' +
-              '<span style="font-size:13px;color:#0f766e">コップ 4はい分</span>' +
+        makeDrillBookHeader(47, 'サーナイト', 'さーないと', 'か さ く ら べ', 'おなじ いれものに のみものを いれて くらべよう。おおい ほうは どっちかな？', 282) +
+        '<div class="ordinal-prob-card" id="b472Prob1">' +
+          '<div class="ordinal-prob-header">' +
+            '<div class="ordinal-prob-title"><span class="prob-num-circle">①</span><span>おなじ コップに いれたよ。のみものが おおく はいっている ほうを タップしよう！</span></div>' +
+            '<span class="prob-badge-correct">💮 せいかい！</span>' +
+          '</div>' +
+          '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px">' +
+            '<div class="b24-choice-card" data-val="can" style="padding:12px;text-align:center;cursor:pointer">' +
+              '<div style="font-size:24px;margin-bottom:4px">🥫 缶ジュース</div>' +
+              '<div style="width:50px;height:70px;border:3px solid #64748b;border-top:none;border-radius:0 0 10px 10px;margin:0 auto;position:relative;background:#f8fafc">' +
+                '<div style="position:absolute;bottom:0;width:100%;height:85%;background:#f97316;border-radius:0 0 7px 7px"></div>' +
+              '</div>' +
+              '<span style="font-size:13px;font-weight:900;color:#c2410c;margin-top:6px;display:block">コップいっぱい！</span>' +
             '</div>' +
-            '<div class="b24-choice-card" data-val="B" style="flex:1;padding:12px;flex-direction:column;gap:6px">' +
-              '<span style="font-weight:900">ポット B</span>' +
-              '<div style="font-size:24px">🫖</div>' +
-              '<span style="font-size:13px;color:#0f766e">コップ 6はい分</span>' +
+            '<div class="b24-choice-card" data-val="bottle" style="padding:12px;text-align:center;cursor:pointer">' +
+              '<div style="font-size:24px;margin-bottom:4px">🧃 お茶ボトル</div>' +
+              '<div style="width:50px;height:70px;border:3px solid #64748b;border-top:none;border-radius:0 0 10px 10px;margin:0 auto;position:relative;background:#f8fafc">' +
+                '<div style="position:absolute;bottom:0;width:100%;height:50%;background:#84cc16;border-radius:0 0 7px 7px"></div>' +
+              '</div>' +
+              '<span style="font-size:13px;font-weight:900;color:#4d7c0f;margin-top:6px;display:block">コップ半分くらい</span>' +
             '</div>' +
           '</div>' +
-          '<div style="margin-top:14px;border-top:2px dashed #99f6e4;padding-top:10px;display:flex;align-items:center;gap:6px">' +
-            '<span style="font-weight:900;font-size:14px;color:#0f766e">② おおきな やかんは コップ</span>' +
-            '<div class="t-math-box" data-idx="0" data-target="8">？</div>' +
-            '<span style="font-weight:900;font-size:14px;color:#0f766e">はいぶん！</span>' +
+        '</div>' +
+        '<div class="ordinal-prob-card" id="b472Prob2">' +
+          '<div class="ordinal-prob-header">' +
+            '<div class="ordinal-prob-title"><span class="prob-num-circle">②</span><span>コップなんばいぶんかな？ のみものが おおい ほうを タップしよう！</span></div>' +
+            '<span class="prob-badge-correct">💮 せいかい！</span>' +
+          '</div>' +
+          '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px">' +
+            '<div class="b24-choice-card" data-val="cola" style="padding:12px;text-align:center;cursor:pointer">' +
+              '<div style="font-size:24px">🥤 コーラ</div>' +
+              '<div style="font-size:14px;font-weight:900;color:#78350f;margin:6px 0">コップ 3ばいぶん</div>' +
+              '<div style="display:flex;gap:4px;justify-content:center">' +
+                '<span style="font-size:20px">🥛🥛🥛</span>' +
+              '</div>' +
+            '</div>' +
+            '<div class="b24-choice-card" data-val="water" style="padding:12px;text-align:center;cursor:pointer">' +
+              '<div style="font-size:24px">💧 みず</div>' +
+              '<div style="font-size:14px;font-weight:900;color:#0369a1;margin:6px 0">コップ 4ばいぶん</div>' +
+              '<div style="display:flex;gap:4px;justify-content:center">' +
+                '<span style="font-size:20px">🥛🥛🥛🥛</span>' +
+              '</div>' +
+            '</div>' +
           '</div>' +
         '</div>' +
-        '<div class="num-choice-tray">' +
-          '<button type="button" class="num-choice-btn" data-val="8">8</button>' +
-          '<button type="button" class="num-choice-btn erase" data-val="erase">⌫ けす</button>' +
-        '</div>' +
-        makeDrillBookFooter('サーナイト', 'ほうようポケモン', 'エスパー・フェアリー', '1.6m', '48.4kg', '液体の体積（かさ）を同じコップ何杯分かで数値化し、客観的に比べる思考法を身につけます。', 282) +
+        makeDrillBookFooter('サーナイト', 'ほうようポケモン', 'エスパー・フェアリー', '1.6m', '48.4kg', '同じ形のコップに移し替えて高さを比べたり、コップ何杯分かで水のかさを比較する基礎を学びます。', 282) +
       '</div>';
 
-    initBattle47_2Liquid();
+    initBattle47_2Drill();
 
   } else if(bId === 'Battle47_3'){
-    // サーナイト くらべよう（ひろさくらべ）
+    // バトル47_3：サーナイト ひろさくらべ（重ね合わせとマス目）
     card.innerHTML = 
       '<div class="drill-book-page">' +
-        makeDrillBookHeader(47, 'サーナイト', 'さーないと', 'くらべよう（ひろさくらべ）', 'どちらの マットが ひろいかな？ マス目を かぞえて タップしよう！', 282) +
-        '<div style="background:#fefce8;border:2px solid #fef08a;border-radius:18px;padding:14px;margin-bottom:12px">' +
-          '<div style="font-weight:900;font-size:15px;color:#a16207;margin-bottom:10px">① マットの ひろさくらべ</div>' +
-          '<div style="display:flex;gap:12px;justify-content:center" id="b47_3Mats">' +
-            '<div class="b24-choice-card" data-val="A" style="flex:1;padding:12px;flex-direction:column;align-items:center">' +
-              '<span style="font-weight:900">あおマット</span>' +
-              '<div style="display:grid;grid-template-columns:repeat(4,16px);gap:2px;margin:8px 0">' +
-                Array(8).fill('<div style="width:16px;height:16px;background:#38bdf8;border:1px solid #0284c7"></div>').join('') +
-              '</div>' +
-              '<span style="font-size:12px;color:#64748b">8マス</span>' +
+        makeDrillBookHeader(47, 'サーナイト', 'さーないと', 'ひ ろ さ く ら べ', 'どちらが ひろいかな？ かさねたり マスを かぞえて こたえよう！', 282) +
+        '<div class="ordinal-prob-card" id="b473Prob1">' +
+          '<div class="ordinal-prob-header">' +
+            '<div class="ordinal-prob-title"><span class="prob-num-circle">①</span><span>かさねて はみだしを みて、ひろい ほうを タップしよう！</span></div>' +
+            '<span class="prob-badge-correct">💮 せいかい！</span>' +
+          '</div>' +
+          '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px">' +
+            '<div class="b24-choice-card" data-val="blue" style="padding:14px;text-align:center;cursor:pointer">' +
+              '<div style="width:70px;height:70px;background:#3b82f6;border-radius:8px;margin:0 auto;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900">あお</div>' +
+              '<span style="font-size:12px;font-weight:900;color:#1e40af;margin-top:6px;display:block">（はみ出している！）</span>' +
             '</div>' +
-            '<div class="b24-choice-card" data-val="B" style="flex:1;padding:12px;flex-direction:column;align-items:center">' +
-              '<span style="font-weight:900">きいろマット</span>' +
-              '<div style="display:grid;grid-template-columns:repeat(5,16px);gap:2px;margin:8px 0">' +
-                Array(10).fill('<div style="width:16px;height:16px;background:#facc15;border:1px solid #ca8a04"></div>').join('') +
-              '</div>' +
-              '<span style="font-size:12px;color:#64748b">10マス</span>' +
+            '<div class="b24-choice-card" data-val="pink" style="padding:14px;text-align:center;cursor:pointer">' +
+              '<div style="width:55px;height:55px;background:#f472b6;border-radius:8px;margin:0 auto;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900">ピンク</div>' +
+              '<span style="font-size:12px;font-weight:900;color:#9d174d;margin-top:6px;display:block">（すっぽり入る）</span>' +
             '</div>' +
           '</div>' +
-          '<div style="margin-top:14px;border-top:2px dashed #fef08a;padding-top:10px;display:flex;align-items:center;gap:6px">' +
-            '<span style="font-weight:900;font-size:14px;color:#a16207">② パズルの じんちは マス</span>' +
-            '<div class="t-math-box" data-idx="0" data-target="6">？</div>' +
-            '<span style="font-weight:900;font-size:14px;color:#a16207">こぶん！</span>' +
+        '</div>' +
+        '<div class="ordinal-prob-card" id="b473Prob2">' +
+          '<div class="ordinal-prob-header">' +
+            '<div class="ordinal-prob-title"><span class="prob-num-circle">②</span><span>マス目を かぞえて、ひろい ほうを タップしよう！</span></div>' +
+            '<span class="prob-badge-correct">💮 せいかい！</span>' +
+          '</div>' +
+          '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px">' +
+            '<div class="b24-choice-card" data-val="orange" style="padding:12px;text-align:center;cursor:pointer">' +
+              '<div style="font-size:13px;font-weight:900;color:#c2410c;margin-bottom:4px">オレンジ（横5×縦3＝15マス）</div>' +
+              '<div style="display:grid;grid-template-columns:repeat(5, 14px);grid-template-rows:repeat(3, 14px);gap:2px;justify-content:center">' +
+                Array(15).fill('<div style="background:#fb923c;border-radius:2px"></div>').join('') +
+              '</div>' +
+            '</div>' +
+            '<div class="b24-choice-card" data-val="green" style="padding:12px;text-align:center;cursor:pointer">' +
+              '<div style="font-size:13px;font-weight:900;color:#15803d;margin-bottom:4px">みどり（横4×縦4＝16マス）</div>' +
+              '<div style="display:grid;grid-template-columns:repeat(4, 15px);grid-template-rows:repeat(4, 15px);gap:2px;justify-content:center">' +
+                Array(16).fill('<div style="background:#4ade80;border-radius:2px"></div>').join('') +
+              '</div>' +
+            '</div>' +
           '</div>' +
         '</div>' +
-        '<div class="num-choice-tray">' +
-          '<button type="button" class="num-choice-btn" data-val="6">6</button>' +
-          '<button type="button" class="num-choice-btn erase" data-val="erase">⌫ けす</button>' +
-        '</div>' +
-        makeDrillBookFooter('サーナイト', 'ほうようポケモン', 'エスパー・フェアリー', '1.6m', '48.4kg', '形の異なる面の広さを、同じ正方形のマス目の個数に置き換えて比べる面積概念の素地です。', 282) +
+        makeDrillBookFooter('サーナイト', 'ほうようポケモン', 'エスパー・フェアリー', '1.6m', '48.4kg', '面を直接重ねて比べる方法と、同じ大きさのマス目いくつ分かで広さを数値化して比べる方法を学びます。', 282) +
       '</div>';
 
-    initBattle47_3Area();
+    initBattle47_3Drill();
 
   } else if(bId === 'Battle48'){
-    // グラードン 58の ナックラー（10のまとまり）
-    let corralsHtml = '<div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:10px">';
-    for(let i=1; i<=5; i++){
-      corralsHtml += '<div style="background:#fef3c7;border:2px dashed #f59e0b;border-radius:12px;padding:6px 10px;font-weight:900;font-size:12px;color:#b45309">ナックラー 10ぴき</div>';
+    // バトル48：グラードン 10のまとまりでかぞえよう
+    let groupsHtml = '<div style="display:grid;grid-template-columns:repeat(2, 1fr);gap:8px;margin:10px 0">';
+    for(let g=1; g<=6; g++) {
+      const cnt = g === 6 ? 8 : 10;
+      let pokeIcons = '';
+      for(let p=0; p<cnt; p++) {
+        pokeIcons += '<img src="' + ART(328) + '" alt="ナックラー" style="width:28px;height:28px">';
+      }
+      groupsHtml += '<div class="b24-choice-card trapinch-group" data-g="' + g + '" style="padding:8px 4px;border-radius:14px;cursor:pointer">' +
+        '<div style="font-size:11px;font-weight:900;color:#78350f;margin-bottom:4px">グループ ' + g + ' (' + cnt + 'ひき)</div>' +
+        '<div style="display:flex;flex-wrap:wrap;gap:2px;justify-content:center">' + pokeIcons + '</div>' +
+      '</div>';
     }
-    corralsHtml += '</div>';
+    groupsHtml += '</div>';
 
-    let looseTrapinch = '<div style="background:#fff;border:2px solid #fed7aa;border-radius:12px;padding:8px;display:flex;gap:6px;justify-content:center;flex-wrap:wrap">';
-    for(let i=0; i<8; i++){
-      looseTrapinch += '<span style="font-size:22px;cursor:pointer" onclick="playMarimbaPop(1.5)">🐜</span>';
-    }
-    looseTrapinch += '</div>';
-
-    let tray = '<div class="num-choice-tray">';
-    ['5', '8', '58'].forEach(n => {
+    let tray = '<div class="num-choice-tray" style="margin-top:10px">';
+    ['48','50','56','58','60'].forEach(n => {
       tray += '<button type="button" class="num-choice-btn" data-val="' + n + '">' + n + '</button>';
     });
     tray += '<button type="button" class="num-choice-btn erase" data-val="erase">⌫ けす</button></div>';
 
     card.innerHTML = 
       '<div class="drill-book-page">' +
-        makeDrillBookHeader(48, 'グラードン', 'ぐらーどん', 'バトル38〜47の まとめ（10の まとまり）', 'ナックラーが いっぱい！ 10の まとまりと ばらを かぞえて <span class="t-math-box-icon">田</span> に いれよう。', 383) +
-        '<div style="background:#fff7ed;border:2px solid #fed7aa;border-radius:18px;padding:12px;margin-bottom:12px">' +
-          corralsHtml +
-          looseTrapinch +
-          '<div style="margin-top:12px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-weight:900;font-size:14px;color:#9a3412">' +
-            '<span>58は、10が</span>' +
-            '<div class="t-math-box" data-idx="0" data-target="5">？</div>' +
-            '<span>こと、ばらが</span>' +
-            '<div class="t-math-box" data-idx="1" data-target="8">？</div>' +
-            '<span>こで、ぜんぶで</span>' +
-            '<div class="t-math-box" data-idx="2" data-target="58">？</div>' +
-            '<span>ひき！</span>' +
+        makeDrillBookHeader(48, 'グラードン', 'ぐらーどん', 'バトル38〜47の まとめ', 'ナックラーを 10の まとまりごとに タップして かこみ、ぜんぶで なんびきか こたえよう！', 383) +
+        groupsHtml +
+        '<div style="background:#fff;border:2.5px solid #cbd5e1;border-radius:14px;padding:12px;margin:12px 0;text-align:center">' +
+          '<div style="display:flex;align-items:center;justify-content:center;gap:6px;font-size:17px;font-weight:900">' +
+            '<span>ナックラーの かずは、ぜんぶで</span>' +
+            '<div class="t-math-box" data-idx="0" data-target="58">？</div>' +
+            '<span>ぴき です。</span>' +
           '</div>' +
         '</div>' +
         tray +
-        makeDrillBookFooter('グラードン', 'たいりくポケモン', 'じめん', '3.5m', '950.0kg', '2桁の数を10のまとまり（十の位）と端数のバラ（一の位）に構造分解して理解します。', 383) +
+        makeDrillBookFooter('グラードン', 'たいりくポケモン', 'じめん', '3.5m', '950.0kg', '10のまとまりを作って大きな数を数える位取りの考え方を定着させます。', 383) +
       '</div>';
 
-    initBattle48Trapinch();
+    initBattle48Drill();
 
   } else if(bId === 'Battle48_2'){
-    // グラードン 大型てんつなぎ（1〜60）
+    // バトル48_2：グラードン 1〜60 点つなぎ
     card.innerHTML = 
       '<div class="drill-book-page">' +
-        makeDrillBookHeader(48, 'グラードン', 'ぐらーどん', 'バトル38〜47の まとめ（大型てんつなぎ）', '1から 60までの てんを じゅんばんに タップして、グラードンを よびだそう！', 383) +
-        '<div class="dot-connect-board" id="b48DotBoard" style="max-width:400px;background:#fff7ed;border-color:#fb923c">' +
-          '<svg class="dot-lines-svg" id="b48LinesSvg"></svg>' +
-          '<div id="b48GroudonArt" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.8s ease;z-index:3;pointer-events:none">' +
-            '<img src="' + ART(383) + '" style="width:85%;height:85%;object-fit:contain;filter:drop-shadow(0 8px 20px rgba(185,28,28,0.4))" alt="グラードン">' +
-          '</div>' +
+        makeDrillBookHeader(48, 'グラードン', 'ぐらーどん', 'バトル38〜47の まとめ (点つなぎ)', '1から 60までの てんを じゅんばんに せんで つなごう！ おおきな ポケモンが あらわれるよ！', 383) +
+        '<div class="dot-connect-board" id="b48DotBoard">' +
+          '<svg class="dot-connect-svg" id="b48LinesSvg"></svg>' +
+          '<img src="' + ART(383) + '" class="dot-connect-art" id="b48GroudonArt" alt="グラードン">' +
         '</div>' +
-        '<div style="text-align:center;font-weight:900;font-size:16px;color:#c2410c;margin:8px 0" id="b48PromptText">つぎは 【 1 】 を タップしよう！</div>' +
-        makeDrillBookFooter('グラードン', 'たいりくポケモン', 'じめん', '3.5m', '950.0kg', '1から60までの数の広がりを指先で一気に体感し、大きな数の系列感覚を定着させます。', 383) +
+        '<div class="dot-connect-ctrls">' +
+          '<div style="font-weight:900;color:#0284c7" id="b48PromptText">つぎは 【 1 】 を タップ！</div>' +
+          '<button type="button" class="btn-step-undo" onclick="initBattle48DotToDot()">🔄 さいしょから</button>' +
+        '</div>' +
+        makeDrillBookFooter('グラードン', 'たいりくポケモン', 'じめん', '3.5m', '950.0kg', '1から60までの数字の順序を総復習しながら、手指の巧緻性と集中力を高めます。', 383) +
       '</div>';
 
     initBattle48DotToDot();
 
   } else if(bId === 'Battle49'){
-    // カモネギ かたち（立体の なかまわけ）
-    const shapes = [
-      { name: 'さいころの かたち', emoji: '🎲', key: 'dice' },
-      { name: 'はこの かたち', emoji: '📦', key: 'box' },
-      { name: 'つつの かたち', emoji: '🥫', key: 'can' },
-      { name: 'ボールの かたち', emoji: '⚽', key: 'ball' }
-    ];
-
-    let shapesHtml = '<div style="display:grid;grid-template-columns:repeat(2, 1fr);gap:10px;margin-bottom:12px">';
-    shapes.forEach(s => {
-      shapesHtml += '<div class="b24-choice-card" data-key="' + s.key + '" style="padding:14px;flex-direction:column;gap:6px">' +
-        '<span style="font-size:32px">' + s.emoji + '</span>' +
-        '<span style="font-weight:900;font-size:14px;color:#1e293b">' + s.name + '</span>' +
-      '</div>';
-    });
-    shapesHtml += '</div>';
-
+    // バトル49：カモネギ かたち（4つの立体のなかま分け）
     card.innerHTML = 
       '<div class="drill-book-page">' +
-        makeDrillBookHeader(49, 'カモネギ', 'かもねぎ', 'かたち（立体の なかまわけ）', 'おなじ なかまの かたちを えらぼう！ ぜんぶ タップして クリアしてね。', 83) +
-        '<div style="background:#f8fafc;border:2px solid #cbd5e1;border-radius:18px;padding:12px;margin-bottom:12px">' +
-          '<div style="font-weight:900;font-size:15px;color:#0284c7;margin-bottom:8px" id="b49Prompt">【 さいころの かたち 】 を タップしよう！</div>' +
-          shapesHtml +
+        makeDrillBookHeader(49, 'カモネギ', 'かもねぎ', 'か た ち', 'なかまの かたちどうしを えらんで ペアに しよう！', 83) +
+        '<div style="background:#fff;border:2.5px solid #cbd5e1;border-radius:18px;padding:14px;margin:10px 0">' +
+          '<div style="font-size:14px;font-weight:900;color:#475569;margin-bottom:8px">うえの かたちを タップしてから、したの なかまを タップしてね！</div>' +
+          '<div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:6px" id="b49_top_shapes">' +
+            '<div class="b24-choice-card" data-shape="dice" style="padding:8px 4px;text-align:center;cursor:pointer">' +
+              '<span style="font-size:11px;font-weight:900;background:#dbeafe;color:#1e40af;padding:2px 4px;border-radius:6px;display:block">さいころ</span>' +
+              '<span style="font-size:26px">🎲</span>' +
+            '</div>' +
+            '<div class="b24-choice-card" data-shape="box" style="padding:8px 4px;text-align:center;cursor:pointer">' +
+              '<span style="font-size:11px;font-weight:900;background:#ffedd5;color:#c2410c;padding:2px 4px;border-radius:6px;display:block">はこのかたち</span>' +
+              '<span style="font-size:26px">📦</span>' +
+            '</div>' +
+            '<div class="b24-choice-card" data-shape="can" style="padding:8px 4px;text-align:center;cursor:pointer">' +
+              '<span style="font-size:11px;font-weight:900;background:#dcfce7;color:#15803d;padding:2px 4px;border-radius:6px;display:block">つつの形</span>' +
+              '<span style="font-size:26px">🥫</span>' +
+            '</div>' +
+            '<div class="b24-choice-card" data-shape="ball" style="padding:8px 4px;text-align:center;cursor:pointer">' +
+              '<span style="font-size:11px;font-weight:900;background:#f3e8ff;color:#7e22ce;padding:2px 4px;border-radius:6px;display:block">ボールの形</span>' +
+              '<span style="font-size:26px">⚽</span>' +
+            '</div>' +
+          '</div>' +
+          '<div style="display:grid;grid-template-columns:repeat(2, 1fr);gap:8px;margin-top:14px" id="b49_bottom_items">' +
+            '<div class="b24-choice-card" data-match="can" style="padding:10px 8px;cursor:pointer">' +
+              '<div style="font-size:22px">🐟 かんづめ</div>' +
+              '<div style="font-size:12px;font-weight:800;color:#475569">たいらな ところと まるい ところが あります。</div>' +
+            '</div>' +
+            '<div class="b24-choice-card" data-match="dice" style="padding:10px 8px;cursor:pointer">' +
+              '<div style="font-size:22px">🎁 赤いLUCKY箱</div>' +
+              '<div style="font-size:12px;font-weight:800;color:#475569">たいらな ところは ぜんぶ ましかくです。</div>' +
+            '</div>' +
+            '<div class="b24-choice-card" data-match="ball" style="padding:10px 8px;cursor:pointer">' +
+              '<div style="font-size:22px">🏐 バレーボール</div>' +
+              '<div style="font-size:12px;font-weight:800;color:#475569">どこも まるくて、たいらな ところが ありません。</div>' +
+            '</div>' +
+            '<div class="b24-choice-card" data-match="box" style="padding:10px 8px;cursor:pointer">' +
+              '<div style="font-size:22px">🟦 青い薄い箱</div>' +
+              '<div style="font-size:12px;font-weight:800;color:#475569">たいらな ところは ぜんぶ しかくです。</div>' +
+            '</div>' +
+          '</div>' +
         '</div>' +
-        makeDrillBookFooter('カモネギ', 'かるがもポケモン', 'ノーマル・ひこう', '0.8m', '15.0kg', '平面から立体への図形感覚を育て、面が平らなもの、丸いもの、転がるものの特徴を識別します。', 83) +
+        makeDrillBookFooter('カモネギ', 'かるがもポケモン', 'ノーマル・ひこう', '0.8m', '15.0kg', 'さいころ、箱、筒、ボールの4つの立体図形の特徴（平面・曲面）を感覚的に捉えて分類します。', 83) +
       '</div>';
 
-    initBattle49Shapes();
+    initBattle49Match();
 
   } else if(bId === 'Battle49_2'){
-    // カモネギ かたち（つみきの かず）
-    const towers = [
-      { id: 1, vis: 3, hid: 1, total: 4 },
-      { id: 2, vis: 5, hid: 1, total: 6 },
-      { id: 3, vis: 7, hid: 2, total: 9 }
-    ];
-
-    let towerHtml = '<div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:10px;margin-bottom:12px">';
-    towers.forEach(t => {
-      towerHtml += '<div style="background:#fff;border:2px solid #cbd5e1;border-radius:14px;padding:10px;display:flex;flex-direction:column;align-items:center">' +
-        '<div style="font-size:32px;margin:8px 0">🧱</div>' +
-        '<div style="font-size:12px;font-weight:900;color:#64748b">(' + t.id + ')</div>' +
-        '<div style="display:flex;align-items:center;gap:4px;margin-top:6px">' +
-          '<div class="t-math-box" data-idx="' + (t.id-1) + '" data-target="' + t.total + '">？</div>' +
-          '<span style="font-weight:900;font-size:13px">こ</span>' +
-        '</div>' +
-      '</div>';
-    });
-    towerHtml += '</div>';
-
-    let tray = '<div class="num-choice-tray">';
-    ['4', '6', '9'].forEach(n => {
-      tray += '<button type="button" class="num-choice-btn" data-val="' + n + '">' + n + '</button>';
-    });
-    tray += '<button type="button" class="num-choice-btn erase" data-val="erase">⌫ けす</button></div>';
-
+    // バトル49_2：カモネギ かたち(2)（横から見た形、上から見た形）
     card.innerHTML = 
       '<div class="drill-book-page">' +
-        makeDrillBookHeader(49, 'カモネギ', 'かもねぎ', 'かたち（つみきの かず）', 'つみきは ぜんぶで なんこ あるかな？ かくれた つみきも わすれずに かぞえてね！', 83) +
-        towerHtml +
-        tray +
-        makeDrillBookFooter('カモネギ', 'かるがもポケモン', 'ノーマル・ひこう', '0.8m', '15.0kg', '見えない奥や下のブロックを想像して数える、空間認識力と論理的推論力を鍛えます。', 83) +
+        makeDrillBookHeader(49, 'カモネギ', 'かもねぎ', 'か た ち (2)', 'それぞれの かたちを よこや うえから みたら どんな かたちかな？', 83) +
+        '<div style="background:#fff;border:2.5px solid #cbd5e1;border-radius:18px;padding:14px;margin:10px 0">' +
+          '<div style="font-size:14px;font-weight:900;color:#1e293b;margin-bottom:12px">立体を えらんで、よこから みた かたち・うえから みた かたちを ペアに しよう！</div>' +
+          '<div style="display:flex;flex-direction:column;gap:12px" id="b49_view_list">' +
+            '<div class="b24-choice-card" data-item="box" style="padding:12px;cursor:pointer">' +
+              '<div style="display:flex;align-items:center;justify-content:space-between">' +
+                '<span style="font-size:16px;font-weight:900">🎁 ましかくの箱</span>' +
+                '<span style="font-size:13px;font-weight:800;color:#2563eb">よこ: ましかく ⬜ / うえ: ましかく ⬜</span>' +
+              '</div>' +
+            '</div>' +
+            '<div class="b24-choice-card" data-item="can" style="padding:12px;cursor:pointer">' +
+              '<div style="display:flex;align-items:center;justify-content:space-between">' +
+                '<span style="font-size:16px;font-weight:900">🥫 チップスの筒</span>' +
+                '<span style="font-size:13px;font-weight:800;color:#16a34a">よこ: たてなが四角 ▯ / うえ: まる ◯</span>' +
+              '</div>' +
+            '</div>' +
+            '<div class="b24-choice-card" data-item="ball" style="padding:12px;cursor:pointer">' +
+              '<div style="display:flex;align-items:center;justify-content:space-between">' +
+                '<span style="font-size:16px;font-weight:900">⚽ サッカーボール</span>' +
+                '<span style="font-size:13px;font-weight:800;color:#ea580c">よこ: まる ◯ / うえ: まる ◯</span>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+        makeDrillBookFooter('カモネギ', 'かるがもポケモン', 'ノーマル・ひこう', '0.8m', '15.0kg', '立体を視点を変えて（横・上から）投影したときの平面図形を想像し、空間認識能力を養います。', 83) +
       '</div>';
 
-    initBattle49Blocks();
+    initBattle49_2Drill();
 
   } else if(bId === 'Battle50'){
-    // オオスバメ せいりしよう（なかまわけ）
+    // バトル50：オオスバメ せいりしよう（数えてグラフを塗る）
+    const pokes = [
+      { id: 277, name: 'オオスバメ', target: 7, color: '#3b82f6' },
+      { id: 300, name: 'エネコ', target: 9, color: '#ec4899' },
+      { id: 293, name: 'ゴニョニョ', target: 7, color: '#a855f7' },
+      { id: 287, name: 'ナマケロ', target: 6, color: '#78350f' }
+    ];
+
+    let graphColsHtml = '';
+    pokes.forEach((p, cIdx) => {
+      let cellsHtml = '';
+      for(let r=1; r<=10; r++) {
+        cellsHtml += '<div class="b50-graph-cell" data-col="' + cIdx + '" data-row="' + r + '"></div>';
+      }
+      graphColsHtml += '<div class="b50-graph-col">' +
+        '<div style="text-align:center;margin-top:6px">' +
+          '<img src="' + ART(p.id) + '" alt="' + p.name + '" style="width:36px;height:36px">' +
+          '<div style="font-size:11px;font-weight:900;color:' + p.color + '">' + p.name + '</div>' +
+          '<div style="font-size:13px;font-weight:900;color:#1e293b" id="b50_count_' + cIdx + '">0匹</div>' +
+        '</div>' +
+        cellsHtml +
+      '</div>';
+    });
+
     card.innerHTML = 
       '<div class="drill-book-page">' +
-        makeDrillBookHeader(50, 'オオスバメ', 'おおすばめ', 'せいりしよう（なかまわけ）', 'くだもの と のりもの を それぞれの カゴに わけよう！ タップして カゴに いれてね。', 277) +
-        '<div style="background:#f8fafc;border:2px solid #cbd5e1;border-radius:18px;padding:12px;margin-bottom:12px">' +
-          '<div style="display:flex;gap:12px;justify-content:center;margin-bottom:14px" id="b50Baskets">' +
-            '<div style="flex:1;background:#fef2f2;border:3px solid #fca5a5;border-radius:16px;padding:10px;text-align:center">' +
-              '<div style="font-weight:900;color:#dc2626">🍎 くだもの</div>' +
-              '<div style="font-size:14px;font-weight:900;color:#991b1b;margin-top:4px" id="b50FruitCount">0 こ</div>' +
-            '</div>' +
-            '<div style="flex:1;background:#eff6ff;border:3px solid #93c5fd;border-radius:16px;padding:10px;text-align:center">' +
-              '<div style="font-weight:900;color:#2563eb">🚗 のりもの</div>' +
-              '<div style="font-size:14px;font-weight:900;color:#1e40af;margin-top:4px" id="b50VehicleCount">0 こ</div>' +
-            '</div>' +
-          '</div>' +
-          '<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap" id="b50ItemsPool">' +
-            '<div class="b24-tap-item" data-type="fruit" style="font-size:28px">🍎</div>' +
-            '<div class="b24-tap-item" data-type="vehicle" style="font-size:28px">🚗</div>' +
-            '<div class="b24-tap-item" data-type="fruit" style="font-size:28px">🍌</div>' +
-            '<div class="b24-tap-item" data-type="vehicle" style="font-size:28px">🚌</div>' +
-            '<div class="b24-tap-item" data-type="fruit" style="font-size:28px">🍓</div>' +
-            '<div class="b24-tap-item" data-type="vehicle" style="font-size:28px">✈️</div>' +
-            '<div class="b24-tap-item" data-type="fruit" style="font-size:28px">🍇</div>' +
-            '<div class="b24-tap-item" data-type="vehicle" style="font-size:28px">🚲</div>' +
-          '</div>' +
+        makeDrillBookHeader(50, 'オオスバメ', 'おおすばめ', 'せ い り し よ う', 'そらと のはらの ポケモンを かぞえて、したから グラフの マスを タップして ぬろう！', 277) +
+        '<div style="background:#f0fdf4;border:2px solid #86efac;border-radius:14px;padding:8px 12px;font-size:13px;font-weight:800;color:#166534;margin-bottom:10px">' +
+          '🌲 オオスバメ(7匹)、エネコ(9匹)、ゴニョニョ(7匹)、ナマケロ(6匹) が いるよ！' +
         '</div>' +
-        makeDrillBookFooter('オオスバメ', 'ツバメポケモン', 'ノーマル・ひこう', '0.7m', '19.8kg', '属性や特徴に注目して共通点を見出し、データを正しく仲間分け・集計する統計の初歩です。', 277) +
+        '<div class="b50-graph-container">' +
+          graphColsHtml +
+        '</div>' +
+        makeDrillBookFooter('オオスバメ', 'ツバメポケモン', 'ノーマル・ひこう', '0.7m', '19.8kg', '散らばったデータを種類ごとに分類・集計し、マス目を塗ってグラフ（表）にする統計の基礎を学びます。', 277) +
       '</div>';
 
-    initBattle50Sort();
+    initBattle50GraphNew();
 
   } else if(bId === 'Battle50_2'){
-    // オオスバメ せいりしよう（グラフと ひょう）
+    // バトル50_2：オオスバメ せいりしよう(2)（グラフを見て答える）
     card.innerHTML = 
       '<div class="drill-book-page">' +
-        makeDrillBookHeader(50, 'オオスバメ', 'おおすばめ', 'せいりしよう（グラフと ひょう）', 'アイテムの かずだけ グラフの マスを したから タップして ぬろう！', 277) +
-        '<div style="background:#fff;border:2px solid #cbd5e1;border-radius:18px;padding:14px;margin-bottom:12px">' +
-          '<div style="display:flex;gap:20px;justify-content:center;align-items:flex-end;height:180px;padding:10px 0;border-bottom:3px solid #64748b" id="b50ChartCols">' +
-            '<div style="display:flex;flex-direction:column-reverse;gap:4px;width:60px" data-cat="apple">' +
-              Array(5).fill(0).map((_, i) => '<div class="chart-block" data-row="' + (i+1) + '" style="height:28px;background:#fee2e2;border:2px solid #f87171;border-radius:6px;cursor:pointer"></div>').join('') +
-            '</div>' +
-            '<div style="display:flex;flex-direction:column-reverse;gap:4px;width:60px" data-cat="car">' +
-              Array(5).fill(0).map((_, i) => '<div class="chart-block" data-row="' + (i+1) + '" style="height:28px;background:#dbeafe;border:2px solid #60a5fa;border-radius:6px;cursor:pointer"></div>').join('') +
-            '</div>' +
+        makeDrillBookHeader(50, 'オオスバメ', 'おおすばめ', 'せ い り し よ う (2)', 'グラフを みて、もんだいに こたえよう！', 277) +
+        '<div class="ordinal-prob-card" id="b502Prob1">' +
+          '<div class="ordinal-prob-header">' +
+            '<div class="ordinal-prob-title"><span class="prob-num-circle">①</span><span>いちばん かずが おおい ポケモンは だれかな？</span></div>' +
+            '<span class="prob-badge-correct">💮 せいかい！</span>' +
           '</div>' +
-          '<div style="display:flex;gap:20px;justify-content:center;margin-top:6px;font-weight:900">' +
-            '<div style="width:60px;text-align:center;color:#dc2626">🍎 (3こ)</div>' +
-            '<div style="width:60px;text-align:center;color:#2563eb">🚗 (5こ)</div>' +
-          '</div>' +
-          '<div style="margin-top:14px;border-top:2px dashed #cbd5e1;padding-top:10px;display:flex;align-items:center;gap:6px">' +
-            '<span style="font-weight:900;font-size:14px;color:#1e293b">くるまは りんごより</span>' +
-            '<div class="t-math-box" data-idx="0" data-target="2">？</div>' +
-            '<span style="font-weight:900;font-size:14px;color:#1e293b">こ おおい！</span>' +
+          '<div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:6px;margin-top:8px">' +
+            '<div class="b24-choice-card" data-q="1" data-val="swellow" style="padding:8px 2px;text-align:center;cursor:pointer"><img src="' + ART(277) + '" style="width:32px"><div style="font-size:11px;font-weight:900">オオスバメ</div></div>' +
+            '<div class="b24-choice-card" data-q="1" data-val="skitty" style="padding:8px 2px;text-align:center;cursor:pointer"><img src="' + ART(300) + '" style="width:32px"><div style="font-size:11px;font-weight:900">エネコ</div></div>' +
+            '<div class="b24-choice-card" data-q="1" data-val="whismur" style="padding:8px 2px;text-align:center;cursor:pointer"><img src="' + ART(293) + '" style="width:32px"><div style="font-size:11px;font-weight:900">ゴニョニョ</div></div>' +
+            '<div class="b24-choice-card" data-q="1" data-val="slakoth" style="padding:8px 2px;text-align:center;cursor:pointer"><img src="' + ART(287) + '" style="width:32px"><div style="font-size:11px;font-weight:900">ナマケロ</div></div>' +
           '</div>' +
         '</div>' +
-        '<div class="num-choice-tray">' +
-          '<button type="button" class="num-choice-btn" data-val="2">2</button>' +
-          '<button type="button" class="num-choice-btn erase" data-val="erase">⌫ けす</button>' +
+        '<div class="ordinal-prob-card" id="b502Prob2">' +
+          '<div class="ordinal-prob-header">' +
+            '<div class="ordinal-prob-title"><span class="prob-num-circle">②</span><span>いちばん かずが すくない ポケモンは だれかな？</span></div>' +
+            '<span class="prob-badge-correct">💮 せいかい！</span>' +
+          '</div>' +
+          '<div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:6px;margin-top:8px">' +
+            '<div class="b24-choice-card" data-q="2" data-val="swellow" style="padding:8px 2px;text-align:center;cursor:pointer"><img src="' + ART(277) + '" style="width:32px"><div style="font-size:11px;font-weight:900">オオスバメ</div></div>' +
+            '<div class="b24-choice-card" data-q="2" data-val="skitty" style="padding:8px 2px;text-align:center;cursor:pointer"><img src="' + ART(300) + '" style="width:32px"><div style="font-size:11px;font-weight:900">エネコ</div></div>' +
+            '<div class="b24-choice-card" data-q="2" data-val="whismur" style="padding:8px 2px;text-align:center;cursor:pointer"><img src="' + ART(293) + '" style="width:32px"><div style="font-size:11px;font-weight:900">ゴニョニョ</div></div>' +
+            '<div class="b24-choice-card" data-q="2" data-val="slakoth" style="padding:8px 2px;text-align:center;cursor:pointer"><img src="' + ART(287) + '" style="width:32px"><div style="font-size:11px;font-weight:900">ナマケロ</div></div>' +
+          '</div>' +
         '</div>' +
-        makeDrillBookFooter('オオスバメ', 'ツバメポケモン', 'ノーマル・ひこう', '0.7m', '19.8kg', '数えた結果を棒グラフで視覚化し、一目で大小関係や差を把握する能力を身につけます。', 277) +
+        '<div class="ordinal-prob-card" id="b502Prob3">' +
+          '<div class="ordinal-prob-header">' +
+            '<div class="ordinal-prob-title"><span class="prob-num-circle">③</span><span>おなじ かずなのは、だれと だれかな？（2匹えらぼう）</span></div>' +
+            '<span class="prob-badge-correct">💮 せいかい！</span>' +
+          '</div>' +
+          '<div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:6px;margin-top:8px">' +
+            '<div class="b24-choice-card" data-q="3" data-val="swellow" style="padding:8px 2px;text-align:center;cursor:pointer"><img src="' + ART(277) + '" style="width:32px"><div style="font-size:11px;font-weight:900">オオスバメ</div></div>' +
+            '<div class="b24-choice-card" data-q="3" data-val="skitty" style="padding:8px 2px;text-align:center;cursor:pointer"><img src="' + ART(300) + '" style="width:32px"><div style="font-size:11px;font-weight:900">エネコ</div></div>' +
+            '<div class="b24-choice-card" data-q="3" data-val="whismur" style="padding:8px 2px;text-align:center;cursor:pointer"><img src="' + ART(293) + '" style="width:32px"><div style="font-size:11px;font-weight:900">ゴニョニョ</div></div>' +
+            '<div class="b24-choice-card" data-q="3" data-val="slakoth" style="padding:8px 2px;text-align:center;cursor:pointer"><img src="' + ART(287) + '" style="width:32px"><div style="font-size:11px;font-weight:900">ナマケロ</div></div>' +
+          '</div>' +
+        '</div>' +
+        makeDrillBookFooter('オオスバメ', 'ツバメポケモン', 'ノーマル・ひこう', '0.7m', '19.8kg', 'グラフの高さを比較して最多・最少・同数を読み取り、データから情報を読み解く基礎を確立します。', 277) +
       '</div>';
 
-    initBattle50Graph();
+    initBattle50_2Drill();
 
   } else if(bId === 'Battle51'){
     // リククラゲ 61から120までのすうじ（ひゃくすうひょう）
@@ -10442,26 +11148,63 @@ function initBattle18Unified(qs){
   });
 }
 
-function initBattle19Unified(qs){
-  document.querySelectorAll('.drill-book-page .choice[data-q]').forEach(btn => {
+function initBattle19New() {
+  const p = document.querySelector('.drill-book-page');
+  if(!p) return;
+
+  const expectedAnswers = {
+    'plate_0': 3,
+    'plate_1': 2,
+    'plate_2': 1,
+    'plate_3': 0,
+    'ring_0': 1,
+    'ring_1': 3,
+    'ring_2': 0,
+    'ring_3': 2
+  };
+
+  const userAnswers = {};
+  const cards = [
+    p.querySelector('#b19_card_0'),
+    p.querySelector('#b19_card_1'),
+    p.querySelector('#b19_card_2'),
+    p.querySelector('#b19_card_3'),
+    p.querySelector('#b19_card_4'),
+    p.querySelector('#b19_card_5'),
+    p.querySelector('#b19_card_6'),
+    p.querySelector('#b19_card_7')
+  ];
+
+  p.querySelectorAll('.b19-choice-btn').forEach(btn => {
     btn.onclick = () => {
-      const q = parseInt(btn.dataset.q, 10);
-      const val = btn.dataset.val;
-      const parent = $('b19_choices_' + q);
-      if(parent) parent.querySelectorAll('.choice').forEach(b => b.classList.remove('sel'));
-      btn.classList.add('sel');
-      playMarimbaPop(1.2);
+      const qid = btn.dataset.qid;
+      const val = parseInt(btn.dataset.val, 10);
+      userAnswers[qid] = val;
 
-      (S.answers[curIdx] = S.answers[curIdx] || {})[q] = val;
-      save();
-      updateThrow();
+      const group = p.querySelector('#b19_group_' + qid);
+      if(group) {
+        group.querySelectorAll('.b19-choice-btn').forEach(b => b.classList.remove('selected'));
+      }
+      btn.classList.add('selected');
 
-      const a = S.answers[curIdx] || {};
-      if(qs.every((item, i) => a[i] === item.ans)) stampDrillSuccess();
+      const isRight = expectedAnswers[qid] === val;
+      playMarimbaPop(isRight ? 1.3 : 0.8);
+
+      // Check card
+      const cardIdx = ['plate_0', 'plate_1', 'plate_2', 'plate_3', 'ring_0', 'ring_1', 'ring_2', 'ring_3'].indexOf(qid);
+      if(cardIdx !== -1 && cards[cardIdx]) {
+        if(isRight) cards[cardIdx].classList.add('is-correct');
+        else cards[cardIdx].classList.remove('is-correct');
+      }
+
+      // Check all
+      const allDone = Object.keys(expectedAnswers).every(k => userAnswers[k] === expectedAnswers[k]);
+      if(allDone) {
+        setTimeout(completeBookDrill, 400);
+      }
     };
   });
 }
-
 function initAppleSplitSequential(isB5) {
   const top1 = isB5 ? 1 : 3;
   const maxBot1 = isB5 ? 4 : 2;
@@ -12071,195 +12814,251 @@ function initBattle43_2Trail() {
   setupMathBoxController(p, ['49', '52', '56', '60'], completeBookDrill);
 }
 
-function initBattle44Pattern() {
+function initBattle45_2Match() {
   const p = document.querySelector('.drill-book-page');
   if(!p) return;
-  setupMathBoxController(p, ['30', '50', '25', '40', '36'], completeBookDrill);
-}
 
-function initBattle44_2Range() {
-  const p = document.querySelector('.drill-book-page');
-  if(!p) return;
-  setupMathBoxController(p, ['50', '54', '39', '51'], completeBookDrill);
-}
+  let selectedKey = null;
+  const matches = {};
+  const cards = p.querySelectorAll('#b45_clocks_row .b24-choice-card');
+  const btns = p.querySelectorAll('#b45_labels_row .fc-btn');
 
-function initBattle45Clock() {
-  const p = document.querySelector('.drill-book-page');
-  if(!p) return;
-  setupMathBoxController(p, ['4', '8', '11'], completeBookDrill);
-}
-
-function initBattle45_2Schedule() {
-  const p = document.querySelector('.drill-book-page');
-  if(!p) return;
-  setupMathBoxController(p, ['7', '12', '9'], completeBookDrill);
-}
-
-function initBattle46GearClock() {
-  const p = document.querySelector('.drill-book-page');
-  if(!p) return;
-  setupMathBoxController(p, ['3', '15', '7', '20', '10', '45'], completeBookDrill);
-}
-
-function initBattle46_2Elapsed() {
-  const p = document.querySelector('.drill-book-page');
-  if(!p) return;
-  setupMathBoxController(p, ['3', '6', '8'], completeBookDrill);
-}
-
-function initBattle47Length() {
-  const p = document.querySelector('.drill-book-page');
-  if(!p) return;
-  let picked = false;
-  p.querySelectorAll('.b24-choice-card').forEach(c => {
+  cards.forEach(c => {
     c.onclick = () => {
-      if(c.dataset.val === 'blue') {
-        playMarimbaPop(1.3);
-        c.classList.add('selected');
-        c.innerHTML += '<span class="b24-correct-badge">⭕</span>';
-        picked = true;
+      cards.forEach(o => o.classList.remove('selected'));
+      c.classList.add('selected');
+      selectedKey = c.dataset.key;
+      playMarimbaPop(1.1);
+    };
+  });
+
+  btns.forEach(b => {
+    b.onclick = () => {
+      if(!selectedKey) {
+        toast('まず うえの とけいを えらんでね！', 1500);
+        return;
+      }
+      const val = b.dataset.val;
+      if(val === selectedKey) {
+        matches[val] = true;
+        playMarimbaPop(1.4);
+        b.style.background = '#dcfce7';
+        b.style.borderColor = '#86efac';
+        b.style.color = '#15803d';
+        b.disabled = true;
+
+        const matchedCard = p.querySelector('#b45_clocks_row .b24-choice-card[data-key="' + val + '"]');
+        if(matchedCard) {
+          matchedCard.style.borderColor = '#22c55e';
+          matchedCard.style.background = '#f0fdf4';
+        }
+
+        selectedKey = null;
+        if(Object.keys(matches).length === 3) {
+          setTimeout(completeBookDrill, 500);
+        }
       } else {
         playMarimbaPop(0.7);
       }
     };
   });
-  setupMathBoxController(p, ['5'], () => {
-    if(picked) completeBookDrill();
-  });
 }
 
-function initBattle47_2Liquid() {
+function initBattle47Drill() {
   const p = document.querySelector('.drill-book-page');
   if(!p) return;
-  let picked = false;
-  p.querySelectorAll('.b24-choice-card').forEach(c => {
-    c.onclick = () => {
-      if(c.dataset.val === 'B') {
-        playMarimbaPop(1.3);
-        c.classList.add('selected');
-        c.innerHTML += '<span class="b24-correct-badge">⭕</span>';
-        picked = true;
-      } else {
-        playMarimbaPop(0.7);
-      }
-    };
-  });
-  setupMathBoxController(p, ['8'], () => {
-    if(picked) completeBookDrill();
-  });
-}
 
-function initBattle47_3Area() {
-  const p = document.querySelector('.drill-book-page');
-  if(!p) return;
-  let picked = false;
-  p.querySelectorAll('.b24-choice-card').forEach(c => {
-    c.onclick = () => {
-      if(c.dataset.val === 'B') {
-        playMarimbaPop(1.3);
-        c.classList.add('selected');
-        c.innerHTML += '<span class="b24-correct-badge">⭕</span>';
-        picked = true;
-      } else {
-        playMarimbaPop(0.7);
-      }
-    };
-  });
-  setupMathBoxController(p, ['6'], () => {
-    if(picked) completeBookDrill();
-  });
-}
-
-function initBattle48Trapinch() {
-  const p = document.querySelector('.drill-book-page');
-  if(!p) return;
-  setupMathBoxController(p, ['5', '8', '58'], completeBookDrill);
-}
-
-function initBattle48DotToDot() {
-  const board = document.getElementById('b48DotBoard');
-  const svg = document.getElementById('b48LinesSvg');
-  const prompt = document.getElementById('b48PromptText');
-  const art = document.getElementById('b48GroudonArt');
-  if(!board || !svg) return;
-
-  const totalDots = 60;
-  let nextExpected = 1;
-  const points = [];
-
-  for(let i=0; i<totalDots; i++) {
-    const angle = (i / totalDots) * Math.PI * 2 - Math.PI / 2;
-    const r = 40 + 7 * Math.sin(angle * 4);
-    const px = 50 + r * Math.cos(angle);
-    const py = 50 + r * Math.sin(angle);
-    points.push({ x: px, y: py, num: i + 1 });
+  let solved1 = false, solved2 = false;
+  function checkDone() {
+    if(solved1 && solved2) setTimeout(completeBookDrill, 500);
   }
 
-  points.forEach(pt => {
-    const btn = document.createElement('div');
-    btn.className = 'dot-star-btn';
-    btn.style.left = pt.x + '%';
-    btn.style.top = pt.y + '%';
-    btn.style.borderColor = '#ea580c';
-    btn.style.color = '#c2410c';
-    btn.textContent = pt.num;
-
-    btn.onclick = () => {
-      if(pt.num === nextExpected) {
-        playMarimbaPop(1.0 + (pt.num / totalDots) * 0.5);
-        btn.classList.add('connected');
-
-        if(nextExpected > 1) {
-          const prev = points[nextExpected - 2];
-          const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-          line.setAttribute('x1', prev.x + '%');
-          line.setAttribute('y1', prev.y + '%');
-          line.setAttribute('x2', pt.x + '%');
-          line.setAttribute('y2', pt.y + '%');
-          line.setAttribute('stroke', '#dc2626');
-          line.setAttribute('stroke-width', '4');
-          line.setAttribute('stroke-linecap', 'round');
-          svg.appendChild(line);
-        }
-
-        nextExpected++;
-        if(nextExpected <= totalDots) {
-          if(prompt) prompt.textContent = 'つぎは 【 ' + nextExpected + ' 】 を タップしよう！';
+  const prob1 = p.querySelector('#b47Prob1');
+  if(prob1) {
+    prob1.querySelectorAll('.b24-choice-card').forEach(c => {
+      c.onclick = () => {
+        if(c.dataset.val === 'blue') {
+          solved1 = true;
+          c.classList.add('selected');
+          c.querySelector('.b47-check').innerHTML = '⭕';
+          prob1.classList.add('is-correct');
+          playMarimbaPop(1.4);
+          checkDone();
         } else {
-          if(prompt) prompt.textContent = '🌋 だいかんせい！ グラードンが めざめたぞ！';
-          if(art) art.style.opacity = '1';
-          playCrystalSparkle();
-          completeBookDrill();
+          playMarimbaPop(0.7);
         }
-      } else {
-        playMarimbaPop(0.7);
-      }
-    };
+      };
+    });
+  }
 
-    board.appendChild(btn);
-  });
+  const prob2 = p.querySelector('#b47Prob2');
+  if(prob2) {
+    prob2.querySelectorAll('.b24-choice-card').forEach(c => {
+      c.onclick = () => {
+        if(c.dataset.penc === 'red') {
+          solved2 = true;
+          c.classList.add('selected');
+          prob2.classList.add('is-correct');
+          playMarimbaPop(1.5);
+          checkDone();
+        } else {
+          playMarimbaPop(0.7);
+        }
+      };
+    });
+  }
 }
 
-function initBattle49Shapes() {
+function initBattle47_2Drill() {
   const p = document.querySelector('.drill-book-page');
   if(!p) return;
-  const targetOrder = ['dice', 'box', 'can', 'ball'];
-  const promptNames = { 'dice': 'さいころの かたち', 'box': 'はこの かたち', 'can': 'つつの かたち', 'ball': 'ボールの かたち' };
-  let currentIdx = 0;
-  const prompt = document.getElementById('b49Prompt');
 
-  p.querySelectorAll('.b24-choice-card').forEach(c => {
+  let s1 = false, s2 = false;
+  function checkDone() {
+    if(s1 && s2) setTimeout(completeBookDrill, 500);
+  }
+
+  const prob1 = p.querySelector('#b472Prob1');
+  if(prob1) {
+    prob1.querySelectorAll('.b24-choice-card').forEach(c => {
+      c.onclick = () => {
+        if(c.dataset.val === 'can') {
+          s1 = true;
+          c.classList.add('selected');
+          prob1.classList.add('is-correct');
+          playMarimbaPop(1.4);
+          checkDone();
+        } else playMarimbaPop(0.7);
+      };
+    });
+  }
+
+  const prob2 = p.querySelector('#b472Prob2');
+  if(prob2) {
+    prob2.querySelectorAll('.b24-choice-card').forEach(c => {
+      c.onclick = () => {
+        if(c.dataset.val === 'water') {
+          s2 = true;
+          c.classList.add('selected');
+          prob2.classList.add('is-correct');
+          playMarimbaPop(1.5);
+          checkDone();
+        } else playMarimbaPop(0.7);
+      };
+    });
+  }
+}
+
+function initBattle47_3Drill() {
+  const p = document.querySelector('.drill-book-page');
+  if(!p) return;
+
+  let s1 = false, s2 = false;
+  function checkDone() {
+    if(s1 && s2) setTimeout(completeBookDrill, 500);
+  }
+
+  const prob1 = p.querySelector('#b473Prob1');
+  if(prob1) {
+    prob1.querySelectorAll('.b24-choice-card').forEach(c => {
+      c.onclick = () => {
+        if(c.dataset.val === 'blue') {
+          s1 = true;
+          c.classList.add('selected');
+          prob1.classList.add('is-correct');
+          playMarimbaPop(1.4);
+          checkDone();
+        } else playMarimbaPop(0.7);
+      };
+    });
+  }
+
+  const prob2 = p.querySelector('#b473Prob2');
+  if(prob2) {
+    prob2.querySelectorAll('.b24-choice-card').forEach(c => {
+      c.onclick = () => {
+        if(c.dataset.val === 'green') {
+          s2 = true;
+          c.classList.add('selected');
+          prob2.classList.add('is-correct');
+          playMarimbaPop(1.5);
+          checkDone();
+        } else playMarimbaPop(0.7);
+      };
+    });
+  }
+}
+
+function initBattle48Drill() {
+  const p = document.querySelector('.drill-book-page');
+  if(!p) return;
+
+  const encircled = new Set();
+  p.querySelectorAll('.trapinch-group').forEach(c => {
     c.onclick = () => {
-      if(c.dataset.key === targetOrder[currentIdx]) {
-        playMarimbaPop(1.3);
+      const g = c.dataset.g;
+      if(encircled.has(g)) {
+        encircled.delete(g);
+        c.classList.remove('selected');
+        playMarimbaPop(0.9);
+      } else {
+        encircled.add(g);
         c.classList.add('selected');
-        c.innerHTML += '<span class="b24-correct-badge">⭕</span>';
-        currentIdx++;
-        if(currentIdx < targetOrder.length) {
-          if(prompt) prompt.textContent = '【 ' + promptNames[targetOrder[currentIdx]] + ' 】 を タップしよう！';
-        } else {
-          if(prompt) prompt.textContent = '🎉 ぜんぶの かたちが みつかったね！';
-          completeBookDrill();
+        playMarimbaPop(1.2 + encircled.size * 0.05);
+      }
+    };
+  });
+
+  setupMathBoxController(p, ['58'], () => {
+    if(encircled.size >= 5) {
+      completeBookDrill();
+    } else {
+      toast('10の まとまりの グループも タップして まるで かこもう！', 2000);
+    }
+  });
+}
+
+function initBattle49Match() {
+  const p = document.querySelector('.drill-book-page');
+  if(!p) return;
+
+  let selectedShape = null;
+  const matches = {};
+  const shapes = p.querySelectorAll('#b49_top_shapes .b24-choice-card');
+  const items = p.querySelectorAll('#b49_bottom_items .b24-choice-card');
+
+  shapes.forEach(s => {
+    s.onclick = () => {
+      shapes.forEach(o => o.classList.remove('selected'));
+      s.classList.add('selected');
+      selectedShape = s.dataset.shape;
+      playMarimbaPop(1.1);
+    };
+  });
+
+  items.forEach(it => {
+    it.onclick = () => {
+      if(!selectedShape) {
+        toast('まず うえの かたちを えらんでね！', 1500);
+        return;
+      }
+      const match = it.dataset.match;
+      if(match === selectedShape) {
+        matches[match] = true;
+        playMarimbaPop(1.4);
+        it.style.background = '#dcfce7';
+        it.style.borderColor = '#86efac';
+        it.style.pointerEvents = 'none';
+
+        const shapeEl = p.querySelector('#b49_top_shapes .b24-choice-card[data-shape="' + match + '"]');
+        if(shapeEl) {
+          shapeEl.style.borderColor = '#22c55e';
+          shapeEl.style.background = '#f0fdf4';
+        }
+
+        selectedShape = null;
+        if(Object.keys(matches).length === 4) {
+          setTimeout(completeBookDrill, 500);
         }
       } else {
         playMarimbaPop(0.7);
@@ -12268,57 +13067,130 @@ function initBattle49Shapes() {
   });
 }
 
-function initBattle49Blocks() {
+function initBattle49_2Drill() {
   const p = document.querySelector('.drill-book-page');
   if(!p) return;
-  setupMathBoxController(p, ['4', '6', '9'], completeBookDrill);
-}
 
-function initBattle50Sort() {
-  const p = document.querySelector('.drill-book-page');
-  if(!p) return;
-  let fruits = 0, vehicles = 0;
-  const fText = document.getElementById('b50FruitCount');
-  const vText = document.getElementById('b50VehicleCount');
+  const done = new Set();
+  p.querySelectorAll('#b49_view_list .b24-choice-card').forEach(c => {
+    c.onclick = () => {
+      const it = c.dataset.item;
+      done.add(it);
+      c.classList.add('selected');
+      c.style.borderColor = '#22c55e';
+      c.style.background = '#f0fdf4';
+      playMarimbaPop(1.3 + done.size * 0.1);
 
-  p.querySelectorAll('#b50ItemsPool .b24-tap-item').forEach(it => {
-    it.onclick = () => {
-      if(it.classList.contains('counted')) return;
-      playMarimbaPop(1.3);
-      it.classList.add('counted');
-      it.style.opacity = '0.3';
-      it.style.pointerEvents = 'none';
-
-      if(it.dataset.type === 'fruit') fruits++;
-      else vehicles++;
-
-      if(fText) fText.textContent = fruits + ' こ';
-      if(vText) vText.textContent = vehicles + ' こ';
-
-      if(fruits === 4 && vehicles === 4) {
-        completeBookDrill();
+      if(done.size === 3) {
+        setTimeout(completeBookDrill, 500);
       }
     };
   });
 }
 
-function initBattle50Graph() {
+function initBattle50GraphNew() {
   const p = document.querySelector('.drill-book-page');
   if(!p) return;
-  let appleBlocks = 0, carBlocks = 0;
 
-  p.querySelectorAll('.chart-block').forEach(b => {
-    b.onclick = () => {
-      playMarimbaPop(1.2);
-      b.style.background = b.parentElement.dataset.cat === 'apple' ? '#ef4444' : '#3b82f6';
-      if(b.parentElement.dataset.cat === 'apple') appleBlocks++;
-      else carBlocks++;
+  const targets = [7, 9, 7, 6];
+  const filledCounts = [0, 0, 0, 0];
+
+  p.querySelectorAll('.b50-graph-cell').forEach(cell => {
+    cell.onclick = () => {
+      const col = parseInt(cell.dataset.col, 10);
+      const row = parseInt(cell.dataset.row, 10);
+
+      // Fill up to this row
+      const colCells = Array.from(p.querySelectorAll('.b50-graph-cell[data-col="' + col + '"]'));
+      colCells.forEach(c => {
+        const r = parseInt(c.dataset.row, 10);
+        if(r <= row) {
+          c.classList.add('filled');
+        } else {
+          c.classList.remove('filled');
+        }
+      });
+
+      filledCounts[col] = row;
+      const countEl = p.querySelector('#b50_count_' + col);
+      if(countEl) countEl.textContent = row + '匹';
+
+      playMarimbaPop(1.1 + row * 0.05);
+
+      // Check if all columns match targets
+      const isAllRight = targets.every((t, i) => filledCounts[i] === t);
+      if(isAllRight) {
+        setTimeout(completeBookDrill, 500);
+      }
+    };
+  });
+}
+
+function initBattle50_2Drill() {
+  const p = document.querySelector('.drill-book-page');
+  if(!p) return;
+
+  let q1Done = false, q2Done = false;
+  const q3Selected = new Set();
+
+  function checkDone() {
+    if(q1Done && q2Done && q3Selected.size === 2 && q3Selected.has('swellow') && q3Selected.has('whismur')) {
+      setTimeout(completeBookDrill, 500);
+    }
+  }
+
+  // Q1: 最多 (skitty)
+  const p1 = p.querySelector('#b502Prob1');
+  p1.querySelectorAll('.b24-choice-card').forEach(c => {
+    c.onclick = () => {
+      if(c.dataset.val === 'skitty') {
+        q1Done = true;
+        c.classList.add('selected');
+        p1.classList.add('is-correct');
+        playMarimbaPop(1.4);
+        checkDone();
+      } else playMarimbaPop(0.7);
     };
   });
 
-  setupMathBoxController(p, ['2'], completeBookDrill);
-}
+  // Q2: 最少 (slakoth)
+  const p2 = p.querySelector('#b502Prob2');
+  p2.querySelectorAll('.b24-choice-card').forEach(c => {
+    c.onclick = () => {
+      if(c.dataset.val === 'slakoth') {
+        q2Done = true;
+        c.classList.add('selected');
+        p2.classList.add('is-correct');
+        playMarimbaPop(1.4);
+        checkDone();
+      } else playMarimbaPop(0.7);
+    };
+  });
 
+  // Q3: 同数 (swellow & whismur)
+  const p3 = p.querySelector('#b502Prob3');
+  p3.querySelectorAll('.b24-choice-card').forEach(c => {
+    c.onclick = () => {
+      const v = c.dataset.val;
+      if(q3Selected.has(v)) {
+        q3Selected.delete(v);
+        c.classList.remove('selected');
+        playMarimbaPop(0.9);
+      } else {
+        q3Selected.add(v);
+        c.classList.add('selected');
+        playMarimbaPop(1.3);
+      }
+
+      if(q3Selected.size === 2 && q3Selected.has('swellow') && q3Selected.has('whismur')) {
+        p3.classList.add('is-correct');
+        checkDone();
+      } else {
+        p3.classList.remove('is-correct');
+      }
+    };
+  });
+}
 function initBattle51Chart() {
   const p = document.querySelector('.drill-book-page');
   if(!p) return;
@@ -12639,7 +13511,7 @@ function openHome(){
   $('home').classList.add('active');
 
   updateHomeStats();
-  if($('hdrTitleSmall')) $('hdrTitleSmall').innerHTML = 'ドリルを えらぼう！ <span class="ver-badge" style="background:#dcfce7;color:#15803d;padding:1px 6px;border-radius:6px;font-size:11px;font-weight:900">Ver 2.9 最新版</span>';
+  if($('hdrTitleSmall')) $('hdrTitleSmall').innerHTML = 'ドリルを えらぼう！ <span class="ver-badge" style="background:#dcfce7;color:#15803d;padding:1px 6px;border-radius:6px;font-size:11px;font-weight:900">Ver 3.0 最新版</span>';
 }
 
 function selectDrill(subject){
@@ -12648,7 +13520,7 @@ function selectDrill(subject){
     $('home').classList.remove('active');
     $('battle').classList.remove('active');
     $('map').classList.add('active');
-    if($('hdrTitleSmall')) $('hdrTitleSmall').innerHTML = '入学準備 さんすう <span class="ver-badge" style="background:#dcfce7;color:#15803d;padding:1px 6px;border-radius:6px;font-size:11px;font-weight:900">Ver 2.9 最新版</span>';
+    if($('hdrTitleSmall')) $('hdrTitleSmall').innerHTML = '入学準備 さんすう <span class="ver-badge" style="background:#dcfce7;color:#15803d;padding:1px 6px;border-radius:6px;font-size:11px;font-weight:900">Ver 3.0 最新版</span>';
     layoutMap();
     setTimeout(scrollToCurrent, 80);
   } else {
@@ -12695,7 +13567,7 @@ function backToMap(){
   $('home').classList.remove('active');
   $('battle').classList.remove('active');
   $('map').classList.add('active');
-  if($('hdrTitleSmall')) $('hdrTitleSmall').innerHTML = '入学準備 さんすう <span class="ver-badge" style="background:#dcfce7;color:#15803d;padding:1px 6px;border-radius:6px;font-size:11px;font-weight:900">Ver 2.9 最新版</span>';
+  if($('hdrTitleSmall')) $('hdrTitleSmall').innerHTML = '入学準備 さんすう <span class="ver-badge" style="background:#dcfce7;color:#15803d;padding:1px 6px;border-radius:6px;font-size:11px;font-weight:900">Ver 3.0 最新版</span>';
   layoutMap();
   setTimeout(scrollToCurrent, 80);
 }

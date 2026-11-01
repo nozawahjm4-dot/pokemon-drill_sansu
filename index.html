@@ -9766,7 +9766,7 @@ function renderInteractiveStage(row){
     initBattle49_2Drill();
 
   } else if(bId === 'Battle50'){
-    // バトル50：オオスバメ せいりしよう（原本完全再現・富士山と野原の風景・グラフ連動・①②③設問完全実装）
+    // バトル50：オオスバメ せいりしよう（原本完全再現・豪華な富士山とモミの木とお花畑・大きなポケモン・グラフ連動）
     const pokesData = [
       { id: 277, name: 'オオスバメ', target: 7, color: '#2563eb', bg: '#dbeafe' },
       { id: 300, name: 'エネコ', target: 9, color: '#db2777', bg: '#fce7f3' },
@@ -9774,58 +9774,64 @@ function renderInteractiveStage(row){
       { id: 287, name: 'ナマケロ', target: 6, color: '#78350f', bg: '#fef3c7' }
     ];
 
+    // 原本 Battle50.jpg に基づく精密な座標配置 (高さ480px)
+    // オオスバメ 7羽 (空・山の上)
     const swellows = [
-      { top: 8, left: 10 }, { top: 15, left: 32 }, { top: 6, left: 54 },
-      { top: 14, left: 74 }, { top: 26, left: 14 }, { top: 28, left: 40 }, { top: 29, left: 68 }
+      { top: 7, left: 16 }, { top: 12, left: 55 }, { top: 17, left: 35 },
+      { top: 17, left: 74 }, { top: 27, left: 18 }, { top: 29, left: 44 }, { top: 31, left: 72 }
     ];
+    // ナマケロ 6匹 (草地・寝転び)
     const slakoths = [
-      { top: 46, left: 28 }, { top: 58, left: 10 }, { top: 65, left: 45 },
-      { top: 63, left: 78 }, { top: 76, left: 7 }, { top: 75, left: 72 }
+      { top: 43, left: 32 }, { top: 54, left: 18 }, { top: 62, left: 50 },
+      { top: 61, left: 82 }, { top: 72, left: 14 }, { top: 73, left: 75 }
     ];
+    // エネコ 9匹 (お花畑)
     const skittys = [
-      { top: 50, left: 15 }, { top: 52, left: 45 }, { top: 56, left: 32 },
-      { top: 58, left: 70 }, { top: 66, left: 6 }, { top: 66, left: 33 },
-      { top: 74, left: 24 }, { top: 74, left: 36 }, { top: 75, left: 61 }
+      { top: 47, left: 19 }, { top: 49, left: 47 }, { top: 55, left: 34 },
+      { top: 55, left: 71 }, { top: 64, left: 8 },  { top: 65, left: 36 },
+      { top: 73, left: 27 }, { top: 74, left: 39 }, { top: 74, left: 63 }
     ];
+    // ゴニョニョ 7匹 (お花畑)
     const whismurs = [
-      { top: 52, left: 5 }, { top: 60, left: 58 }, { top: 60, left: 82 },
-      { top: 67, left: 17 }, { top: 68, left: 70 }, { top: 75, left: 48 }, { top: 76, left: 90 }
+      { top: 49, left: 8 },  { top: 57, left: 60 }, { top: 58, left: 82 },
+      { top: 65, left: 20 }, { top: 66, left: 70 }, { top: 73, left: 51 }, { top: 74, left: 91 }
     ];
 
     let fieldPokesHtml = '';
     swellows.forEach((pos, idx) => {
-      fieldPokesHtml += '<div class="b50-field-poke" data-type="0" data-idx="' + idx + '" style="position:absolute;top:' + pos.top + '%;left:' + pos.left + '%;cursor:pointer;transform:translate(-50%,-50%);transition:transform 0.2s;z-index:5">' +
-        '<img src="' + ART(277) + '" alt="オオスバメ" style="width:38px;height:38px;pointer-events:none;filter:drop-shadow(0 2px 3px rgba(0,0,0,0.3))">' +
+      fieldPokesHtml += '<div class="b50-field-poke" data-type="0" data-idx="' + idx + '" style="position:absolute;top:' + pos.top + '%;left:' + pos.left + '%;cursor:pointer;transform:translate(-50%,-50%);transition:all 0.25s;z-index:25">' +
+        '<img src="' + ART(277) + '" alt="オオスバメ" style="width:72px;height:72px;pointer-events:none;filter:drop-shadow(0 3px 6px rgba(0,0,0,0.35)) drop-shadow(0 0 2px #fff)">' +
       '</div>';
     });
     slakoths.forEach((pos, idx) => {
-      fieldPokesHtml += '<div class="b50-field-poke" data-type="3" data-idx="' + idx + '" style="position:absolute;top:' + pos.top + '%;left:' + pos.left + '%;cursor:pointer;transform:translate(-50%,-50%);transition:transform 0.2s;z-index:5">' +
-        '<img src="' + ART(287) + '" alt="ナマケロ" style="width:34px;height:34px;pointer-events:none;filter:drop-shadow(0 2px 3px rgba(0,0,0,0.3))">' +
+      fieldPokesHtml += '<div class="b50-field-poke" data-type="3" data-idx="' + idx + '" style="position:absolute;top:' + pos.top + '%;left:' + pos.left + '%;cursor:pointer;transform:translate(-50%,-50%);transition:all 0.25s;z-index:25">' +
+        '<img src="' + ART(287) + '" alt="ナマケロ" style="width:64px;height:50px;pointer-events:none;filter:drop-shadow(0 3px 6px rgba(0,0,0,0.35)) drop-shadow(0 0 2px #fff)">' +
       '</div>';
     });
     skittys.forEach((pos, idx) => {
-      fieldPokesHtml += '<div class="b50-field-poke" data-type="1" data-idx="' + idx + '" style="position:absolute;top:' + pos.top + '%;left:' + pos.left + '%;cursor:pointer;transform:translate(-50%,-50%);transition:transform 0.2s;z-index:5">' +
-        '<img src="' + ART(300) + '" alt="エネコ" style="width:32px;height:32px;pointer-events:none;filter:drop-shadow(0 2px 3px rgba(0,0,0,0.3))">' +
+      fieldPokesHtml += '<div class="b50-field-poke" data-type="1" data-idx="' + idx + '" style="position:absolute;top:' + pos.top + '%;left:' + pos.left + '%;cursor:pointer;transform:translate(-50%,-50%);transition:all 0.25s;z-index:25">' +
+        '<img src="' + ART(300) + '" alt="エネコ" style="width:54px;height:54px;pointer-events:none;filter:drop-shadow(0 3px 6px rgba(0,0,0,0.35)) drop-shadow(0 0 2px #fff)">' +
       '</div>';
     });
     whismurs.forEach((pos, idx) => {
-      fieldPokesHtml += '<div class="b50-field-poke" data-type="2" data-idx="' + idx + '" style="position:absolute;top:' + pos.top + '%;left:' + pos.left + '%;cursor:pointer;transform:translate(-50%,-50%);transition:transform 0.2s;z-index:5">' +
-        '<img src="' + ART(293) + '" alt="ゴニョニョ" style="width:32px;height:32px;pointer-events:none;filter:drop-shadow(0 2px 3px rgba(0,0,0,0.3))">' +
+      fieldPokesHtml += '<div class="b50-field-poke" data-type="2" data-idx="' + idx + '" style="position:absolute;top:' + pos.top + '%;left:' + pos.left + '%;cursor:pointer;transform:translate(-50%,-50%);transition:all 0.25s;z-index:25">' +
+        '<img src="' + ART(293) + '" alt="ゴニョニョ" style="width:54px;height:54px;pointer-events:none;filter:drop-shadow(0 3px 6px rgba(0,0,0,0.35)) drop-shadow(0 0 2px #fff)">' +
       '</div>';
     });
 
+    // グラフ列の生成（10マス）
     let graphColsHtml = '';
     pokesData.forEach((p, cIdx) => {
       let cellsHtml = '';
       for(let r=10; r>=1; r--) {
-        cellsHtml += '<div class="b50-graph-cell" data-col="' + cIdx + '" data-row="' + r + '" style="height:22px;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;justify-content:center;cursor:pointer;background:#fff;transition:all 0.2s"></div>';
+        cellsHtml += '<div class="b50-graph-cell" data-col="' + cIdx + '" data-row="' + r + '" style="height:24px;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;justify-content:center;cursor:pointer;background:#fff;transition:all 0.2s"></div>';
       }
       graphColsHtml += 
-        '<div class="b50-col" style="flex:1;background:#f8fafc;border:2px solid ' + p.color + '44;border-radius:12px;overflow:hidden;display:flex;flex-direction:column">' +
-          '<div style="text-align:center;padding:6px 2px;background:' + p.bg + ';border-bottom:2px solid ' + p.color + '44">' +
-            '<img src="' + ART(p.id) + '" alt="' + p.name + '" style="width:30px;height:30px">' +
-            '<div style="font-size:11px;font-weight:900;color:' + p.color + '">' + p.name + '</div>' +
-            '<div style="font-size:13px;font-weight:900;color:#0f172a" id="b50_count_' + cIdx + '">0 / ' + p.target + '</div>' +
+        '<div class="b50-col" style="flex:1;background:#f8fafc;border:2px solid ' + p.color + '44;border-radius:14px;overflow:hidden;display:flex;flex-direction:column">' +
+          '<div style="text-align:center;padding:8px 4px;background:' + p.bg + ';border-bottom:2px solid ' + p.color + '44">' +
+            '<img src="' + ART(p.id) + '" alt="' + p.name + '" style="width:38px;height:38px">' +
+            '<div style="font-size:12px;font-weight:900;color:' + p.color + '">' + p.name + '</div>' +
+            '<div style="font-size:14px;font-weight:900;color:#0f172a" id="b50_count_' + cIdx + '">0 / ' + p.target + '</div>' +
           '</div>' +
           '<div style="display:flex;flex-direction:column;flex:1">' + cellsHtml + '</div>' +
         '</div>';
@@ -9835,52 +9841,130 @@ function renderInteractiveStage(row){
       '<div class="drill-book-page">' +
         makeDrillBookHeader(50, 'オオスバメ', 'おおすばめ', 'せ い り し よ う', 'そらと のはらの ポケモンを タップして かぞえ、グラフに 〇を ぬろう！', 277) +
         
-        '<div style="position:relative;height:240px;border-radius:18px;overflow:hidden;border:2.5px solid #86efac;margin-bottom:14px;background:linear-gradient(to bottom, #bae6fd 0%, #e0f2fe 45%, #86efac 46%, #4ade80 70%, #22c55e 100%);box-shadow:0 4px 10px rgba(0,0,0,0.06)">' +
-          '<svg viewBox="0 0 400 160" style="position:absolute;top:25px;left:50%;transform:translateX(-50%);width:260px;opacity:0.85;pointer-events:none">' +
-            '<polygon points="200,10 70,160 330,160" fill="#93c5fd"/>' +
-            '<polygon points="200,10 160,60 180,50 200,65 220,50 240,60" fill="#ffffff"/>' +
+        // 1. 豪華な風景エリア（原本 Battle50.jpg を忠実に再現）
+        '<div style="position:relative;height:480px;border-radius:24px;overflow:hidden;border:3px solid #86efac;margin-bottom:16px;box-shadow:0 6px 16px rgba(0,0,0,0.12);background:#38bdf8">' +
+          // 豪華な背景イラスト (SVG)
+          '<svg viewBox="0 0 600 480" preserveAspectRatio="none" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1">' +
+            '<defs>' +
+              // 空のグラデーション
+              '<linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">' +
+                '<stop offset="0%" stop-color="#38bdf8"/>' +
+                '<stop offset="42%" stop-color="#bae6fd"/>' +
+                '<stop offset="50%" stop-color="#e0f2fe"/>' +
+              '</linearGradient>' +
+              // 富士山の山肌
+              '<linearGradient id="mountainGrad" x1="0%" y1="0%" x2="0%" y2="100%">' +
+                '<stop offset="0%" stop-color="#93c5fd"/>' +
+                '<stop offset="60%" stop-color="#60a5fa"/>' +
+                '<stop offset="100%" stop-color="#3b82f6"/>' +
+              '</linearGradient>' +
+              // 草原のグラデーション
+              '<linearGradient id="grassGrad" x1="0%" y1="0%" x2="0%" y2="100%">' +
+                '<stop offset="0%" stop-color="#86efac"/>' +
+                '<stop offset="25%" stop-color="#4ade80"/>' +
+                '<stop offset="60%" stop-color="#22c55e"/>' +
+                '<stop offset="100%" stop-color="#15803d"/>' +
+              '</linearGradient>' +
+              // もみの木の濃い緑
+              '<linearGradient id="pineGrad" x1="0%" y1="0%" x2="100%" y2="100%">' +
+                '<stop offset="0%" stop-color="#166534"/>' +
+                '<stop offset="60%" stop-color="#14532d"/>' +
+                '<stop offset="100%" stop-color="#052e16"/>' +
+              '</linearGradient>' +
+            '</defs>' +
+
+            // 空
+            '<rect width="600" height="240" fill="url(#skyGrad)"/>' +
+
+            // 白い雲
+            '<ellipse cx="100" cy="50" rx="60" ry="22" fill="#ffffff" opacity="0.85"/>' +
+            '<ellipse cx="130" cy="42" rx="40" ry="18" fill="#ffffff" opacity="0.9"/>' +
+            '<ellipse cx="500" cy="65" rx="75" ry="25" fill="#ffffff" opacity="0.85"/>' +
+            '<ellipse cx="470" cy="55" rx="45" ry="20" fill="#ffffff" opacity="0.9"/>' +
+
+            // 富士山
+            '<polygon points="300,35 120,225 480,225" fill="url(#mountainGrad)"/>' +
+            // 富士山の雪冠（ギザギザの雪）
+            '<polygon points="300,35 245,95 265,90 278,110 300,95 320,112 335,92 355,95" fill="#ffffff"/>' +
+
+            // 山麓の森林ライン
+            '<path d="M 0 215 Q 150 195 300 215 T 600 205 L 600 240 L 0 240 Z" fill="#15803d" opacity="0.85"/>' +
+
+            // 右側の大きなもみの木（原本の2本のもみの木）
+            // 木1 (大)
+            '<rect x="520" y="280" width="22" height="70" fill="#78350f"/>' +
+            '<polygon points="531,110 470,175 592,175" fill="url(#pineGrad)"/>' +
+            '<polygon points="531,155 455,230 607,230" fill="url(#pineGrad)"/>' +
+            '<polygon points="531,210 440,295 622,295" fill="url(#pineGrad)"/>' +
+            '<polygon points="531,270 425,355 637,355" fill="url(#pineGrad)"/>' +
+            // 木2 (中)
+            '<rect x="440" y="260" width="16" height="50" fill="#78350f"/>' +
+            '<polygon points="448,150 400,205 496,205" fill="url(#pineGrad)"/>' +
+            '<polygon points="448,190 385,250 511,250" fill="url(#pineGrad)"/>' +
+            '<polygon points="448,235 370,300 526,300" fill="url(#pineGrad)"/>' +
+
+            // 草原エリア (下半分)
+            '<path d="M 0 210 Q 200 195 400 220 T 600 205 L 600 480 L 0 480 Z" fill="url(#grassGrad)"/>' +
+
+            // お花畑の白い花（原本に散りばめられたデイジー）
+            [
+              [40, 260], [90, 245], [140, 280], [210, 255], [260, 275], [330, 250],
+              [70, 320], [130, 350], [190, 310], [240, 340], [300, 315], [370, 335],
+              [45, 390], [110, 420], [170, 385], [230, 430], [290, 395], [350, 425],
+              [410, 390], [470, 435], [520, 410], [560, 440], [390, 455], [150, 460]
+            ].map(([fx, fy]) =>
+              '<g transform="translate(' + fx + ',' + fy + ') scale(0.7)">' +
+                '<circle cx="0" cy="0" r="10" fill="#ffffff"/>' +
+                '<circle cx="0" cy="0" r="4.5" fill="#facc15"/>' +
+              '</g>'
+            ).join('') +
           '</svg>' +
-          '<div style="position:absolute;top:40px;right:10px;font-size:52px;opacity:0.75;pointer-events:none">🌲</div>' +
-          '<div style="position:absolute;top:70px;left:5px;font-size:42px;opacity:0.75;pointer-events:none">🌲</div>' +
+
+          // ポケモンたちの配置
           fieldPokesHtml +
         '</div>' +
 
-        '<div style="background:#fff;border:2.5px solid #cbd5e1;border-radius:18px;padding:12px;margin-bottom:14px">' +
-          '<div style="font-size:14px;font-weight:900;color:#1e293b;margin-bottom:8px;text-align:center">📊 ポケモンの かずだけ マスを ぬろう（絵をタップしても ぬれるよ！）</div>' +
-          '<div style="display:flex;gap:8px;max-width:440px;margin:0 auto">' +
+        // 2. グラフエリア
+        '<div style="background:#fff;border:2.5px solid #cbd5e1;border-radius:20px;padding:14px;margin-bottom:16px;box-shadow:0 3px 8px rgba(0,0,0,0.04)">' +
+          '<div style="font-size:14px;font-weight:900;color:#1e293b;margin-bottom:10px;text-align:center">📊 ポケモンの かずだけ マスを ぬろう（絵をタップしても ぬれるよ！）</div>' +
+          '<div style="display:flex;gap:10px;max-width:480px;margin:0 auto">' +
             graphColsHtml +
           '</div>' +
         '</div>' +
 
-        '<div style="background:#f0fdf4;border:2.5px solid #86efac;border-radius:18px;padding:14px;margin-bottom:14px">' +
-          '<div style="font-size:15px;font-weight:900;color:#166534;margin-bottom:10px">✏️ グラフを みて もんだいに こたえよう</div>' +
+        // 3. 原本設問 ①②③
+        '<div style="background:#f0fdf4;border:2.5px solid #86efac;border-radius:20px;padding:16px;margin-bottom:14px">' +
+          '<div style="font-size:16px;font-weight:900;color:#166534;margin-bottom:12px">✏️ グラフを みて もんだいに こたえよう</div>' +
           
-          '<div style="margin-bottom:12px;background:#fff;padding:10px;border-radius:12px;border:1.5px solid #bbf7d0">' +
-            '<div style="font-size:13px;font-weight:900;color:#1e293b;margin-bottom:6px">① いちばん かずが おおい ポケモンは？</div>' +
-            '<div class="choices b50-q1-choices" style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap">' +
-              '<button type="button" class="choice" data-val="オオスバメ" style="font-size:13px;font-weight:900;padding:6px 12px;border-radius:8px">オオスバメ</button>' +
-              '<button type="button" class="choice" data-val="エネコ" style="font-size:13px;font-weight:900;padding:6px 12px;border-radius:8px">エネコ</button>' +
-              '<button type="button" class="choice" data-val="ゴニョニョ" style="font-size:13px;font-weight:900;padding:6px 12px;border-radius:8px">ゴニョニョ</button>' +
-              '<button type="button" class="choice" data-val="ナマケロ" style="font-size:13px;font-weight:900;padding:6px 12px;border-radius:8px">ナマケロ</button>' +
+          // Q1: いちばん かずが おおい
+          '<div style="margin-bottom:12px;background:#fff;padding:12px;border-radius:14px;border:1.5px solid #bbf7d0">' +
+            '<div style="font-size:14px;font-weight:900;color:#1e293b;margin-bottom:8px">① いちばん かずが おおい ポケモンは？</div>' +
+            '<div class="choices b50-q1-choices" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">' +
+              '<button type="button" class="choice" data-val="オオスバメ" style="font-size:14px;font-weight:900;padding:6px 14px;border-radius:10px;display:inline-flex;align-items:center;gap:4px"><img src="' + ART(277) + '" style="width:26px;height:26px">オオスバメ</button>' +
+              '<button type="button" class="choice" data-val="エネコ" style="font-size:14px;font-weight:900;padding:6px 14px;border-radius:10px;display:inline-flex;align-items:center;gap:4px"><img src="' + ART(300) + '" style="width:26px;height:26px">エネコ</button>' +
+              '<button type="button" class="choice" data-val="ゴニョニョ" style="font-size:14px;font-weight:900;padding:6px 14px;border-radius:10px;display:inline-flex;align-items:center;gap:4px"><img src="' + ART(293) + '" style="width:26px;height:26px">ゴニョニョ</button>' +
+              '<button type="button" class="choice" data-val="ナマケロ" style="font-size:14px;font-weight:900;padding:6px 14px;border-radius:10px;display:inline-flex;align-items:center;gap:4px"><img src="' + ART(287) + '" style="width:26px;height:26px">ナマケロ</button>' +
             '</div>' +
           '</div>' +
 
-          '<div style="margin-bottom:12px;background:#fff;padding:10px;border-radius:12px;border:1.5px solid #bbf7d0">' +
-            '<div style="font-size:13px;font-weight:900;color:#1e293b;margin-bottom:6px">② いちばん かずが すくない ポケモンは？</div>' +
-            '<div class="choices b50-q2-choices" style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap">' +
-              '<button type="button" class="choice" data-val="オオスバメ" style="font-size:13px;font-weight:900;padding:6px 12px;border-radius:8px">オオスバメ</button>' +
-              '<button type="button" class="choice" data-val="エネコ" style="font-size:13px;font-weight:900;padding:6px 12px;border-radius:8px">エネコ</button>' +
-              '<button type="button" class="choice" data-val="ゴニョニョ" style="font-size:13px;font-weight:900;padding:6px 12px;border-radius:8px">ゴニョニョ</button>' +
-              '<button type="button" class="choice" data-val="ナマケロ" style="font-size:13px;font-weight:900;padding:6px 12px;border-radius:8px">ナマケロ</button>' +
+          // Q2: いちばん かずが すくない
+          '<div style="margin-bottom:12px;background:#fff;padding:12px;border-radius:14px;border:1.5px solid #bbf7d0">' +
+            '<div style="font-size:14px;font-weight:900;color:#1e293b;margin-bottom:8px">② いちばん かずが すくない ポケモンは？</div>' +
+            '<div class="choices b50-q2-choices" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">' +
+              '<button type="button" class="choice" data-val="オオスバメ" style="font-size:14px;font-weight:900;padding:6px 14px;border-radius:10px;display:inline-flex;align-items:center;gap:4px"><img src="' + ART(277) + '" style="width:26px;height:26px">オオスバメ</button>' +
+              '<button type="button" class="choice" data-val="エネコ" style="font-size:14px;font-weight:900;padding:6px 14px;border-radius:10px;display:inline-flex;align-items:center;gap:4px"><img src="' + ART(300) + '" style="width:26px;height:26px">エネコ</button>' +
+              '<button type="button" class="choice" data-val="ゴニョニョ" style="font-size:14px;font-weight:900;padding:6px 14px;border-radius:10px;display:inline-flex;align-items:center;gap:4px"><img src="' + ART(293) + '" style="width:26px;height:26px">ゴニョニョ</button>' +
+              '<button type="button" class="choice" data-val="ナマケロ" style="font-size:14px;font-weight:900;padding:6px 14px;border-radius:10px;display:inline-flex;align-items:center;gap:4px"><img src="' + ART(287) + '" style="width:26px;height:26px">ナマケロ</button>' +
             '</div>' +
           '</div>' +
 
-          '<div style="background:#fff;padding:10px;border-radius:12px;border:1.5px solid #bbf7d0">' +
-            '<div style="font-size:13px;font-weight:900;color:#1e293b;margin-bottom:6px">③ おなじ かずなのは どれと どれ？</div>' +
-            '<div class="choices b50-q3-choices" style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap">' +
-              '<button type="button" class="choice" data-val="swellow_whismur" style="font-size:13px;font-weight:900;padding:6px 12px;border-radius:8px">オオスバメ と ゴニョニョ</button>' +
-              '<button type="button" class="choice" data-val="skitty_slakoth" style="font-size:13px;font-weight:900;padding:6px 12px;border-radius:8px">エネコ と ナマケロ</button>' +
-              '<button type="button" class="choice" data-val="swellow_skitty" style="font-size:13px;font-weight:900;padding:6px 12px;border-radius:8px">オオスバメ と エネコ</button>' +
+          // Q3: おなじ かずなのは？
+          '<div style="background:#fff;padding:12px;border-radius:14px;border:1.5px solid #bbf7d0">' +
+            '<div style="font-size:14px;font-weight:900;color:#1e293b;margin-bottom:8px">③ おなじ かずなのは どれと どれ？</div>' +
+            '<div class="choices b50-q3-choices" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">' +
+              '<button type="button" class="choice" data-val="swellow_whismur" style="font-size:14px;font-weight:900;padding:6px 14px;border-radius:10px">オオスバメ と ゴニョニョ</button>' +
+              '<button type="button" class="choice" data-val="skitty_slakoth" style="font-size:14px;font-weight:900;padding:6px 14px;border-radius:10px">エネコ と ナマケロ</button>' +
+              '<button type="button" class="choice" data-val="swellow_skitty" style="font-size:14px;font-weight:900;padding:6px 14px;border-radius:10px">オオスバメ と エネコ</button>' +
             '</div>' +
           '</div>' +
         '</div>' +

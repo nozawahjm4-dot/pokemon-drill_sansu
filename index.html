@@ -5244,6 +5244,30 @@ function playPikaanSound() {
   }
 }
 
+// きらきらクリスタル音（ドリル正解・ひらめき効果音）
+function playCrystalSparkle() {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const now = ctx.currentTime;
+    const freqs = [1046.50, 1318.51, 1567.98, 2093.00, 2637.02];
+    freqs.forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      const st = now + i * 0.055;
+      osc.frequency.setValueAtTime(freq, st);
+      gain.gain.setValueAtTime(0.0001, st);
+      gain.gain.exponentialRampToValueAtTime(0.22, st + 0.015);
+      gain.gain.exponentialRampToValueAtTime(0.0001, st + 0.45);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(st);
+      osc.stop(st + 0.45);
+    });
+  } catch(e) {}
+}
+
 // まりんば風ぽこん音（数字入力・タップ時）
 function playMarimbaPop(pitch = 1) {
   try {
@@ -5988,42 +6012,93 @@ function initBattle21Ribombee() {
 
 function initBattle22Unified(qs) {
   const st = S.answers[curIdx] = S.answers[curIdx] || {};
+
+  function updateFeedback(q) {
+    const val = st[q];
+    const targetBox = document.getElementById('b22_target_' + q);
+    const fb = document.getElementById('b22_feedback_' + q);
+    const expected = qs[q] ? qs[q].ans : null;
+
+    if (!val) {
+      if (targetBox) {
+        targetBox.textContent = '？';
+        targetBox.classList.remove('filled');
+        targetBox.style.borderColor = '#cbd5e1';
+        targetBox.style.background = '#fff';
+        targetBox.style.color = '#1e293b';
+      }
+      if (fb) fb.innerHTML = '';
+      return;
+    }
+
+    if (targetBox) {
+      targetBox.textContent = val;
+      targetBox.classList.add('filled');
+    }
+
+    if (val === expected) {
+      if (targetBox) {
+        targetBox.style.borderColor = '#16a34a';
+        targetBox.style.background = '#dcfce7';
+        targetBox.style.color = '#15803d';
+      }
+      if (fb) {
+        fb.innerHTML = '<span style="color:#15803d;background:#dcfce7;padding:3px 12px;border-radius:12px;border:1.5px solid #86efac;display:inline-block">⭕ せいかい！</span>';
+      }
+    } else {
+      if (targetBox) {
+        targetBox.style.borderColor = '#ef4444';
+        targetBox.style.background = '#fee2e2';
+        targetBox.style.color = '#b91c1c';
+      }
+      if (fb) {
+        fb.innerHTML = '<span style="color:#b91c1c;background:#fee2e2;padding:3px 12px;border-radius:12px;border:1.5px solid #fca5a5;display:inline-block">🤔 もういちど かぞえてみよう！</span>';
+      }
+    }
+  }
+
+  function checkAllAndComplete() {
+    let allCorrect = true;
+    qs.forEach((item, idx) => {
+      if (st[idx] !== item.ans) allCorrect = false;
+    });
+    if (allCorrect) {
+      try {
+        if (typeof playCrystalSparkle === 'function') playCrystalSparkle();
+      } catch(e) {}
+      completeBookDrill();
+    }
+  }
+
+  // 初期化時に保存された回答を反映
+  qs.forEach((_, q) => {
+    updateFeedback(q);
+  });
+  checkAllAndComplete();
+
   document.querySelectorAll('.drill-book-page .choice[data-q]').forEach(btn => {
     const q = parseInt(btn.dataset.q, 10);
     const val = btn.dataset.val;
     if (st[q] === val) {
       btn.classList.add('sel');
-      const targetBox = document.getElementById('b22_target_' + q);
-      if (targetBox) {
-        targetBox.textContent = val;
-        targetBox.classList.add('filled');
-      }
     }
     btn.onclick = () => {
       const parent = document.getElementById('b22_choices_' + q);
       if (parent) parent.querySelectorAll('.choice').forEach(b => b.classList.remove('sel'));
       btn.classList.add('sel');
-      playMarimbaPop(1.2);
 
-      const targetBox = document.getElementById('b22_target_' + q);
-      if (targetBox) {
-        targetBox.textContent = val;
-        targetBox.classList.add('filled');
+      const isCorrect = (val === qs[q].ans);
+      if (isCorrect) {
+        playMarimbaPop(1.4);
+      } else {
+        playMarimbaPop(0.8);
       }
 
       st[q] = val;
       save();
       updateThrow();
-
-      // 5問すべて正解か判定
-      let allCorrect = true;
-      qs.forEach((item, idx) => {
-        if (st[idx] !== item.ans) allCorrect = false;
-      });
-      if (allCorrect) {
-        playCrystalSparkle();
-        completeBookDrill();
-      }
+      updateFeedback(q);
+      checkAllAndComplete();
     };
   });
 }
@@ -7715,6 +7790,7 @@ function renderInteractiveStage(row){
           '</div>' +
           '<div style="font-size:14px;font-weight:900;color:#475569;margin:8px 0 6px">すうじを えらぼう：</div>' +
           '<div class="choices" id="b22_choices_' + idx + '" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">' + chHtml + '</div>' +
+          '<div id="b22_feedback_' + idx + '" style="min-height:26px;margin-top:8px"></div>' +
         '</div>';
     });
     qsHtml += '</div>';

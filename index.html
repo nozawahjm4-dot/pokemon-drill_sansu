@@ -5397,6 +5397,62 @@ function makeRingStickSvg(count) {
 
 // 静的アナログ時計盤SVG生成 (Battle 45, 46等)
 
+
+// リアルな硬貨SVG生成 (Battle 52 コレクレー)
+function makeRealisticCoinSvg(type, size) {
+  size = size || 38;
+  if (type === '10') {
+    return '<svg viewBox="0 0 100 100" style="width:' + size + 'px;height:' + size + 'px;display:inline-block;vertical-align:middle;filter:drop-shadow(0 2px 3px rgba(0,0,0,0.2));margin:2px">' +
+      '<defs>' +
+        '<radialGradient id="coin10Grad" cx="35%" cy="30%" r="70%">' +
+          '<stop offset="0%" stop-color="#f59e0b"/>' +
+          '<stop offset="45%" stop-color="#d97706"/>' +
+          '<stop offset="85%" stop-color="#b45309"/>' +
+          '<stop offset="100%" stop-color="#78350f"/>' +
+        '</radialGradient>' +
+      '</defs>' +
+      '<circle cx="50" cy="50" r="48" fill="url(#coin10Grad)" stroke="#78350f" stroke-width="2"/>' +
+      '<circle cx="50" cy="50" r="42" fill="none" stroke="#fef3c7" stroke-width="1.5" stroke-dasharray="3,2"/>' +
+      '<text x="50" y="58" font-family="Arial, sans-serif" font-size="34" font-weight="900" fill="#fff" text-anchor="middle">10</text>' +
+      '<path d="M 22 75 Q 50 82 78 75" fill="none" stroke="#fde68a" stroke-width="2.5" stroke-linecap="round"/>' +
+    '</svg>';
+  }
+  if (type === '1') {
+    var s1 = Math.round(size * 0.9);
+    return '<svg viewBox="0 0 100 100" style="width:' + s1 + 'px;height:' + s1 + 'px;display:inline-block;vertical-align:middle;filter:drop-shadow(0 2px 3px rgba(0,0,0,0.15));margin:2px">' +
+      '<defs>' +
+        '<radialGradient id="coin1Grad" cx="35%" cy="30%" r="70%">' +
+          '<stop offset="0%" stop-color="#ffffff"/>' +
+          '<stop offset="50%" stop-color="#e2e8f0"/>' +
+          '<stop offset="85%" stop-color="#cbd5e1"/>' +
+          '<stop offset="100%" stop-color="#94a3b8"/>' +
+        '</radialGradient>' +
+      '</defs>' +
+      '<circle cx="50" cy="50" r="48" fill="url(#coin1Grad)" stroke="#94a3b8" stroke-width="2"/>' +
+      '<circle cx="50" cy="50" r="42" fill="none" stroke="#ffffff" stroke-width="1.5"/>' +
+      '<text x="50" y="60" font-family="Arial, sans-serif" font-size="38" font-weight="900" fill="#475569" text-anchor="middle">1</text>' +
+      '<path d="M 30 76 Q 50 80 70 76" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round"/>' +
+    '</svg>';
+  }
+  if (type === '100') {
+    var s100 = Math.round(size * 1.08);
+    return '<svg viewBox="0 0 100 100" style="width:' + s100 + 'px;height:' + s100 + 'px;display:inline-block;vertical-align:middle;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.22));margin:2px">' +
+      '<defs>' +
+        '<radialGradient id="coin100Grad" cx="35%" cy="30%" r="70%">' +
+          '<stop offset="0%" stop-color="#ffffff"/>' +
+          '<stop offset="40%" stop-color="#f1f5f9"/>' +
+          '<stop offset="80%" stop-color="#cbd5e1"/>' +
+          '<stop offset="100%" stop-color="#64748b"/>' +
+        '</radialGradient>' +
+      '</defs>' +
+      '<circle cx="50" cy="50" r="48" fill="url(#coin100Grad)" stroke="#64748b" stroke-width="2.5"/>' +
+      '<circle cx="50" cy="50" r="43" fill="none" stroke="#e2e8f0" stroke-width="1.5" stroke-dasharray="2,2"/>' +
+      '<text x="50" y="58" font-family="Arial, sans-serif" font-size="28" font-weight="900" fill="#334155" text-anchor="middle">100</text>' +
+      '<circle cx="50" cy="74" r="5" fill="#f43f5e" opacity="0.8"/>' +
+    '</svg>';
+  }
+  return "";
+}
 function makeRealisticPencilSvg(colorKey, lengthPx, dir = 'right') {
   const colors = {
     blue: { main: '#2563eb', light: '#60a5fa', dark: '#1d4ed8' },
@@ -7881,14 +7937,14 @@ function renderInteractiveStage(row){
 
     initBattle23Maze();
   } else if(bId === 'Battle24'){
-    // アチゲータ 10のまとまりと大小比較（原本完全再現・選んだ10個のみ枠囲み・残り外配置・UI崩れ完全防止）
+    // アチゲータ 10のまとまりと大小比較（原本完全再現・パンもお皿も10個選択可能・下段お皿18枚・正解判定完備）
     let baguettes = '', plates1 = '';
-    for(let i=0; i<16; i++) baguettes += '<div class="b24-tap-item b24-bag-item" data-idx="' + i + '" style="cursor:pointer;font-size:28px;width:42px;height:42px;display:inline-flex;align-items:center;justify-content:center;background:#fff;border:2px solid #e2e8f0;border-radius:10px;margin:3px;transition:all 0.2s">🥖</div>';
-    for(let i=0; i<14; i++) plates1 += '<div class="b24-tap-item" style="cursor:default;font-size:28px;width:42px;height:42px;display:inline-flex;align-items:center;justify-content:center;margin:3px">🍽️</div>';
+    for(let i=0; i<16; i++) baguettes += '<div class="b24-tap-item b24-bag-item" data-idx="' + i + '" style="cursor:pointer;font-size:26px;width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center;background:#fff;border:2px solid #e2e8f0;border-radius:10px;margin:2px;transition:all 0.2s">🥖</div>';
+    for(let i=0; i<14; i++) plates1 += '<div class="b24-tap-item b24-plate1-item" data-idx="' + i + '" style="cursor:pointer;font-size:26px;width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center;background:#fff;border:2px solid #e2e8f0;border-radius:10px;margin:2px;transition:all 0.2s">🍽️</div>';
 
     let buns = '', plates2 = '';
-    for(let i=0; i<17; i++) buns += '<div class="b24-tap-item b24-bun-item" data-idx="' + i + '" style="cursor:pointer;font-size:28px;width:42px;height:42px;display:inline-flex;align-items:center;justify-content:center;background:#fff;border:2px solid #e2e8f0;border-radius:10px;margin:3px;transition:all 0.2s">🍞</div>';
-    for(let i=0; i<16; i++) plates2 += '<div class="b24-tap-item" style="cursor:default;font-size:28px;width:42px;height:42px;display:inline-flex;align-items:center;justify-content:center;margin:3px">🍽️</div>';
+    for(let i=0; i<17; i++) buns += '<div class="b24-tap-item b24-bun-item" data-idx="' + i + '" style="cursor:pointer;font-size:26px;width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center;background:#fff;border:2px solid #e2e8f0;border-radius:10px;margin:2px;transition:all 0.2s">🍞</div>';
+    for(let i=0; i<18; i++) plates2 += '<div class="b24-tap-item b24-plate2-item" data-idx="' + i + '" style="cursor:pointer;font-size:26px;width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center;background:#fff;border:2px solid #e2e8f0;border-radius:10px;margin:2px;transition:all 0.2s">🍽️</div>';
 
     function makeChoicesHtml(qKey, choices) {
       let h = '<div class="choices b24-count-choices" data-q="' + qKey + '" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:4px 0">';
@@ -7909,38 +7965,34 @@ function renderInteractiveStage(row){
             '<div style="font-weight:900;font-size:16px;color:#166534">① みどりの エリア（パンとおさら）</div>' +
             '<span id="b24_g1_badge" style="display:none;background:#dcfce7;color:#15803d;border:2px solid #86efac;border-radius:12px;padding:2px 10px;font-size:13px;font-weight:900">💮 ① せいかい！</span>' +
           '</div>' +
-          '<div style="font-size:13px;font-weight:900;color:#15803d;margin-bottom:8px">👆 パンを タップして 10こ えらぼう（えらんだパン：<span id="b24BagCount" style="font-size:18px;color:#b45309">0</span> / 10 こ）</div>' +
+          '<div style="font-size:13px;font-weight:900;color:#15803d;margin-bottom:8px">👆 パンとおさらを タップして 10こずつ まとまりをつくろう</div>' +
           
           '<div class="b24-food-row" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:12px">' +
-            '<!-- パンのコンテナ (10個枠と残り枠) -->' +
-            '<div class="b24-food-column" style="background:#fff;border:2.5px solid #cbd5e1;border-radius:16px;padding:12px;min-width:250px;max-width:300px;flex:1">' +
-              '<div style="font-size:13px;font-weight:900;color:#92400e;margin-bottom:6px">🥖 パン（ぜんぶで 16こ）</div>' +
+            '<!-- パンのコンテナ -->' +
+            '<div class="b24-food-column" style="background:#fff;border:2.5px solid #cbd5e1;border-radius:16px;padding:12px;min-width:260px;max-width:320px;flex:1">' +
+              '<div style="font-size:13px;font-weight:900;color:#92400e;margin-bottom:6px">🥖 パン（ぜんぶで 16こ） えらんだ数: <span id="b24BagCount" style="color:#b45309">0</span>/10</div>' +
               '<div id="b24BagBundleBox" style="border:2px dashed #cbd5e1;border-radius:12px;padding:8px;margin-bottom:8px;transition:all 0.3s">' +
                 '<div id="b24BagBundleTitle" style="font-size:11px;font-weight:900;color:#64748b;margin-bottom:6px;text-align:center">10の まとまり（10こ えらぼう）</div>' +
-                '<div id="b24BagBundleItems" style="display:flex;flex-wrap:wrap;justify-content:center;gap:4px">' + baguettes + '</div>' +
+                '<div id="b24BagBundleItems" style="display:flex;flex-wrap:wrap;justify-content:center;gap:3px">' + baguettes + '</div>' +
               '</div>' +
               '<div id="b24BagLooseBox" style="display:none;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:6px;text-align:center">' +
                 '<div style="font-size:11px;font-weight:900;color:#64748b;margin-bottom:2px">のこり（6こ）</div>' +
-                '<div id="b24BagLooseItems" style="display:flex;flex-wrap:wrap;justify-content:center;gap:4px"></div>' +
+                '<div id="b24BagLooseItems" style="display:flex;flex-wrap:wrap;justify-content:center;gap:3px"></div>' +
               '</div>' +
             '</div>' +
 
             '<!-- お皿のコンテナ -->' +
-            '<div class="b24-food-column" style="background:#fff;border:2.5px solid #cbd5e1;border-radius:16px;padding:12px;min-width:250px;max-width:300px;flex:1">' +
-              '<div style="font-size:13px;font-weight:900;color:#475569;margin-bottom:6px">🍽️ おさら（ぜんぶで 14まい）</div>' +
-              '<div style="border:2px dashed #94a3b8;border-radius:12px;padding:6px;background:#f8fafc;margin-bottom:6px">' +
-                '<div style="font-size:11px;font-weight:900;color:#475569;margin-bottom:4px;text-align:center">10の まとまり (10まい)</div>' +
-                '<div style="display:flex;flex-wrap:wrap;justify-content:center">' + plates1.slice(0, plates1.split('</div>').slice(0, 10).join('</div>').length + 6) + '</div>' +
+            '<div class="b24-food-column" style="background:#fff;border:2.5px solid #cbd5e1;border-radius:16px;padding:12px;min-width:260px;max-width:320px;flex:1">' +
+              '<div style="font-size:13px;font-weight:900;color:#475569;margin-bottom:6px">🍽️ おさら（ぜんぶで 14まい） えらんだ数: <span id="b24Plate1Count" style="color:#2563eb">0</span>/10</div>' +
+              '<div id="b24Plate1BundleBox" style="border:2px dashed #cbd5e1;border-radius:12px;padding:8px;margin-bottom:8px;transition:all 0.3s">' +
+                '<div id="b24Plate1BundleTitle" style="font-size:11px;font-weight:900;color:#64748b;margin-bottom:6px;text-align:center">10の まとまり（10まい えらぼう）</div>' +
+                '<div id="b24Plate1BundleItems" style="display:flex;flex-wrap:wrap;justify-content:center;gap:3px">' + plates1 + '</div>' +
               '</div>' +
-              '<div style="background:#f1f5f9;border:1.5px solid #cbd5e1;border-radius:10px;padding:4px;text-align:center">' +
-                '<div style="font-size:11px;font-weight:900;color:#64748b;margin-bottom:2px">のこり (4まい)</div>' +
-                '<div style="display:flex;flex-wrap:wrap;justify-content:center">' + plates1.split('</div>').slice(10, 14).join('</div>') + '</div>' +
+              '<div id="b24Plate1LooseBox" style="display:none;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:6px;text-align:center">' +
+                '<div style="font-size:11px;font-weight:900;color:#64748b;margin-bottom:2px">のこり（4まい）</div>' +
+                '<div id="b24Plate1LooseItems" style="display:flex;flex-wrap:wrap;justify-content:center;gap:3px"></div>' +
               '</div>' +
             '</div>' +
-          '</div>' +
-
-          '<div id="b24BagRingMsg" style="display:none;text-align:center;font-size:15px;font-weight:900;color:#166534;margin-bottom:12px;background:#dcfce7;border:2px solid #86efac;border-radius:10px;padding:6px 12px">' +
-            '✨ パンの 10の まとまりが できたよ！（のこりは 6こ）' +
           '</div>' +
 
           '<!-- Section 1 Count Questions -->' +
@@ -7969,38 +8021,34 @@ function renderInteractiveStage(row){
             '<div style="font-weight:900;font-size:16px;color:#1e40af">② あおの エリア（まるいパンとおさら）</div>' +
             '<span id="b24_g2_badge" style="display:none;background:#dbeafe;color:#1e40af;border:2px solid #93c5fd;border-radius:12px;padding:2px 10px;font-size:13px;font-weight:900">💮 ② せいかい！</span>' +
           '</div>' +
-          '<div style="font-size:13px;font-weight:900;color:#1d4ed8;margin-bottom:8px">👆 まるいパンを タップして 10こ えらぼう（えらんだパン：<span id="b24BunCount" style="font-size:18px;color:#b45309">0</span> / 10 こ）</div>' +
+          '<div style="font-size:13px;font-weight:900;color:#1d4ed8;margin-bottom:8px">👆 まるいパンとおさらを タップして 10こずつ まとまりをつくろう</div>' +
           
           '<div class="b24-food-row" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:12px">' +
             '<!-- 丸パンのコンテナ -->' +
-            '<div class="b24-food-column" style="background:#fff;border:2.5px solid #cbd5e1;border-radius:16px;padding:12px;min-width:250px;max-width:300px;flex:1">' +
-              '<div style="font-size:13px;font-weight:900;color:#92400e;margin-bottom:6px">🍞 まるいパン（ぜんぶで 17こ）</div>' +
+            '<div class="b24-food-column" style="background:#fff;border:2.5px solid #cbd5e1;border-radius:16px;padding:12px;min-width:260px;max-width:320px;flex:1">' +
+              '<div style="font-size:13px;font-weight:900;color:#92400e;margin-bottom:6px">🍞 まるいパン（ぜんぶで 17こ） えらんだ数: <span id="b24BunCount" style="color:#b45309">0</span>/10</div>' +
               '<div id="b24BunBundleBox" style="border:2px dashed #cbd5e1;border-radius:12px;padding:8px;margin-bottom:8px;transition:all 0.3s">' +
                 '<div id="b24BunBundleTitle" style="font-size:11px;font-weight:900;color:#64748b;margin-bottom:6px;text-align:center">10の まとまり（10こ えらぼう）</div>' +
-                '<div id="b24BunBundleItems" style="display:flex;flex-wrap:wrap;justify-content:center;gap:4px">' + buns + '</div>' +
+                '<div id="b24BunBundleItems" style="display:flex;flex-wrap:wrap;justify-content:center;gap:3px">' + buns + '</div>' +
               '</div>' +
               '<div id="b24BunLooseBox" style="display:none;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:6px;text-align:center">' +
                 '<div style="font-size:11px;font-weight:900;color:#64748b;margin-bottom:2px">のこり（7こ）</div>' +
-                '<div id="b24BunLooseItems" style="display:flex;flex-wrap:wrap;justify-content:center;gap:4px"></div>' +
+                '<div id="b24BunLooseItems" style="display:flex;flex-wrap:wrap;justify-content:center;gap:3px"></div>' +
               '</div>' +
             '</div>' +
 
-            '<!-- お皿のコンテナ -->' +
-            '<div class="b24-food-column" style="background:#fff;border:2.5px solid #cbd5e1;border-radius:16px;padding:12px;min-width:250px;max-width:300px;flex:1">' +
-              '<div style="font-size:13px;font-weight:900;color:#475569;margin-bottom:6px">🍽️ おさら（ぜんぶで 16まい）</div>' +
-              '<div style="border:2px dashed #94a3b8;border-radius:12px;padding:6px;background:#f8fafc;margin-bottom:6px">' +
-                '<div style="font-size:11px;font-weight:900;color:#475569;margin-bottom:4px;text-align:center">10の まとまり (10まい)</div>' +
-                '<div style="display:flex;flex-wrap:wrap;justify-content:center">' + plates2.slice(0, plates2.split('</div>').slice(0, 10).join('</div>').length + 6) + '</div>' +
+            '<!-- お皿のコンテナ (18枚) -->' +
+            '<div class="b24-food-column" style="background:#fff;border:2.5px solid #cbd5e1;border-radius:16px;padding:12px;min-width:260px;max-width:320px;flex:1">' +
+              '<div style="font-size:13px;font-weight:900;color:#475569;margin-bottom:6px">🍽️ おさら（ぜんぶで 18まい） えらんだ数: <span id="b24Plate2Count" style="color:#2563eb">0</span>/10</div>' +
+              '<div id="b24Plate2BundleBox" style="border:2px dashed #cbd5e1;border-radius:12px;padding:8px;margin-bottom:8px;transition:all 0.3s">' +
+                '<div id="b24Plate2BundleTitle" style="font-size:11px;font-weight:900;color:#64748b;margin-bottom:6px;text-align:center">10の まとまり（10まい えらぼう）</div>' +
+                '<div id="b24Plate2BundleItems" style="display:flex;flex-wrap:wrap;justify-content:center;gap:3px">' + plates2 + '</div>' +
               '</div>' +
-              '<div style="background:#f1f5f9;border:1.5px solid #cbd5e1;border-radius:10px;padding:4px;text-align:center">' +
-                '<div style="font-size:11px;font-weight:900;color:#64748b;margin-bottom:2px">のこり (6まい)</div>' +
-                '<div style="display:flex;flex-wrap:wrap;justify-content:center">' + plates2.split('</div>').slice(10, 16).join('</div>') + '</div>' +
+              '<div id="b24Plate2LooseBox" style="display:none;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:6px;text-align:center">' +
+                '<div style="font-size:11px;font-weight:900;color:#64748b;margin-bottom:2px">のこり（8まい）</div>' +
+                '<div id="b24Plate2LooseItems" style="display:flex;flex-wrap:wrap;justify-content:center;gap:3px"></div>' +
               '</div>' +
             '</div>' +
-          '</div>' +
-
-          '<div id="b24BunRingMsg" style="display:none;text-align:center;font-size:15px;font-weight:900;color:#1e40af;margin-bottom:12px;background:#dbeafe;border:2px solid #93c5fd;border-radius:10px;padding:6px 12px">' +
-            '✨ まるいパンの 10の まとまりが できたよ！（のこりは 7こ）' +
           '</div>' +
 
           '<!-- Section 2 Count Questions -->' +
@@ -8011,7 +8059,7 @@ function renderInteractiveStage(row){
             '</div>' +
             '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">' +
               '<span style="font-size:15px;font-weight:900;color:#1e293b">🍽️ おさらのかず：<span class="drill-blank-box" id="b24_ans_3">？</span> まい</span>' +
-              makeChoicesHtml('3', ['14', '15', '16', '17']) +
+              makeChoicesHtml('3', ['16', '17', '18', '19']) +
             '</div>' +
           '</div>' +
 
@@ -8314,11 +8362,11 @@ function renderInteractiveStage(row){
 
     initBattle29Glameow();
   } else if(bId === 'Battle30'){
-    // ピジョット のこりはいくつ（初めの数が全員揃い、食べるモーションで減る原本完全再現）
-    function makeCookieItems(type, count, prefix) {
+    // ピジョット のこりはいくつ（初めはひとまとめ一列、食べるボタンで赤丸囲み＆もぐもぐアニメーション）
+    function makeCookieRow(type, count, prefix) {
       let h = '';
       for(let i=0; i<count; i++) {
-        h += '<span class="b30-cookie-card b30-cookie-fresh" id="' + prefix + '_' + i + '">' + makeCookieSvg(type, 36) + '</span>';
+        h += '<span class="b30-cookie-card b30-cookie-fresh" id="' + prefix + '_' + i + '" data-cidx="' + i + '" style="margin:4px;transition:all 0.3s;display:inline-flex;align-items:center;justify-content:center">' + makeCookieSvg(type, 38) + '</span>';
       }
       return h;
     }
@@ -8336,87 +8384,83 @@ function renderInteractiveStage(row){
         // Problem 1: 9 total, 4 eaten, 5 remain
         '<div style="background:#fdf4ff;border:3px solid #f0abfc;border-radius:20px;padding:16px;margin-bottom:18px">' +
           '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">' +
-            '<div style="font-size:16px;font-weight:900;color:#86198f">① まるい クッキー（はじめに 9こ）</div>' +
+            '<div style="font-size:16px;font-weight:900;color:#86198f">① まるい クッキー</div>' +
             '<div style="display:flex;gap:6px">' +
-              '<button type="button" class="b30-act-btn" id="b30_eat_1" style="background:#ef4444;color:#fff;border-radius:10px;padding:6px 12px;font-size:13px;font-weight:900;box-shadow:0 3px 0 #b91c1c">😋 4こ たべる！</button>' +
-              '<button type="button" class="b30-act-btn" id="b30_reset_1" style="background:#e2e8f0;color:#334155;border-radius:10px;padding:6px 10px;font-size:13px;font-weight:900;box-shadow:0 3px 0 #cbd5e1">🔄 はじめから</button>' +
+              '<button type="button" class="b30-act-btn" id="b30_eat_1" style="background:#ef4444;color:#fff;border-radius:10px;padding:6px 14px;font-size:14px;font-weight:900;box-shadow:0 3px 0 #b91c1c;cursor:pointer">😋 4こ たべる！</button>' +
+              '<button type="button" class="b30-act-btn" id="b30_reset_1" style="background:#e2e8f0;color:#334155;border-radius:10px;padding:6px 12px;font-size:13px;font-weight:900;box-shadow:0 3px 0 #cbd5e1;cursor:pointer">🔄 はじめから</button>' +
             '</div>' +
           '</div>' +
 
-          '<div class="b30-platter" style="background:#fff;border:3px solid #e9d5ff;border-radius:20px;padding:14px;display:flex;justify-content:center;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:12px">' +
-            '<!-- のこる5こ -->' +
-            '<div style="text-align:center;padding:6px">' +
-              '<div style="font-size:12px;font-weight:900;color:#6b21a8;margin-bottom:4px">のこるクッキー（5こ）</div>' +
-              '<div id="b30_p1_remain" style="display:flex;flex-wrap:wrap;max-width:170px;justify-content:center">' +
-                makeCookieItems('round', 5, 'b30_c1_rem') +
-              '</div>' +
+          // お皿（最初はすべてひとまとめ一列）
+          '<div class="b30-platter" style="background:#fff;border:3px solid #e9d5ff;border-radius:22px;padding:16px;margin-bottom:12px;box-shadow:0 4px 10px rgba(0,0,0,0.04)">' +
+            '<div id="b30_p1_status_bar" style="display:none;align-items:center;justify-content:space-between;margin-bottom:8px;padding:0 8px">' +
+              '<span style="font-size:13px;font-weight:900;color:#15803d;background:#dcfce7;padding:3px 10px;border-radius:10px">✨ のこり（5こ）</span>' +
+              '<span style="font-size:13px;font-weight:900;color:#b91c1c;background:#fee2e2;padding:3px 10px;border-radius:10px">🔴 たべる（4こ）</span>' +
             '</div>' +
-
-            '<!-- たべる4こ -->' +
-            '<div id="b30_p1_eat_box" style="text-align:center;padding:8px 12px;border:3px dashed #ef4444;background:#fef2f2;border-radius:16px;transition:all 0.3s">' +
-              '<div id="b30_p1_eat_lbl" style="font-size:12px;font-weight:900;color:#dc2626;margin-bottom:4px">🔴 たべる（4こ）</div>' +
-              '<div id="b30_p1_eat" style="display:flex;flex-wrap:wrap;max-width:140px;justify-content:center">' +
-                makeCookieItems('round', 4, 'b30_c1_eat') +
+            '<div style="display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap" id="b30_p1_cookies_wrap">' +
+              '<div id="b30_p1_remain_grp" style="display:inline-flex;flex-wrap:wrap;justify-content:center;gap:4px;padding:4px">' +
+                makeCookieRow('round', 5, 'b30_c1_rem') +
+              '</div>' +
+              '<div id="b30_p1_eat_grp" style="display:inline-flex;flex-wrap:wrap;justify-content:center;gap:4px;padding:4px;border:2px dashed transparent;border-radius:14px;transition:all 0.3s">' +
+                makeCookieRow('round', 4, 'b30_c1_eat') +
               '</div>' +
             '</div>' +
           '</div>' +
 
           '<div id="b30_msg_1" style="text-align:center;font-size:14px;font-weight:900;color:#7e22ce;margin-bottom:10px">' +
-            '🍪 はじめに ぜんぶで <strong>9こ</strong> あるよ。「たべる」ボタンを おしてみよう！' +
+            '🍪 おさらに クッキーが <strong>ぜんぶで 9こ</strong> あるよ。「4こ たべる！」を おしてみよう！' +
           '</div>' +
 
-          '<div class="t-math-sentence" style="justify-content:center;margin-bottom:6px">' +
-            '<span>はじめに </span><span class="t-math-box" data-idx="0">？</span><span> こ ありました。 </span>' +
-            '<span class="t-math-box" data-idx="1">？</span><span> こ たべると、</span>' +
+          '<div class="t-math-sentence" style="justify-content:center;margin-bottom:8px;font-size:17px">' +
+            '<span>はじめに </span><span class="t-math-box" data-idx="0" data-target="9">？</span><span> こ ありました。 </span>' +
+            '<span class="t-math-box" data-idx="1" data-target="4">？</span><span> こ たべると、</span>' +
           '</div>' +
-          '<div class="t-math-sentence" style="justify-content:center">' +
-            '<span>のこりは </span><span class="t-math-box" data-idx="2">？</span><span> こに なります。</span>' +
+          '<div class="t-math-sentence" style="justify-content:center;font-size:17px">' +
+            '<span>のこりは </span><span class="t-math-box" data-idx="2" data-target="5">？</span><span> こに なります。</span>' +
           '</div>' +
         '</div>' +
 
         // Problem 2: 10 total, 7 eaten, 3 remain
         '<div style="background:#fdf4ff;border:3px solid #f0abfc;border-radius:20px;padding:16px;margin-bottom:18px">' +
           '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">' +
-            '<div style="font-size:16px;font-weight:900;color:#86198f">② しかくい クッキー（はじめに 10こ）</div>' +
+            '<div style="font-size:16px;font-weight:900;color:#86198f">② しかくい クッキー</div>' +
             '<div style="display:flex;gap:6px">' +
-              '<button type="button" class="b30-act-btn" id="b30_eat_2" style="background:#ef4444;color:#fff;border-radius:10px;padding:6px 12px;font-size:13px;font-weight:900;box-shadow:0 3px 0 #b91c1c">😋 7こ たべる！</button>' +
-              '<button type="button" class="b30-act-btn" id="b30_reset_2" style="background:#e2e8f0;color:#334155;border-radius:10px;padding:6px 10px;font-size:13px;font-weight:900;box-shadow:0 3px 0 #cbd5e1">🔄 はじめから</button>' +
+              '<button type="button" class="b30-act-btn" id="b30_eat_2" style="background:#ef4444;color:#fff;border-radius:10px;padding:6px 14px;font-size:14px;font-weight:900;box-shadow:0 3px 0 #b91c1c;cursor:pointer">😋 7こ たべる！</button>' +
+              '<button type="button" class="b30-act-btn" id="b30_reset_2" style="background:#e2e8f0;color:#334155;border-radius:10px;padding:6px 12px;font-size:13px;font-weight:900;box-shadow:0 3px 0 #cbd5e1;cursor:pointer">🔄 はじめから</button>' +
             '</div>' +
           '</div>' +
 
-          '<div class="b30-platter" style="background:#fff;border:3px solid #e9d5ff;border-radius:20px;padding:14px;display:flex;justify-content:center;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:12px">' +
-            '<!-- のこる3こ -->' +
-            '<div style="text-align:center;padding:6px">' +
-              '<div style="font-size:12px;font-weight:900;color:#6b21a8;margin-bottom:4px">のこるクッキー（3こ）</div>' +
-              '<div id="b30_p2_remain" style="display:flex;flex-wrap:wrap;max-width:120px;justify-content:center">' +
-                makeCookieItems('checkered', 3, 'b30_c2_rem') +
-              '</div>' +
+          // お皿（最初はすべてひとまとめ一列）
+          '<div class="b30-platter" style="background:#fff;border:3px solid #e9d5ff;border-radius:22px;padding:16px;margin-bottom:12px;box-shadow:0 4px 10px rgba(0,0,0,0.04)">' +
+            '<div id="b30_p2_status_bar" style="display:none;align-items:center;justify-content:space-between;margin-bottom:8px;padding:0 8px">' +
+              '<span style="font-size:13px;font-weight:900;color:#15803d;background:#dcfce7;padding:3px 10px;border-radius:10px">✨ のこり（3こ）</span>' +
+              '<span style="font-size:13px;font-weight:900;color:#b91c1c;background:#fee2e2;padding:3px 10px;border-radius:10px">🔴 たべる（7こ）</span>' +
             '</div>' +
-
-            '<!-- たべる7こ -->' +
-            '<div id="b30_p2_eat_box" style="text-align:center;padding:8px 12px;border:3px dashed #ef4444;background:#fef2f2;border-radius:16px;transition:all 0.3s">' +
-              '<div id="b30_p2_eat_lbl" style="font-size:12px;font-weight:900;color:#dc2626;margin-bottom:4px">🔴 たべる（7こ）</div>' +
-              '<div id="b30_p2_eat" style="display:flex;flex-wrap:wrap;max-width:180px;justify-content:center">' +
-                makeCookieItems('checkered', 7, 'b30_c2_eat') +
+            '<div style="display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap" id="b30_p2_cookies_wrap">' +
+              '<div id="b30_p2_remain_grp" style="display:inline-flex;flex-wrap:wrap;justify-content:center;gap:4px;padding:4px">' +
+                makeCookieRow('square', 3, 'b30_c2_rem') +
+              '</div>' +
+              '<div id="b30_p2_eat_grp" style="display:inline-flex;flex-wrap:wrap;justify-content:center;gap:4px;padding:4px;border:2px dashed transparent;border-radius:14px;transition:all 0.3s">' +
+                makeCookieRow('square', 7, 'b30_c2_eat') +
               '</div>' +
             '</div>' +
           '</div>' +
 
           '<div id="b30_msg_2" style="text-align:center;font-size:14px;font-weight:900;color:#7e22ce;margin-bottom:10px">' +
-            '🍪 はじめに ぜんぶで <strong>10こ</strong> あるよ。「たべる」ボタンを おしてみよう！' +
+            '🍪 おさらに クッキーが <strong>ぜんぶで 10こ</strong> あるよ。「7こ たべる！」を おしてみよう！' +
           '</div>' +
 
-          '<div class="t-math-sentence" style="justify-content:center;margin-bottom:6px">' +
-            '<span>はじめに </span><span class="t-math-box" data-idx="3">？</span><span> こ ありました。 </span>' +
-            '<span class="t-math-box" data-idx="4">？</span><span> こ たべると、</span>' +
+          '<div class="t-math-sentence" style="justify-content:center;margin-bottom:8px;font-size:17px">' +
+            '<span>はじめに </span><span class="t-math-box" data-idx="3" data-target="10">？</span><span> こ ありました。 </span>' +
+            '<span class="t-math-box" data-idx="4" data-target="7">？</span><span> こ たべると、</span>' +
           '</div>' +
-          '<div class="t-math-sentence" style="justify-content:center">' +
-            '<span>のこりは </span><span class="t-math-box" data-idx="5">？</span><span> こに なります。</span>' +
+          '<div class="t-math-sentence" style="justify-content:center;font-size:17px">' +
+            '<span>のこりは </span><span class="t-math-box" data-idx="5" data-target="3">？</span><span> こに なります。</span>' +
           '</div>' +
         '</div>' +
 
         trayHtml +
-        makeDrillBookFooter('ピジョット', 'とりポケモン', 'ノーマル・ひこう', '1.5m', '39.5kg', '食べたり使ったりして減る「求残」の問題です。はじめにあった数から食べた数を引くと、残りの数が求まることを体感します。', 18) +
+        makeDrillBookFooter('ピジョット', 'とりポケモン', 'ノーマル・ひこう', '1.5m', '39.5kg', 'ひき算の「求残」の文章題です。「はじめにあった数」「食べた（減った）数」「のこりの数」のストーリーを視覚的に体験して式の意味を深めます。', 18) +
       '</div>';
 
     initBattle30Pidgeot();
@@ -9550,35 +9594,48 @@ function renderInteractiveStage(row){
     initBattle47_3Drill();
 
   } else if(bId === 'Battle48'){
-    // バトル48：グラードン 10のまとまりでかぞえよう
-    let groupsHtml = '<div style="display:grid;grid-template-columns:repeat(2, 1fr);gap:8px;margin:10px 0">';
-    for(let g=1; g<=6; g++) {
-      const cnt = g === 6 ? 8 : 10;
+    // バトル48：グラードン 10のまとまりでかぞえよう（原本完全再現・最初は枠なし・10匹選ぶごとに枠で囲む・正解56匹）
+    const groupsCounts = [10, 10, 10, 10, 10, 6];
+    let groupsHtml = '<div style="display:grid;grid-template-columns:repeat(2, 1fr);gap:12px;margin:12px 0">';
+    let globalIdx = 0;
+    for(let g=0; g<6; g++) {
+      const cnt = groupsCounts[g];
       let pokeIcons = '';
       for(let p=0; p<cnt; p++) {
-        pokeIcons += '<img src="' + ART(328) + '" alt="ナックラー" style="width:28px;height:28px">';
+        pokeIcons += '<div class="b48-trapinch-item" data-idx="' + globalIdx + '" data-group="' + g + '" style="cursor:pointer;width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;border-radius:8px;margin:2px;background:rgba(255,255,255,0.7);border:1.5px solid transparent;transition:all 0.2s">' +
+          '<img src="' + ART(328) + '" alt="ナックラー" style="width:28px;height:28px;pointer-events:none">' +
+        '</div>';
+        globalIdx++;
       }
-      groupsHtml += '<div class="b24-choice-card trapinch-group" data-g="' + g + '" style="padding:8px 4px;border-radius:14px;cursor:pointer">' +
-        '<div style="font-size:11px;font-weight:900;color:#78350f;margin-bottom:4px">グループ ' + g + ' (' + cnt + 'ひき)</div>' +
+      groupsHtml += '<div class="b48-trapinch-group-card" id="b48_group_' + g + '" data-group="' + g + '" style="background:rgba(255,255,255,0.4);border:2px dashed #cbd5e1;border-radius:16px;padding:8px 6px;text-align:center;transition:all 0.3s;min-height:90px">' +
+        '<div id="b48_group_title_' + g + '" style="font-size:11px;font-weight:900;color:#78350f;margin-bottom:4px">ナックラーの なかま</div>' +
         '<div style="display:flex;flex-wrap:wrap;gap:2px;justify-content:center">' + pokeIcons + '</div>' +
       '</div>';
     }
     groupsHtml += '</div>';
 
     let tray = '<div class="num-choice-tray" style="margin-top:10px">';
-    ['48','50','56','58','60'].forEach(n => {
+    ['46','50','56','58','60'].forEach(n => {
       tray += '<button type="button" class="num-choice-btn" data-val="' + n + '">' + n + '</button>';
     });
     tray += '<button type="button" class="num-choice-btn erase" data-val="erase">⌫ けす</button></div>';
 
     card.innerHTML = 
       '<div class="drill-book-page">' +
-        makeDrillBookHeader(48, 'グラードン', 'ぐらーどん', 'バトル38〜47の まとめ', 'ナックラーを 10の まとまりごとに タップして かこみ、ぜんぶで なんびきか こたえよう！', 383) +
-        groupsHtml +
+        makeDrillBookHeader(48, 'グラードン', 'ぐらーどん', 'バトル38〜47の まとめ', 'ナックラーを タップして 10ぴきずつ わくで かこもう。ぜんぶで なんびきいるかな？', 383) +
+        '<div style="background:#fefce8;border:3px solid #fef08a;border-radius:20px;padding:14px;margin-bottom:12px">' +
+          '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">' +
+            '<div style="font-size:13px;font-weight:900;color:#92400e">👆 ナックラーを タップして 10ぴき えらぼう</div>' +
+            '<span id="b48_bundle_status" style="font-size:13px;font-weight:900;background:#dcfce7;color:#15803d;padding:3px 10px;border-radius:10px;border:1.5px solid #86efac">10の まとまり: 0 / 5こ</span>' +
+          '</div>' +
+          '<div style="background:#eef8ed;border:2.5px solid #86efac;border-radius:18px;padding:10px">' +
+            groupsHtml +
+          '</div>' +
+        '</div>' +
         '<div style="background:#fff;border:2.5px solid #cbd5e1;border-radius:14px;padding:12px;margin:12px 0;text-align:center">' +
           '<div style="display:flex;align-items:center;justify-content:center;gap:6px;font-size:17px;font-weight:900">' +
             '<span>ナックラーの かずは、ぜんぶで</span>' +
-            '<div class="t-math-box" data-idx="0" data-target="58">？</div>' +
+            '<div class="t-math-box" data-idx="0" data-target="56">？</div>' +
             '<span>ぴき です。</span>' +
           '</div>' +
         '</div>' +
@@ -9587,7 +9644,6 @@ function renderInteractiveStage(row){
       '</div>';
 
     initBattle48Drill();
-
   } else if(bId === 'Battle48_2'){
     // バトル48_2：グラードン 1〜60 点つなぎ
     card.innerHTML = 
@@ -9607,54 +9663,75 @@ function renderInteractiveStage(row){
     initBattle48DotToDot();
 
   } else if(bId === 'Battle49'){
-    // バトル49：カモネギ かたち（4つの立体のなかま分け）
+    // バトル49：カモネギ かたち（原本完全再現・上下タップ線結びUI・リアルな立体イラスト）
     card.innerHTML = 
       '<div class="drill-book-page">' +
-        makeDrillBookHeader(49, 'カモネギ', 'かもねぎ', 'か た ち', 'なかまの かたちどうしを えらんで ペアに しよう！', 83) +
-        '<div style="background:#fff;border:2.5px solid #cbd5e1;border-radius:18px;padding:14px;margin:10px 0">' +
-          '<div style="font-size:14px;font-weight:900;color:#475569;margin-bottom:8px">うえの かたちを タップしてから、したの なかまを タップしてね！</div>' +
-          '<div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:6px" id="b49_top_shapes">' +
-            '<div class="b24-choice-card" data-shape="dice" style="padding:8px 4px;text-align:center;cursor:pointer">' +
-              '<span style="font-size:11px;font-weight:900;background:#dbeafe;color:#1e40af;padding:2px 4px;border-radius:6px;display:block">さいころ</span>' +
-              '<span style="font-size:26px">🎲</span>' +
+        makeDrillBookHeader(49, 'カモネギ', 'かもねぎ', 'か た ち', 'なかまの かたちどうしを せんで つなぎましょう。', 83) +
+        '<div style="position:relative;background:#f8fafc;border:2.5px solid #cbd5e1;border-radius:20px;padding:16px 12px;margin:12px 0" id="b49_match_container">' +
+          '<div style="font-size:13px;font-weight:900;color:#475569;margin-bottom:12px;text-align:center">👆 うえのかたちを タップして、したの なかまを タップすると せんで つながるよ！</div>' +
+          
+          '<svg id="b49_svg_lines" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:10"></svg>' +
+
+          '<div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:8px;position:relative;z-index:20;margin-bottom:60px" id="b49_top_row">' +
+            '<div class="b49-top-item" data-id="dice" style="background:#fff;border:2px solid #cbd5e1;border-radius:14px;padding:8px 4px;text-align:center;cursor:pointer;position:relative;transition:all 0.2s">' +
+              '<div style="font-size:11px;font-weight:900;background:#0891b2;color:#fff;padding:2px 4px;border-radius:6px;margin-bottom:6px">さいころの かたち</div>' +
+              '<div style="font-size:36px;margin:4px 0">🎲</div>' +
+              '<div class="b49-dot top-dot" id="b49_dot_top_dice" style="width:14px;height:14px;background:#0f172a;border:2px solid #fff;border-radius:50%;margin:6px auto -15px;box-shadow:0 1px 3px rgba(0,0,0,0.3)"></div>' +
             '</div>' +
-            '<div class="b24-choice-card" data-shape="box" style="padding:8px 4px;text-align:center;cursor:pointer">' +
-              '<span style="font-size:11px;font-weight:900;background:#ffedd5;color:#c2410c;padding:2px 4px;border-radius:6px;display:block">はこのかたち</span>' +
-              '<span style="font-size:26px">📦</span>' +
+
+            '<div class="b49-top-item" data-id="box" style="background:#fff;border:2px solid #cbd5e1;border-radius:14px;padding:8px 4px;text-align:center;cursor:pointer;position:relative;transition:all 0.2s">' +
+              '<div style="font-size:11px;font-weight:900;background:#0891b2;color:#fff;padding:2px 4px;border-radius:6px;margin-bottom:6px">はこの かたち</div>' +
+              '<div style="font-size:36px;margin:4px 0">📦</div>' +
+              '<div class="b49-dot top-dot" id="b49_dot_top_box" style="width:14px;height:14px;background:#0f172a;border:2px solid #fff;border-radius:50%;margin:6px auto -15px;box-shadow:0 1px 3px rgba(0,0,0,0.3)"></div>' +
             '</div>' +
-            '<div class="b24-choice-card" data-shape="can" style="padding:8px 4px;text-align:center;cursor:pointer">' +
-              '<span style="font-size:11px;font-weight:900;background:#dcfce7;color:#15803d;padding:2px 4px;border-radius:6px;display:block">つつの形</span>' +
-              '<span style="font-size:26px">🥫</span>' +
+
+            '<div class="b49-top-item" data-id="cylinder" style="background:#fff;border:2px solid #cbd5e1;border-radius:14px;padding:8px 4px;text-align:center;cursor:pointer;position:relative;transition:all 0.2s">' +
+              '<div style="font-size:11px;font-weight:900;background:#0891b2;color:#fff;padding:2px 4px;border-radius:6px;margin-bottom:6px">つつの かたち</div>' +
+              '<div style="font-size:36px;margin:4px 0">🥫</div>' +
+              '<div class="b49-dot top-dot" id="b49_dot_top_cylinder" style="width:14px;height:14px;background:#0f172a;border:2px solid #fff;border-radius:50%;margin:6px auto -15px;box-shadow:0 1px 3px rgba(0,0,0,0.3)"></div>' +
             '</div>' +
-            '<div class="b24-choice-card" data-shape="ball" style="padding:8px 4px;text-align:center;cursor:pointer">' +
-              '<span style="font-size:11px;font-weight:900;background:#f3e8ff;color:#7e22ce;padding:2px 4px;border-radius:6px;display:block">ボールの形</span>' +
-              '<span style="font-size:26px">⚽</span>' +
+
+            '<div class="b49-top-item" data-id="sphere" style="background:#fff;border:2px solid #cbd5e1;border-radius:14px;padding:8px 4px;text-align:center;cursor:pointer;position:relative;transition:all 0.2s">' +
+              '<div style="font-size:11px;font-weight:900;background:#0891b2;color:#fff;padding:2px 4px;border-radius:6px;margin-bottom:6px">ボールの かたち</div>' +
+              '<div style="font-size:36px;margin:4px 0">⚽</div>' +
+              '<div class="b49-dot top-dot" id="b49_dot_top_sphere" style="width:14px;height:14px;background:#0f172a;border:2px solid #fff;border-radius:50%;margin:6px auto -15px;box-shadow:0 1px 3px rgba(0,0,0,0.3)"></div>' +
             '</div>' +
           '</div>' +
-          '<div style="display:grid;grid-template-columns:repeat(2, 1fr);gap:8px;margin-top:14px" id="b49_bottom_items">' +
-            '<div class="b24-choice-card" data-match="can" style="padding:10px 8px;cursor:pointer">' +
-              '<div style="font-size:22px">🐟 かんづめ</div>' +
-              '<div style="font-size:12px;font-weight:800;color:#475569">たいらな ところと まるい ところが あります。</div>' +
+
+          '<div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:8px;position:relative;z-index:20" id="b49_bottom_row">' +
+            '<div class="b49-bottom-item" data-id="cylinder" style="background:#fff;border:2px solid #cbd5e1;border-radius:14px;padding:8px 4px;text-align:center;cursor:pointer;position:relative;transition:all 0.2s">' +
+              '<div class="b49-dot bottom-dot" id="b49_dot_bot_cylinder" style="width:14px;height:14px;background:#0f172a;border:2px solid #fff;border-radius:50%;margin:-15px auto 6px;box-shadow:0 1px 3px rgba(0,0,0,0.3)"></div>' +
+              '<div style="font-size:32px;margin:2px 0">🐟</div>' +
+              '<div style="font-size:10px;font-weight:800;color:#334155;line-height:1.2;margin-top:4px">たいらな ところと まるい ところが あります。</div>' +
             '</div>' +
-            '<div class="b24-choice-card" data-match="dice" style="padding:10px 8px;cursor:pointer">' +
-              '<div style="font-size:22px">🎁 赤いLUCKY箱</div>' +
-              '<div style="font-size:12px;font-weight:800;color:#475569">たいらな ところは ぜんぶ ましかくです。</div>' +
+
+            '<div class="b49-bottom-item" data-id="dice" style="background:#fff;border:2px solid #cbd5e1;border-radius:14px;padding:8px 4px;text-align:center;cursor:pointer;position:relative;transition:all 0.2s">' +
+              '<div class="b49-dot bottom-dot" id="b49_dot_bot_dice" style="width:14px;height:14px;background:#0f172a;border:2px solid #fff;border-radius:50%;margin:-15px auto 6px;box-shadow:0 1px 3px rgba(0,0,0,0.3)"></div>' +
+              '<div style="font-size:32px;margin:2px 0">🟥</div>' +
+              '<div style="font-size:10px;font-weight:800;color:#334155;line-height:1.2;margin-top:4px">たいらな ところは ぜんぶ ましかくです。</div>' +
             '</div>' +
-            '<div class="b24-choice-card" data-match="ball" style="padding:10px 8px;cursor:pointer">' +
-              '<div style="font-size:22px">🏐 バレーボール</div>' +
-              '<div style="font-size:12px;font-weight:800;color:#475569">どこも まるくて、たいらな ところが ありません。</div>' +
+
+            '<div class="b49-bottom-item" data-id="sphere" style="background:#fff;border:2px solid #cbd5e1;border-radius:14px;padding:8px 4px;text-align:center;cursor:pointer;position:relative;transition:all 0.2s">' +
+              '<div class="b49-dot bottom-dot" id="b49_dot_bot_sphere" style="width:14px;height:14px;background:#0f172a;border:2px solid #fff;border-radius:50%;margin:-15px auto 6px;box-shadow:0 1px 3px rgba(0,0,0,0.3)"></div>' +
+              '<div style="font-size:32px;margin:2px 0">🏐</div>' +
+              '<div style="font-size:10px;font-weight:800;color:#334155;line-height:1.2;margin-top:4px">どこも まるくて、たいらな ところが ありません。</div>' +
             '</div>' +
-            '<div class="b24-choice-card" data-match="box" style="padding:10px 8px;cursor:pointer">' +
-              '<div style="font-size:22px">🟦 青い薄い箱</div>' +
-              '<div style="font-size:12px;font-weight:800;color:#475569">たいらな ところは ぜんぶ しかくです。</div>' +
+
+            '<div class="b49-bottom-item" data-id="box" style="background:#fff;border:2px solid #cbd5e1;border-radius:14px;padding:8px 4px;text-align:center;cursor:pointer;position:relative;transition:all 0.2s">' +
+              '<div class="b49-dot bottom-dot" id="b49_dot_bot_box" style="width:14px;height:14px;background:#0f172a;border:2px solid #fff;border-radius:50%;margin:-15px auto 6px;box-shadow:0 1px 3px rgba(0,0,0,0.3)"></div>' +
+              '<div style="font-size:32px;margin:2px 0">🟦</div>' +
+              '<div style="font-size:10px;font-weight:800;color:#334155;line-height:1.2;margin-top:4px">たいらな ところは ぜんぶ しかくです。</div>' +
             '</div>' +
+          '</div>' +
+
+          '<div style="display:flex;justify-content:center;gap:8px;margin-top:14px">' +
+            '<button type="button" id="b49_reset_btn" style="background:#e2e8f0;color:#334155;border:none;border-radius:10px;padding:6px 14px;font-size:13px;font-weight:900;cursor:pointer">🔄 せんを やりなおす</button>' +
           '</div>' +
         '</div>' +
         makeDrillBookFooter('カモネギ', 'かるがもポケモン', 'ノーマル・ひこう', '0.8m', '15.0kg', 'さいころ、箱、筒、ボールの4つの立体図形の特徴（平面・曲面）を感覚的に捉えて分類します。', 83) +
       '</div>';
 
     initBattle49Match();
-
   } else if(bId === 'Battle49_2'){
     // バトル49_2：カモネギ かたち(2)（横から見た形、上から見た形）
     card.innerHTML = 
@@ -9689,44 +9766,129 @@ function renderInteractiveStage(row){
     initBattle49_2Drill();
 
   } else if(bId === 'Battle50'){
-    // バトル50：オオスバメ せいりしよう（数えてグラフを塗る）
-    const pokes = [
-      { id: 277, name: 'オオスバメ', target: 7, color: '#3b82f6' },
-      { id: 300, name: 'エネコ', target: 9, color: '#ec4899' },
-      { id: 293, name: 'ゴニョニョ', target: 7, color: '#a855f7' },
-      { id: 287, name: 'ナマケロ', target: 6, color: '#78350f' }
+    // バトル50：オオスバメ せいりしよう（原本完全再現・富士山と野原の風景・グラフ連動・①②③設問完全実装）
+    const pokesData = [
+      { id: 277, name: 'オオスバメ', target: 7, color: '#2563eb', bg: '#dbeafe' },
+      { id: 300, name: 'エネコ', target: 9, color: '#db2777', bg: '#fce7f3' },
+      { id: 293, name: 'ゴニョニョ', target: 7, color: '#9333ea', bg: '#f3e8ff' },
+      { id: 287, name: 'ナマケロ', target: 6, color: '#78350f', bg: '#fef3c7' }
     ];
 
-    let graphColsHtml = '';
-    pokes.forEach((p, cIdx) => {
-      let cellsHtml = '';
-      for(let r=1; r<=10; r++) {
-        cellsHtml += '<div class="b50-graph-cell" data-col="' + cIdx + '" data-row="' + r + '"></div>';
-      }
-      graphColsHtml += '<div class="b50-graph-col">' +
-        '<div style="text-align:center;margin-top:6px">' +
-          '<img src="' + ART(p.id) + '" alt="' + p.name + '" style="width:36px;height:36px">' +
-          '<div style="font-size:11px;font-weight:900;color:' + p.color + '">' + p.name + '</div>' +
-          '<div style="font-size:13px;font-weight:900;color:#1e293b" id="b50_count_' + cIdx + '">0匹</div>' +
-        '</div>' +
-        cellsHtml +
+    const swellows = [
+      { top: 8, left: 10 }, { top: 15, left: 32 }, { top: 6, left: 54 },
+      { top: 14, left: 74 }, { top: 26, left: 14 }, { top: 28, left: 40 }, { top: 29, left: 68 }
+    ];
+    const slakoths = [
+      { top: 46, left: 28 }, { top: 58, left: 10 }, { top: 65, left: 45 },
+      { top: 63, left: 78 }, { top: 76, left: 7 }, { top: 75, left: 72 }
+    ];
+    const skittys = [
+      { top: 50, left: 15 }, { top: 52, left: 45 }, { top: 56, left: 32 },
+      { top: 58, left: 70 }, { top: 66, left: 6 }, { top: 66, left: 33 },
+      { top: 74, left: 24 }, { top: 74, left: 36 }, { top: 75, left: 61 }
+    ];
+    const whismurs = [
+      { top: 52, left: 5 }, { top: 60, left: 58 }, { top: 60, left: 82 },
+      { top: 67, left: 17 }, { top: 68, left: 70 }, { top: 75, left: 48 }, { top: 76, left: 90 }
+    ];
+
+    let fieldPokesHtml = '';
+    swellows.forEach((pos, idx) => {
+      fieldPokesHtml += '<div class="b50-field-poke" data-type="0" data-idx="' + idx + '" style="position:absolute;top:' + pos.top + '%;left:' + pos.left + '%;cursor:pointer;transform:translate(-50%,-50%);transition:transform 0.2s;z-index:5">' +
+        '<img src="' + ART(277) + '" alt="オオスバメ" style="width:38px;height:38px;pointer-events:none;filter:drop-shadow(0 2px 3px rgba(0,0,0,0.3))">' +
       '</div>';
+    });
+    slakoths.forEach((pos, idx) => {
+      fieldPokesHtml += '<div class="b50-field-poke" data-type="3" data-idx="' + idx + '" style="position:absolute;top:' + pos.top + '%;left:' + pos.left + '%;cursor:pointer;transform:translate(-50%,-50%);transition:transform 0.2s;z-index:5">' +
+        '<img src="' + ART(287) + '" alt="ナマケロ" style="width:34px;height:34px;pointer-events:none;filter:drop-shadow(0 2px 3px rgba(0,0,0,0.3))">' +
+      '</div>';
+    });
+    skittys.forEach((pos, idx) => {
+      fieldPokesHtml += '<div class="b50-field-poke" data-type="1" data-idx="' + idx + '" style="position:absolute;top:' + pos.top + '%;left:' + pos.left + '%;cursor:pointer;transform:translate(-50%,-50%);transition:transform 0.2s;z-index:5">' +
+        '<img src="' + ART(300) + '" alt="エネコ" style="width:32px;height:32px;pointer-events:none;filter:drop-shadow(0 2px 3px rgba(0,0,0,0.3))">' +
+      '</div>';
+    });
+    whismurs.forEach((pos, idx) => {
+      fieldPokesHtml += '<div class="b50-field-poke" data-type="2" data-idx="' + idx + '" style="position:absolute;top:' + pos.top + '%;left:' + pos.left + '%;cursor:pointer;transform:translate(-50%,-50%);transition:transform 0.2s;z-index:5">' +
+        '<img src="' + ART(293) + '" alt="ゴニョニョ" style="width:32px;height:32px;pointer-events:none;filter:drop-shadow(0 2px 3px rgba(0,0,0,0.3))">' +
+      '</div>';
+    });
+
+    let graphColsHtml = '';
+    pokesData.forEach((p, cIdx) => {
+      let cellsHtml = '';
+      for(let r=10; r>=1; r--) {
+        cellsHtml += '<div class="b50-graph-cell" data-col="' + cIdx + '" data-row="' + r + '" style="height:22px;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;justify-content:center;cursor:pointer;background:#fff;transition:all 0.2s"></div>';
+      }
+      graphColsHtml += 
+        '<div class="b50-col" style="flex:1;background:#f8fafc;border:2px solid ' + p.color + '44;border-radius:12px;overflow:hidden;display:flex;flex-direction:column">' +
+          '<div style="text-align:center;padding:6px 2px;background:' + p.bg + ';border-bottom:2px solid ' + p.color + '44">' +
+            '<img src="' + ART(p.id) + '" alt="' + p.name + '" style="width:30px;height:30px">' +
+            '<div style="font-size:11px;font-weight:900;color:' + p.color + '">' + p.name + '</div>' +
+            '<div style="font-size:13px;font-weight:900;color:#0f172a" id="b50_count_' + cIdx + '">0 / ' + p.target + '</div>' +
+          '</div>' +
+          '<div style="display:flex;flex-direction:column;flex:1">' + cellsHtml + '</div>' +
+        '</div>';
     });
 
     card.innerHTML = 
       '<div class="drill-book-page">' +
-        makeDrillBookHeader(50, 'オオスバメ', 'おおすばめ', 'せ い り し よ う', 'そらと のはらの ポケモンを かぞえて、したから グラフの マスを タップして ぬろう！', 277) +
-        '<div style="background:#f0fdf4;border:2px solid #86efac;border-radius:14px;padding:8px 12px;font-size:13px;font-weight:800;color:#166534;margin-bottom:10px">' +
-          '🌲 オオスバメ(7匹)、エネコ(9匹)、ゴニョニョ(7匹)、ナマケロ(6匹) が いるよ！' +
+        makeDrillBookHeader(50, 'オオスバメ', 'おおすばめ', 'せ い り し よ う', 'そらと のはらの ポケモンを タップして かぞえ、グラフに 〇を ぬろう！', 277) +
+        
+        '<div style="position:relative;height:240px;border-radius:18px;overflow:hidden;border:2.5px solid #86efac;margin-bottom:14px;background:linear-gradient(to bottom, #bae6fd 0%, #e0f2fe 45%, #86efac 46%, #4ade80 70%, #22c55e 100%);box-shadow:0 4px 10px rgba(0,0,0,0.06)">' +
+          '<svg viewBox="0 0 400 160" style="position:absolute;top:25px;left:50%;transform:translateX(-50%);width:260px;opacity:0.85;pointer-events:none">' +
+            '<polygon points="200,10 70,160 330,160" fill="#93c5fd"/>' +
+            '<polygon points="200,10 160,60 180,50 200,65 220,50 240,60" fill="#ffffff"/>' +
+          '</svg>' +
+          '<div style="position:absolute;top:40px;right:10px;font-size:52px;opacity:0.75;pointer-events:none">🌲</div>' +
+          '<div style="position:absolute;top:70px;left:5px;font-size:42px;opacity:0.75;pointer-events:none">🌲</div>' +
+          fieldPokesHtml +
         '</div>' +
-        '<div class="b50-graph-container">' +
-          graphColsHtml +
+
+        '<div style="background:#fff;border:2.5px solid #cbd5e1;border-radius:18px;padding:12px;margin-bottom:14px">' +
+          '<div style="font-size:14px;font-weight:900;color:#1e293b;margin-bottom:8px;text-align:center">📊 ポケモンの かずだけ マスを ぬろう（絵をタップしても ぬれるよ！）</div>' +
+          '<div style="display:flex;gap:8px;max-width:440px;margin:0 auto">' +
+            graphColsHtml +
+          '</div>' +
         '</div>' +
+
+        '<div style="background:#f0fdf4;border:2.5px solid #86efac;border-radius:18px;padding:14px;margin-bottom:14px">' +
+          '<div style="font-size:15px;font-weight:900;color:#166534;margin-bottom:10px">✏️ グラフを みて もんだいに こたえよう</div>' +
+          
+          '<div style="margin-bottom:12px;background:#fff;padding:10px;border-radius:12px;border:1.5px solid #bbf7d0">' +
+            '<div style="font-size:13px;font-weight:900;color:#1e293b;margin-bottom:6px">① いちばん かずが おおい ポケモンは？</div>' +
+            '<div class="choices b50-q1-choices" style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap">' +
+              '<button type="button" class="choice" data-val="オオスバメ" style="font-size:13px;font-weight:900;padding:6px 12px;border-radius:8px">オオスバメ</button>' +
+              '<button type="button" class="choice" data-val="エネコ" style="font-size:13px;font-weight:900;padding:6px 12px;border-radius:8px">エネコ</button>' +
+              '<button type="button" class="choice" data-val="ゴニョニョ" style="font-size:13px;font-weight:900;padding:6px 12px;border-radius:8px">ゴニョニョ</button>' +
+              '<button type="button" class="choice" data-val="ナマケロ" style="font-size:13px;font-weight:900;padding:6px 12px;border-radius:8px">ナマケロ</button>' +
+            '</div>' +
+          '</div>' +
+
+          '<div style="margin-bottom:12px;background:#fff;padding:10px;border-radius:12px;border:1.5px solid #bbf7d0">' +
+            '<div style="font-size:13px;font-weight:900;color:#1e293b;margin-bottom:6px">② いちばん かずが すくない ポケモンは？</div>' +
+            '<div class="choices b50-q2-choices" style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap">' +
+              '<button type="button" class="choice" data-val="オオスバメ" style="font-size:13px;font-weight:900;padding:6px 12px;border-radius:8px">オオスバメ</button>' +
+              '<button type="button" class="choice" data-val="エネコ" style="font-size:13px;font-weight:900;padding:6px 12px;border-radius:8px">エネコ</button>' +
+              '<button type="button" class="choice" data-val="ゴニョニョ" style="font-size:13px;font-weight:900;padding:6px 12px;border-radius:8px">ゴニョニョ</button>' +
+              '<button type="button" class="choice" data-val="ナマケロ" style="font-size:13px;font-weight:900;padding:6px 12px;border-radius:8px">ナマケロ</button>' +
+            '</div>' +
+          '</div>' +
+
+          '<div style="background:#fff;padding:10px;border-radius:12px;border:1.5px solid #bbf7d0">' +
+            '<div style="font-size:13px;font-weight:900;color:#1e293b;margin-bottom:6px">③ おなじ かずなのは どれと どれ？</div>' +
+            '<div class="choices b50-q3-choices" style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap">' +
+              '<button type="button" class="choice" data-val="swellow_whismur" style="font-size:13px;font-weight:900;padding:6px 12px;border-radius:8px">オオスバメ と ゴニョニョ</button>' +
+              '<button type="button" class="choice" data-val="skitty_slakoth" style="font-size:13px;font-weight:900;padding:6px 12px;border-radius:8px">エネコ と ナマケロ</button>' +
+              '<button type="button" class="choice" data-val="swellow_skitty" style="font-size:13px;font-weight:900;padding:6px 12px;border-radius:8px">オオスバメ と エネコ</button>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+
         makeDrillBookFooter('オオスバメ', 'ツバメポケモン', 'ノーマル・ひこう', '0.7m', '19.8kg', '散らばったデータを種類ごとに分類・集計し、マス目を塗ってグラフ（表）にする統計の基礎を学びます。', 277) +
       '</div>';
 
     initBattle50GraphNew();
-
   } else if(bId === 'Battle50_2'){
     // バトル50_2：オオスバメ せいりしよう(2)（グラフを見て答える）
     card.innerHTML = 
@@ -9774,106 +9936,180 @@ function renderInteractiveStage(row){
     initBattle50_2Drill();
 
   } else if(bId === 'Battle51'){
-    // リククラゲ 61から120までのすうじ（ひゃくすうひょう）
-    const chartBlanks = { '73': 1, '88': 1, '100': 1, '115': 1 };
-    let chartHtml = '<div class="hundred-chart">';
-    for(let n=61; n<=120; n++){
-      if(chartBlanks[n]) {
-        chartHtml += '<div class="t-math-box" data-target="' + n + '" style="width:100%;height:100%;font-size:11px;border-radius:4px">？</div>';
-      } else {
-        chartHtml += '<div class="chart-cell">' + n + '</div>';
-      }
-    }
-    chartHtml += '</div>';
+    // バトル51：リククラゲ 61から120までのすうじ（原本完全再現・大きなマス・蛇行コース・穴埋め多数）
+    const chartBlanks = { '64': 0, '73': 1, '82': 2, '91': 3, '100': 4, '108': 5, '115': 6, '120': 7 };
+    const rowsDef = [
+      [61, 62, 63, 64, 65, 66, 67, 68, 69],
+      [70, 71, 72, 73, 74, 75, 76, 77, 78],
+      [79, 80, 81, 82, 83, 84, 85, 86, 87],
+      [88, 89, 90, 91, 92, 93, 94, 95, 96],
+      [97, 98, 99, 100, 101, 102, 103, 104, 105],
+      [106, 107, 108, 109, 110, 111, 112, 113],
+      [114, 115, 116, 117, 118, 119, 120]
+    ];
 
-    let tray = '<div class="num-choice-tray">';
-    ['73', '88', '100', '115'].forEach(n => {
+    let rowsHtml = '';
+    rowsDef.forEach((row, rIdx) => {
+      let cells = '';
+      row.forEach(n => {
+        if(chartBlanks[String(n)] !== undefined) {
+          cells += '<div class="t-math-box" data-idx="' + chartBlanks[String(n)] + '" data-target="' + n + '" style="min-width:44px;height:44px;font-size:18px;font-weight:900;border:2.5px solid #0284c7;background:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 4px rgba(0,0,0,0.06);margin:2px">？</div>';
+        } else {
+          cells += '<div style="min-width:44px;height:44px;font-size:18px;font-weight:900;color:#1e293b;border:2px solid #cbd5e1;background:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(0,0,0,0.04);margin:2px">' + n + '</div>';
+        }
+      });
+
+      let prefix = '';
+      if(rIdx === 0) prefix = '<span style="font-size:12px;font-weight:900;background:#ef4444;color:#fff;padding:4px 8px;border-radius:8px;margin-right:6px">スタート ⬇️</span>';
+      let suffix = '';
+      if(rIdx === 6) suffix = '<span style="font-size:12px;font-weight:900;background:#16a34a;color:#fff;padding:4px 8px;border-radius:8px;margin-left:6px">➡️ ゴール 🍄</span>';
+
+      rowsHtml += '<div style="display:flex;align-items:center;justify-content:center;flex-wrap:nowrap;padding:4px 0;background:rgba(254, 240, 138, 0.35);border-radius:12px;margin-bottom:6px;overflow-x:auto">' +
+        prefix + cells + suffix +
+      '</div>';
+    });
+
+    let tray = '<div class="num-choice-tray" style="margin-top:14px">';
+    ['64', '73', '82', '91', '100', '108', '115', '120'].forEach(n => {
       tray += '<button type="button" class="num-choice-btn" data-val="' + n + '">' + n + '</button>';
     });
     tray += '<button type="button" class="num-choice-btn erase" data-val="erase">⌫ けす</button></div>';
 
     card.innerHTML = 
       '<div class="drill-book-page">' +
-        makeDrillBookHeader(51, 'リククラゲ', 'りくくらげ', '61から 120までの すうじ（ひゃくすうひょう）', '10が 10こで 100！ リククラゲが かくしている マスの すうじを あててね。', 949) +
-        chartHtml +
+        makeDrillBookHeader(51, 'リククラゲ', 'りくくらげ', '61から 120までの すうじ', 'すうじを こえに だして よみながら すすもう。あいている マスに すうじを いれてね！', 949) +
+        '<div style="background:#fffbeb;border:2.5px solid #fde047;border-radius:20px;padding:14px 10px;margin:12px 0;box-shadow:0 3px 8px rgba(0,0,0,0.04)">' +
+          rowsHtml +
+        '</div>' +
         tray +
-        makeDrillBookFooter('リククラゲ', 'キノコポケモン', 'じめん・くさ', '1.9m', '58.0kg', '100を超える大きな数と、上下（±10）左右（±1）の規則的な配列を百数表で学びます。', 949) +
+        makeDrillBookFooter('リククラゲ', 'キノコポケモン', 'じめん・くさ', '1.9m', '58.0kg', '100を超える大きな数と、上下（±10）左右（±1）の規則的な配列をすごろく道で学びます。', 949) +
       '</div>';
 
     initBattle51Chart();
-
   } else if(bId === 'Battle52'){
-    // コレクレー いくらかな（10円と1円）
-    const coinPiles = [
-      { text: '① 10円玉 3まい と 1円玉 4まい', ans: '34' },
-      { text: '② 10円玉 6まい と 1円玉 8まい', ans: '68' },
-      { text: '③ 10円玉 8まい', ans: '80' }
+    // コレクレー いくらかな（原本完全再現・リアルな100円・10円・1円硬貨イラスト・4問構成）
+    function makeCoinsHtml(c100, c10, c1) {
+      let h = '';
+      for(let i=0; i<c100; i++) h += makeRealisticCoinSvg('100', 40);
+      for(let i=0; i<c10; i++) h += makeRealisticCoinSvg('10', 36);
+      for(let i=0; i<c1; i++) h += makeRealisticCoinSvg('1', 32);
+      return h;
+    }
+
+    const pData = [
+      { num: '①', c100: 0, c10: 5, c1: 5, ans: '55' },
+      { num: '②', c100: 0, c10: 9, c1: 2, ans: '92' },
+      { num: '③', c100: 1, c10: 0, c1: 4, ans: '104' },
+      { num: '④', c100: 1, c10: 1, c1: 9, ans: '119' }
     ];
 
-    let coinHtml = '<div style="background:#fefce8;border:2px solid #fef08a;border-radius:18px;padding:12px;margin-bottom:12px">';
-    coinPiles.forEach((p, idx) => {
-      coinHtml += '<div style="display:flex;align-items:center;justify-content:space-between;background:#fff;border:2px solid #fde047;border-radius:12px;padding:10px 14px;margin-bottom:8px">' +
-        '<div style="font-weight:900;font-size:14px;color:#854d0e">' + p.text + '</div>' +
-        '<div style="display:flex;align-items:center;gap:4px">' +
-          '<div class="t-math-box" data-idx="' + idx + '" data-target="' + p.ans + '">？</div>' +
-          '<span style="font-weight:900;font-size:14px;color:#854d0e">えん</span>' +
-        '</div>' +
-      '</div>';
+    let problemsHtml = '';
+    pData.forEach((p, idx) => {
+      problemsHtml += 
+        '<div style="background:#fff;border:2.5px solid #cbd5e1;border-radius:18px;padding:12px 14px;margin-bottom:12px;box-shadow:0 3px 6px rgba(0,0,0,0.04)">' +
+          '<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">' +
+            '<div style="flex:1;min-width:200px">' +
+              '<div style="font-size:13px;font-weight:900;color:#92400e;margin-bottom:6px">もんだい ' + p.num + '</div>' +
+              '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:3px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;padding:8px">' +
+                makeCoinsHtml(p.c100, p.c10, p.c1) +
+              '</div>' +
+            '</div>' +
+            '<div style="display:flex;align-items:center;gap:8px;padding:6px 12px;background:#fefce8;border:2px solid #fde047;border-radius:14px">' +
+              '<div class="t-math-box" data-idx="' + idx + '" data-target="' + p.ans + '" style="min-width:54px;height:46px;font-size:22px;font-weight:900;border-radius:10px">？</div>' +
+              '<span style="font-size:18px;font-weight:900;color:#1e293b">えん</span>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
     });
-    coinHtml += '</div>';
 
     let tray = '<div class="num-choice-tray">';
-    ['34', '68', '80'].forEach(n => {
+    ['55', '92', '104', '119', '50', '90', '100', '120'].forEach(n => {
       tray += '<button type="button" class="num-choice-btn" data-val="' + n + '">' + n + '</button>';
     });
     tray += '<button type="button" class="num-choice-btn erase" data-val="erase">⌫ けす</button></div>';
 
     card.innerHTML = 
       '<div class="drill-book-page">' +
-        makeDrillBookHeader(52, 'コレクレー', 'これくれー', 'おかね（10えんと 1えん）', 'コレクレーの たからばこ！ 10えんだまと 1えんだまで いくらかな？', 999) +
-        coinHtml +
+        makeDrillBookHeader(52, 'コレクレー', 'これくれえ', 'い く ら か な', 'おかねを かぞえて、しかくに すうじを かきましょう。', 999) +
+        problemsHtml +
         tray +
-        makeDrillBookFooter('コレクレー', 'たからばこポケモン', 'ゴースト', '0.3m', '5.0kg', '10円玉（十の位）と1円玉（一の位）を組み合わせ、日常生活のお金と位取りを直結させます。', 999) +
+        makeDrillBookFooter('コレクレー', 'たからばこポケモン', 'ゴースト', '0.3m', '5.0kg', '100円、10円、1円の硬貨を数え、十進位取り記数法（百の位、十の位、一の位）と金銭の感覚を養います。', 999) +
       '</div>';
 
     initBattle52Coins();
-
   } else if(bId === 'Battle53'){
-    // ポリゴン2 たしざん（しきを つくろう）
+    // バトル53：ポリゴン2 たしざん（原本完全再現・ポリゴン2の群れ・あわせると/ふえると数式作成）
+    function makePorygons(count) {
+      let h = '';
+      for(let i=0; i<count; i++) {
+        h += '<img src="' + ART(233) + '" alt="ポリゴン2" style="width:38px;height:38px;margin:2px;filter:drop-shadow(0 2px 3px rgba(0,0,0,0.2))">';
+      }
+      return h;
+    }
+
+    let tray = '<div class="num-choice-tray">';
+    ['1', '2', '3'].forEach(n => {
+      tray += '<button type="button" class="num-choice-btn" data-val="' + n + '">' + n + '</button>';
+    });
+    tray += '<button type="button" class="num-choice-btn erase" data-val="erase">⌫ けす</button></div>';
+
     card.innerHTML = 
       '<div class="drill-book-page">' +
-        makeDrillBookHeader(53, 'ポリゴン2', 'ぽりごんつー', 'たしざん（しきを つくろう）', '「＋」と「＝」の きごうを つかって、たしざんの しきを つくろう！', 233) +
-        '<div style="background:#f0f9ff;border:2px solid #bae6fd;border-radius:18px;padding:14px;margin-bottom:12px">' +
-          '<div style="margin-bottom:14px">' +
-            '<div style="font-weight:900;font-size:14px;color:#0369a1;margin-bottom:6px">① 3この りんご と 2この りんご（あわせると？）</div>' +
-            '<div style="display:flex;align-items:center;gap:6px;justify-content:center">' +
-              '<div class="t-math-box" data-idx="0" data-target="3">？</div>' +
-              '<span style="font-size:24px;font-weight:900;color:#0284c7">＋</span>' +
-              '<div class="t-math-box" data-idx="1" data-target="2">？</div>' +
-              '<span style="font-size:24px;font-weight:900;color:#0284c7">＝</span>' +
-              '<div class="t-math-box" data-idx="2" data-target="5">？</div>' +
-            '</div>' +
+        makeDrillBookHeader(53, 'ポリゴン2', 'ぽりごんつー', 'た し ざ ん', 'せつめいを よみながら、すうじを いれて たしざんの しきを つくろう！', 233) +
+        
+        '<div style="background:#f0fdf4;border:2.5px solid #86efac;border-radius:18px;padding:14px;margin-bottom:14px">' +
+          '<div style="display:inline-block;background:#16a34a;color:#fff;font-size:13px;font-weight:900;padding:3px 12px;border-radius:12px;margin-bottom:8px">あわせて いくつ</div>' +
+          '<div style="font-size:15px;font-weight:900;color:#166534;margin-bottom:8px">1と 2を あわせると、3に なります。</div>' +
+          
+          '<div style="background:#fff;border:1.5px solid #bbf7d0;border-radius:14px;padding:10px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:12px">' +
+            '<div style="display:flex;align-items:center">' + makePorygons(1) + '</div>' +
+            '<span style="font-size:15px;font-weight:900;color:#15803d">と</span>' +
+            '<div style="display:flex;align-items:center">' + makePorygons(2) + '</div>' +
+            '<span style="font-size:15px;font-weight:900;color:#15803d">あわせて</span>' +
+            '<div style="display:flex;align-items:center">' + makePorygons(3) + '</div>' +
           '</div>' +
-          '<div>' +
-            '<div style="font-weight:900;font-size:14px;color:#0369a1;margin-bottom:6px">② 4ひきの ピカチュウ と 3ひき（ふえると？）</div>' +
-            '<div style="display:flex;align-items:center;gap:6px;justify-content:center">' +
-              '<div class="t-math-box" data-idx="3" data-target="4">？</div>' +
-              '<span style="font-size:24px;font-weight:900;color:#0284c7">＋</span>' +
-              '<div class="t-math-box" data-idx="4" data-target="3">？</div>' +
-              '<span style="font-size:24px;font-weight:900;color:#0284c7">＝</span>' +
-              '<div class="t-math-box" data-idx="5" data-target="7">？</div>' +
-            '</div>' +
+
+          '<div style="font-size:13px;font-weight:900;color:#475569;margin-bottom:6px;text-align:center">これを しきに すると：</div>' +
+          '<div style="display:flex;align-items:center;justify-content:center;gap:8px">' +
+            '<div class="t-math-box" data-idx="0" data-target="1" style="min-width:48px;height:48px;font-size:24px;border-radius:10px">？</div>' +
+            '<span style="font-size:26px;font-weight:900;color:#15803d">＋</span>' +
+            '<div class="t-math-box" data-idx="1" data-target="2" style="min-width:48px;height:48px;font-size:24px;border-radius:10px">？</div>' +
+            '<span style="font-size:26px;font-weight:900;color:#15803d">＝</span>' +
+            '<div class="t-math-box" data-idx="2" data-target="3" style="min-width:48px;height:48px;font-size:24px;border-radius:10px">？</div>' +
           '</div>' +
         '</div>' +
-        '<div class="num-choice-tray">' +
-          ['2', '3', '4', '5', '7'].map(n => '<button type="button" class="num-choice-btn" data-val="' + n + '">' + n + '</button>').join('') +
-          '<button type="button" class="num-choice-btn erase" data-val="erase">⌫ けす</button>' +
+
+        '<div style="background:#eff6ff;border:2.5px solid #93c5fd;border-radius:18px;padding:14px;margin-bottom:14px">' +
+          '<div style="display:inline-block;background:#2563eb;color:#fff;font-size:13px;font-weight:900;padding:3px 12px;border-radius:12px;margin-bottom:8px">ふえると いくつ</div>' +
+          '<div style="font-size:15px;font-weight:900;color:#1e40af;margin-bottom:8px">2に 1 ふえると、3に なります。</div>' +
+          
+          '<div style="background:#fff;border:1.5px solid #bfdbfe;border-radius:14px;padding:10px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:12px">' +
+            '<div style="display:flex;align-items:center">' + makePorygons(2) + '</div>' +
+            '<span style="font-size:15px;font-weight:900;color:#1e40af">に</span>' +
+            '<div style="display:flex;align-items:center">' + makePorygons(1) + '</div>' +
+            '<span style="font-size:15px;font-weight:900;color:#1e40af">ふえると</span>' +
+            '<div style="display:flex;align-items:center">' + makePorygons(3) + '</div>' +
+          '</div>' +
+
+          '<div style="font-size:13px;font-weight:900;color:#475569;margin-bottom:6px;text-align:center">これを しきに すると：</div>' +
+          '<div style="display:flex;align-items:center;justify-content:center;gap:8px">' +
+            '<div class="t-math-box" data-idx="3" data-target="2" style="min-width:48px;height:48px;font-size:24px;border-radius:10px">？</div>' +
+            '<span style="font-size:26px;font-weight:900;color:#1e40af">＋</span>' +
+            '<div class="t-math-box" data-idx="4" data-target="1" style="min-width:48px;height:48px;font-size:24px;border-radius:10px">？</div>' +
+            '<span style="font-size:26px;font-weight:900;color:#1e40af">＝</span>' +
+            '<div class="t-math-box" data-idx="5" data-target="3" style="min-width:48px;height:48px;font-size:24px;border-radius:10px">？</div>' +
+          '</div>' +
         '</div>' +
+
+        '<div style="background:#fffbeb;border:2px solid #fde047;border-radius:14px;padding:10px 14px;margin-bottom:12px;text-align:center">' +
+          '<div style="font-size:13px;font-weight:900;color:#854d0e">💡 これらの けいさんを<strong>「たしざん」</strong>と いいます。</div>' +
+        '</div>' +
+
+        tray +
         makeDrillBookFooter('ポリゴン2', 'バーチャルポケモン', 'ノーマル', '0.6m', '32.5kg', '「あわせる」「ふえる」という現象を、算数の式「＋」「＝」で表す数式化の力を育てます。', 233) +
       '</div>';
 
     initBattle53Formula();
-
   } else if(bId === 'Battle53_2'){
     // ポリゴン2 たしざん（けいさん カード）
     const cards = [
@@ -10875,158 +11111,90 @@ function initBattle24Crocalor() {
 
   const st = S.answers[curIdx] = S.answers[curIdx] || {};
 
-  // --- 1. フランスパン (🥖 16個) の選択 ---
-  const bagAllItems = Array.from(container.querySelectorAll('.b24-bag-item'));
-  const bagBundleBox = document.getElementById('b24BagBundleBox');
-  const bagBundleTitle = document.getElementById('b24BagBundleTitle');
-  const bagBundleItems = document.getElementById('b24BagBundleItems');
-  const bagLooseBox = document.getElementById('b24BagLooseBox');
-  const bagLooseItems = document.getElementById('b24BagLooseItems');
-  const bagCountEl = document.getElementById('b24BagCount');
-  const bagMsg = document.getElementById('b24BagRingMsg');
+  function setupSelectableGroup(itemsClass, bundleBoxId, bundleTitleId, bundleItemsId, looseBoxId, looseItemsId, countElId, themeColor, themeBg, name) {
+    const allItems = Array.from(container.querySelectorAll('.' + itemsClass));
+    const bundleBox = document.getElementById(bundleBoxId);
+    const bundleTitle = document.getElementById(bundleTitleId);
+    const bundleItems = document.getElementById(bundleItemsId);
+    const looseBox = document.getElementById(looseBoxId);
+    const looseItems = document.getElementById(looseItemsId);
+    const countEl = document.getElementById(countElId);
 
-  let selectedBags = new Set();
+    let selected = new Set();
 
-  function updateBagLayout() {
-    if (selectedBags.size === 10) {
-      bagBundleItems.innerHTML = '';
-      bagLooseItems.innerHTML = '';
-      bagAllItems.forEach(item => {
-        if (selectedBags.has(item.dataset.idx)) {
-          item.style.borderColor = '#16a34a';
-          item.style.background = '#dcfce7';
-          bagBundleItems.appendChild(item);
-        } else {
-          item.style.borderColor = '#e2e8f0';
-          item.style.background = '#fff';
-          bagLooseItems.appendChild(item);
-        }
-      });
-      bagBundleBox.style.border = '3px dashed #16a34a';
-      bagBundleBox.style.background = 'rgba(220, 252, 231, 0.7)';
-      bagBundleTitle.innerHTML = '✨ <strong>パンの 10の まとまり</strong>（10こ）';
-      bagBundleTitle.style.color = '#15803d';
-      bagLooseBox.style.display = 'block';
-      if (bagMsg) bagMsg.style.display = 'block';
-    } else {
-      bagBundleItems.innerHTML = '';
-      bagLooseItems.innerHTML = '';
-      bagAllItems.forEach(item => {
-        if (selectedBags.has(item.dataset.idx)) {
-          item.style.borderColor = '#ca8a04';
-          item.style.background = '#fef08a';
-        } else {
-          item.style.borderColor = '#e2e8f0';
-          item.style.background = '#fff';
-        }
-        bagBundleItems.appendChild(item);
-      });
-      bagBundleBox.style.border = '2px dashed #cbd5e1';
-      bagBundleBox.style.background = 'transparent';
-      bagBundleTitle.innerHTML = '10の まとまり（あと ' + (10 - selectedBags.size) + 'こ タップしてね）';
-      bagBundleTitle.style.color = '#64748b';
-      bagLooseBox.style.display = 'none';
-      if (bagMsg) bagMsg.style.display = 'none';
+    function updateLayout() {
+      if (selected.size === 10) {
+        bundleItems.innerHTML = '';
+        looseItems.innerHTML = '';
+        allItems.forEach(item => {
+          if (selected.has(item.dataset.idx)) {
+            item.style.borderColor = themeColor;
+            item.style.background = themeBg;
+            bundleItems.appendChild(item);
+          } else {
+            item.style.borderColor = '#e2e8f0';
+            item.style.background = '#fff';
+            looseItems.appendChild(item);
+          }
+        });
+        bundleBox.style.border = '3px dashed ' + themeColor;
+        bundleBox.style.background = themeBg;
+        bundleTitle.innerHTML = '✨ <strong>' + name + 'の 10の まとまり</strong>（10こ）';
+        bundleTitle.style.color = themeColor;
+        looseBox.style.display = 'block';
+      } else {
+        bundleItems.innerHTML = '';
+        looseItems.innerHTML = '';
+        allItems.forEach(item => {
+          if (selected.has(item.dataset.idx)) {
+            item.style.borderColor = '#ca8a04';
+            item.style.background = '#fef08a';
+          } else {
+            item.style.borderColor = '#e2e8f0';
+            item.style.background = '#fff';
+          }
+          bundleItems.appendChild(item);
+        });
+        bundleBox.style.border = '2px dashed #cbd5e1';
+        bundleBox.style.background = 'transparent';
+        bundleTitle.innerHTML = '10の まとまり（あと ' + (10 - selected.size) + 'こ タップしてね）';
+        bundleTitle.style.color = '#64748b';
+        looseBox.style.display = 'none';
+      }
+      if (countEl) countEl.textContent = selected.size;
     }
-    if (bagCountEl) bagCountEl.textContent = selectedBags.size;
+
+    allItems.forEach(item => {
+      item.onclick = () => {
+        const idx = item.dataset.idx;
+        if (selected.has(idx)) {
+          selected.delete(idx);
+          playMarimbaPop(1.0);
+        } else {
+          if (selected.size >= 10) {
+            playMarimbaPop(0.8);
+            return;
+          }
+          selected.add(idx);
+          playMarimbaPop(1.1 + selected.size * 0.04);
+        }
+        updateLayout();
+      };
+    });
   }
 
-  bagAllItems.forEach(item => {
-    item.onclick = () => {
-      const idx = item.dataset.idx;
-      if (selectedBags.has(idx)) {
-        selectedBags.delete(idx);
-        playMarimbaPop(1.0);
-      } else {
-        if (selectedBags.size >= 10) {
-          playMarimbaPop(0.8);
-          return;
-        }
-        selectedBags.add(idx);
-        playMarimbaPop(1.1 + selectedBags.size * 0.04);
-      }
-      updateBagLayout();
-    };
-  });
+  // 4つのグループをすべてタップ選択可能に
+  setupSelectableGroup('b24-bag-item', 'b24BagBundleBox', 'b24BagBundleTitle', 'b24BagBundleItems', 'b24BagLooseBox', 'b24BagLooseItems', 'b24BagCount', '#16a34a', 'rgba(220, 252, 231, 0.7)', 'パン');
+  setupSelectableGroup('b24-plate1-item', 'b24Plate1BundleBox', 'b24Plate1BundleTitle', 'b24Plate1BundleItems', 'b24Plate1LooseBox', 'b24Plate1LooseItems', 'b24Plate1Count', '#0284c7', 'rgba(224, 242, 254, 0.7)', 'おさら');
+  setupSelectableGroup('b24-bun-item', 'b24BunBundleBox', 'b24BunBundleTitle', 'b24BunBundleItems', 'b24BunLooseBox', 'b24BunLooseItems', 'b24BunCount', '#ea580c', 'rgba(255, 237, 213, 0.7)', 'まるいパン');
+  setupSelectableGroup('b24-plate2-item', 'b24Plate2BundleBox', 'b24Plate2BundleTitle', 'b24Plate2BundleItems', 'b24Plate2LooseBox', 'b24Plate2LooseItems', 'b24Plate2Count', '#2563eb', 'rgba(219, 234, 254, 0.7)', 'おさら');
 
-  // --- 2. 丸パン (🍞 17個) の選択 ---
-  const bunAllItems = Array.from(container.querySelectorAll('.b24-bun-item'));
-  const bunBundleBox = document.getElementById('b24BunBundleBox');
-  const bunBundleTitle = document.getElementById('b24BunBundleTitle');
-  const bunBundleItems = document.getElementById('b24BunBundleItems');
-  const bunLooseBox = document.getElementById('b24BunLooseBox');
-  const bunLooseItems = document.getElementById('b24BunLooseItems');
-  const bunCountEl = document.getElementById('b24BunCount');
-  const bunMsg = document.getElementById('b24BunRingMsg');
-
-  let selectedBuns = new Set();
-
-  function updateBunLayout() {
-    if (selectedBuns.size === 10) {
-      bunBundleItems.innerHTML = '';
-      bunLooseItems.innerHTML = '';
-      bunAllItems.forEach(item => {
-        if (selectedBuns.has(item.dataset.idx)) {
-          item.style.borderColor = '#2563eb';
-          item.style.background = '#dbeafe';
-          bunBundleItems.appendChild(item);
-        } else {
-          item.style.borderColor = '#e2e8f0';
-          item.style.background = '#fff';
-          bunLooseItems.appendChild(item);
-        }
-      });
-      bunBundleBox.style.border = '3px dashed #2563eb';
-      bunBundleBox.style.background = 'rgba(219, 234, 254, 0.7)';
-      bunBundleTitle.innerHTML = '✨ <strong>まるいパンの 10の まとまり</strong>（10こ）';
-      bunBundleTitle.style.color = '#1e40af';
-      bunLooseBox.style.display = 'block';
-      if (bunMsg) bunMsg.style.display = 'block';
-    } else {
-      bunBundleItems.innerHTML = '';
-      bunLooseItems.innerHTML = '';
-      bunAllItems.forEach(item => {
-        if (selectedBuns.has(item.dataset.idx)) {
-          item.style.borderColor = '#ca8a04';
-          item.style.background = '#fef08a';
-        } else {
-          item.style.borderColor = '#e2e8f0';
-          item.style.background = '#fff';
-        }
-        bunBundleItems.appendChild(item);
-      });
-      bunBundleBox.style.border = '2px dashed #cbd5e1';
-      bunBundleBox.style.background = 'transparent';
-      bunBundleTitle.innerHTML = '10の まとまり（あと ' + (10 - selectedBuns.size) + 'こ タップしてね）';
-      bunBundleTitle.style.color = '#64748b';
-      bunLooseBox.style.display = 'none';
-      if (bunMsg) bunMsg.style.display = 'none';
-    }
-    if (bunCountEl) bunCountEl.textContent = selectedBuns.size;
-  }
-
-  bunAllItems.forEach(item => {
-    item.onclick = () => {
-      const idx = item.dataset.idx;
-      if (selectedBuns.has(idx)) {
-        selectedBuns.delete(idx);
-        playMarimbaPop(1.0);
-      } else {
-        if (selectedBuns.size >= 10) {
-          playMarimbaPop(0.8);
-          return;
-        }
-        selectedBuns.add(idx);
-        playMarimbaPop(1.1 + selectedBuns.size * 0.04);
-      }
-      updateBunLayout();
-    };
-  });
-
-  // --- 3. 正解判定コントローラー ---
+  // --- 正解判定コントローラー ---
   function checkDone() {
+    // セクション1: パン16, お皿14, パンが多い(bread)
     const g1Done = (st['0'] === '16' && st['1'] === '14' && st['comp1'] === 'bread');
-    const g2Done = (st['2'] === '17' && st['3'] === '16' && st['comp2'] === 'bread');
+    // セクション2: 丸パン17, お皿18, お皿が多い(plate: 18 > 17)
+    const g2Done = (st['2'] === '17' && st['3'] === '18' && st['comp2'] === 'plate');
 
     const b1 = document.getElementById('b24_g1_badge');
     if (b1) b1.style.display = g1Done ? 'inline-block' : 'none';
@@ -11035,12 +11203,14 @@ function initBattle24Crocalor() {
     if (b2) b2.style.display = g2Done ? 'inline-block' : 'none';
 
     if (g1Done && g2Done) {
-      playCrystalSparkle();
+      try {
+        if (typeof playCrystalSparkle === 'function') playCrystalSparkle();
+      } catch(e) {}
       completeBookDrill();
     }
   }
 
-  // --- 4. 数字の選択肢ボタン ---
+  // --- 数字の選択肢ボタン ---
   container.querySelectorAll('.b24-count-choices').forEach(group => {
     const qKey = group.dataset.q;
     group.querySelectorAll('.choice').forEach(btn => {
@@ -11053,43 +11223,33 @@ function initBattle24Crocalor() {
         }
       }
       btn.onclick = () => {
-        playMarimbaPop(1.2);
         group.querySelectorAll('.choice').forEach(b => b.classList.remove('sel'));
         btn.classList.add('sel');
+        playMarimbaPop(1.2);
         st[qKey] = btn.dataset.val;
+        save();
+        updateThrow();
         const box = document.getElementById('b24_ans_' + qKey);
         if (box) {
           box.textContent = btn.dataset.val;
           box.classList.add('filled');
         }
-        save();
-        updateThrow();
         checkDone();
       };
     });
   });
 
-  // --- 5. どちらが多いかボタン ---
+  // --- 比較の選択肢ボタン ---
   container.querySelectorAll('.b24-comp-btn').forEach(btn => {
-    const grp = btn.dataset.group;
-    const compKey = grp === 'g1' ? 'comp1' : 'comp2';
-    if (st[compKey] === btn.dataset.val) {
+    const groupKey = btn.dataset.group === 'g1' ? 'comp1' : 'comp2';
+    if (st[groupKey] === btn.dataset.val) {
       btn.classList.add('sel');
-      btn.style.background = '#22c55e';
-      btn.style.color = '#fff';
     }
-
     btn.onclick = () => {
-      playMarimbaPop(1.25);
-      container.querySelectorAll('.b24-comp-btn[data-group="' + grp + '"]').forEach(b => {
-        b.classList.remove('sel');
-        b.style.background = '';
-        b.style.color = '';
-      });
+      btn.parentElement.querySelectorAll('.b24-comp-btn').forEach(b => b.classList.remove('sel'));
       btn.classList.add('sel');
-      btn.style.background = '#22c55e';
-      btn.style.color = '#fff';
-      st[compKey] = btn.dataset.val;
+      playMarimbaPop(1.3);
+      st[groupKey] = btn.dataset.val;
       save();
       updateThrow();
       checkDone();
@@ -11240,84 +11400,73 @@ function initBattle29Glameow() {
 }
 
 function initBattle30Pidgeot() {
-  const container = document.querySelector('.drill-book-page');
-  if (!container) return;
+  const p = document.querySelector('.drill-book-page');
+  if(!p) return;
 
-  // --- 問題①のアニメーション操作 ---
-  const btnEat1 = document.getElementById('b30_eat_1');
-  const btnReset1 = document.getElementById('b30_reset_1');
-  const msg1 = document.getElementById('b30_msg_1');
+  function setupProblem(probNum, eatCount, remCount, eatBtnId, resetBtnId, eatGrpId, statusId, msgId, type) {
+    const eatBtn = document.getElementById(eatBtnId);
+    const resetBtn = document.getElementById(resetBtnId);
+    const eatGrp = document.getElementById(eatGrpId);
+    const status = document.getElementById(statusId);
+    const msg = document.getElementById(msgId);
 
-  function doEat1() {
-    playMarimbaPop(1.3);
-    for (let i = 0; i < 4; i++) {
-      const el = document.getElementById('b30_c1_eat_' + i);
-      if (el) {
+    function doReset() {
+      if (status) status.style.display = 'none';
+      if (eatGrp) {
+        eatGrp.style.borderColor = 'transparent';
+        eatGrp.style.background = 'transparent';
+      }
+      for(let i=0; i<eatCount; i++) {
+        const c = document.getElementById('b30_c' + probNum + '_eat_' + i);
+        if (c) {
+          c.classList.remove('b30-cookie-eaten');
+          c.classList.add('b30-cookie-fresh');
+          c.innerHTML = makeCookieSvg(type, 38);
+        }
+      }
+      if (msg) msg.innerHTML = '🍪 おさらに クッキーが <strong>ぜんぶで ' + (remCount + eatCount) + 'こ</strong> あるよ。「' + eatCount + 'こ たべる！」を おしてみよう！';
+    }
+
+    if (eatBtn) {
+      eatBtn.onclick = () => {
+        if (status) status.style.display = 'flex';
+        if (eatGrp) {
+          eatGrp.style.borderColor = '#ef4444';
+          eatGrp.style.background = '#fef2f2';
+        }
+        for(let i=0; i<eatCount; i++) {
+          const c = document.getElementById('b30_c' + probNum + '_eat_' + i);
+          if (c) {
+            setTimeout(() => {
+              c.classList.add('b30-cookie-eaten');
+              c.classList.remove('b30-cookie-fresh');
+              c.style.animation = 'b30Chomp 0.4s ease-in-out';
+              playCookieCrunch();
+              c.innerHTML = makeCookieSvg(type, 38, true);
+            }, i * 140);
+          }
+        }
         setTimeout(() => {
-          el.classList.add('b30-eating');
-          playMarimbaPop(1.1 + i * 0.1);
-        }, i * 140);
-      }
+          if (msg) msg.innerHTML = '😋 パクッ！ <strong>' + eatCount + 'こ</strong> たべたよ！ のこりは <strong>' + remCount + 'こ</strong> になったね！';
+        }, eatCount * 140 + 100);
+      };
     }
-    if (msg1) msg1.innerHTML = '😋 <strong>パクッ！4こ たべたよ！</strong> のこりは <strong style="color:#dc2626;font-size:16px">5こ</strong> に なったね！';
+
+    if (resetBtn) {
+      resetBtn.onclick = () => {
+        playMarimbaPop(1.0);
+        doReset();
+      };
+    }
   }
 
-  function doReset1() {
-    playMarimbaPop(1.0);
-    for (let i = 0; i < 4; i++) {
-      const el = document.getElementById('b30_c1_eat_' + i);
-      if (el) {
-        el.classList.remove('b30-eating');
-        el.style.opacity = '1';
-        el.style.filter = 'none';
-        el.style.transform = 'none';
-      }
-    }
-    if (msg1) msg1.innerHTML = '🍪 はじめに ぜんぶで <strong>9こ</strong> あるよ。「たべる」ボタンを おしてみよう！';
-  }
+  setupProblem(1, 4, 5, 'b30_eat_1', 'b30_reset_1', 'b30_p1_eat_grp', 'b30_p1_status_bar', 'b30_msg_1', 'round');
+  setupProblem(2, 7, 3, 'b30_eat_2', 'b30_reset_2', 'b30_p2_eat_grp', 'b30_p2_status_bar', 'b30_msg_2', 'square');
 
-  if (btnEat1) btnEat1.onclick = doEat1;
-  if (btnReset1) btnReset1.onclick = doReset1;
-
-  // --- 問題②のアニメーション操作 ---
-  const btnEat2 = document.getElementById('b30_eat_2');
-  const btnReset2 = document.getElementById('b30_reset_2');
-  const msg2 = document.getElementById('b30_msg_2');
-
-  function doEat2() {
-    playMarimbaPop(1.3);
-    for (let i = 0; i < 7; i++) {
-      const el = document.getElementById('b30_c2_eat_' + i);
-      if (el) {
-        setTimeout(() => {
-          el.classList.add('b30-eating');
-          playMarimbaPop(1.0 + i * 0.08);
-        }, i * 110);
-      }
-    }
-    if (msg2) msg2.innerHTML = '😋 <strong>パクッ！7こ たべたよ！</strong> のこりは <strong style="color:#dc2626;font-size:16px">3こ</strong> に なったね！';
-  }
-
-  function doReset2() {
-    playMarimbaPop(1.0);
-    for (let i = 0; i < 7; i++) {
-      const el = document.getElementById('b30_c2_eat_' + i);
-      if (el) {
-        el.classList.remove('b30-eating');
-        el.style.opacity = '1';
-        el.style.filter = 'none';
-        el.style.transform = 'none';
-      }
-    }
-    if (msg2) msg2.innerHTML = '🍪 はじめに ぜんぶで <strong>10こ</strong> あるよ。「たべる」ボタンを おしてみよう！';
-  }
-
-  if (btnEat2) btnEat2.onclick = doEat2;
-  if (btnReset2) btnReset2.onclick = doReset2;
-
-  // 数式入力
-  setupMathBoxController(container, ['9', '4', '5', '10', '7', '3'], () => {
-    playCrystalSparkle();
+  setupMathBoxController(p, ['9', '4', '5', '10', '7', '3'], () => {
+    try {
+      if (typeof playCrystalSparkle === 'function') playCrystalSparkle();
+    } catch(e) {}
     completeBookDrill();
   });
 }
@@ -12265,78 +12414,206 @@ function initBattle48Drill() {
   const p = document.querySelector('.drill-book-page');
   if(!p) return;
 
-  const encircled = new Set();
-  p.querySelectorAll('.trapinch-group').forEach(c => {
-    c.onclick = () => {
-      const g = c.dataset.g;
-      if(encircled.has(g)) {
-        encircled.delete(g);
-        c.classList.remove('selected');
-        playMarimbaPop(0.9);
+  const selectedItems = new Set();
+  const completedGroups = new Set();
+  const statusEl = document.getElementById('b48_bundle_status');
+
+  function updateGroupsState() {
+    for(let g=0; g<6; g++) {
+      const gCard = document.getElementById('b48_group_' + g);
+      const gTitle = document.getElementById('b48_group_title_' + g);
+      const itemsInG = Array.from(p.querySelectorAll('.b48-trapinch-item[data-group="' + g + '"]'));
+      const selectedInG = itemsInG.filter(it => selectedItems.has(it.dataset.idx));
+
+      if (g < 5 && selectedInG.length === 10) {
+        completedGroups.add(g);
+        if (gCard) {
+          gCard.style.border = '3px solid #16a34a';
+          gCard.style.background = '#dcfce7';
+          gCard.style.boxShadow = '0 3px 8px rgba(22, 163, 74, 0.2)';
+        }
+        if (gTitle) {
+          gTitle.innerHTML = '✨ <strong>10の まとまり</strong>（10ぴき）';
+          gTitle.style.color = '#15803d';
+        }
+      } else if (g === 5 && selectedInG.length === 6) {
+        if (gCard) {
+          gCard.style.border = '2.5px solid #ca8a04';
+          gCard.style.background = '#fef9c3';
+        }
+        if (gTitle) {
+          gTitle.innerHTML = '✨ <strong>ばらの かず</strong>（6ぴき）';
+          gTitle.style.color = '#854d0e';
+        }
       } else {
-        encircled.add(g);
-        c.classList.add('selected');
-        playMarimbaPop(1.2 + encircled.size * 0.05);
+        completedGroups.delete(g);
+        if (gCard) {
+          gCard.style.border = '2px dashed #cbd5e1';
+          gCard.style.background = 'rgba(255,255,255,0.4)';
+          gCard.style.boxShadow = 'none';
+        }
+        if (gTitle) {
+          gTitle.innerHTML = g < 5 ? ('ナックラー（' + selectedInG.length + ' / 10ぴき）') : ('のこり（' + selectedInG.length + ' / 6ぴき）');
+          gTitle.style.color = '#78350f';
+        }
       }
+    }
+
+    if (statusEl) {
+      statusEl.textContent = '10の まとまり: ' + completedGroups.size + ' / 5こ';
+    }
+  }
+
+  p.querySelectorAll('.b48-trapinch-item').forEach(item => {
+    item.onclick = () => {
+      const idx = item.dataset.idx;
+      if (selectedItems.has(idx)) {
+        selectedItems.delete(idx);
+        item.style.borderColor = 'transparent';
+        item.style.background = 'rgba(255,255,255,0.7)';
+        playMarimbaPop(1.0);
+      } else {
+        selectedItems.add(idx);
+        item.style.borderColor = '#16a34a';
+        item.style.background = '#bbf7d0';
+        playMarimbaPop(1.1 + (selectedItems.size % 10) * 0.05);
+      }
+      updateGroupsState();
     };
   });
 
-  setupMathBoxController(p, ['58'], () => {
-    if(encircled.size >= 5) {
-      completeBookDrill();
-    } else {
-      toast('10の まとまりの グループも タップして まるで かこもう！', 2000);
-    }
+  setupMathBoxController(p, ['56'], () => {
+    try {
+      if (typeof playCrystalSparkle === 'function') playCrystalSparkle();
+    } catch(e) {}
+    completeBookDrill();
   });
 }
 
 function initBattle49Match() {
-  const p = document.querySelector('.drill-book-page');
-  if(!p) return;
+  const container = document.getElementById('b49_match_container');
+  const svg = document.getElementById('b49_svg_lines');
+  if(!container || !svg) return;
 
-  let selectedShape = null;
-  const matches = {};
-  const shapes = p.querySelectorAll('#b49_top_shapes .b24-choice-card');
-  const items = p.querySelectorAll('#b49_bottom_items .b24-choice-card');
+  const colors = {
+    dice: '#ef4444',
+    box: '#f97316',
+    cylinder: '#10b981',
+    sphere: '#3b82f6'
+  };
 
-  shapes.forEach(s => {
-    s.onclick = () => {
-      shapes.forEach(o => o.classList.remove('selected'));
-      s.classList.add('selected');
-      selectedShape = s.dataset.shape;
-      playMarimbaPop(1.1);
+  let selectedTop = null;
+  const connections = {};
+
+  function renderLines() {
+    svg.innerHTML = '';
+    const cRect = container.getBoundingClientRect();
+
+    Object.keys(connections).forEach(topId => {
+      const botId = connections[topId];
+      const topDot = document.getElementById('b49_dot_top_' + topId);
+      const botDot = document.getElementById('b49_dot_bot_' + botId);
+      if(!topDot || !botDot) return;
+
+      const tRect = topDot.getBoundingClientRect();
+      const bRect = botDot.getBoundingClientRect();
+
+      const x1 = tRect.left + tRect.width / 2 - cRect.left;
+      const y1 = tRect.top + tRect.height / 2 - cRect.top;
+      const x2 = bRect.left + bRect.width / 2 - cRect.left;
+      const y2 = bRect.top + bRect.height / 2 - cRect.top;
+
+      const color = colors[topId] || '#6366f1';
+
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      const cy1 = y1 + 30;
+      const cy2 = y2 - 30;
+      const d = 'M ' + x1 + ' ' + y1 + ' C ' + x1 + ' ' + cy1 + ', ' + x2 + ' ' + cy2 + ', ' + x2 + ' ' + y2;
+      path.setAttribute('d', d);
+      path.setAttribute('stroke', color);
+      path.setAttribute('stroke-width', '4');
+      path.setAttribute('fill', 'none');
+      path.setAttribute('stroke-linecap', 'round');
+      svg.appendChild(path);
+    });
+  }
+
+  function checkClear() {
+    const totalConnected = Object.keys(connections).length;
+    if(totalConnected === 4) {
+      const allCorrect = Object.keys(connections).every(topId => connections[topId] === topId);
+      if(allCorrect) {
+        toast('🎉 ぜんぶ せいかい！ たいへん よくできました！ 💮', 2000);
+        try {
+          if (typeof playCrystalSparkle === 'function') playCrystalSparkle();
+        } catch(e) {}
+        completeBookDrill();
+      } else {
+        toast('🤔 なにかが ちがうみたい。もういちど かんがえてみよう！', 2000);
+      }
+    }
+  }
+
+  container.querySelectorAll('.b49-top-item').forEach(item => {
+    item.onclick = () => {
+      const id = item.dataset.id;
+      container.querySelectorAll('.b49-top-item').forEach(el => {
+        el.style.borderColor = '#cbd5e1';
+        el.style.boxShadow = 'none';
+      });
+
+      if(selectedTop === id) {
+        selectedTop = null;
+        playMarimbaPop(0.9);
+      } else {
+        selectedTop = id;
+        item.style.borderColor = colors[id] || '#2563eb';
+        item.style.boxShadow = '0 0 0 3px ' + (colors[id] || '#2563eb') + '44';
+        playMarimbaPop(1.1);
+      }
     };
   });
 
-  items.forEach(it => {
-    it.onclick = () => {
-      if(!selectedShape) {
-        toast('まず うえの かたちを えらんでね！', 1500);
+  container.querySelectorAll('.b49-bottom-item').forEach(item => {
+    item.onclick = () => {
+      const botId = item.dataset.id;
+      if(!selectedTop) {
+        toast('👆 まず うえの かたちを タップしてね！', 1500);
+        playMarimbaPop(0.8);
         return;
       }
-      const match = it.dataset.match;
-      if(match === selectedShape) {
-        matches[match] = true;
-        playMarimbaPop(1.4);
-        it.style.background = '#dcfce7';
-        it.style.borderColor = '#86efac';
-        it.style.pointerEvents = 'none';
 
-        const shapeEl = p.querySelector('#b49_top_shapes .b24-choice-card[data-shape="' + match + '"]');
-        if(shapeEl) {
-          shapeEl.style.borderColor = '#22c55e';
-          shapeEl.style.background = '#f0fdf4';
-        }
+      connections[selectedTop] = botId;
+      playMarimbaPop(1.3);
 
-        selectedShape = null;
-        if(Object.keys(matches).length === 4) {
-          setTimeout(completeBookDrill, 500);
-        }
-      } else {
-        playMarimbaPop(0.7);
+      const topEl = container.querySelector('.b49-top-item[data-id="' + selectedTop + '"]');
+      if(topEl) {
+        topEl.style.borderColor = '#cbd5e1';
+        topEl.style.boxShadow = 'none';
       }
+      selectedTop = null;
+
+      renderLines();
+      checkClear();
     };
   });
+
+  const resetBtn = document.getElementById('b49_reset_btn');
+  if(resetBtn) {
+    resetBtn.onclick = () => {
+      Object.keys(connections).forEach(k => delete connections[k]);
+      selectedTop = null;
+      container.querySelectorAll('.b49-top-item').forEach(el => {
+        el.style.borderColor = '#cbd5e1';
+        el.style.boxShadow = 'none';
+      });
+      playMarimbaPop(1.0);
+      renderLines();
+    };
+  }
+
+  window.addEventListener('resize', renderLines);
+  setTimeout(renderLines, 200);
 }
 
 function initBattle49_2Drill() {
@@ -12364,38 +12641,98 @@ function initBattle50GraphNew() {
   const p = document.querySelector('.drill-book-page');
   if(!p) return;
 
+  const st = S.answers[curIdx] = S.answers[curIdx] || {};
   const targets = [7, 9, 7, 6];
   const filledCounts = [0, 0, 0, 0];
+  const colors = ['#2563eb', '#db2777', '#9333ea', '#78350f'];
+
+  function updateColumnDisplay(col) {
+    const count = filledCounts[col];
+    for(let r=1; r<=10; r++) {
+      const cell = p.querySelector('.b50-graph-cell[data-col="' + col + '"][data-row="' + r + '"]');
+      if(cell) {
+        if(r <= count) {
+          cell.style.background = colors[col];
+          cell.innerHTML = '<span style="color:#fff;font-size:12px;font-weight:900">●</span>';
+        } else {
+          cell.style.background = '#fff';
+          cell.innerHTML = '';
+        }
+      }
+    }
+    const countEl = document.getElementById('b50_count_' + col);
+    if(countEl) countEl.textContent = count + ' / ' + targets[col];
+  }
 
   p.querySelectorAll('.b50-graph-cell').forEach(cell => {
     cell.onclick = () => {
       const col = parseInt(cell.dataset.col, 10);
       const row = parseInt(cell.dataset.row, 10);
-
-      // Fill up to this row
-      const colCells = Array.from(p.querySelectorAll('.b50-graph-cell[data-col="' + col + '"]'));
-      colCells.forEach(c => {
-        const r = parseInt(c.dataset.row, 10);
-        if(r <= row) {
-          c.classList.add('filled');
-        } else {
-          c.classList.remove('filled');
-        }
-      });
-
-      filledCounts[col] = row;
-      const countEl = p.querySelector('#b50_count_' + col);
-      if(countEl) countEl.textContent = row + '匹';
-
-      playMarimbaPop(1.1 + row * 0.05);
-
-      // Check if all columns match targets
-      const isAllRight = targets.every((t, i) => filledCounts[i] === t);
-      if(isAllRight) {
-        setTimeout(completeBookDrill, 500);
-      }
+      filledCounts[col] = (filledCounts[col] === row) ? row - 1 : row;
+      playMarimbaPop(1.1 + filledCounts[col] * 0.05);
+      updateColumnDisplay(col);
+      checkAllDone();
     };
   });
+
+  p.querySelectorAll('.b50-field-poke').forEach(poke => {
+    poke.onclick = () => {
+      const col = parseInt(poke.dataset.type, 10);
+      const isSelected = poke.classList.toggle('selected');
+      if(isSelected) {
+        poke.style.transform = 'translate(-50%,-50%) scale(1.3)';
+        poke.style.background = 'rgba(254, 240, 138, 0.9)';
+        poke.style.borderRadius = '50%';
+        poke.style.boxShadow = '0 0 0 3px #ca8a04';
+        filledCounts[col] = Math.min(10, filledCounts[col] + 1);
+        playMarimbaPop(1.2 + filledCounts[col] * 0.05);
+      } else {
+        poke.style.transform = 'translate(-50%,-50%) scale(1)';
+        poke.style.background = 'transparent';
+        poke.style.boxShadow = 'none';
+        filledCounts[col] = Math.max(0, filledCounts[col] - 1);
+        playMarimbaPop(0.9);
+      }
+      updateColumnDisplay(col);
+      checkAllDone();
+    };
+  });
+
+  function setupChoice(cls, key) {
+    p.querySelectorAll('.' + cls + ' .choice').forEach(btn => {
+      if(st[key] === btn.dataset.val) btn.classList.add('sel');
+      btn.onclick = () => {
+        p.querySelectorAll('.' + cls + ' .choice').forEach(b => b.classList.remove('sel'));
+        btn.classList.add('sel');
+        playMarimbaPop(1.2);
+        st[key] = btn.dataset.val;
+        save();
+        updateThrow();
+        checkAllDone();
+      };
+    });
+  }
+
+  setupChoice('b50-q1-choices', 'q1');
+  setupChoice('b50-q2-choices', 'q2');
+  setupChoice('b50-q3-choices', 'q3');
+
+  function checkAllDone() {
+    const graphDone = targets.every((t, i) => filledCounts[i] === t);
+    const q1Done = (st['q1'] === 'エネコ');
+    const q2Done = (st['q2'] === 'ナマケロ');
+    const q3Done = (st['q3'] === 'swellow_whismur');
+
+    if(graphDone && q1Done && q2Done && q3Done) {
+      toast('🎉 ぜんぶ せいかい！ たいへん よくできました！ 💮', 2000);
+      try {
+        if (typeof playCrystalSparkle === 'function') playCrystalSparkle();
+      } catch(e) {}
+      completeBookDrill();
+    }
+  }
+
+  for(let c=0; c<4; c++) updateColumnDisplay(c);
 }
 
 function initBattle50_2Drill() {
@@ -12466,19 +12803,37 @@ function initBattle50_2Drill() {
 function initBattle51Chart() {
   const p = document.querySelector('.drill-book-page');
   if(!p) return;
-  setupMathBoxController(p, ['73', '88', '100', '115'], completeBookDrill);
+
+  setupMathBoxController(p, ['64', '73', '82', '91', '100', '108', '115', '120'], () => {
+    try {
+      if (typeof playCrystalSparkle === 'function') playCrystalSparkle();
+    } catch(e) {}
+    completeBookDrill();
+  });
 }
 
 function initBattle52Coins() {
   const p = document.querySelector('.drill-book-page');
   if(!p) return;
-  setupMathBoxController(p, ['34', '68', '80'], completeBookDrill);
+
+  setupMathBoxController(p, ['55', '92', '104', '119'], () => {
+    try {
+      if (typeof playCrystalSparkle === 'function') playCrystalSparkle();
+    } catch(e) {}
+    completeBookDrill();
+  });
 }
 
 function initBattle53Formula() {
   const p = document.querySelector('.drill-book-page');
   if(!p) return;
-  setupMathBoxController(p, ['3', '2', '5', '4', '3', '7'], completeBookDrill);
+
+  setupMathBoxController(p, ['1', '2', '3', '2', '1', '3'], () => {
+    try {
+      if (typeof playCrystalSparkle === 'function') playCrystalSparkle();
+    } catch(e) {}
+    completeBookDrill();
+  });
 }
 
 function initBattle53Cards() {

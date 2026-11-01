@@ -4707,6 +4707,106 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
   margin: 3px;
 }
 
+
+/* =========================================================
+   大すごろく（Battle 55 & Battle 56）完全敷き詰め専用スタイル
+   ========================================================= */
+.sugoroku-grid {
+  display: grid !important;
+  grid-template-columns: repeat(8, 1fr) !important;
+  gap: 6px !important;
+  width: 100% !important;
+}
+
+.sugoroku-grid .s-cell {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 1 / 1 !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  border-radius: 10px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-weight: 900 !important;
+  font-size: 17px !important;
+  position: relative !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  user-select: none !important;
+}
+
+.sugoroku-grid .s-num {
+  background: #ffffff !important;
+  border: 2px solid #cbd5e1 !important;
+  color: #1e293b !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08) !important;
+}
+
+.sugoroku-grid .t-math-box.s-blank {
+  background: #ffffff !important;
+  border: 2.5px solid #ec4899 !important;
+  color: #be185d !important;
+  box-shadow: 0 2px 6px rgba(236,72,153,0.3) !important;
+  cursor: pointer !important;
+}
+
+.sugoroku-grid .t-math-box.s-blank.active {
+  border-color: #f59e0b !important;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.45) !important;
+  transform: scale(1.05) !important;
+  z-index: 10 !important;
+}
+
+.sugoroku-grid .t-math-box.s-blank.filled {
+  background: #fffde7 !important;
+  border-color: #ff9800 !important;
+  color: #e65100 !important;
+}
+
+.sugoroku-grid .t-math-box.s-blank.correct {
+  background: #e8f5e9 !important;
+  border-color: #2e7d32 !important;
+  color: #1b5e20 !important;
+}
+
+.sugoroku-grid .s-blank .sticker-label {
+  position: absolute !important;
+  bottom: 2px !important;
+  font-size: 8px !important;
+  color: #db2777 !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+}
+
+.sugoroku-grid .s-poke-card {
+  grid-column: span 2 !important;
+  grid-row: span 2 !important;
+  border-radius: 14px !important;
+  padding: 6px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2) !important;
+  user-select: none !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.sugoroku-grid .s-poke-card img {
+  width: 68px !important;
+  height: 68px !important;
+  width: 54px !important;
+  height: 54px !important;
+  object-fit: contain !important;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25)) !important;
+}
+
 </style>
 </head>
 <body>
@@ -10511,70 +10611,105 @@ function renderInteractiveStage(row){
     initBattle54Cards();
 
   } else if(bId === 'Battle55'){
-    // バトル55：ミュウをつかまえよう！ バトル1〜54の まとめ（原本 Battle55.jpg 完全再現・0〜62）
-    // 8列 x 9行の完全マス目マップ
-    const b55GridDef = [
-      // Row 0
-      [ { type:'start' }, { num:0 }, { blank:1 }, { num:2 }, { num:3 }, { num:4 }, { num:5 }, null ],
-      // Row 1
-      [ null, { num:11 }, { num:10 }, { num:9 }, { num:8 }, { blank:7 }, { num:6 }, null ],
-      // Row 2
-      [ { num:14 }, { num:13 }, { blank:12 }, { num:19 }, { poke:'slowpoke', num:20 }, { num:21 }, { num:22 }, null ],
-      // Row 3
-      [ { blank:15 }, { num:16 }, { num:17 }, { num:18 }, null, { num:24 }, { blank:23 }, null ],
-      // Row 4
-      [ { num:35 }, { num:34 }, { blank:33 }, { num:32 }, { num:31 }, { num:30 }, { num:25 }, { num:26 } ],
-      // Row 5
-      [ { blank:36 }, { num:39 }, { poke:'drowzee', num:40 }, null, { blank:41 }, { blank:29 }, { num:28 }, { num:27 } ],
-      // Row 6
-      [ { num:37 }, { num:38 }, null, null, { num:42 }, { blank:43 }, { num:44 }, { num:45 } ],
-      // Row 7
-      [ { num:53 }, { blank:52 }, { num:51 }, { blank:50 }, { num:49 }, { num:48 }, { blank:47 }, { num:46 } ],
-      // Row 8
-      [ { num:54 }, { num:55 }, { blank:56 }, { num:57 }, { num:58 }, { num:59, arrow:true }, { num:61, arrow:true }, { num:62, arrow:true } ]
+    // バトル55：ミュウをつかまえよう！ バトル1〜54の まとめ（原本完全再現・隙間なく完全敷き詰め・大きなポケモンマス）
+    const b55Def = [
+      // Row 0: ケーシィ (2x2) + 0〜5
+      { type:'poke', name:'ケーシィ', num:'スタート▶', bg:'#fef08a', bc:'#eab308', tc:'#854d0e', pokeId:63 },
+      { type:'num', val:0 },
+      { type:'blank', val:1 },
+      { type:'num', val:2 },
+      { type:'num', val:3 },
+      { type:'num', val:4 },
+      { type:'num', val:5 },
+      // Row 1: ケーシィが左2列占有、残り6列 (11〜6)
+      { type:'num', val:11 },
+      { type:'num', val:10 },
+      { type:'num', val:9 },
+      { type:'num', val:8 },
+      { type:'blank', val:7 },
+      { type:'num', val:6 },
+      // Row 2: 14, 13, 12, 19 + ヤドン (2x2) + 21, 22
+      { type:'num', val:14 },
+      { type:'num', val:13 },
+      { type:'blank', val:12 },
+      { type:'num', val:19 },
+      { type:'poke', name:'ヤドン', num:'20', bg:'#fed7aa', bc:'#f97316', tc:'#9a3412', pokeId:79 },
+      { type:'num', val:21 },
+      { type:'num', val:22 },
+      // Row 3: 15, 16, 17, 18 (ヤドンが列4-5占有) 24, 23
+      { type:'blank', val:15 },
+      { type:'num', val:16 },
+      { type:'num', val:17 },
+      { type:'num', val:18 },
+      { type:'num', val:24 },
+      { type:'blank', val:23 },
+      // Row 4: 35〜26 完全8列
+      { type:'num', val:35 },
+      { type:'num', val:34 },
+      { type:'blank', val:33 },
+      { type:'num', val:32 },
+      { type:'num', val:31 },
+      { type:'num', val:30 },
+      { type:'num', val:25 },
+      { type:'num', val:26 },
+      // Row 5: 36, 39 + スリープ (2x2) + 41, 29, 28, 27
+      { type:'blank', val:36 },
+      { type:'num', val:39 },
+      { type:'poke', name:'スリープ', num:'40', bg:'#fef08a', bc:'#eab308', tc:'#854d0e', pokeId:96 },
+      { type:'blank', val:41 },
+      { type:'blank', val:29 },
+      { type:'num', val:28 },
+      { type:'num', val:27 },
+      // Row 6: 37, 38 (スリープが列2-3占有) 42, 43, 44, 45
+      { type:'num', val:37 },
+      { type:'num', val:38 },
+      { type:'num', val:42 },
+      { type:'blank', val:43 },
+      { type:'num', val:44 },
+      { type:'num', val:45 },
+      // Row 7: 53〜46 完全8列
+      { type:'num', val:53 },
+      { type:'blank', val:52 },
+      { type:'num', val:51 },
+      { type:'blank', val:50 },
+      { type:'num', val:49 },
+      { type:'num', val:48 },
+      { type:'blank', val:47 },
+      { type:'num', val:46 },
+      // Row 8: 54〜62 完全8列
+      { type:'num', val:54 },
+      { type:'num', val:55 },
+      { type:'blank', val:56 },
+      { type:'num', val:57 },
+      { type:'num', val:58 },
+      { type:'num', val:59, arrow:true },
+      { type:'num', val:61, arrow:true },
+      { type:'num', val:62, arrow:true }
     ];
 
-    let blankIdx55 = 0;
-    let gridCellsHtml = '';
-    b55GridDef.forEach((row, r) => {
-      row.forEach((cell, c) => {
-        if(!cell) {
-          gridCellsHtml += '<div style="aspect-ratio:1/1"></div>';
-        } else if(cell.type === 'start') {
-          gridCellsHtml += 
-            '<div style="background:#fef08a;border:2.5px solid #eab308;border-radius:10px;padding:3px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:0 2px 4px rgba(0,0,0,0.15)">' +
-              '<img src="' + ART(63) + '" style="width:34px;height:34px">' +
-              '<div style="font-size:8px;font-weight:900;color:#854d0e">ケーシィ</div>' +
-              '<div style="font-size:9px;font-weight:900;background:#ef4444;color:#fff;border-radius:4px;padding:1px 3px">スタート▶</div>' +
-            '</div>';
-        } else if(cell.poke === 'slowpoke') {
-          gridCellsHtml += 
-            '<div style="background:#fed7aa;border:2.5px solid #f97316;border-radius:10px;padding:3px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:0 2px 4px rgba(0,0,0,0.15)">' +
-              '<div style="font-size:12px;font-weight:900;color:#9a3412">20</div>' +
-              '<img src="' + ART(79) + '" style="width:34px;height:34px">' +
-              '<div style="font-size:8px;font-weight:900;color:#9a3412">ヤドン</div>' +
-            '</div>';
-        } else if(cell.poke === 'drowzee') {
-          gridCellsHtml += 
-            '<div style="background:#fef08a;border:2.5px solid #eab308;border-radius:10px;padding:3px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:0 2px 4px rgba(0,0,0,0.15)">' +
-              '<div style="font-size:12px;font-weight:900;color:#854d0e">40</div>' +
-              '<img src="' + ART(96) + '" style="width:34px;height:34px">' +
-              '<div style="font-size:8px;font-weight:900;color:#854d0e">スリープ</div>' +
-            '</div>';
-        } else if(cell.blank !== undefined) {
-          gridCellsHtml += 
-            '<div class="t-math-box" data-idx="' + (blankIdx55++) + '" data-target="' + cell.blank + '" style="aspect-ratio:1/1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#fff;border:2.5px solid #ec4899;border-radius:10px;font-size:15px;font-weight:900;position:relative;box-shadow:0 2px 5px rgba(236,72,153,0.25)">' +
-              '？' +
-              '<span style="position:absolute;bottom:1px;font-size:8px;color:#db2777;font-weight:900">シール</span>' +
-            '</div>';
-        } else {
-          let arrowHtml = cell.arrow ? '<span style="font-size:9px;color:#ef4444">▼</span>' : '';
-          gridCellsHtml += 
-            '<div style="aspect-ratio:1/1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#fff;border:2px solid #cbd5e1;border-radius:10px;font-size:15px;font-weight:900;color:#1e293b;box-shadow:0 1px 3px rgba(0,0,0,0.06)">' +
-              cell.num + arrowHtml +
-            '</div>';
-        }
-      });
+    let b55BlankIdx = 0;
+    let b55CellsHtml = '';
+    b55Def.forEach(item => {
+      if (item.type === 'poke') {
+        b55CellsHtml += 
+          '<div class="s-poke-card" style="background:' + item.bg + ';border:3px solid ' + item.bc + '">' +
+            '<div style="font-size:13px;font-weight:900;color:' + item.tc + ';margin-bottom:2px">' + item.num + '</div>' +
+            '<img src="' + ART(item.pokeId) + '" alt="' + item.name + '">' +
+            '<div style="font-size:11px;font-weight:900;color:' + item.tc + ';margin-top:2px">' + item.name + '</div>' +
+          '</div>';
+      } else if (item.type === 'blank') {
+        b55CellsHtml += 
+          '<div class="s-cell t-math-box s-blank" data-idx="' + (b55BlankIdx++) + '" data-target="' + item.val + '">' +
+            '？' +
+            '<span class="sticker-label">シール</span>' +
+          '</div>';
+      } else {
+        const arr = item.arrow ? '<span style="font-size:9px;color:#ef4444;line-height:1">▼</span>' : '';
+        b55CellsHtml += 
+          '<div class="s-cell s-num">' +
+            item.val + arr +
+          '</div>';
+      }
     });
 
     let tray = '<div class="num-choice-tray" style="margin-top:14px">';
@@ -10587,8 +10722,8 @@ function renderInteractiveStage(row){
       '<div class="drill-book-page">' +
         makeDrillBookHeader(55, 'ミュウ', 'みゅう', 'バトル1〜54の まとめ', 'すうじの じゅんに なるように、ぬけて いる □に シールを はりましょう。', 151) +
         '<div style="position:relative;background:radial-gradient(ellipse at 50% 30%, #3b0764 0%, #1e1b4b 60%, #0f172a 100%);border:3px solid #c084fc;border-radius:20px;padding:12px;margin:12px 0;box-shadow:0 4px 14px rgba(0,0,0,0.25)">' +
-          '<div style="display:grid;grid-template-columns:repeat(8, 1fr);gap:6px">' +
-            gridCellsHtml +
+          '<div class="sugoroku-grid">' +
+            b55CellsHtml +
           '</div>' +
           '<div style="text-align:right;margin-top:8px"><span style="font-size:12px;font-weight:900;color:#fde047;background:rgba(0,0,0,0.4);padding:4px 8px;border-radius:8px">つぎの ページ（バトル56）に つづくよ ⬇️</span></div>' +
         '</div>' +
@@ -10599,76 +10734,101 @@ function renderInteractiveStage(row){
     initBattle55Sugoroku();
 
   } else if(bId === 'Battle55_2' || bId === 'Battle56'){
-    // バトル56（Battle55_2）：ミュウをつかまえよう！ バトル1〜54の まとめ(つづき)（原本 Battle55_2.jpg 完全再現・60〜120 & ミュウゴール）
-    // 7列 x 9行の完全マス目マップ
-    const b56GridDef = [
-      // Row 0
-      [ { blank:74 }, { num:73 }, { num:72 }, { num:71 }, { blank:70 }, { poke:'exeggcute', num:60 }, { blank:63 } ],
-      // Row 1
-      [ { num:75 }, { num:76 }, { num:77 }, { blank:78 }, { num:69 }, null, { num:64 } ],
-      // Row 2
-      [ { blank:81 }, { poke:'mrmime', num:80 }, null, { num:79 }, { num:68 }, { num:67 }, { num:65 } ],
-      // Row 3
-      [ { num:82 }, null, { blank:87 }, { num:88 }, { num:89 }, { blank:90 }, { num:91 } ],
-      // Row 4
-      [ { blank:83 }, { num:84 }, { num:85 }, { num:86 }, { num:94 }, { num:93 }, { blank:92 } ],
-      // Row 5
-      [ { poke:'jynx', num:100 }, { num:98 }, { num:97 }, { num:96 }, { blank:95 }, { num:117 }, { num:118 } ],
-      // Row 6
-      [ null, { blank:99 }, { num:109 }, { blank:110 }, { num:115 }, { blank:116 }, { num:119 } ],
-      // Row 7
-      [ { blank:101 }, { blank:104 }, { num:105 }, { blank:108 }, { num:111 }, { num:114 }, { type:'mew_goal' } ],
-      // Row 8
-      [ { num:102 }, { num:103 }, { num:106 }, { num:107 }, { blank:112 }, { num:113 }, null ]
+    // バトル56（Battle55_2）：ミュウをつかまえよう！ バトル1〜54の まとめ(つづき)（原本完全再現・隙間なく完全敷き詰め・大きなポケモンマス）
+    const b56Def = [
+      // Row 0: 74〜70 + タマタマ (2x2) + 63
+      { type:'blank', val:74 },
+      { type:'num', val:73 },
+      { type:'num', val:72 },
+      { type:'num', val:71 },
+      { type:'blank', val:70 },
+      { type:'poke', name:'タマタマ', num:'60', bg:'#fed7aa', bc:'#f97316', tc:'#9a3412', pokeId:102 },
+      { type:'blank', val:63 },
+      // Row 1: 75〜69 (タマタマが列5-6占有) + 64
+      { type:'num', val:75 },
+      { type:'num', val:76 },
+      { type:'num', val:77 },
+      { type:'blank', val:78 },
+      { type:'num', val:69 },
+      { type:'num', val:64 },
+      // Row 2: 81 + バリヤード (2x2) + 79, 68, 67, 66, 65
+      { type:'blank', val:81 },
+      { type:'poke', name:'バリヤード', num:'80', bg:'#fce7f3', bc:'#ec4899', tc:'#9d174d', pokeId:122 },
+      { type:'num', val:79 },
+      { type:'num', val:68 },
+      { type:'num', val:67 },
+      { type:'blank', val:66 },
+      { type:'num', val:65 },
+      // Row 3: 82 (バリヤードが列1-2占有) + 87, 88, 89, 90, 91
+      { type:'num', val:82 },
+      { type:'blank', val:87 },
+      { type:'num', val:88 },
+      { type:'num', val:89 },
+      { type:'blank', val:90 },
+      { type:'num', val:91 },
+      // Row 4: 83〜92 完全8列
+      { type:'blank', val:83 },
+      { type:'num', val:84 },
+      { type:'num', val:85 },
+      { type:'num', val:86 },
+      { type:'blank', val:95 },
+      { type:'num', val:94 },
+      { type:'num', val:93 },
+      { type:'blank', val:92 },
+      // Row 5: ルージュラ (2x2) + 98, 97, 96, 116, 117, 118
+      { type:'poke', name:'ルージュラ', num:'100', bg:'#fed7aa', bc:'#ea580c', tc:'#9a3412', pokeId:124 },
+      { type:'num', val:98 },
+      { type:'num', val:97 },
+      { type:'num', val:96 },
+      { type:'blank', val:116 },
+      { type:'num', val:117 },
+      { type:'num', val:118 },
+      // Row 6: (ルージュラが列0-1占有) + 99, 109, 110, 115, 119
+      { type:'blank', val:99 },
+      { type:'num', val:109 },
+      { type:'blank', val:110 },
+      { type:'num', val:115 },
+      { type:'num', val:119 },
+      { type:'num', val:120, arrow:true },
+      // Row 7: 101, 104, 105, 108, 111, 114 + ミュウゴール (2x2)
+      { type:'blank', val:101 },
+      { type:'blank', val:104 },
+      { type:'num', val:105 },
+      { type:'blank', val:108 },
+      { type:'num', val:111 },
+      { type:'num', val:114 },
+      { type:'poke', name:'ミュウ', num:'★ゴール 120', bg:'linear-gradient(135deg, #fef08a, #fde047, #f59e0b)', bc:'#d97706', tc:'#78350f', pokeId:151 },
+      // Row 8: 102, 103, 106, 107, 112, 113 (ミュウが列6-7占有)
+      { type:'num', val:102 },
+      { type:'num', val:103 },
+      { type:'num', val:106 },
+      { type:'num', val:107 },
+      { type:'blank', val:112 },
+      { type:'num', val:113 }
     ];
 
-    let blankIdx56 = 0;
-    let gridCellsHtml = '';
-    b56GridDef.forEach((row, r) => {
-      row.forEach((cell, c) => {
-        if(!cell) {
-          gridCellsHtml += '<div style="aspect-ratio:1/1"></div>';
-        } else if(cell.type === 'mew_goal') {
-          gridCellsHtml += 
-            '<div style="grid-row:span 2;background:linear-gradient(135deg, #fef08a, #fde047, #f59e0b);border:3px solid #d97706;border-radius:14px;padding:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:0 4px 10px rgba(217,119,6,0.35)">' +
-              '<img src="' + ART(151) + '" style="width:48px;height:48px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3))">' +
-              '<div style="font-size:11px;font-weight:900;color:#78350f">ミュウ</div>' +
-              '<div style="font-size:12px;font-weight:900;background:#dc2626;color:#fff;border-radius:6px;padding:2px 6px;margin-top:2px">ゴール★120</div>' +
-            '</div>';
-        } else if(cell.poke === 'exeggcute') {
-          gridCellsHtml += 
-            '<div style="background:#fed7aa;border:2.5px solid #f97316;border-radius:10px;padding:3px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:0 2px 4px rgba(0,0,0,0.15)">' +
-              '<div style="font-size:12px;font-weight:900;color:#9a3412">60</div>' +
-              '<img src="' + ART(102) + '" style="width:34px;height:34px">' +
-              '<div style="font-size:8px;font-weight:900;color:#9a3412">タマタマ</div>' +
-            '</div>';
-        } else if(cell.poke === 'mrmime') {
-          gridCellsHtml += 
-            '<div style="background:#fce7f3;border:2.5px solid #ec4899;border-radius:10px;padding:3px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:0 2px 4px rgba(0,0,0,0.15)">' +
-              '<div style="font-size:12px;font-weight:900;color:#9d174d">80</div>' +
-              '<img src="' + ART(122) + '" style="width:34px;height:34px">' +
-              '<div style="font-size:8px;font-weight:900;color:#9d174d">バリヤード</div>' +
-            '</div>';
-        } else if(cell.poke === 'jynx') {
-          gridCellsHtml += 
-            '<div style="background:#fed7aa;border:2.5px solid #ea580c;border-radius:10px;padding:3px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:0 2px 4px rgba(0,0,0,0.15)">' +
-              '<div style="font-size:12px;font-weight:900;color:#9a3412">100</div>' +
-              '<img src="' + ART(124) + '" style="width:34px;height:34px">' +
-              '<div style="font-size:8px;font-weight:900;color:#9a3412">ルージュラ</div>' +
-            '</div>';
-        } else if(cell.blank !== undefined) {
-          gridCellsHtml += 
-            '<div class="t-math-box" data-idx="' + (blankIdx56++) + '" data-target="' + cell.blank + '" style="aspect-ratio:1/1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#fff;border:2.5px solid #ec4899;border-radius:10px;font-size:15px;font-weight:900;position:relative;box-shadow:0 2px 5px rgba(236,72,153,0.25)">' +
-              '？' +
-              '<span style="position:absolute;bottom:1px;font-size:8px;color:#db2777;font-weight:900">シール</span>' +
-            '</div>';
-        } else {
-          gridCellsHtml += 
-            '<div style="aspect-ratio:1/1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#fff;border:2px solid #cbd5e1;border-radius:10px;font-size:15px;font-weight:900;color:#1e293b;box-shadow:0 1px 3px rgba(0,0,0,0.06)">' +
-              cell.num +
-            '</div>';
-        }
-      });
+    let b56BlankIdx = 0;
+    let b56CellsHtml = '';
+    b56Def.forEach(item => {
+      if (item.type === 'poke') {
+        b56CellsHtml += 
+          '<div class="s-poke-card" style="background:' + item.bg + ';border:3px solid ' + item.bc + '">' +
+            '<div style="font-size:13px;font-weight:900;color:' + item.tc + ';margin-bottom:2px">' + item.num + '</div>' +
+            '<img src="' + ART(item.pokeId) + '" alt="' + item.name + '">' +
+            '<div style="font-size:11px;font-weight:900;color:' + item.tc + ';margin-top:2px">' + item.name + '</div>' +
+          '</div>';
+      } else if (item.type === 'blank') {
+        b56CellsHtml += 
+          '<div class="s-cell t-math-box s-blank" data-idx="' + (b56BlankIdx++) + '" data-target="' + item.val + '">' +
+            '？' +
+            '<span class="sticker-label">シール</span>' +
+          '</div>';
+      } else {
+        b56CellsHtml += 
+          '<div class="s-cell s-num">' +
+            item.val +
+          '</div>';
+      }
     });
 
     let tray = '<div class="num-choice-tray" style="margin-top:14px">';
@@ -10684,8 +10844,8 @@ function renderInteractiveStage(row){
           '<div style="display:flex;gap:12px;margin-bottom:8px;font-size:12px;font-weight:900;color:#fde047">' +
             '<span>⬆️ まえの ページ（バトル55）からの つづきだよ！</span>' +
           '</div>' +
-          '<div style="display:grid;grid-template-columns:repeat(7, 1fr);gap:6px">' +
-            gridCellsHtml +
+          '<div class="sugoroku-grid">' +
+            b56CellsHtml +
           '</div>' +
         '</div>' +
         tray +

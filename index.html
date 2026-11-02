@@ -7709,11 +7709,15 @@ function setupMathBoxController(container, expectedAnswers, onComplete, customNu
 
       if (allCorrect) {
         boxes.forEach(b => b.classList.add('correct'));
-        stampDrillSuccess();
-        (S.answers[curIdx] = S.answers[curIdx] || {})._completed = true;
-        save();
-        updateThrow();
-        if (onComplete) onComplete();
+        if (tray) {
+          tray.style.pointerEvents = 'none';
+          tray.style.opacity = '0.6';
+        }
+        if (typeof onComplete === 'function') {
+          onComplete();
+        } else {
+          completeBookDrill();
+        }
       }
     };
   }
@@ -10473,7 +10477,7 @@ function renderInteractiveStage(row){
     const lockerColors = [
       ['#ec4899', '#1e293b', '#475569', '#1e40af', '#78350f'],
       ['#64748b', '#06b6d4', '#ef4444', '#f97316', null],
-      ['#ef4444', null, '#22c55e', '#eab308', '#f472b6']
+      ['#ef4444', '#22c55e', null, '#eab308', '#f472b6']
     ];
 
     let lockersHtml = '<div class="locker-grid-wrapper">' +
@@ -13961,30 +13965,33 @@ function initBattle41Grid() {
       const r = parseInt(d.dataset.r, 10);
       const c = parseInt(d.dataset.c, 10);
 
-      // Check for Problem 1: R=2, C=2
+      // Check for Problem 1: R=2, C=2 (はるとくん)
       if(!solved[0] && r === 2 && c === 2) {
         solved[0] = true;
         d.classList.add('selected');
         if(card1) card1.classList.add('is-correct');
         playMarimbaPop(1.5);
+        toast('① はるとくん せいかい！💮', 1400);
         checkAll();
         return;
       }
-      // Check for Problem 3: R=1, C=4
+      // Check for Problem 3: R=1, C=4 (さくらちゃん)
       if(!solved[2] && r === 1 && c === 4) {
         solved[2] = true;
         d.classList.add('selected');
         if(card3) card3.classList.add('is-correct');
         playMarimbaPop(1.5);
+        toast('③ さくらちゃん せいかい！💮', 1400);
         checkAll();
         return;
       }
-      // Check for Problem 4: R=4, C=1
+      // Check for Problem 4: R=4, C=1 (こうきくん)
       if(!solved[3] && r === 4 && c === 1) {
         solved[3] = true;
         d.classList.add('selected');
         if(card4) card4.classList.add('is-correct');
         playMarimbaPop(1.5);
+        toast('④ こうきくん せいかい！💮', 1400);
         checkAll();
         return;
       }
@@ -13999,6 +14006,7 @@ function initBattle41Grid() {
       solved[1] = true;
       card2.classList.add('is-correct');
       playMarimbaPop(1.6);
+      toast('② みさきちゃんの せき せいかい！💮', 1400);
       checkAll();
     });
   }
@@ -14032,6 +14040,7 @@ function initBattle42Locker() {
         cell.classList.add('selected');
         if(card1) card1.classList.add('is-correct');
         playMarimbaPop(1.5);
+        toast('① あかい ランドセル せいかい！💮', 1400);
         checkAll();
         return;
       }
@@ -14042,6 +14051,7 @@ function initBattle42Locker() {
         cell.innerHTML = '<svg viewBox="0 0 40 44" style="width:36px;height:40px;filter:drop-shadow(0 2px 3px rgba(0,0,0,0.2))"><path d="M10,8 C10,4 30,4 30,8 L32,38 C32,41 29,42 26,42 L14,42 C11,42 8,41 8,38 Z" fill="#06b6d4" stroke="#1e293b" stroke-width="2"/><path d="M12,12 C12,10 28,10 28,12 L28,26 C28,28 12,28 12,26 Z" fill="#06b6d4" filter="brightness(1.15)" stroke="#1e293b" stroke-width="1.5"/><rect x="18" y="24" width="4" height="6" rx="1" fill="#facc15" stroke="#1e293b" stroke-width="1"/><path d="M16,8 C16,4 24,4 24,8" fill="none" stroke="#334155" stroke-width="2.5" stroke-linecap="round"/></svg>';
         if(card3) card3.classList.add('is-correct');
         playMarimbaPop(1.5);
+        toast('③ ランドセルの シールを はれたよ！💮', 1400);
         checkAll();
         return;
       }
@@ -14051,6 +14061,7 @@ function initBattle42Locker() {
         cell.classList.add('selected');
         if(card4) card4.classList.add('is-correct');
         playMarimbaPop(1.5);
+        toast('④ ぴんくの ランドセル せいかい！💮', 1400);
         checkAll();
         return;
       }
@@ -14065,6 +14076,7 @@ function initBattle42Locker() {
       solved[1] = true;
       card2.classList.add('is-correct');
       playMarimbaPop(1.6);
+      toast('② みずいろの ランドセル せいかい！💮', 1400);
       checkAll();
     });
   }

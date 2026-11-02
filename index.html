@@ -4922,6 +4922,57 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
   text-shadow: 0 1px 3px rgba(0,0,0,0.5) !important;
   pointer-events: none !important;
 }
+/* BGMフローティングプレイヤー（公式YouTube音源） */
+.bgm-yt-host {
+  position: fixed;
+  bottom: 14px;
+  right: 14px;
+  width: 180px;
+  height: 102px;
+  z-index: 9000;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+  border: 2.5px solid #3b82f6;
+  background: #000;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.bgm-yt-host.minimized {
+  width: 140px;
+  height: 32px;
+  border-radius: 18px;
+  border-color: #10b981;
+  background: #0f172a;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+}
+.bgm-yt-host.minimized #bgmYtPlayer {
+  opacity: 0.01;
+  pointer-events: none;
+}
+.bgm-yt-host.minimized #bgmYtOverlay {
+  background: #0f172a;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 6px 10px;
+}
+.bgm-yt-host.bgm-off {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(20px) scale(0.9);
+}
+@media (max-width: 600px) {
+  .bgm-yt-host {
+    bottom: 8px;
+    right: 8px;
+    width: 140px;
+    height: 80px;
+  }
+  .bgm-yt-host.minimized {
+    width: 120px;
+    height: 30px;
+  }
+}
+
 .bgm-track-item {
   display: flex;
   align-items: center;
@@ -5172,6 +5223,7 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
 }
 
 </style>
+  <script src="https://www.youtube.com/iframe_api"></script>
 </head>
 <body>
 <div id="bg-image-layer"></div>
@@ -5414,6 +5466,18 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
       <button class="big throw" id="btnThrow" disabled>ボールを なげる！</button>
     </div>
   </section>
+<!-- BGM フローティング 本物YouTube音源プレイヤー -->
+<div id="bgmYtHost" class="bgm-yt-host bgm-off" aria-label="BGMプレイヤー">
+  <div id="bgmYtPlayer"></div>
+  <div id="bgmYtOverlay" style="position:absolute;top:0;left:0;right:0;padding:4px 8px;background:linear-gradient(180deg,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.2) 80%,transparent 100%);display:flex;align-items:center;justify-content:space-between;pointer-events:auto;z-index:2">
+    <span id="bgmYtTitleBadge" style="font-size:10.5px;font-weight:900;color:#ffffff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:115px;text-shadow:0 1px 3px rgba(0,0,0,0.8)">🎵 赤緑OP</span>
+    <div style="display:flex;gap:4px;align-items:center">
+      <button type="button" onclick="toggleBgmYtMinimize()" style="background:rgba(255,255,255,0.25);border:none;color:#ffffff;border-radius:4px;width:18px;height:18px;font-size:11px;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center" title="最小化/もどす">_</button>
+      <button type="button" onclick="openBgmModal()" style="background:rgba(255,255,255,0.25);border:none;color:#ffffff;border-radius:4px;width:18px;height:18px;font-size:10px;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center" title="BGMせってい">⚙️</button>
+    </div>
+  </div>
+</div>
+
 </main>
 
 <!-- 初回モーダル：でんせつのポケモン ミュウ -->
@@ -5429,16 +5493,38 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
 <!-- BGM曲選択モーダル -->
 <div class="modal" id="mBgmTrackModal"><div class="mbox" style="max-width:480px;padding:16px 14px">
   <button class="mclose" data-close>✕</button>
-  <h2 style="font-size:18px;margin-bottom:4px;display:flex;align-items:center;gap:6px">🎵 ポケモン BGM を えらぼう！</h2>
-  <p style="font-size:12px;color:#64748b;margin-bottom:12px">すきな きょくを タップして ながそう！</p>
+  <h2 style="font-size:18px;margin-bottom:4px;display:flex;align-items:center;gap:6px">🎵 ポケモン BGM（本物YouTube音源）</h2>
+  <p style="font-size:12px;color:#64748b;margin-bottom:10px">公式YouTubeの本物の曲・メロディをそのままBGMとして再生します！</p>
 
-  <div style="display:flex;justify-content:center;margin-bottom:14px;gap:10px">
-    <button type="button" class="mbtn" id="btnBgmToggleModal" onclick="togglePokemonBgmModal()" style="font-size:14px;padding:8px 18px;border-radius:14px">
-      🔊 BGM: ON
+  <!-- BGM ON/OFF & 音量コントロール -->
+  <div style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:14px;padding:10px 14px;margin-bottom:12px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+      <button type="button" class="mbtn" id="btnBgmToggleModal" onclick="togglePokemonBgmModal()" style="font-size:13px;padding:6px 14px;border-radius:12px">
+        🔊 BGM: ON
+      </button>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:12px;font-weight:900;color:#334155">おんりょう:</span>
+        <span id="bgmVolLabel" style="font-size:13px;font-weight:900;color:#2563eb;min-width:36px;text-align:right">70%</span>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <span style="font-size:12px">🔈</span>
+      <input type="range" id="bgmVolSlider" min="0" max="100" value="70" oninput="setBgmVolume(this.value)" style="flex:1;cursor:pointer;accent-color:#2563eb">
+      <span style="font-size:12px">🔊</span>
+    </div>
+  </div>
+
+  <!-- 音源モード切替（YouTube本物音源 / 8-bitシンセサイザー） -->
+  <div style="display:flex;gap:6px;margin-bottom:12px;background:#f1f5f9;padding:4px;border-radius:10px">
+    <button type="button" id="btnEngineYt" onclick="setBgmEngineMode('youtube')" style="flex:1;padding:7px 4px;border-radius:8px;border:none;font-size:12px;font-weight:900;cursor:pointer;background:#2563eb;color:#ffffff;transition:all .15s ease">
+      🌟 YouTube本物音源 (推奨)
+    </button>
+    <button type="button" id="btnEngineSynth" onclick="setBgmEngineMode('synth')" style="flex:1;padding:7px 4px;border-radius:8px;border:none;font-size:12px;font-weight:900;cursor:pointer;background:transparent;color:#64748b;transition:all .15s ease">
+      🎹 8-bitシンセ (オフライン)
     </button>
   </div>
 
-  <div id="bgmTrackList" style="max-height:380px;overflow-y:auto;padding-right:4px">
+  <div id="bgmTrackList" style="max-height:340px;overflow-y:auto;padding-right:4px">
     <!-- Tracks will be generated by renderBgmTrackList() -->
   </div>
 </div></div>
@@ -15416,6 +15502,11 @@ let bgmNextNoteTime = 0;
 let bgmTimer = null;
 let bgmEnabled = (localStorage.getItem('poke_bgm_enabled') !== 'false');
 let currentBgmTrackId = localStorage.getItem('poke_bgm_track_id') || 'op_rgb';
+let bgmEngineMode = localStorage.getItem('poke_bgm_engine') || 'youtube'; // 'youtube' or 'synth'
+let bgmVolume = parseInt(localStorage.getItem('poke_bgm_volume') || '70', 10);
+let bgmYtPlayer = null;
+let bgmYtReady = false;
+let bgmYtMinimized = (localStorage.getItem('poke_bgm_minimized') === 'true');
 
 const NOTE_FREQ = {
   REST: 0,
@@ -15425,38 +15516,30 @@ const NOTE_FREQ = {
   C5: 523.25, CS5: 554.37, D5: 587.33, DS5: 622.25, E5: 659.25, F5: 698.46, FS5: 739.99, G5: 783.99, GS5: 830.61, A5: 880.00, AS5: 932.33, B5: 987.77,
   C6: 1046.50, CS6: 1108.73, D6: 1174.66, DS6: 1244.51, E6: 1318.51, F6: 1396.91, FS6: 1479.98, G6: 1567.98, GS6: 1661.22, A6: 1760.00, AS6: 1864.66, B6: 1975.53
 };
-// フラット表記のエイリアス定義
 NOTE_FREQ.BF2 = NOTE_FREQ.AS2; NOTE_FREQ.BB2 = NOTE_FREQ.AS2; NOTE_FREQ.EB2 = NOTE_FREQ.DS2;
 NOTE_FREQ.BF3 = NOTE_FREQ.AS3; NOTE_FREQ.BB3 = NOTE_FREQ.AS3; NOTE_FREQ.EB3 = NOTE_FREQ.DS3;
 NOTE_FREQ.BF4 = NOTE_FREQ.AS4; NOTE_FREQ.BB4 = NOTE_FREQ.AS4; NOTE_FREQ.EB4 = NOTE_FREQ.DS4;
 NOTE_FREQ.BF5 = NOTE_FREQ.AS5; NOTE_FREQ.BB5 = NOTE_FREQ.AS5; NOTE_FREQ.EB5 = NOTE_FREQ.DS5;
 NOTE_FREQ.BF6 = NOTE_FREQ.AS6; NOTE_FREQ.BB6 = NOTE_FREQ.AS6; NOTE_FREQ.EB6 = NOTE_FREQ.DS6;
 
-// 10曲の本物メロディ・サウンドバンク完全定義
+// 10曲の本物音源（YouTube公式音源）およびシンセサイザー音源定義
 const BGM_TRACKS = [
   {
     id: 'op_rgb',
     title: '赤・緑：オープニング（タイトル）',
     shortTitle: '赤緑OP',
-    desc: '初代ポケモンの伝説のメインテーマ（E-G-A、E-G-A、E-G-A-C-B）',
+    ytId: '4mj0ty1QVJc',
+    desc: '初代ポケモンの伝説のメインテーマ（公式YouTube音源）',
     bpm: 136,
     hasDrums: true,
     melody: [
-      // m1: E-G-A (タ〜タ〜タ〜〜)
       ['E4', 3], ['G4', 1], ['A4', 4], ['REST', 8],
-      // m2: E-G-A (タ〜タ〜タ〜〜)
       ['E4', 3], ['G4', 1], ['A4', 4], ['REST', 8],
-      // m3: E-G-A-C-B (タ〜タ〜タ〜 タ〜 タ〜)
       ['E4', 3], ['G4', 1], ['A4', 4], ['C5', 4], ['B4', 4],
-      // m4: A-G-E, A-B-A-G
       ['A4', 2], ['G4', 2], ['E4', 4], ['A4', 2], ['B4', 2], ['A4', 2], ['G4', 2],
-      // m5: E-G-A, C-D
       ['E4', 2], ['G4', 2], ['A4', 4], ['C5', 4], ['D5', 4],
-      // m6: E〜〜, E-D-C-A (勇壮な主題コーラス)
       ['E5', 8], ['E5', 2], ['D5', 2], ['C5', 2], ['A4', 2],
-      // m7: G-A-C-A, G-E
       ['G4', 2], ['A4', 2], ['C5', 2], ['A4', 2], ['G4', 4], ['E4', 4],
-      // m8: D-E, C〜〜
       ['D4', 4], ['E4', 4], ['C4', 8]
     ],
     bass: [
@@ -15474,25 +15557,18 @@ const BGM_TRACKS = [
     id: 'poke_center',
     title: '赤・緑：ポケモンセンター',
     shortTitle: 'ポケセン',
-    desc: '「レ・ラ・レ・ラー・ソー・ファ#、ミ・ド#ー」誰もが知る癒しの名曲',
+    ytId: 'tsg0vN8lZmQ',
+    desc: '「レ・ラ・レ・ラー・ソー・ファ#」誰もが癒やされる名曲（公式YouTube音源）',
     bpm: 116,
     hasDrums: false,
     melody: [
-      // m1: レ・ラ・レ・ラー・ソー・ファ#
       ['D5', 2], ['A4', 2], ['D5', 2], ['A5', 4], ['G5', 4], ['FS5', 2],
-      // m2: ミ・ド#ーー・ラ・ミ
       ['E5', 2], ['CS5', 6], ['A4', 4], ['E4', 4],
-      // m3: ド#・ラ・ド#・ファ#ー・ミー・ド#
       ['CS5', 2], ['A4', 2], ['CS5', 2], ['FS5', 4], ['E5', 4], ['CS5', 2],
-      // m4: レ・ファ#ーー・ラ・ミ
       ['D5', 2], ['FS5', 6], ['A4', 4], ['E4', 4],
-      // m5: レ・ラ・レ・ラー・ソー・ファ#
       ['D5', 2], ['A4', 2], ['D5', 2], ['A5', 4], ['G5', 4], ['FS5', 2],
-      // m6: ミ・ド#ーー・ラ・ミ
       ['E5', 2], ['CS5', 6], ['A4', 4], ['E4', 4],
-      // m7: ド#・ラ・ド#・ファ#ー・ミー・ド#
       ['CS5', 2], ['A4', 2], ['CS5', 2], ['FS5', 4], ['E5', 4], ['CS5', 2],
-      // m8: レーー
       ['D5', 12], ['REST', 4]
     ],
     bass: [
@@ -15510,25 +15586,18 @@ const BGM_TRACKS = [
     id: 'battle_swsh',
     title: 'ソード・シールド：ジムリーダー戦',
     shortTitle: '剣盾バトル',
-    desc: 'スタジアムが熱狂するアップテンポな疾走バトルブラステーマ',
+    ytId: 'PK2VW8bngGU',
+    desc: 'スタジアムが熱狂するアップテンポな疾走バトル曲（公式YouTube音源）',
     bpm: 144,
     hasDrums: true,
     melody: [
-      // m1: ガラルジム戦 疾走メインブラスフック
       ['G4', 2], ['G4', 2], ['F4', 2], ['G4', 2], ['AS4', 4], ['G4', 4],
-      // m2:
       ['C5', 2], ['AS4', 2], ['G4', 2], ['F4', 2], ['G4', 6], ['REST', 2],
-      // m3: 駆け上がるシンコペーション展開
       ['G4', 2], ['AS4', 2], ['C5', 2], ['D5', 4], ['F5', 4], ['D5', 2],
-      // m4:
       ['C5', 2], ['AS4', 2], ['C5', 2], ['D5', 6], ['REST', 4],
-      // m5: 熱狂のハイピッチブラス
       ['D5', 2], ['F5', 2], ['G5', 4], ['F5', 2], ['D5', 2], ['C5', 4],
-      // m6:
       ['AS4', 2], ['C5', 2], ['D5', 4], ['AS4', 4], ['G4', 4],
-      // m7: 決めのキメフレーズ
       ['C5', 2], ['D5', 2], ['DS5', 4], ['D5', 2], ['C5', 2], ['AS4', 4],
-      // m8:
       ['G4', 12], ['REST', 4]
     ],
     bass: [
@@ -15546,25 +15615,18 @@ const BGM_TRACKS = [
     id: 'dynamax_swsh',
     title: 'ソード・シールド：ダイマックス',
     shortTitle: 'ダイマックス',
-    desc: 'スタジアム観客の「オ〜オオオ〜」伝説の大歓声合唱チャント',
+    ytId: 'Foc-xB_cPwc',
+    desc: 'スタジアム観客の伝説の「オ〜オオオ〜」大歓声合唱チャント（公式YouTube音源）',
     bpm: 128,
     hasDrums: true,
     melody: [
-      // m1: Ohhh-oh-oh-ohhh
       ['AS4', 6], ['F4', 2], ['AS4', 4], ['C5', 4],
-      // m2: oh-oh-oh-ohhh
       ['D5', 6], ['C5', 2], ['AS4', 8],
-      // m3: Ohhh-oh-oh-ohhh
       ['AS4', 6], ['F4', 2], ['AS4', 4], ['D5', 4],
-      // m4: ohhh-ohhh
       ['C5', 12], ['REST', 4],
-      // m5: Ohhh-oh-oh-ohhh
       ['D5', 6], ['C5', 2], ['AS4', 4], ['C5', 4],
-      // m6: oh-oh-oh-ohhh
       ['D5', 6], ['F5', 2], ['D5', 8],
-      // m7: oh-oh-oh-oh
       ['C5', 4], ['AS4', 4], ['G4', 4], ['F4', 4],
-      // m8: ohhhhh!
       ['AS4', 12], ['REST', 4]
     ],
     bass: [
@@ -15582,25 +15644,18 @@ const BGM_TRACKS = [
     id: 'pasapasa_poco',
     title: 'ぽこあポケモン：パサパサこうや',
     shortTitle: 'パサパサこうや',
-    desc: '日差しの心地よい荒野を進む、のどかで爽快な口笛メロディ',
+    ytId: 'EZ-tUGjgL0E',
+    desc: '日差しの心地よい荒野を進む、のどかで爽快な名曲（公式YouTube音源）',
     bpm: 108,
     hasDrums: false,
     melody: [
-      // m1:
       ['D4', 2], ['G4', 4], ['B4', 2], ['D5', 4], ['B4', 4],
-      // m2:
       ['C5', 2], ['B4', 2], ['A4', 4], ['G4', 8],
-      // m3:
       ['A4', 2], ['B4', 2], ['C5', 4], ['B4', 2], ['A4', 2], ['G4', 4],
-      // m4:
       ['D4', 2], ['E4', 2], ['D4', 8], ['REST', 4],
-      // m5:
       ['D4', 2], ['G4', 4], ['B4', 2], ['D5', 4], ['B4', 4],
-      // m6:
       ['E5', 2], ['D5', 2], ['C5', 2], ['B4', 2], ['A4', 8],
-      // m7:
       ['B4', 2], ['C5', 2], ['D5', 4], ['A4', 2], ['B4', 2], ['G4', 4],
-      // m8:
       ['G4', 12], ['REST', 4]
     ],
     bass: [
@@ -15618,26 +15673,19 @@ const BGM_TRACKS = [
     id: 'battle_wild_rgb',
     title: '赤・緑：野生ポケモン戦',
     shortTitle: '野生バトル',
-    desc: '草むらで突然遭遇！高速クロマティック下降と疾走戦闘テーマ',
+    ytId: 'vgBoQUaEKpk',
+    desc: '草むらで突然遭遇！高速下降イントロと緊迫の疾走バトル（公式YouTube音源）',
     bpm: 160,
     hasDrums: true,
     melody: [
-      // m1: 急降下クロマティックイントロ
       ['B5', 1], ['AS5', 1], ['A5', 1], ['GS5', 1], ['G5', 1], ['FS5', 1], ['F5', 1], ['E5', 1],
       ['DS5', 1], ['D5', 1], ['CS5', 1], ['C5', 1], ['B4', 1], ['AS4', 1], ['A4', 1], ['GS4', 1],
-      // m2: バトル突入フレーズ
       ['G4', 2], ['B4', 2], ['E5', 4], ['D5', 2], ['B4', 2], ['A4', 2], ['G4', 2],
-      // m3: 緊迫のメインリフ
       ['B4', 2], ['E5', 2], ['B4', 2], ['E5', 2], ['D5', 2], ['B4', 2], ['A4', 2], ['B4', 2],
-      // m4:
       ['D5', 2], ['B4', 2], ['A4', 2], ['G4', 2], ['E4', 4], ['E4', 4],
-      // m5:
       ['B4', 2], ['E5', 2], ['B4', 2], ['E5', 2], ['D5', 2], ['B4', 2], ['A4', 2], ['B4', 2],
-      // m6:
       ['FS5', 4], ['E5', 4], ['D5', 4], ['B4', 4],
-      // m7: クライマックス
       ['E5', 2], ['G5', 2], ['A5', 4], ['B5', 4], ['A5', 2], ['G5', 2],
-      // m8:
       ['E5', 6], ['D5', 2], ['E5', 8]
     ],
     bass: [
@@ -15655,25 +15703,18 @@ const BGM_TRACKS = [
     id: 'kogane_gsc',
     title: '金・銀：コガネシティ',
     shortTitle: 'コガネシティ',
-    desc: '「ミ・ド・レ・シ・ド・シ・ラ・シ・ソ」ウキウキ弾むジャズスウィング名曲',
+    ytId: '7IRMYD9c3ik',
+    desc: 'ウキウキ弾むジョウト地方最大の都会のジャズ名曲（公式YouTube音源）',
     bpm: 124,
     hasDrums: true,
     melody: [
-      // m1: ミ・ド・レ・シ・ド・シ・ラ・シ・ソー
       ['E5', 2], ['C5', 2], ['D5', 2], ['B4', 2], ['C5', 2], ['B4', 2], ['A4', 2], ['B4', 2],
-      // m2: ソ・ソ・ソ・ラ・ド・ラー
       ['G4', 4], ['G4', 2], ['G4', 2], ['A4', 2], ['C5', 2], ['A4', 4],
-      // m3: ラ〜・ソ・ファ・ミ・ファ・ソ・ミ・レー
       ['A5', 4], ['G5', 2], ['F5', 2], ['E5', 2], ['F5', 2], ['G5', 2], ['E5', 2],
-      // m4:
       ['D5', 8], ['REST', 8],
-      // m5: ミ・ド・レ・シ・ド・シ・ラ・シ・ソー
       ['E5', 2], ['C5', 2], ['D5', 2], ['B4', 2], ['C5', 2], ['B4', 2], ['A4', 2], ['B4', 2],
-      // m6: ソ・ソ・ソ・ラ・ド・ラー
       ['G4', 4], ['G4', 2], ['G4', 2], ['A4', 2], ['C5', 2], ['A4', 4],
-      // m7: ラ〜・ソ・ファ・ミ・レ・ド・レ・ドーー
       ['A5', 4], ['G5', 2], ['F5', 2], ['E5', 2], ['D5', 2], ['C5', 2], ['D5', 2],
-      // m8:
       ['C5', 12], ['REST', 4]
     ],
     bass: [
@@ -15691,25 +15732,18 @@ const BGM_TRACKS = [
     id: 'mezase_anime',
     title: 'アニメ：めざせポケモンマスター',
     shortTitle: 'めざポケ',
-    desc: '「マサラタウンに さよならバイバイ、オレはこいつと 旅に出る！」不朽の主題歌',
+    ytId: 'TZMoQjvoICE',
+    desc: '「マサラタウンに さよならバイバイ」不朽の国民的主題歌（公式YouTube音源）',
     bpm: 136,
     hasDrums: true,
     melody: [
-      // m1: マサラタウンに さよならバイバイ
       ['E4', 2], ['E4', 2], ['E4', 2], ['E4', 2], ['G4', 2], ['A4', 2], ['G4', 2], ['E4', 2],
-      // m2:
       ['D4', 2], ['D4', 2], ['D4', 2], ['D4', 2], ['F4', 2], ['G4', 2], ['F4', 2], ['D4', 2],
-      // m3: オレはこいつと たびにでる！
       ['C4', 2], ['C4', 2], ['D4', 2], ['E4', 2], ['F4', 2], ['G4', 2], ['A4', 2], ['B4', 2],
-      // m4:
       ['C5', 8], ['REST', 8],
-      // m5: あこがれの ポケモンマスターに
       ['C5', 2], ['D5', 2], ['E5', 4], ['D5', 2], ['C5', 2], ['A4', 4],
-      // m6:
       ['C5', 2], ['D5', 2], ['E5', 4], ['D5', 8],
-      // m7: なりたいな ならなくちゃ ゼッタイなってやるーッ！
       ['E5', 2], ['E5', 2], ['D5', 2], ['D5', 2], ['C5', 2], ['C5', 2], ['D5', 2], ['E5', 2],
-      // m8:
       ['C5', 12], ['REST', 4]
     ],
     bass: [
@@ -15727,7 +15761,8 @@ const BGM_TRACKS = [
     id: 'route1_rgb',
     title: '赤・緑：1ばんどうろ',
     shortTitle: '1ばんどうろ',
-    desc: '最初の草むらを歩くワクワク感！軽やかで希望に満ちたマーチ',
+    ytId: 'u0G12EBW4KY',
+    desc: '最初の草むらを歩くワクワク感！軽やかで希望に満ちたマーチ（公式YouTube音源）',
     bpm: 140,
     hasDrums: false,
     melody: [
@@ -15755,7 +15790,8 @@ const BGM_TRACKS = [
     id: 'pallet_rgb',
     title: '赤・緑：マサラタウン',
     shortTitle: 'マサラタウン',
-    desc: 'すべての冒険の原点。主人公のふるさとのあたたかいアコースティック名曲',
+    ytId: 'cOWRNLaCMJg',
+    desc: 'すべての冒険の原点。主人公のふるさとの名曲（公式YouTube音源）',
     bpm: 108,
     hasDrums: false,
     melody: [
@@ -15781,13 +15817,119 @@ const BGM_TRACKS = [
   }
 ];
 
+// =========================================================
+// 1. YouTube IFrame Player API システム（本物音源エンジン）
+// =========================================================
+window.onYouTubeIframeAPIReady = function() {
+  initYouTubeBgmPlayer();
+};
+
+function initYouTubeBgmPlayer() {
+  if (bgmYtPlayer) return;
+  const container = document.getElementById('bgmYtPlayer');
+  if (!container) return;
+
+  const curTrack = BGM_TRACKS.find(t => t.id === currentBgmTrackId) || BGM_TRACKS[0];
+
+  try {
+    bgmYtPlayer = new YT.Player('bgmYtPlayer', {
+      height: '102',
+      width: '180',
+      videoId: curTrack.ytId,
+      playerVars: {
+        'autoplay': 0,
+        'playsinline': 1,
+        'controls': 0,
+        'rel': 0,
+        'modestbranding': 1,
+        'loop': 1,
+        'playlist': curTrack.ytId
+      },
+      events: {
+        'onReady': onYtPlayerReady,
+        'onStateChange': onYtPlayerStateChange,
+        'onError': onYtPlayerError
+      }
+    });
+  } catch (err) {
+    console.warn('YouTube IFrame API init error:', err);
+  }
+}
+
+function onYtPlayerReady(event) {
+  bgmYtReady = true;
+  try {
+    event.target.setVolume(bgmVolume);
+    if (bgmEnabled && bgmEngineMode === 'youtube') {
+      startPokemonBgm();
+    }
+  } catch (e) {}
+  updateBgmButtonUi();
+  updateBgmHostUi();
+}
+
+function onYtPlayerStateChange(event) {
+  // 動画が終了した場合は自動で最初からループ再生
+  if (event.data === (window.YT && YT.PlayerState ? YT.PlayerState.ENDED : 0)) {
+    if (bgmEnabled && bgmEngineMode === 'youtube' && bgmYtPlayer) {
+      const curTrack = BGM_TRACKS.find(t => t.id === currentBgmTrackId) || BGM_TRACKS[0];
+      try {
+        bgmYtPlayer.loadVideoById(curTrack.ytId);
+        bgmYtPlayer.playVideo();
+      } catch (e) {}
+    }
+  }
+  if (event.data === (window.YT && YT.PlayerState ? YT.PlayerState.PLAYING : 1)) {
+    bgmPlaying = true;
+  } else if (event.data === (window.YT && YT.PlayerState ? YT.PlayerState.PAUSED : 2)) {
+    if (bgmEngineMode === 'youtube') bgmPlaying = false;
+  }
+  updateBgmButtonUi();
+  updateBgmHostUi();
+}
+
+function onYtPlayerError(event) {
+  console.warn('YouTube BGM Player error:', event.data, 'Falling back to synth');
+  if (bgmEnabled && bgmEngineMode === 'youtube') {
+    startSynthBgm();
+  }
+}
+
+function toggleBgmYtMinimize() {
+  bgmYtMinimized = !bgmYtMinimized;
+  localStorage.setItem('poke_bgm_minimized', bgmYtMinimized ? 'true' : 'false');
+  updateBgmHostUi();
+}
+
+function updateBgmHostUi() {
+  const host = document.getElementById('bgmYtHost');
+  if (!host) return;
+  const curTrack = BGM_TRACKS.find(t => t.id === currentBgmTrackId) || BGM_TRACKS[0];
+  const badge = document.getElementById('bgmYtTitleBadge');
+  if (badge) badge.textContent = (bgmPlaying ? '▶️ ' : '⏸️ ') + curTrack.shortTitle;
+
+  if (!bgmEnabled || bgmEngineMode !== 'youtube') {
+    host.classList.add('bgm-off');
+  } else {
+    host.classList.remove('bgm-off');
+  }
+
+  if (bgmYtMinimized) {
+    host.classList.add('minimized');
+  } else {
+    host.classList.remove('minimized');
+  }
+}
+
+// =========================================================
+// 2. Web Audio API 8-bit シンセサイザー（オフライン用フォールバック）
+// =========================================================
 let activeMelodyGrid = [];
 let activeBassGrid = [];
 let activeStepSec = 60 / 140 / 4;
 
 function prepareTrackGrids(track) {
   activeStepSec = 60 / (track.bpm || 140) / 4;
-  
   function flatten(events) {
     const grid = [];
     events.forEach(([note, len]) => {
@@ -15800,7 +15942,6 @@ function prepareTrackGrids(track) {
     });
     return grid;
   }
-
   activeMelodyGrid = flatten(track.melody || []);
   activeBassGrid = flatten(track.bass || []);
 }
@@ -15811,7 +15952,7 @@ function initBgmAudioContext() {
     if (AudioCtx) {
       bgmAudioCtx = new AudioCtx();
       bgmGainNode = bgmAudioCtx.createGain();
-      bgmGainNode.gain.setValueAtTime(0.12, bgmAudioCtx.currentTime);
+      bgmGainNode.gain.setValueAtTime((bgmVolume / 100) * 0.16, bgmAudioCtx.currentTime);
       bgmGainNode.connect(bgmAudioCtx.destination);
     }
   }
@@ -15867,7 +16008,6 @@ function bgmScheduleLoop() {
     if (b && b.isNew && b.freq > 0) {
       playBgmTone(b.freq, bgmNextNoteTime, b.durSec, 'triangle', 0.38);
     }
-    // ドラムリズム（hasDrumsがtrueのアップテンポ曲・バトル曲のみ再生）
     const curTr = BGM_TRACKS.find(t => t.id === currentBgmTrackId);
     if (curTr && curTr.hasDrums) {
       if (s % 16 === 4 || s % 16 === 12) {
@@ -15876,27 +16016,12 @@ function bgmScheduleLoop() {
         playBgmNoise(bgmNextNoteTime, false);
       }
     }
-
     bgmNextNoteTime += activeStepSec;
     bgmStepIndex++;
   }
 }
 
-function setBgmTrack(trackId) {
-  const tr = BGM_TRACKS.find(t => t.id === trackId) || BGM_TRACKS[0];
-  currentBgmTrackId = tr.id;
-  localStorage.setItem('poke_bgm_track_id', tr.id);
-  prepareTrackGrids(tr);
-  bgmStepIndex = 0;
-  if (bgmAudioCtx) {
-    bgmNextNoteTime = bgmAudioCtx.currentTime + 0.05;
-  }
-  updateBgmButtonUi();
-  renderBgmTrackList();
-}
-
-function startPokemonBgm() {
-  if (!bgmEnabled) return;
+function startSynthBgm() {
   initBgmAudioContext();
   if (!bgmAudioCtx) return;
   if (bgmAudioCtx.state === 'suspended') {
@@ -15905,23 +16030,61 @@ function startPokemonBgm() {
   const curTrack = BGM_TRACKS.find(t => t.id === currentBgmTrackId) || BGM_TRACKS[0];
   prepareTrackGrids(curTrack);
 
-  if (!bgmPlaying) {
+  if (!bgmTimer) {
     bgmPlaying = true;
     bgmNextNoteTime = bgmAudioCtx.currentTime + 0.05;
     bgmStepIndex = 0;
-    if (bgmTimer) clearInterval(bgmTimer);
     bgmTimer = setInterval(bgmScheduleLoop, 60);
   }
-  updateBgmButtonUi();
 }
 
-function stopPokemonBgm() {
-  bgmPlaying = false;
+function stopSynthBgm() {
   if (bgmTimer) {
     clearInterval(bgmTimer);
     bgmTimer = null;
   }
+}
+
+// =========================================================
+// 3. 統合 BGM 再生コントロール（メインコントローラー）
+// =========================================================
+function startPokemonBgm() {
+  if (!bgmEnabled) return;
+
+  if (bgmEngineMode === 'youtube') {
+    stopSynthBgm();
+    if (bgmYtReady && bgmYtPlayer && bgmYtPlayer.playVideo) {
+      const curTrack = BGM_TRACKS.find(t => t.id === currentBgmTrackId) || BGM_TRACKS[0];
+      const curUrl = bgmYtPlayer.getVideoUrl ? bgmYtPlayer.getVideoUrl() : '';
+      if (!curUrl || !curUrl.includes(curTrack.ytId)) {
+        bgmYtPlayer.loadVideoById(curTrack.ytId);
+      }
+      bgmYtPlayer.setVolume(bgmVolume);
+      bgmYtPlayer.playVideo();
+      bgmPlaying = true;
+    } else {
+      // YouTubeの準備ができるまでの間はシンセを再生
+      startSynthBgm();
+    }
+  } else {
+    if (bgmYtPlayer && bgmYtPlayer.pauseVideo) {
+      try { bgmYtPlayer.pauseVideo(); } catch (e) {}
+    }
+    startSynthBgm();
+  }
+
   updateBgmButtonUi();
+  updateBgmHostUi();
+}
+
+function stopPokemonBgm() {
+  bgmPlaying = false;
+  if (bgmYtPlayer && bgmYtPlayer.pauseVideo) {
+    try { bgmYtPlayer.pauseVideo(); } catch (e) {}
+  }
+  stopSynthBgm();
+  updateBgmButtonUi();
+  updateBgmHostUi();
 }
 
 function togglePokemonBgm() {
@@ -15932,6 +16095,8 @@ function togglePokemonBgm() {
   } else {
     stopPokemonBgm();
   }
+  updateBgmButtonUi();
+  updateBgmHostUi();
 }
 
 function togglePokemonBgmModal() {
@@ -15944,6 +16109,89 @@ function togglePokemonBgmModal() {
   }
 }
 
+function setBgmTrack(trackId) {
+  const tr = BGM_TRACKS.find(t => t.id === trackId) || BGM_TRACKS[0];
+  currentBgmTrackId = tr.id;
+  localStorage.setItem('poke_bgm_track_id', tr.id);
+
+  if (bgmEngineMode === 'youtube' && bgmYtReady && bgmYtPlayer && bgmYtPlayer.loadVideoById) {
+    try {
+      bgmYtPlayer.loadVideoById(tr.ytId);
+      bgmYtPlayer.setVolume(bgmVolume);
+      if (bgmEnabled) {
+        bgmYtPlayer.playVideo();
+        bgmPlaying = true;
+      }
+    } catch (e) {
+      console.warn('YouTube loadVideoById error:', e);
+    }
+  } else {
+    prepareTrackGrids(tr);
+    bgmStepIndex = 0;
+    if (bgmAudioCtx) bgmNextNoteTime = bgmAudioCtx.currentTime + 0.05;
+  }
+
+  updateBgmButtonUi();
+  updateBgmHostUi();
+  renderBgmTrackList();
+}
+
+function selectBgmTrack(trackId) {
+  playMarimbaPop(1.1);
+  setBgmTrack(trackId);
+  if (!bgmEnabled) {
+    bgmEnabled = true;
+    localStorage.setItem('poke_bgm_enabled', 'true');
+    startPokemonBgm();
+  }
+  const tr = BGM_TRACKS.find(t => t.id === trackId);
+  toast('🎵 BGM: ' + (tr ? tr.title : '') + ' を ながしたよ！', 2200);
+}
+
+function setBgmVolume(val) {
+  bgmVolume = parseInt(val, 10);
+  localStorage.setItem('poke_bgm_volume', String(bgmVolume));
+  if (bgmYtPlayer && bgmYtPlayer.setVolume) {
+    try { bgmYtPlayer.setVolume(bgmVolume); } catch (e) {}
+  }
+  if (bgmGainNode && bgmAudioCtx) {
+    bgmGainNode.gain.setValueAtTime((bgmVolume / 100) * 0.16, bgmAudioCtx.currentTime);
+  }
+  const volLabel = document.getElementById('bgmVolLabel');
+  if (volLabel) volLabel.textContent = bgmVolume + '%';
+  const slider = document.getElementById('bgmVolSlider');
+  if (slider && slider.value != bgmVolume) slider.value = bgmVolume;
+}
+
+function setBgmEngineMode(mode) {
+  bgmEngineMode = mode;
+  localStorage.setItem('poke_bgm_engine', mode);
+  playMarimbaPop(1.0);
+
+  const btnYt = document.getElementById('btnEngineYt');
+  const btnSynth = document.getElementById('btnEngineSynth');
+  if (btnYt && btnSynth) {
+    if (mode === 'youtube') {
+      btnYt.style.background = '#2563eb';
+      btnYt.style.color = '#ffffff';
+      btnSynth.style.background = 'transparent';
+      btnSynth.style.color = '#64748b';
+    } else {
+      btnSynth.style.background = '#2563eb';
+      btnSynth.style.color = '#ffffff';
+      btnYt.style.background = 'transparent';
+      btnYt.style.color = '#64748b';
+    }
+  }
+
+  if (bgmEnabled) {
+    stopPokemonBgm();
+    startPokemonBgm();
+  }
+  toast(mode === 'youtube' ? '🌟 YouTube本物音源モードに 切り替えたよ！' : '🎹 8-bitシンセサイザーに 切り替えたよ！', 2200);
+  renderBgmTrackList();
+}
+
 function openBgmModal() {
   renderBgmTrackList();
   const btn = document.getElementById('btnBgmToggleModal');
@@ -15952,6 +16200,27 @@ function openBgmModal() {
     btn.style.background = bgmEnabled ? '#22c55e' : '#64748b';
     btn.style.color = '#ffffff';
   }
+  const slider = document.getElementById('bgmVolSlider');
+  if (slider) slider.value = bgmVolume;
+  const volLabel = document.getElementById('bgmVolLabel');
+  if (volLabel) volLabel.textContent = bgmVolume + '%';
+
+  const btnYt = document.getElementById('btnEngineYt');
+  const btnSynth = document.getElementById('btnEngineSynth');
+  if (btnYt && btnSynth) {
+    if (bgmEngineMode === 'youtube') {
+      btnYt.style.background = '#2563eb';
+      btnYt.style.color = '#ffffff';
+      btnSynth.style.background = 'transparent';
+      btnSynth.style.color = '#64748b';
+    } else {
+      btnSynth.style.background = '#2563eb';
+      btnSynth.style.color = '#ffffff';
+      btnYt.style.background = 'transparent';
+      btnYt.style.color = '#64748b';
+    }
+  }
+
   openModal('mBgmTrackModal');
 }
 
@@ -15961,25 +16230,13 @@ function renderBgmTrackList() {
   listEl.innerHTML = BGM_TRACKS.map(t => {
     const isActive = (t.id === currentBgmTrackId);
     return '<div class="bgm-track-item ' + (isActive ? 'active' : '') + '" onclick="selectBgmTrack(\'' + t.id + '\')">' +
-      '<div>' +
+      '<div style="flex:1;min-width:0;padding-right:8px">' +
         '<div class="track-title">' + (isActive ? '▶️ ' : '🎵 ') + t.title + '</div>' +
-        '<div class="track-desc">' + t.desc + '</div>' +
+        '<div class="track-desc">' + (bgmEngineMode === 'youtube' ? '🎬 公式YouTube本物音源' : t.desc) + '</div>' +
       '</div>' +
-      (isActive ? '<span style="font-size:16px;font-weight:900;color:#2563eb">✅</span>' : '') +
+      (isActive ? '<span style="font-size:16px;font-weight:900;color:#2563eb;flex-shrink:0">✅ 再生中</span>' : '') +
     '</div>';
   }).join('');
-}
-
-function selectBgmTrack(trackId) {
-  playMarimbaPop(1.1);
-  setBgmTrack(trackId);
-  if (!bgmEnabled) {
-    bgmEnabled = true;
-    localStorage.setItem('poke_bgm_enabled', 'true');
-  }
-  startPokemonBgm();
-  const tr = BGM_TRACKS.find(t => t.id === trackId);
-  toast('🎵 BGM: ' + (tr ? tr.title : '') + ' を ながしたよ！', 2200);
 }
 
 function updateBgmButtonUi() {
@@ -16009,7 +16266,6 @@ function setupBgmAutoStart() {
   window.addEventListener('keydown', unlock, { once: true, passive: true });
   window.addEventListener('touchstart', unlock, { once: true, passive: true });
 }
-
 /* =========================================================
    要件④：ポケモン図鑑（ホーム＝全国ナンバー順 / ドリル内＝ドリル順）
    ========================================================= */

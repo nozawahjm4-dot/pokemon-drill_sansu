@@ -4841,6 +4841,148 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
   box-shadow: 0 2px 6px rgba(124,58,237,0.35);
 }
 
+
+/* =========================================================
+   かずくらべツール専用スタイル
+   ========================================================= */
+.cmp-circles-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-start;
+  min-height: 38px;
+  padding: 4px;
+}
+.cmp-circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 900;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s ease;
+  box-sizing: border-box;
+}
+.cmp-circle.c-red {
+  border: 2px solid #f87171;
+  background: #ffffff;
+  color: #991b1b;
+}
+.cmp-circle.c-red.active {
+  background: #ef4444;
+  border-color: #b91c1c;
+  color: #ffffff;
+  transform: scale(1.1);
+  box-shadow: 0 2px 6px rgba(239,68,68,0.4);
+}
+.cmp-circle.c-blue {
+  border: 2px solid #60a5fa;
+  background: #ffffff;
+  color: #1e40af;
+}
+.cmp-circle.c-blue.active {
+  background: #3b82f6;
+  border-color: #1d4ed8;
+  color: #ffffff;
+  transform: scale(1.1);
+  box-shadow: 0 2px 6px rgba(59,130,246,0.4);
+}
+.cmp-btn-sm {
+  background: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 900;
+  color: #334155;
+  cursor: pointer;
+}
+.cmp-btn-sm:hover {
+  background: #f1f5f9;
+}
+
+/* =========================================================
+   すごろく コース接続パイプライン
+   ========================================================= */
+.s-cell .s-conn-r {
+  position: absolute;
+  top: 50%;
+  right: -8px;
+  width: 10px;
+  height: 12px;
+  transform: translateY(-50%);
+  background: #facc15;
+  border-top: 2px solid #a16207;
+  border-bottom: 2px solid #a16207;
+  z-index: 3;
+  pointer-events: none;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.18);
+}
+.s-cell .s-conn-l {
+  position: absolute;
+  top: 50%;
+  left: -8px;
+  width: 10px;
+  height: 12px;
+  transform: translateY(-50%);
+  background: #facc15;
+  border-top: 2px solid #a16207;
+  border-bottom: 2px solid #a16207;
+  z-index: 3;
+  pointer-events: none;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.18);
+}
+.s-cell .s-conn-d {
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  width: 12px;
+  height: 10px;
+  transform: translateX(-50%);
+  background: #facc15;
+  border-left: 2px solid #a16207;
+  border-right: 2px solid #a16207;
+  z-index: 3;
+  pointer-events: none;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.18);
+}
+.s-cell .s-conn-u {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  width: 12px;
+  height: 10px;
+  transform: translateX(-50%);
+  background: #facc15;
+  border-left: 2px solid #a16207;
+  border-right: 2px solid #a16207;
+  z-index: 3;
+  pointer-events: none;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.18);
+}
+.s-cell .conn-turn-arrow {
+  position: absolute;
+  font-size: 10px;
+  font-weight: 900;
+  line-height: 1;
+  color: #dc2626;
+  background: #ffffff;
+  border: 1px solid #dc2626;
+  border-radius: 4px;
+  padding: 1px 2px;
+  z-index: 4;
+  pointer-events: none;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+.s-cell .conn-turn-arrow.arr-d { bottom: 1px; left: 50%; transform: translateX(-50%); }
+.s-cell .conn-turn-arrow.arr-u { top: 1px; left: 50%; transform: translateX(-50%); }
+.s-cell .conn-turn-arrow.arr-r { right: 1px; top: 50%; transform: translateY(-50%); }
+.s-cell .conn-turn-arrow.arr-l { left: 1px; top: 50%; transform: translateY(-50%); }
+
 </style>
 </head>
 <body>
@@ -4851,7 +4993,8 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
   <div class="hdr-spacer"></div>
   <button class="hbtn" id="btnHome" style="background:#fef3c7;border-color:#f59e0b;color:#b45309;font-weight:900" title="ドリル選択ホームへ">🏠 ホーム</button>
   <span class="pt" id="pt">🪙 0 pt</span>
-  <button class="hbtn" id="btnKana">📋 あいうえお表</button>
+  <button class="hbtn" id="btnToolClock" style="background:#fef3c7;border-color:#f59e0b;color:#b45309;font-weight:900" title="じゆうに うごかせる とけい">⏰ とけい</button>
+  <button class="hbtn" id="btnToolCompare" style="background:#e0f2fe;border-color:#38bdf8;color:#0369a1;font-weight:900" title="2つのかずを くらべる">⚖️ かずくらべ</button>
   <button class="hbtn" id="btnZukan">📖 ずかん</button>
   <button class="hbtn" id="btnResetProgress" style="background:#fef2f2;border-color:#fca5a5;color:#b91c1c;font-weight:900" title="さいしょから やりなおす">🔄 さいしょから</button>
   <button class="hbtn" id="btnQuit">🚪 おわる</button>
@@ -5044,12 +5187,59 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
   <button class="mbtn" id="btnStart">ぼうけんに でる！</button>
 </div></div>
 
-<!-- あいうえお表モーダル -->
-<div class="modal" id="mKana"><div class="mbox">
+<!-- とけいツールモーダル -->
+<div class="modal" id="mToolClockModal"><div class="mbox" style="max-width:520px;padding:16px">
   <button class="mclose" data-close>✕</button>
-  <h2>📋 あいうえお表</h2>
-  <p class="center" style="margin-top:-6px">もじを タップすると よみあげるよ</p>
-  <div class="kana-grid" id="kanaGrid"></div>
+  <h2 style="font-size:18px;margin-bottom:8px">⏰ じゆうに うごかせる とけい</h2>
+  <div id="toolClockWrap"></div>
+</div></div>
+
+<!-- かずくらべツールモーダル -->
+<div class="modal" id="mToolCompareModal"><div class="mbox" style="max-width:580px;padding:16px">
+  <button class="mclose" data-close>✕</button>
+  <h2 style="font-size:18px;margin-bottom:4px">⚖️ かずくらべ ツール</h2>
+  <p style="font-size:13px;color:#475569;margin-bottom:12px;text-align:center">〇を タップして ぬったり けしたり して、2つの かずの ちがいを たしかめよう！</p>
+  
+  <!-- 上段：あか -->
+  <div style="background:#fef2f2;border:2px solid #fecaca;border-radius:14px;padding:10px 12px;margin-bottom:10px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+      <span style="font-size:14px;font-weight:900;color:#dc2626">🔴 うえの れつ： <span id="cmpCount1" style="font-size:17px">0</span> こ</span>
+      <div style="display:flex;gap:4px">
+        <button type="button" class="cmp-btn-sm" onclick="cmpSetRow(1, 5)">5</button>
+        <button type="button" class="cmp-btn-sm" onclick="cmpSetRow(1, 6)">6</button>
+        <button type="button" class="cmp-btn-sm" onclick="cmpSetRow(1, 7)">7</button>
+        <button type="button" class="cmp-btn-sm" onclick="cmpSetRow(1, 10)">10</button>
+        <button type="button" class="cmp-btn-sm" onclick="cmpClearRow(1)" style="color:#ef4444">けす</button>
+      </div>
+    </div>
+    <div class="cmp-circles-row" id="cmpRow1"></div>
+  </div>
+
+  <!-- 下段：あお -->
+  <div style="background:#eff6ff;border:2px solid #bfdbfe;border-radius:14px;padding:10px 12px;margin-bottom:12px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+      <span style="font-size:14px;font-weight:900;color:#2563eb">🔵 したの れつ： <span id="cmpCount2" style="font-size:17px">0</span> こ</span>
+      <div style="display:flex;gap:4px">
+        <button type="button" class="cmp-btn-sm" onclick="cmpSetRow(2, 5)">5</button>
+        <button type="button" class="cmp-btn-sm" onclick="cmpSetRow(2, 6)">6</button>
+        <button type="button" class="cmp-btn-sm" onclick="cmpSetRow(2, 7)">7</button>
+        <button type="button" class="cmp-btn-sm" onclick="cmpSetRow(2, 10)">10</button>
+        <button type="button" class="cmp-btn-sm" onclick="cmpClearRow(2)" style="color:#2563eb">けす</button>
+      </div>
+    </div>
+    <div class="cmp-circles-row" id="cmpRow2"></div>
+  </div>
+
+  <!-- くらべっこ結果パネル -->
+  <div style="background:#f8fafc;border:2px dashed #94a3b8;border-radius:14px;padding:10px 14px;text-align:center;margin-bottom:12px">
+    <div id="cmpResultText" style="font-size:16px;font-weight:900;color:#1e293b;margin-bottom:4px">かずを えらんでね</div>
+    <div id="cmpDiffFormula" style="font-size:15px;font-weight:900;color:#475569"></div>
+  </div>
+
+  <div style="display:flex;gap:10px;justify-content:center">
+    <button type="button" onclick="cmpResetAll()" style="background:#fee2e2;border:2px solid #f87171;color:#b91c1c;font-weight:900;padding:8px 18px;border-radius:18px;cursor:pointer">🔄 ぜんぶ けす</button>
+    <button type="button" data-close style="background:#e2e8f0;border:2px solid #94a3b8;color:#334155;font-weight:900;padding:8px 22px;border-radius:18px;cursor:pointer">✕ とじる</button>
+  </div>
 </div></div>
 
 <!-- ポケモンずかんモーダル -->
@@ -5713,75 +5903,78 @@ function makeRealisticPencilSvg(colorKey, lengthPx, dir = 'right') {
 }
 
 function makeStaticClockSvg(hour, minute, options = {}) {
-  const size = options.size || 180;
-  const showGuides = options.showGuides !== false;
+  const size = options.size || 200;
   const showOuterNums = options.showOuterNums || false;
   const highlightHourArc = options.highlightHourArc || false; // 1時半などの扇形ハイライト
 
   const minAngle = minute * 6;
   const hourAngle = ((hour % 12) + minute / 60) * 30;
 
+  // ViewBox: 280 x 280, center at (140, 140)
+  // Clock face radius 106, outer minute pill radius 118
   let ticks = '';
   for (let i = 0; i < 60; i++) {
     const angle = i * 6 * Math.PI / 180;
     const isMajor = i % 5 === 0;
-    const r1 = isMajor ? 80 : 84;
-    const r2 = 88;
-    const x1 = 100 + r1 * Math.sin(angle);
-    const y1 = 100 - r1 * Math.cos(angle);
-    const x2 = 100 + r2 * Math.sin(angle);
-    const y2 = 100 - r2 * Math.cos(angle);
-    ticks += '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="' + (isMajor ? '#334155' : '#cbd5e1') + '" stroke-width="' + (isMajor ? '2' : '1') + '"/>';
+    const r1 = isMajor ? 88 : 94;
+    const r2 = 100;
+    const x1 = 140 + r1 * Math.sin(angle);
+    const y1 = 140 - r1 * Math.cos(angle);
+    const x2 = 140 + r2 * Math.sin(angle);
+    const y2 = 140 - r2 * Math.cos(angle);
+    ticks += '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="' + (isMajor ? '#1e293b' : '#94a3b8') + '" stroke-width="' + (isMajor ? '2.5' : '1.2') + '"/>';
   }
 
   let numbers = '';
   for (let h = 1; h <= 12; h++) {
     const angle = h * 30 * Math.PI / 180;
-    const r = 68;
-    const x = 100 + r * Math.sin(angle);
-    const y = 100 - r * Math.cos(angle) + 5;
-    numbers += '<text x="' + x + '" y="' + y + '" text-anchor="middle" font-size="15" font-weight="900" fill="#1e293b">' + h + '</text>';
+    const r = 74;
+    const x = 140 + r * Math.sin(angle);
+    const y = 140 - r * Math.cos(angle) + 7;
+    numbers += '<text x="' + x + '" y="' + y + '" text-anchor="middle" font-size="20" font-weight="900" fill="#1e293b">' + h + '</text>';
   }
 
   let outerNums = '';
   if (showOuterNums) {
     for (let h = 1; h <= 11; h++) {
       const angle = h * 30 * Math.PI / 180;
-      const r = 96;
-      const x = 100 + r * Math.sin(angle);
-      const y = 100 - r * Math.cos(angle) + 4;
+      const r = 118;
+      const x = 140 + r * Math.sin(angle);
+      const y = 140 - r * Math.cos(angle) + 5;
       const mVal = h * 5;
-      outerNums += '<text x="' + x + '" y="' + y + '" text-anchor="middle" font-size="9" font-weight="900" fill="#2563eb">' + mVal + '</text>';
+      // High-visibility blue badge with white fill and blue border
+      outerNums += 
+        '<rect x="' + (x - 14) + '" y="' + (y - 13) + '" width="28" height="17" rx="6" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.8"/>' +
+        '<text x="' + x + '" y="' + y + '" text-anchor="middle" font-size="12" font-weight="900" fill="#1d4ed8">' + mVal + '</text>';
     }
   }
 
   let arcHtml = '';
   if (highlightHourArc) {
-    // 1時から2時の間を扇形ハイライト (例: 1時半)
-    // 1時の角度30度, 2時の角度60度
-    arcHtml = '<path d="M100,100 L135,39.4 A75,75 0 0,1 164.95,62.5 Z" fill="#fef08a" opacity="0.6"/>';
+    arcHtml = '<path d="M140,140 L189,55.1 A98,98 0 0,1 230.9,87.5 Z" fill="#fef08a" opacity="0.6"/>';
   }
 
-  return '<svg viewBox="0 0 200 200" style="width:' + size + 'px;height:' + size + 'px;display:block;margin:0 auto;filter:drop-shadow(0 3px 6px rgba(0,0,0,0.12))">' +
-    '<circle cx="100" cy="100" r="96" fill="#fef3c7" stroke="#d97706" stroke-width="5"/>' +
-    '<circle cx="100" cy="100" r="89" fill="#ffffff" stroke="#f59e0b" stroke-width="1.5"/>' +
+  return '<svg viewBox="0 0 280 280" style="width:' + size + 'px;height:' + size + 'px;display:block;margin:0 auto;filter:drop-shadow(0 4px 10px rgba(0,0,0,0.14))">' +
+    '<circle cx="140" cy="140" r="134" fill="#fef3c7" stroke="#d97706" stroke-width="6"/>' +
+    '<circle cx="140" cy="140" r="106" fill="#ffffff" stroke="#f59e0b" stroke-width="2"/>' +
     arcHtml +
     ticks +
     numbers +
     outerNums +
     // 短針（赤）
-    '<g transform="rotate(' + hourAngle + ' 100 100)">' +
-      '<path d="M97,100 L98.5,50 L100,44 L101.5,50 L103,100 Z" fill="#ef4444" stroke="#b91c1c" stroke-width="1.5"/>' +
-      '<line x1="100" y1="100" x2="100" y2="112" stroke="#ef4444" stroke-width="4" stroke-linecap="round"/>' +
+    '<g transform="rotate(' + hourAngle + ' 140 140)">' +
+      '<path d="M136,140 L138,72 L140,64 L142,72 L144,140 Z" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>' +
+      '<line x1="140" y1="140" x2="140" y2="156" stroke="#ef4444" stroke-width="6" stroke-linecap="round"/>' +
     '</g>' +
     // 長針（青）
-    '<g transform="rotate(' + minAngle + ' 100 100)">' +
-      '<path d="M98,100 L99,28 L100,20 L101,28 L102,100 Z" fill="#2563eb" stroke="#1d4ed8" stroke-width="1.5"/>' +
-      '<line x1="100" y1="100" x2="100" y2="116" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/>' +
+    '<g transform="rotate(' + minAngle + ' 140 140)">' +
+      '<path d="M137,140 L138.5,42 L140,32 L141.5,42 L143,140 Z" fill="#2563eb" stroke="#1d4ed8" stroke-width="2"/>' +
+      '<circle cx="140" cy="38" r="8" fill="#60a5fa" opacity="0.35"/>' +
+      '<line x1="140" y1="140" x2="140" y2="162" stroke="#2563eb" stroke-width="4.5" stroke-linecap="round"/>' +
     '</g>' +
     // 軸
-    '<circle cx="100" cy="100" r="5" fill="#f59e0b" stroke="#78350f" stroke-width="1.5"/>' +
-    '<circle cx="100" cy="100" r="2" fill="#ffffff"/>' +
+    '<circle cx="140" cy="140" r="7" fill="#f59e0b" stroke="#78350f" stroke-width="2"/>' +
+    '<circle cx="140" cy="140" r="3" fill="#ffffff"/>' +
   '</svg>';
 }
 
@@ -9553,7 +9746,7 @@ function renderInteractiveStage(row){
         makeFreeClockWidgetHtml() +
         '<div style="background:#fff;border:2.5px solid #cbd5e1;border-radius:18px;padding:14px;margin:12px 0">' +
           '<div style="font-weight:900;font-size:15px;color:#1e293b;margin-bottom:8px">とけいを よみましょう。まわりの □ に すうじを いれよう！</div>' +
-          makeStaticClockSvg(11, 25, { size: 190, showOuterNums: true }) +
+          makeStaticClockSvg(11, 25, { size: 260, showOuterNums: true }) +
           '<div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;padding:8px 12px;margin:10px 0;font-size:13px;font-weight:800;color:#166534">' +
             '💡 ながい はりの 1めもりは 1ぷんです。5ふんごとに おおきな めもりが あります。' +
           '</div>' +
@@ -10644,236 +10837,278 @@ function renderInteractiveStage(row){
     initBattle54Cards();
 
   } else if(bId === 'Battle55' || bId === 'Battle55_2' || bId === 'Battle56'){
-    // バトル55：ミュウをつかまえよう！ バトル1〜54の まとめ（1ページめ & 2ページめ 完全統合版・0〜120 & ミュウゴール）
-    // 【1ページめ 定義】0〜62
-    const b55Page1Def = [
-      { type:'poke', name:'ケーシィ', num:'スタート▶', bg:'#fef08a', bc:'#eab308', tc:'#854d0e', pokeId:63 },
-      { type:'num', val:0 },
-      { type:'blank', val:1 },
-      { type:'num', val:2 },
-      { type:'num', val:3 },
-      { type:'num', val:4 },
-      { type:'num', val:5 },
-      { type:'num', val:11 },
-      { type:'num', val:10 },
-      { type:'num', val:9 },
-      { type:'num', val:8 },
-      { type:'blank', val:7 },
-      { type:'num', val:6 },
-      { type:'num', val:14 },
-      { type:'num', val:13 },
-      { type:'blank', val:12 },
-      { type:'num', val:19 },
-      { type:'poke', name:'ヤドン', num:'20', bg:'#fed7aa', bc:'#f97316', tc:'#9a3412', pokeId:79 },
-      { type:'num', val:21 },
-      { type:'num', val:22 },
-      { type:'blank', val:15 },
-      { type:'num', val:16 },
-      { type:'num', val:17 },
-      { type:'num', val:18 },
-      { type:'num', val:24 },
-      { type:'blank', val:23 },
-      { type:'num', val:35 },
-      { type:'num', val:34 },
-      { type:'blank', val:33 },
-      { type:'num', val:32 },
-      { type:'num', val:31 },
-      { type:'num', val:30 },
-      { type:'num', val:25 },
-      { type:'num', val:26 },
-      { type:'blank', val:36 },
-      { type:'num', val:39 },
-      { type:'poke', name:'スリープ', num:'40', bg:'#fef08a', bc:'#eab308', tc:'#854d0e', pokeId:96 },
-      { type:'blank', val:41 },
-      { type:'blank', val:29 },
-      { type:'num', val:28 },
-      { type:'num', val:27 },
-      { type:'num', val:37 },
-      { type:'num', val:38 },
-      { type:'num', val:42 },
-      { type:'blank', val:43 },
-      { type:'num', val:44 },
-      { type:'num', val:45 },
-      { type:'num', val:53 },
-      { type:'blank', val:52 },
-      { type:'num', val:51 },
-      { type:'blank', val:50 },
-      { type:'num', val:49 },
-      { type:'num', val:48 },
-      { type:'blank', val:47 },
-      { type:'num', val:46 },
-      { type:'num', val:54 },
-      { type:'num', val:55 },
-      { type:'blank', val:56 },
-      { type:'num', val:57 },
-      { type:'num', val:58 },
-      { type:'num', val:59, arrow:true },
-      { type:'num', val:61, arrow:true },
-      { type:'num', val:62, arrow:true }
-    ];
-
-    // 【2ページめ 定義】60〜120
-    const b55Page2Def = [
-      { type:'blank', val:74 },
-      { type:'num', val:73 },
-      { type:'num', val:72 },
-      { type:'num', val:71 },
-      { type:'blank', val:70 },
-      { type:'poke', name:'タマタマ', num:'60', bg:'#fed7aa', bc:'#f97316', tc:'#9a3412', pokeId:102 },
-      { type:'blank', val:63 },
-      { type:'num', val:75 },
-      { type:'num', val:76 },
-      { type:'num', val:77 },
-      { type:'blank', val:78 },
-      { type:'num', val:69 },
-      { type:'num', val:64 },
-      { type:'blank', val:81 },
-      { type:'poke', name:'バリヤード', num:'80', bg:'#fce7f3', bc:'#ec4899', tc:'#9d174d', pokeId:122 },
-      { type:'num', val:79 },
-      { type:'num', val:68 },
-      { type:'num', val:67 },
-      { type:'blank', val:66 },
-      { type:'num', val:65 },
-      { type:'num', val:82 },
-      { type:'blank', val:87 },
-      { type:'num', val:88 },
-      { type:'num', val:89 },
-      { type:'blank', val:90 },
-      { type:'num', val:91 },
-      { type:'blank', val:83 },
-      { type:'num', val:84 },
-      { type:'num', val:85 },
-      { type:'num', val:86 },
-      { type:'blank', val:95 },
-      { type:'num', val:94 },
-      { type:'num', val:93 },
-      { type:'blank', val:92 },
-      { type:'poke', name:'ルージュラ', num:'100', bg:'#fed7aa', bc:'#ea580c', tc:'#9a3412', pokeId:124 },
-      { type:'num', val:98 },
-      { type:'num', val:97 },
-      { type:'num', val:96 },
-      { type:'blank', val:116 },
-      { type:'num', val:117 },
-      { type:'num', val:118 },
-      { type:'blank', val:99 },
-      { type:'num', val:109 },
-      { type:'blank', val:110 },
-      { type:'num', val:115 },
-      { type:'num', val:119 },
-      { type:'num', val:120, arrow:true },
-      { type:'blank', val:101 },
-      { type:'blank', val:104 },
-      { type:'num', val:105 },
-      { type:'blank', val:108 },
-      { type:'num', val:111 },
-      { type:'num', val:114 },
-      { type:'poke', name:'ミュウ', num:'★ゴール 120', bg:'linear-gradient(135deg, #fef08a, #fde047, #f59e0b)', bc:'#d97706', tc:'#78350f', pokeId:151 },
-      { type:'num', val:102 },
-      { type:'num', val:103 },
-      { type:'num', val:106 },
-      { type:'num', val:107 },
-      { type:'blank', val:112 },
-      { type:'num', val:113 }
+    // バトル55：ミュウをつかまえよう！ バトル1〜54の まとめ（0〜120 完全シームレス大すごろく）
+    // 18行×8列の教科書通りの完全敷き詰め配列定義
+    const rowsDef = [
+      // Row 0
+      [
+        { type:'poke', name:'ケーシィ', num:'スタート▶', bg:'#fef08a', bc:'#eab308', tc:'#854d0e', pokeId:63, is1x1:true, pipe:'r' },
+        { type:'num', val:0, pipe:'r' },
+        { type:'blank', val:1, pipe:'r' },
+        { type:'num', val:2, pipe:'r' },
+        { type:'num', val:3, pipe:'r' },
+        { type:'num', val:4, pipe:'r' },
+        { type:'num', val:5, pipe:'d', turnArrow:'▼' },
+        { type:'empty' }
+      ],
+      // Row 1
+      [
+        { type:'empty' },
+        { type:'num', val:11, pipe:'d', turnArrow:'▼' },
+        { type:'num', val:10, pipe:'l' },
+        { type:'num', val:9, pipe:'l' },
+        { type:'num', val:8, pipe:'l' },
+        { type:'blank', val:7, pipe:'l' },
+        { type:'num', val:6, pipe:'l' },
+        { type:'empty' }
+      ],
+      // Row 2 (ヤドン spans col 4-5, row 2-3)
+      [
+        { type:'num', val:14, pipe:'d', turnArrow:'▼' },
+        { type:'num', val:13, pipe:'l' },
+        { type:'blank', val:12, pipe:'l' },
+        { type:'num', val:19, pipe:'r' },
+        { type:'poke', name:'ヤドン', num:'20', bg:'#fed7aa', bc:'#f97316', tc:'#9a3412', pokeId:79, span2:true, pipe:'r' },
+        { type:'num', val:21, pipe:'r' },
+        { type:'num', val:22, pipe:'d', turnArrow:'▼' }
+      ],
+      // Row 3
+      [
+        { type:'blank', val:15, pipe:'r' },
+        { type:'num', val:16, pipe:'r' },
+        { type:'num', val:17, pipe:'r' },
+        { type:'num', val:18, pipe:'u', turnArrow:'▲' },
+        { type:'num', val:24, pipe:'d', turnArrow:'▼' },
+        { type:'blank', val:23, pipe:'l' }
+      ],
+      // Row 4
+      [
+        { type:'num', val:35, pipe:'d', turnArrow:'▼' },
+        { type:'num', val:34, pipe:'l' },
+        { type:'blank', val:33, pipe:'l' },
+        { type:'num', val:32, pipe:'l' },
+        { type:'num', val:31, pipe:'l' },
+        { type:'num', val:30, pipe:'l' },
+        { type:'num', val:25, pipe:'r' },
+        { type:'num', val:26, pipe:'d', turnArrow:'▼' }
+      ],
+      // Row 5 (スリープ spans col 2-3, row 5-6)
+      [
+        { type:'blank', val:36, pipe:'d' },
+        { type:'num', val:39, pipe:'r' },
+        { type:'poke', name:'スリープ', num:'40', bg:'#fef08a', bc:'#eab308', tc:'#854d0e', pokeId:96, span2:true, pipe:'r' },
+        { type:'blank', val:41, pipe:'d', turnArrow:'▼' },
+        { type:'blank', val:29, pipe:'u', turnArrow:'▲' },
+        { type:'num', val:28, pipe:'l' },
+        { type:'num', val:27, pipe:'l' }
+      ],
+      // Row 6
+      [
+        { type:'num', val:37, pipe:'r' },
+        { type:'num', val:38, pipe:'u', turnArrow:'▲' },
+        { type:'num', val:42, pipe:'r' },
+        { type:'blank', val:43, pipe:'r' },
+        { type:'num', val:44, pipe:'r' },
+        { type:'num', val:45, pipe:'d', turnArrow:'▼' }
+      ],
+      // Row 7
+      [
+        { type:'num', val:53, pipe:'d', turnArrow:'▼' },
+        { type:'blank', val:52, pipe:'l' },
+        { type:'num', val:51, pipe:'l' },
+        { type:'blank', val:50, pipe:'l' },
+        { type:'num', val:49, pipe:'l' },
+        { type:'num', val:48, pipe:'l' },
+        { type:'blank', val:47, pipe:'l' },
+        { type:'num', val:46, pipe:'l' }
+      ],
+      // Row 8
+      [
+        { type:'num', val:54, pipe:'r' },
+        { type:'num', val:55, pipe:'r' },
+        { type:'blank', val:56, pipe:'r' },
+        { type:'num', val:57, pipe:'r' },
+        { type:'num', val:58, pipe:'r' },
+        { type:'num', val:59, pipe:'d', turnArrow:'▼' },
+        { type:'num', val:61, pipe:'r' },
+        { type:'num', val:62, pipe:'d', turnArrow:'▼' }
+      ],
+      // Row 9 (タマタマ spans col 5-6, row 9-10)
+      [
+        { type:'blank', val:74, pipe:'d', turnArrow:'▼' },
+        { type:'num', val:73, pipe:'l' },
+        { type:'num', val:72, pipe:'l' },
+        { type:'num', val:71, pipe:'l' },
+        { type:'blank', val:70, pipe:'l' },
+        { type:'poke', name:'タマタマ', num:'60', bg:'#fed7aa', bc:'#f97316', tc:'#9a3412', pokeId:102, span2:true, pipe:'u' },
+        { type:'blank', val:63, pipe:'d' }
+      ],
+      // Row 10
+      [
+        { type:'num', val:75, pipe:'r' },
+        { type:'num', val:76, pipe:'r' },
+        { type:'num', val:77, pipe:'r' },
+        { type:'blank', val:78, pipe:'d', turnArrow:'▼' },
+        { type:'num', val:69, pipe:'u' },
+        { type:'num', val:64, pipe:'d' }
+      ],
+      // Row 11 (バリヤード spans col 1-2, row 11-12)
+      [
+        { type:'blank', val:81, pipe:'d' },
+        { type:'poke', name:'バリヤード', num:'80', bg:'#fce7f3', bc:'#ec4899', tc:'#9d174d', pokeId:122, span2:true, pipe:'l' },
+        { type:'num', val:79, pipe:'l' },
+        { type:'num', val:68, pipe:'u', turnArrow:'▲' },
+        { type:'num', val:67, pipe:'l' },
+        { type:'blank', val:66, pipe:'l' },
+        { type:'num', val:65, pipe:'l' }
+      ],
+      // Row 12
+      [
+        { type:'num', val:82, pipe:'d' },
+        { type:'blank', val:87, pipe:'r' },
+        { type:'num', val:88, pipe:'r' },
+        { type:'num', val:89, pipe:'r' },
+        { type:'blank', val:90, pipe:'r' },
+        { type:'num', val:91, pipe:'d', turnArrow:'▼' }
+      ],
+      // Row 13
+      [
+        { type:'blank', val:83, pipe:'r' },
+        { type:'num', val:84, pipe:'r' },
+        { type:'num', val:85, pipe:'r' },
+        { type:'num', val:86, pipe:'u', turnArrow:'▲' },
+        { type:'blank', val:95, pipe:'u', turnArrow:'▲' },
+        { type:'num', val:94, pipe:'l' },
+        { type:'num', val:93, pipe:'l' },
+        { type:'blank', val:92, pipe:'l' }
+      ],
+      // Row 14 (ルージュラ spans col 0-1, row 14-15)
+      [
+        { type:'poke', name:'ルージュラ', num:'100', bg:'#fed7aa', bc:'#ea580c', tc:'#9a3412', pokeId:124, span2:true, pipe:'d' },
+        { type:'num', val:98, pipe:'l' },
+        { type:'num', val:97, pipe:'l' },
+        { type:'num', val:96, pipe:'l' },
+        { type:'blank', val:116, pipe:'r' },
+        { type:'num', val:117, pipe:'r' },
+        { type:'num', val:118, pipe:'d', turnArrow:'▼' }
+      ],
+      // Row 15
+      [
+        { type:'blank', val:99, pipe:'l' },
+        { type:'num', val:109, pipe:'r' },
+        { type:'blank', val:110, pipe:'d', turnArrow:'▼' },
+        { type:'num', val:115, pipe:'u' },
+        { type:'empty' },
+        { type:'num', val:119, pipe:'d', turnArrow:'▼' }
+      ],
+      // Row 16 (ミュウ spans col 6-7, row 16-17)
+      [
+        { type:'blank', val:101, pipe:'d' },
+        { type:'blank', val:104, pipe:'u' },
+        { type:'num', val:105, pipe:'d', turnArrow:'▼' },
+        { type:'blank', val:108, pipe:'u' },
+        { type:'num', val:111, pipe:'d' },
+        { type:'num', val:114, pipe:'u' },
+        { type:'poke', name:'ミュウ', num:'★ゴール 120', bg:'linear-gradient(135deg, #fef08a, #fde047, #f59e0b)', bc:'#d97706', tc:'#78350f', pokeId:151, span2:true }
+      ],
+      // Row 17
+      [
+        { type:'num', val:102, pipe:'r' },
+        { type:'num', val:103, pipe:'u', turnArrow:'▲' },
+        { type:'num', val:106, pipe:'r' },
+        { type:'num', val:107, pipe:'u', turnArrow:'▲' },
+        { type:'blank', val:112, pipe:'r' },
+        { type:'num', val:113, pipe:'u', turnArrow:'▲' }
+      ]
     ];
 
     let unifiedBlankIdx = 0;
+    const b55ExpectedAnswers = [];
 
-    function renderSugorokuGridHtml(def, pageGroup) {
-      let h = '';
-      def.forEach(item => {
-        if (item.type === 'poke') {
-          h += 
-            '<div class="s-poke-card" style="background:' + item.bg + ';border:3px solid ' + item.bc + '">' +
-              '<div style="font-size:13px;font-weight:900;color:' + item.tc + ';margin-bottom:2px">' + item.num + '</div>' +
+    let cellsHtml = '';
+    rowsDef.forEach(row => {
+      row.forEach(item => {
+        let pipeHtml = '';
+        if (item.pipe) {
+          pipeHtml = '<div class="s-conn-' + item.pipe + '"></div>';
+        }
+        let arrowHtml = '';
+        if (item.turnArrow) {
+          const arrClass = item.turnArrow === '▼' ? 'arr-d' : (item.turnArrow === '▲' ? 'arr-u' : (item.turnArrow === '▶' ? 'arr-r' : 'arr-l'));
+          arrowHtml = '<span class="conn-turn-arrow ' + arrClass + '">' + item.turnArrow + '</span>';
+        }
+
+        if (item.type === 'empty') {
+          cellsHtml += '<div class="s-cell s-empty" style="opacity:0;pointer-events:none"></div>';
+        } else if (item.type === 'poke') {
+          const isSpan = !!item.span2;
+          const styleExtra = isSpan ? '' : 'style="background:' + item.bg + ';border:3px solid ' + item.bc + ';grid-column:auto!important;grid-row:auto!important;"';
+          cellsHtml += 
+            '<div class="s-poke-card" ' + (isSpan ? 'style="background:' + item.bg + ';border:3px solid ' + item.bc + '"' : styleExtra) + '>' +
+              pipeHtml +
+              arrowHtml +
+              '<div style="font-size:12px;font-weight:900;color:' + item.tc + ';margin-bottom:2px">' + item.num + '</div>' +
               '<img src="' + ART(item.pokeId) + '" alt="' + item.name + '">' +
               '<div style="font-size:11px;font-weight:900;color:' + item.tc + ';margin-top:2px">' + item.name + '</div>' +
             '</div>';
         } else if (item.type === 'blank') {
-          h += 
-            '<div class="s-cell t-math-box s-blank" data-idx="' + (unifiedBlankIdx++) + '" data-target="' + item.val + '" data-page-group="' + pageGroup + '">' +
+          const curIdx = unifiedBlankIdx++;
+          b55ExpectedAnswers.push(String(item.val));
+          const pGroup = item.val <= 60 ? 'p1' : 'p2';
+          cellsHtml += 
+            '<div class="s-cell t-math-box s-blank" data-idx="' + curIdx + '" data-target="' + item.val + '" data-page-group="' + pGroup + '">' +
+              pipeHtml +
+              arrowHtml +
               '？' +
               '<span class="sticker-label">シール</span>' +
             '</div>';
         } else {
-          const arr = item.arrow ? '<span style="font-size:9px;color:#ef4444;line-height:1">▼</span>' : '';
-          h += 
+          cellsHtml += 
             '<div class="s-cell s-num">' +
-              item.val + arr +
+              pipeHtml +
+              arrowHtml +
+              item.val +
             '</div>';
         }
       });
-      return h;
-    }
-
-    const page1Cells = renderSugorokuGridHtml(b55Page1Def, 'p1');
-    const page2Cells = renderSugorokuGridHtml(b55Page2Def, 'p2');
-
-    // 1ページめのシール選択肢（14問分）
-    const p1Choices = ['1', '7', '12', '15', '23', '27', '29', '33', '36', '41', '43', '47', '50', '52', '56'];
-    // 2ページめのシール選択肢（18問分）
-    const p2Choices = ['63', '66', '70', '74', '78', '81', '83', '87', '90', '92', '95', '99', '101', '104', '108', '110', '112', '116'];
-
-    let p1BtnsHtml = '';
-    p1Choices.forEach(n => {
-      p1BtnsHtml += '<button type="button" class="num-choice-btn tray-btn-p1" data-val="' + n + '">' + n + '</button>';
     });
 
-    let p2BtnsHtml = '';
-    p2Choices.forEach(n => {
-      p2BtnsHtml += '<button type="button" class="num-choice-btn tray-btn-p2" data-val="' + n + '">' + n + '</button>';
+    // 全32枚のシール選択肢（昇順ソート）
+    const allStickerChoices = [
+      '1', '7', '12', '15', '23', '29', '33', '36', '41', '43', '47', '50', '52', '56',
+      '63', '66', '70', '74', '78', '81', '83', '87', '90', '92', '95', '99', '101', '104', '108', '110', '112', '116'
+    ];
+
+    let stickerBtnsHtml = '';
+    allStickerChoices.forEach(n => {
+      const g = parseInt(n) <= 60 ? 'tray-btn-p1' : 'tray-btn-p2';
+      stickerBtnsHtml += '<button type="button" class="num-choice-btn ' + g + '" data-val="' + n + '">' + n + '</button>';
     });
 
     card.innerHTML = 
       '<div class="drill-book-page">' +
         makeDrillBookHeader(55, 'ミュウ', 'みゅう', 'バトル1〜54の まとめ（見開き大すごろく）', 'すうじの じゅんに なるように、ぬけて いる □に シールを はりましょう。', 151) +
 
-        // ページ移動ナビゲーションバー
-        '<div style="display:flex;gap:10px;justify-content:center;margin-bottom:12px;position:sticky;top:64px;z-index:40">' +
-          '<button type="button" onclick="document.getElementById(\'b55Page1\').scrollIntoView({behavior:\'smooth\'})" style="background:#7c3aed;color:#fff;font-weight:900;font-size:13px;padding:7px 16px;border-radius:20px;border:none;box-shadow:0 3px 8px rgba(124,58,237,0.35);cursor:pointer">📖 1ページめ (0〜62)</button>' +
-          '<button type="button" onclick="document.getElementById(\'b55Page2\').scrollIntoView({behavior:\'smooth\'})" style="background:#db2777;color:#fff;font-weight:900;font-size:13px;padding:7px 16px;border-radius:20px;border:none;box-shadow:0 3px 8px rgba(219,39,119,0.35);cursor:pointer">⭐ 2ページめ (60〜120・ゴール) ⬇️</button>' +
-        '</div>' +
-
-        // 【1ページめ】ケーシィから 62まで
-        '<div id="b55Page1" style="position:relative;background:radial-gradient(ellipse at 50% 30%, #3b0764 0%, #1e1b4b 60%, #0f172a 100%);border:3.5px solid #c084fc;border-radius:22px;padding:14px;margin-bottom:12px;box-shadow:0 6px 18px rgba(0,0,0,0.3)">' +
-          '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">' +
-            '<span style="font-size:13px;font-weight:900;color:#fde047;background:rgba(255,255,255,0.15);padding:4px 12px;border-radius:12px;border:1px solid rgba(253,224,71,0.4)">📖 【1ページめ】0から 62まで</span>' +
-            '<span style="font-size:12px;font-weight:900;color:#cbd5e1">ケーシィ・ヤドン・スリープ</span>' +
+        // 完全シームレス大すごろくボード（ページ分割なし・黄色の道で全接続）
+        '<div id="b55Board" style="position:relative;background:radial-gradient(ellipse at 50% 30%, #3b0764 0%, #1e1b4b 60%, #0f172a 100%);border:3.5px solid #c084fc;border-radius:22px;padding:12px;margin-bottom:16px;box-shadow:0 6px 18px rgba(0,0,0,0.3)">' +
+          '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:6px">' +
+            '<span style="font-size:13px;font-weight:900;color:#fde047;background:rgba(255,255,255,0.15);padding:4px 12px;border-radius:12px;border:1px solid rgba(253,224,71,0.4)">✨ 0から 120まで つながる 大すごろく！</span>' +
+            '<span style="font-size:12px;font-weight:900;color:#fbcfe8">きいろい みちを たどって ミュウの ゴールを めざそう！</span>' +
           '</div>' +
           '<div class="sugoroku-grid">' +
-            page1Cells +
+            cellsHtml +
           '</div>' +
         '</div>' +
 
-        // 【コースのつなぎ目】華やかなブリッジ
-        '<div class="sugoroku-bridge">' +
-          '<div style="font-size:15px;font-weight:900;color:#fde047;margin-bottom:8px">⬇️ コースは 2ページめへ つづくよ！ ⬇️</div>' +
-          '<div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;font-size:13px;font-weight:900;color:#ffffff">' +
-            '<span style="background:rgba(0,0,0,0.4);padding:6px 14px;border-radius:12px;border:1.5px solid #facc15">59 ➔ 60 (タマタマ) 🥚</span>' +
-            '<span style="background:rgba(0,0,0,0.4);padding:6px 14px;border-radius:12px;border:1.5px solid #facc15">62 ➔ 63 ➡️</span>' +
-          '</div>' +
-        '</div>' +
-
-        // 【2ページめ】60から 120まで（ミュウ ゴール）
-        '<div id="b55Page2" style="position:relative;background:radial-gradient(ellipse at 50% 30%, #3b0764 0%, #1e1b4b 60%, #0f172a 100%);border:3.5px solid #c084fc;border-radius:22px;padding:14px;margin-bottom:16px;box-shadow:0 6px 18px rgba(0,0,0,0.3)">' +
-          '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">' +
-            '<span style="font-size:13px;font-weight:900;color:#fde047;background:rgba(255,255,255,0.15);padding:4px 12px;border-radius:12px;border:1px solid rgba(253,224,71,0.4)">⭐ 【2ページめ】60から 120まで</span>' +
-            '<span style="font-size:12px;font-weight:900;color:#fbcfe8">タマタマ・バリヤード・ルージュラ・ミュウ</span>' +
-          '</div>' +
-          '<div class="sugoroku-grid">' +
-            page2Cells +
-          '</div>' +
-        '</div>' +
-
-        // スティッキー統合シールトレイ
+        // スティッキー統合シールトレイ（タブ切り替え対応）
         '<div id="sugorokuStickyTray" style="position:sticky;bottom:8px;z-index:90;background:rgba(255,255,255,0.96);backdrop-filter:blur(10px);border:2.5px solid #c084fc;border-radius:20px;padding:10px 14px;box-shadow:0 8px 24px rgba(0,0,0,0.22);margin:16px 0">' +
           '<div style="display:flex;justify-content:center;gap:8px;margin-bottom:8px">' +
-            '<button type="button" class="sugoroku-tray-tab active" id="tabP1" onclick="switchSugorokuTray(\'p1\')">🌸 1ページめ (14こ)</button>' +
-            '<button type="button" class="sugoroku-tray-tab" id="tabP2" onclick="switchSugorokuTray(\'p2\')">⭐ 2ページめ (18こ)</button>' +
+            '<button type="button" class="sugoroku-tray-tab active" id="tabP1" onclick="switchSugorokuTray(\'p1\')">🌸 1〜60 (14こ)</button>' +
+            '<button type="button" class="sugoroku-tray-tab" id="tabP2" onclick="switchSugorokuTray(\'p2\')">⭐ 61〜120 (18こ)</button>' +
             '<button type="button" class="sugoroku-tray-tab" id="tabAll" onclick="switchSugorokuTray(\'all\')">ぜんぶ (32こ)</button>' +
           '</div>' +
           '<div class="num-choice-tray" style="margin:0;gap:6px">' +
-            p1BtnsHtml +
-            p2BtnsHtml +
+            stickerBtnsHtml +
             '<button type="button" class="num-choice-btn erase" data-val="erase" style="background:#fee2e2;color:#ef4444;border-color:#fca5a5">⌫ けす</button>' +
           '</div>' +
         '</div>' +
@@ -10881,7 +11116,7 @@ function renderInteractiveStage(row){
         makeDrillBookFooter('ミュウ', 'しんしゅポケモン', 'エスパー', '0.4m', '4.0kg', '全ドリルの完全制覇おめでとうございます！0から120までの数の感覚と計算の力がしっかり身につきました！', 151) +
       '</div>';
 
-    initBattle55Sugoroku();
+    initBattle55Sugoroku(b55ExpectedAnswers);
   }
   if(card.innerHTML.trim()){
     card.style.display = 'block';
@@ -13492,14 +13727,14 @@ function switchSugorokuTray(mode) {
   });
 }
 
-function initBattle55Sugoroku() {
+function initBattle55Sugoroku(expectedList) {
   const p = document.querySelector('.drill-book-page');
   if(!p) return;
 
-  // 初期表示は1ページめのシール
+  // 初期表示は前半(1〜60)のシール
   switchSugorokuTray('p1');
 
-  // マスをタップしたとき、そのマスがあるページに合わせてトレイのタブを自動切り替え
+  // マスをタップしたとき、そのマスがある範囲に合わせてトレイのタブを自動切り替え
   p.querySelectorAll('.t-math-box').forEach(box => {
     box.addEventListener('click', () => {
       const g = box.dataset.pageGroup;
@@ -13507,11 +13742,8 @@ function initBattle55Sugoroku() {
     });
   });
 
-  // 全32個の空欄に対する正解チェック
-  const expectedAnswers = [
-    // Page 1 (14 blanks)
+  const expectedAnswers = expectedList || [
     '1', '7', '12', '15', '23', '33', '36', '41', '29', '43', '52', '50', '47', '56',
-    // Page 2 (18 blanks)
     '74', '70', '63', '78', '81', '66', '87', '90', '83', '95', '92', '116', '99', '110', '101', '104', '108', '112'
   ];
 
@@ -13531,6 +13763,117 @@ function initBattle56Sugoroku() {
   initBattle55Sugoroku();
 }
 
+
+
+// =========================================================
+// かずくらべツール & ヘッダーツール コントローラー
+// =========================================================
+let cmpState1 = Array(20).fill(false);
+let cmpState2 = Array(20).fill(false);
+
+function initCompareTool() {
+  const row1 = document.getElementById('cmpRow1');
+  const row2 = document.getElementById('cmpRow2');
+  if (!row1 || !row2) return;
+
+  row1.innerHTML = '';
+  row2.innerHTML = '';
+
+  for (let i = 0; i < 20; i++) {
+    const c1 = document.createElement('div');
+    c1.className = 'cmp-circle c-red' + (cmpState1[i] ? ' active' : '');
+    c1.textContent = (i + 1);
+    c1.onclick = () => {
+      cmpState1[i] = !cmpState1[i];
+      renderCompareState();
+    };
+    row1.appendChild(c1);
+
+    const c2 = document.createElement('div');
+    c2.className = 'cmp-circle c-blue' + (cmpState2[i] ? ' active' : '');
+    c2.textContent = (i + 1);
+    c2.onclick = () => {
+      cmpState2[i] = !cmpState2[i];
+      renderCompareState();
+    };
+    row2.appendChild(c2);
+  }
+  renderCompareState();
+}
+
+function renderCompareState() {
+  const row1 = document.getElementById('cmpRow1');
+  const row2 = document.getElementById('cmpRow2');
+  if (!row1 || !row2) return;
+
+  const circles1 = row1.querySelectorAll('.cmp-circle');
+  const circles2 = row2.querySelectorAll('.cmp-circle');
+
+  let cnt1 = 0;
+  cmpState1.forEach((val, i) => {
+    if (val) cnt1++;
+    if (circles1[i]) {
+      if (val) circles1[i].classList.add('active');
+      else circles1[i].classList.remove('active');
+    }
+  });
+
+  let cnt2 = 0;
+  cmpState2.forEach((val, i) => {
+    if (val) cnt2++;
+    if (circles2[i]) {
+      if (val) circles2[i].classList.add('active');
+      else circles2[i].classList.remove('active');
+    }
+  });
+
+  const elC1 = document.getElementById('cmpCount1');
+  const elC2 = document.getElementById('cmpCount2');
+  if (elC1) elC1.textContent = cnt1;
+  if (elC2) elC2.textContent = cnt2;
+
+  const elRes = document.getElementById('cmpResultText');
+  const elDiff = document.getElementById('cmpDiffFormula');
+
+  if (cnt1 === 0 && cnt2 === 0) {
+    if (elRes) elRes.textContent = '〇を タップして かずを えらんでね';
+    if (elDiff) elDiff.textContent = '';
+    return;
+  }
+
+  const diff = Math.abs(cnt1 - cnt2);
+  if (cnt1 === cnt2) {
+    if (elRes) elRes.innerHTML = '✨ どちらも <span style="color:#16a34a;font-size:18px">' + cnt1 + '</span> こで、<span style="color:#16a34a;font-size:18px">おなじ かず</span> です！';
+    if (elDiff) elDiff.textContent = cnt1 + ' − ' + cnt2 + ' = 0';
+  } else if (cnt1 > cnt2) {
+    if (elRes) elRes.innerHTML = '🔴 うえの ほうが <span style="color:#dc2626;font-size:19px">' + diff + '</span> こ おおいです！';
+    if (elDiff) elDiff.textContent = cnt1 + ' − ' + cnt2 + ' = ' + diff;
+  } else {
+    if (elRes) elRes.innerHTML = '🔵 したの ほうが <span style="color:#2563eb;font-size:19px">' + diff + '</span> こ おおいです！';
+    if (elDiff) elDiff.textContent = cnt2 + ' − ' + cnt1 + ' = ' + diff;
+  }
+}
+
+function cmpSetRow(rowNum, count) {
+  if (rowNum === 1) {
+    for (let i = 0; i < 20; i++) cmpState1[i] = (i < count);
+  } else {
+    for (let i = 0; i < 20; i++) cmpState2[i] = (i < count);
+  }
+  renderCompareState();
+}
+
+function cmpClearRow(rowNum) {
+  if (rowNum === 1) cmpState1.fill(false);
+  else cmpState2.fill(false);
+  renderCompareState();
+}
+
+function cmpResetAll() {
+  cmpState1.fill(false);
+  cmpState2.fill(false);
+  renderCompareState();
+}
 
 function renderQuestionCards(row){
   const box = $('bQuestionCards');
@@ -13993,7 +14336,18 @@ function init(){
     };
 
     bindClick('btnHome', openHome);
-    bindClick('btnKana', () => openModal('mKana'));
+    bindClick('btnToolClock', () => {
+      const wrap = document.getElementById('toolClockWrap');
+      if (wrap && !wrap.innerHTML.trim()) {
+        wrap.innerHTML = makeFreeClockWidgetHtml();
+        initFreeClockWidget();
+      }
+      openModal('mToolClockModal');
+    });
+    bindClick('btnToolCompare', () => {
+      initCompareTool();
+      openModal('mToolCompareModal');
+    });
     bindClick('btnZukan', () => { buildZukan(); openModal('mZukan'); });
     bindClick('btnResetProgress', () => openModal('mResetModal'));
     bindClick('btnBack', backToMap);

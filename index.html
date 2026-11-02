@@ -5173,6 +5173,147 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
   box-shadow: 0 0 10px rgba(16, 185, 129, 0.45) !important;
 }
 
+
+/* ===== モンコレチケット ＆ カタログ専用スタイル ===== */
+.moncolle-ticket-card {
+  position: relative;
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 50%, #fde68a 100%);
+  border: 2.5px dashed #f59e0b;
+  border-radius: 16px;
+  padding: 12px 14px;
+  box-shadow: 0 4px 10px rgba(245,158,11,0.18);
+  cursor: pointer;
+  transition: all 0.18s ease;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.moncolle-ticket-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(245,158,11,0.28);
+}
+.moncolle-ticket-card.selectable {
+  cursor: pointer;
+}
+.moncolle-ticket-card.selected {
+  border: 2.5px solid #2563eb;
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.35), 0 6px 16px rgba(37,99,235,0.25);
+  transform: translateY(-2px);
+}
+.moncolle-ticket-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.moncolle-ticket-num {
+  font-family: monospace;
+  font-size: 11px;
+  font-weight: 900;
+  color: #92400e;
+  background: #fde68a;
+  padding: 2px 8px;
+  border-radius: 6px;
+  border: 1px solid #f59e0b;
+}
+.moncolle-ticket-card.selected .moncolle-ticket-num {
+  background: #bfdbfe;
+  color: #1e40af;
+  border-color: #3b82f6;
+}
+.moncolle-ticket-title {
+  font-size: 15px;
+  font-weight: 900;
+  color: #78350f;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.moncolle-ticket-reason {
+  font-size: 11px;
+  font-weight: 800;
+  color: #b45309;
+  margin-top: 4px;
+}
+.moncolle-ticket-date {
+  font-size: 10px;
+  font-weight: 700;
+  color: #94a3b8;
+  margin-top: 4px;
+}
+.moncolle-tab {
+  background: #f1f5f9;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 9999px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 900;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.moncolle-tab:hover {
+  background: #e2e8f0;
+}
+.moncolle-tab.active {
+  background: #2563eb;
+  border-color: #1d4ed8;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(37,99,235,0.3);
+}
+.moncolle-catalog-card {
+  position: relative;
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 10px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.moncolle-catalog-card:hover {
+  border-color: #3b82f6;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59,130,246,0.18);
+}
+.moncolle-catalog-card.collected {
+  background: #f0fdf4;
+  border-color: #86efac;
+}
+.moncolle-catalog-thumb {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  margin-bottom: 6px;
+  transition: transform 0.2s ease;
+}
+.moncolle-catalog-card:hover .moncolle-catalog-thumb {
+  transform: scale(1.08);
+}
+.moncolle-cost-badge {
+  font-size: 11px;
+  font-weight: 900;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  margin-top: 4px;
+  display: inline-block;
+}
+.moncolle-cost-badge.legend {
+  background: #f3e8ff;
+  color: #7e22ce;
+  border: 1px solid #d8b4fe;
+}
+.moncolle-cost-badge.regular {
+  background: #e0f2fe;
+  color: #0369a1;
+  border: 1px solid #7dd3fc;
+}
+
 </style>
   <script src="https://www.youtube.com/iframe_api"></script>
 </head>
@@ -5183,6 +5324,7 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
   <h1>⚡ ポケモンずかんドリル<small id="hdrTitleSmall">ドリルを えらぼう！ <span class="ver-badge" style="background:#dcfce7;color:#15803d;padding:1px 6px;border-radius:6px;font-size:11px;font-weight:900">Ver 3.0 最新版</span></small></h1>
   <div class="hdr-spacer"></div>
   <button class="hbtn" id="btnHome" style="background:#fef3c7;border-color:#f59e0b;color:#b45309;font-weight:900" title="ドリル選択ホームへ">🏠 ホーム</button>
+  <button class="hbtn" id="btnMoncolleTicket" onclick="openMoncolleTicketModal()" style="background:#fffbeb;border-color:#f59e0b;color:#b45309;font-weight:900" title="モンコレチケットを つかって モンコレを えらぼう！">🎫 チケット (<span id="hdrTicketCount">0</span>)</button>
   <span class="pt" id="pt">🪙 0 pt</span>
   <button class="hbtn" id="btnBgm" style="background:#fef08a;border-color:#eab308;color:#854d0e;font-weight:900" title="BGMの おんがく を つける/けす">🎵 BGM: ON</button>
   <button class="hbtn" id="btnToolClock" style="background:#fef3c7;border-color:#f59e0b;color:#b45309;font-weight:900" title="じゆうに うごかせる とけい">⏰ とけい</button>
@@ -5210,8 +5352,26 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
             <span class="home-stat-chip" id="homePtChip">🪙 0 pt</span>
             <span class="home-stat-chip" id="homeZkChip">📖 ずかん: 0 ひき</span>
             <span class="home-stat-chip" id="homeClearChip">🚩 さんすう: 0/55</span>
+            <span class="home-stat-chip" id="homeTicketChip" onclick="openMoncolleTicketModal()" style="cursor:pointer;background:#fffbeb;border-color:#f59e0b;color:#b45309;font-weight:900" title="モンコレチケットを見る">🎫 チケット: <span id="homeTicketCount">0</span>まい</span>
           </div>
         </div>
+      </div>
+
+      <!-- モンコレチケットバナー -->
+      <div class="home-ticket-banner" onclick="openMoncolleTicketModal()" style="margin:14px 0 16px;background:linear-gradient(135deg,#fffbeb,#fef3c7);border:2.5px dashed #f59e0b;border-radius:18px;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;box-shadow:0 3px 10px rgba(245,158,11,0.18);transition:all 0.15s ease">
+        <div style="display:flex;align-items:center;gap:14px">
+          <span style="font-size:36px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.12))">🎫</span>
+          <div>
+            <div style="font-size:16px;font-weight:900;color:#92400e;display:flex;align-items:center;gap:8px">
+              <span>モンコレチケット</span>
+              <span id="homeTicketBadge" style="background:#d97706;color:#ffffff;font-size:12px;font-weight:900;padding:2px 10px;border-radius:9999px">0 まい</span>
+            </div>
+            <div style="font-size:12px;font-weight:700;color:#b45309;margin-top:2px">チケットを つかって すきな モンコレ（公式写真）を えらぼう！</div>
+          </div>
+        </div>
+        <button type="button" class="mbtn" style="font-size:13px;padding:8px 16px;background:#f59e0b;color:#fff;border-radius:12px;font-weight:900;pointer-events:none;box-shadow:0 2px 6px rgba(245,158,11,0.3)">
+          えらぶ ➔
+        </button>
       </div>
 
       <div class="home-section-title">
@@ -5535,6 +5695,180 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
 </div></div>
 
 <!-- モンコレごほうびモーダル -->
+
+<!-- モンコレチケット発行モーダル -->
+<div class="modal" id="mTicketIssued"><div class="mbox center" style="max-width:440px;background:#fffbeb;border:3px solid #f59e0b;border-radius:22px;padding:22px 18px">
+  <div style="font-size:52px;animation:bundlePop 0.5s ease-out">🎫</div>
+  <h2 style="font-size:22px;color:#b45309;margin-bottom:8px">モンコレチケット はっこう！</h2>
+  <div id="ticketIssuedReason" style="font-size:14px;font-weight:900;color:#92400e;margin-bottom:12px;background:#fef3c7;border:1px solid #fde68a;padding:5px 14px;border-radius:9999px;display:inline-block">🏆 さいごの ポケモン ゲット！</div>
+  <p id="ticketIssuedCountMsg" style="font-size:16px;font-weight:800;color:#78350f;margin-bottom:14px">
+    モンコレチケットを <span id="ticketIssuedCountNum" style="font-size:26px;color:#dc2626;font-weight:900">2</span> まい ゲットしたよ！
+  </p>
+  <p style="font-size:13px;color:#92400e;margin-bottom:20px;line-height:1.6">
+    チケットを つかって、タカラトミー公式モンコレの なかから<br>すきな ポケモンを えらんで ゲットしよう！
+  </p>
+  <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+    <button type="button" class="mbtn" onclick="closeModal('mTicketIssued'); openMoncolleTicketModal('catalog')" style="font-size:16px;padding:12px 24px;background:#22c55e;color:#fff;font-weight:900;border-radius:14px;box-shadow:0 4px 12px rgba(34,197,94,0.3)">
+      🎁 すぐに モンコレを えらぶ！
+    </button>
+    <button type="button" class="btn-sub" data-close style="font-size:14px;padding:10px 18px;border-radius:12px">
+      あとで つかう
+    </button>
+  </div>
+</div></div>
+
+<!-- モンコレチケット管理＆カタログモーダル -->
+<div class="modal" id="mMoncolleTicketModal"><div class="mbox" style="max-width:680px;height:88vh;max-height:750px;display:flex;flex-direction:column;padding:16px 14px;border-radius:22px">
+  <button class="mclose" data-close>✕</button>
+
+  <!-- ビュー1: チケット一覧＆所持コレクション画面 -->
+  <div id="moncolleViewTickets" style="display:flex;flex-direction:column;flex:1;overflow:hidden">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding-right:24px">
+      <div>
+        <h2 style="font-size:20px;font-weight:900;color:#92400e;display:flex;align-items:center;gap:8px">
+          <span>🎫 もっている モンコレチケット</span>
+          <span id="ticketViewCountBadge" style="background:#d97706;color:#fff;font-size:13px;padding:2px 10px;border-radius:9999px">0 まい</span>
+        </h2>
+        <p style="font-size:12px;color:#78350f;margin-top:2px">チケットを つかって すきな モンコレを ゲットしよう！</p>
+      </div>
+    </div>
+
+    <!-- モンコレを選ぶボタン（目立つ大きなゴールドボタン） -->
+    <button type="button" class="mbtn" onclick="switchMoncolleView('catalog')" style="font-size:16px;padding:12px 20px;background:linear-gradient(135deg,#f59e0b,#d97706);color:#ffffff;border-radius:16px;font-weight:900;box-shadow:0 4px 12px rgba(217,119,6,0.3);margin-bottom:12px;display:flex;align-items:center;justify-content:center;gap:8px;border:none">
+      <span>🎁 モンコレを えらぶ（タカラトミー公式写真いちらん）</span>
+      <span style="font-size:18px">➔</span>
+    </button>
+
+    <!-- スクロールエリア: チケット一覧 ＆ 獲得済みモンコレ -->
+    <div style="overflow-y:auto;flex:1;padding-right:4px">
+      <div style="font-size:14px;font-weight:900;color:#78350f;margin-bottom:8px;display:flex;align-items:center;gap:6px">
+        <span>🎟️ かくとくした チケット（<span id="ticketInventoryListCount">0</span>まい）</span>
+      </div>
+      <div id="moncolleTicketCardsList" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(200px, 1fr));gap:10px;margin-bottom:16px">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- 獲得済みモンコレギャラリー -->
+      <div style="border-top:2px dashed #cbd5e1;padding-top:14px;margin-top:4px">
+        <div style="font-size:14px;font-weight:900;color:#1e293b;margin-bottom:8px;display:flex;align-items:center;gap:6px">
+          <span>🏆 ゲットした モンコレ（<span id="collectedMoncolleCount">0</span>こ）</span>
+        </div>
+        <div id="collectedMoncolleGrid" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(110px, 1fr));gap:8px">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ビュー2: モンコレカタログ画面（写真一覧・検索・フィルタ） -->
+  <div id="moncolleViewCatalog" style="display:none;flex-direction:column;flex:1;overflow:hidden">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;padding-right:24px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <button type="button" class="btn-sub" onclick="switchMoncolleView('tickets')" style="font-size:12px;padding:6px 12px;border-radius:10px">
+          ⬅ チケットへ
+        </button>
+        <h2 style="font-size:18px;font-weight:900;color:#1e293b">🎁 モンコレを えらぼう！</h2>
+      </div>
+      <div style="font-size:13px;font-weight:900;color:#d97706;background:#fef3c7;padding:4px 10px;border-radius:9999px">
+        🎫 チケット: <span id="catalogTicketCount">0</span>まい
+      </div>
+    </div>
+
+    <!-- ルール説明リボン -->
+    <div style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;padding:8px 12px;margin-bottom:10px;font-size:12px;font-weight:800;color:#475569;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px">
+      <span>👑 でんせつ・メガポケモン：<strong>チケット 2まい</strong></span>
+      <span>⭐ それ以外のポケモン：<strong>チケット 1まい</strong></span>
+    </div>
+
+    <!-- 検索ボックス ＆ フィルタータブ -->
+    <div style="margin-bottom:10px">
+      <input type="text" id="moncolleSearchInput" placeholder="🔍 ポケモンの なまえで さがす... (例: ピカチュウ, ミュウ)" oninput="onMoncolleSearch(this.value)" style="width:100%;padding:8px 12px;border:2px solid #cbd5e1;border-radius:12px;font-size:14px;font-weight:800;margin-bottom:8px">
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button type="button" class="moncolle-tab active" data-tab="all" onclick="setMoncolleTab('all')">すべて (108)</button>
+        <button type="button" class="moncolle-tab" data-tab="legend" onclick="setMoncolleTab('legend')">👑 でんせつ・メガ (2まい)</button>
+        <button type="button" class="moncolle-tab" data-tab="regular" onclick="setMoncolleTab('regular')">⭐ レギュラー (1まい)</button>
+        <button type="button" class="moncolle-tab" data-tab="collected" onclick="setMoncolleTab('collected')">✅ ゲットずみ</button>
+      </div>
+    </div>
+
+    <!-- カタログ写真グリッド -->
+    <div id="moncolleCatalogGrid" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(130px, 1fr));gap:10px;overflow-y:auto;flex:1;padding-right:4px">
+      <!-- Rendered by JS -->
+    </div>
+  </div>
+
+  <!-- ビュー3: チケット消費・選択画面 -->
+  <div id="moncolleViewSpend" style="display:none;flex-direction:column;flex:1;overflow:hidden">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+      <button type="button" class="btn-sub" onclick="switchMoncolleView('catalog')" style="font-size:12px;padding:6px 12px;border-radius:10px">
+        ⬅ カタログへ
+      </button>
+      <h2 style="font-size:18px;font-weight:900;color:#1e293b">🎫 チケットを えらぶ</h2>
+    </div>
+
+    <div id="moncolleSpendTargetCard" style="background:#f8fafc;border:2px solid #cbd5e1;border-radius:16px;padding:12px;display:flex;align-items:center;gap:14px;margin-bottom:12px">
+      <!-- Target info rendered by JS -->
+    </div>
+
+    <div id="moncolleSpendInstruction" style="font-size:14px;font-weight:900;color:#1e293b;margin-bottom:8px">
+      <!-- Instruction rendered by JS -->
+    </div>
+
+    <!-- チケット選択グリッド -->
+    <div id="moncolleSpendTicketsGrid" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));gap:10px;overflow-y:auto;flex:1;padding-right:4px">
+      <!-- Tickets to spend rendered by JS -->
+    </div>
+
+    <!-- 決定ボタン -->
+    <div style="padding-top:12px;border-top:1.5px solid #e2e8f0;display:flex;gap:10px;align-items:center">
+      <button type="button" id="btnConfirmMoncolleSpend" class="mbtn" onclick="openMoncolleConfirmModal()" style="flex:1;font-size:16px;padding:12px;background:#22c55e;color:#fff;font-weight:900;border-radius:14px" disabled>
+        ✨ これにする！（かくにんへ）
+      </button>
+      <button type="button" class="btn-sub" onclick="switchMoncolleView('catalog')" style="font-size:14px;padding:12px 18px;border-radius:12px">
+        もどる
+      </button>
+    </div>
+  </div>
+
+</div></div>
+
+<!-- モンコレこうかん確認モーダル -->
+<div class="modal" id="mMoncolleConfirmModal"><div class="mbox center" style="max-width:420px;padding:22px 16px;border-radius:22px">
+  <div id="confirmMoncollePreview" style="margin-bottom:12px">
+    <!-- Preview rendered by JS -->
+  </div>
+  <div style="font-size:22px;font-weight:900;color:#1e293b;margin-bottom:8px">これで いいですか？</div>
+  <p style="font-size:14px;font-weight:800;color:#64748b;margin-bottom:20px">
+    チケットを <span id="confirmTicketCount" style="color:#d97706;font-size:18px;font-weight:900">1</span>まい つかって こうかんするよ！
+  </p>
+  <div style="display:flex;gap:10px;justify-content:center">
+    <button type="button" class="mbtn" onclick="confirmMoncolleExchange()" style="font-size:17px;padding:12px 28px;background:#22c55e;color:#fff;font-weight:900;border-radius:14px;box-shadow:0 4px 12px rgba(34,197,94,0.3)">
+      ⭕ はい（こうかんする！）
+    </button>
+    <button type="button" class="btn-sub" onclick="closeModal('mMoncolleConfirmModal')" style="font-size:14px;padding:12px 20px;border-radius:14px">
+      ❌ いいえ（えらびなおす）
+    </button>
+  </div>
+</div></div>
+
+<!-- モンコレ ゲット大発表モーダル -->
+<div class="modal" id="mMoncolleGetModal"><div class="mbox center" style="max-width:480px;padding:26px 18px;background:linear-gradient(180deg,#fffbeb 0%,#ffffff 40%);border:3px solid #f59e0b;border-radius:22px">
+  <div style="font-size:36px;animation:bundlePop 0.5s ease-out">✨ 🎊 ✨</div>
+  <div id="moncolleGetPhotoBox" style="margin:10px auto">
+    <img id="moncolleGetImg" src="" alt="モンコレ" style="width:220px;height:220px;object-fit:contain;filter:drop-shadow(0 8px 20px rgba(0,0,0,0.22));animation:bundlePop 0.5s ease-out">
+  </div>
+  <h2 id="moncolleGetName" style="font-size:26px;font-weight:900;color:#d97706;margin:12px 0 6px">
+    🎉 ピカチュウ ゲット！ ✨
+  </h2>
+  <p style="font-size:15px;font-weight:800;color:#78350f;margin-bottom:20px">
+    おめでとう！ モンコレを ゲットしたよ！<br>
+    <span style="font-size:12px;color:#92400e">（ホームの モンコレチケットから いつでも いちらんを みられるよ）</span>
+  </p>
+  <button type="button" class="mbtn" onclick="finishMoncolleGet()" style="font-size:18px;padding:12px 36px;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;font-weight:900;border-radius:16px;box-shadow:0 4px 14px rgba(217,119,6,0.35)">
+    やったー！ 🌟
+  </button>
+</div></div>
+
 <div class="modal" id="mReward"><div class="mbox center reward">
   <h2 id="rwTitle">🎁 ごほうび！</h2>
   <img id="rwImg" alt="モンコレ">
@@ -15339,6 +15673,7 @@ function selectDrill(subject){
 }
 
 function updateHomeStats(){
+  updateTicketBadges();
   const greeting = $('homeGreeting');
   if(greeting) greeting.textContent = `ようこそ、${S.name || 'トレーナー'}さん！`;
 
@@ -15402,18 +15737,403 @@ function onCaught(){
   checkRewards();
 }
 
+
+/* =========================================================
+   モンコレチケット ＆ カタログ交換システム
+   ========================================================= */
+let currentMoncolleTab = 'all';
+let currentMoncolleSearchQuery = '';
+let currentSpendingTarget = null;
+let selectedTicketIds = [];
+
+function isLegendaryMoncolle(m) {
+  if (!m) return false;
+  if (m.slug.startsWith('ml') || m.slug.startsWith('mega_') || m.slug.startsWith('kyodaimax_')) return true;
+  const legendNames = ['ミュウ', 'ゼラオラ', 'テラパゴス', 'パオジアン'];
+  return legendNames.includes(m.name);
+}
+
+function getMoncolleTicketCost(m) {
+  return isLegendaryMoncolle(m) ? 2 : 1;
+}
+
+function issueMoncolleTickets(count = 1, reason = 'ドリル クリア ごほうび！', showModal = true) {
+  if (!Array.isArray(S.moncolleTickets)) S.moncolleTickets = [];
+  for (let i = 0; i < count; i++) {
+    const ticketId = 'TKT-' + Date.now().toString(36).toUpperCase() + '-' + Math.floor(Math.random() * 1000);
+    const ticketNum = S.moncolleTickets.length + 1;
+    S.moncolleTickets.push({
+      id: ticketId,
+      num: ticketNum,
+      reason: reason,
+      date: new Date().toLocaleDateString('ja-JP')
+    });
+  }
+  save();
+  updateTicketBadges();
+
+  if (showModal) {
+    try { playFanfare(); } catch(e) {}
+    const reasonEl = document.getElementById('ticketIssuedReason');
+    const numEl = document.getElementById('ticketIssuedCountNum');
+    if (reasonEl) reasonEl.textContent = reason;
+    if (numEl) numEl.textContent = String(count);
+    openModal('mTicketIssued');
+  }
+}
+
+function updateTicketBadges() {
+  const count = (S.moncolleTickets && Array.isArray(S.moncolleTickets)) ? S.moncolleTickets.length : 0;
+  const hdrCount = document.getElementById('hdrTicketCount');
+  if (hdrCount) hdrCount.textContent = String(count);
+  const homeCount = document.getElementById('homeTicketCount');
+  if (homeCount) homeCount.textContent = String(count);
+  const homeBadge = document.getElementById('homeTicketBadge');
+  if (homeBadge) homeBadge.textContent = count + ' まい';
+  const viewBadge = document.getElementById('ticketViewCountBadge');
+  if (viewBadge) viewBadge.textContent = count + ' まい';
+  const catCount = document.getElementById('catalogTicketCount');
+  if (catCount) catCount.textContent = String(count);
+}
+
+function openMoncolleTicketModal(view = 'tickets') {
+  if (!Array.isArray(S.moncolleTickets)) S.moncolleTickets = [];
+  if (!Array.isArray(S.collectedMoncolle)) S.collectedMoncolle = [];
+  updateTicketBadges();
+  switchMoncolleView(view);
+  openModal('mMoncolleTicketModal');
+}
+
+function switchMoncolleView(viewName) {
+  const vTickets = document.getElementById('moncolleViewTickets');
+  const vCatalog = document.getElementById('moncolleViewCatalog');
+  const vSpend = document.getElementById('moncolleViewSpend');
+  if (!vTickets || !vCatalog || !vSpend) return;
+
+  vTickets.style.display = (viewName === 'tickets') ? 'flex' : 'none';
+  vCatalog.style.display = (viewName === 'catalog') ? 'flex' : 'none';
+  vSpend.style.display = (viewName === 'spend') ? 'flex' : 'none';
+
+  if (viewName === 'tickets') {
+    renderTicketInventory();
+  } else if (viewName === 'catalog') {
+    renderMoncolleCatalog(currentMoncolleTab, currentMoncolleSearchQuery);
+  }
+}
+
+function renderTicketInventory() {
+  const listEl = document.getElementById('moncolleTicketCardsList');
+  const countEl = document.getElementById('ticketInventoryListCount');
+  const collectedGrid = document.getElementById('collectedMoncolleGrid');
+  const collectedCountEl = document.getElementById('collectedMoncolleCount');
+
+  const tickets = S.moncolleTickets || [];
+  if (countEl) countEl.textContent = String(tickets.length);
+
+  if (listEl) {
+    if (tickets.length === 0) {
+      listEl.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:24px 16px;background:#f8fafc;border:2px dashed #cbd5e1;border-radius:16px;color:#64748b">' +
+        '<div style="font-size:32px;margin-bottom:6px">🎫</div>' +
+        '<div style="font-size:14px;font-weight:900;color:#334155;margin-bottom:4px">チケットは まだ ありません</div>' +
+        '<div style="font-size:12px">さいごの ポケモンを ゲットしたり、ドリルを クリアして チケットを あつめよう！</div>' +
+      '</div>';
+    } else {
+      listEl.innerHTML = tickets.map(t => {
+        return '<div class="moncolle-ticket-card" onclick="onTicketCardClicked()">' +
+          '<div class="moncolle-ticket-header">' +
+            '<span class="moncolle-ticket-num">No. ' + String(t.num || 1).padStart(3, '0') + '</span>' +
+            '<span style="font-size:11px;font-weight:900;color:#d97706">✨ ひきかえけん</span>' +
+          '</div>' +
+          '<div class="moncolle-ticket-title">🎫 モンコレチケット</div>' +
+          '<div class="moncolle-ticket-reason">' + (t.reason || 'ドリル クリア ごほうび') + '</div>' +
+          '<div class="moncolle-ticket-date">' + (t.date || '') + '</div>' +
+        '</div>';
+      }).join('');
+    }
+  }
+
+  // 獲得済みモンコレ一覧
+  const collected = S.collectedMoncolle || [];
+  if (collectedCountEl) collectedCountEl.textContent = String(collected.length);
+  if (collectedGrid) {
+    if (collected.length === 0) {
+      collectedGrid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:16px;font-size:12px;color:#94a3b8;font-weight:800">' +
+        'まだ モンコレを ゲットしていません。上のボタンから えらんでね！' +
+      '</div>';
+    } else {
+      collectedGrid.innerHTML = collected.map(item => {
+        const m = MONCOLLE.find(x => x.slug === item.slug) || { name: item.name, slug: item.slug };
+        const imgUrl = moncolleImg(m);
+        const fbUrl = ART(pokeId(m.name) || 25);
+        return '<div style="background:#fff;border:1.5px solid #86efac;border-radius:12px;padding:8px 6px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,0.05)">' +
+          '<img src="' + imgUrl + '" onerror="this.onerror=null;this.src=\'' + fbUrl + '\';" style="width:70px;height:70px;object-fit:contain;margin-bottom:4px">' +
+          '<div style="font-size:12px;font-weight:900;color:#1e293b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + m.name + '</div>' +
+          '<div style="font-size:10px;font-weight:900;color:#16a34a">✅ ゲット！</div>' +
+        '</div>';
+      }).join('');
+    }
+  }
+}
+
+function onTicketCardClicked() {
+  playMarimbaPop(1.1);
+  if (confirm('🎫 チケットを つかって すきな モンコレを えらびますか？')) {
+    switchMoncolleView('catalog');
+  }
+}
+
+function setMoncolleTab(tabName) {
+  currentMoncolleTab = tabName;
+  document.querySelectorAll('.moncolle-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.tab === tabName);
+  });
+  renderMoncolleCatalog(currentMoncolleTab, currentMoncolleSearchQuery);
+}
+
+function onMoncolleSearch(val) {
+  currentMoncolleSearchQuery = (val || '').trim().toLowerCase();
+  renderMoncolleCatalog(currentMoncolleTab, currentMoncolleSearchQuery);
+}
+
+function renderMoncolleCatalog(filter = 'all', query = '') {
+  const grid = document.getElementById('moncolleCatalogGrid');
+  if (!grid) return;
+
+  const collectedSlugs = (S.collectedMoncolle || []).map(c => c.slug);
+
+  let filtered = MONCOLLE.filter(m => {
+    // Search query
+    if (query && !m.name.toLowerCase().includes(query)) return false;
+    // Tab filter
+    if (filter === 'legend') return isLegendaryMoncolle(m);
+    if (filter === 'regular') return !isLegendaryMoncolle(m);
+    if (filter === 'collected') return collectedSlugs.includes(m.slug);
+    return true;
+  });
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:32px 16px;color:#94a3b8;font-weight:800">' +
+      '<div style="font-size:32px;margin-bottom:6px">🔍</div>' +
+      'あてはまる モンコレが みつかりませんでした' +
+    '</div>';
+    return;
+  }
+
+  grid.innerHTML = filtered.map(m => {
+    const isLeg = isLegendaryMoncolle(m);
+    const cost = isLeg ? 2 : 1;
+    const isCollected = collectedSlugs.includes(m.slug);
+    const imgUrl = moncolleImg(m);
+    const fbUrl = ART(pokeId(m.name) || 25);
+
+    return '<div class="moncolle-catalog-card ' + (isCollected ? 'collected' : '') + '" onclick="selectMoncolleForRedemption(\'' + m.slug + '\')">' +
+      '<img src="' + imgUrl + '" onerror="this.onerror=null;this.src=\'' + fbUrl + '\';" alt="' + m.name + '" class="moncolle-catalog-thumb">' +
+      '<div style="font-size:13px;font-weight:900;color:#1e293b;margin-bottom:4px">' + m.name + '</div>' +
+      (isCollected
+        ? '<span style="font-size:11px;font-weight:900;color:#16a34a;background:#dcfce7;border:1px solid #86efac;border-radius:9999px;padding:2px 8px">✅ ゲットずみ</span>'
+        : (isLeg
+            ? '<span class="moncolle-cost-badge legend">👑 チケット2まい</span>'
+            : '<span class="moncolle-cost-badge regular">⭐ チケット1まい</span>'
+          )
+      ) +
+    '</div>';
+  }).join('');
+}
+
+function selectMoncolleForRedemption(slug) {
+  playMarimbaPop(1.2);
+  const m = MONCOLLE.find(x => x.slug === slug);
+  if (!m) return;
+
+  currentSpendingTarget = m;
+  const cost = getMoncolleTicketCost(m);
+  selectedTicketIds = [];
+
+  const targetCard = document.getElementById('moncolleSpendTargetCard');
+  const instructionEl = document.getElementById('moncolleSpendInstruction');
+  const ticketsGrid = document.getElementById('moncolleSpendTicketsGrid');
+  const btnConfirm = document.getElementById('btnConfirmMoncolleSpend');
+
+  const imgUrl = moncolleImg(m);
+  const fbUrl = ART(pokeId(m.name) || 25);
+  const isLeg = isLegendaryMoncolle(m);
+
+  if (targetCard) {
+    targetCard.innerHTML = '<img src="' + imgUrl + '" onerror="this.onerror=null;this.src=\'' + fbUrl + '\';" style="width:80px;height:80px;object-fit:contain;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.15))">' +
+      '<div>' +
+        '<div style="font-size:18px;font-weight:900;color:#1e293b;margin-bottom:4px">✨ モンコレ「' + m.name + '」</div>' +
+        (isLeg
+          ? '<div style="font-size:13px;font-weight:900;color:#7e22ce;background:#f3e8ff;padding:4px 10px;border-radius:9999px;display:inline-block">👑 でんせつの ポケモン（チケット2枚 ひつよう）</div>'
+          : '<div style="font-size:13px;font-weight:900;color:#0369a1;background:#e0f2fe;padding:4px 10px;border-radius:9999px;display:inline-block">⭐ レギュラーポケモン（チケット1枚 ひつよう）</div>'
+        ) +
+      '</div>';
+  }
+
+  const myTickets = S.moncolleTickets || [];
+  if (myTickets.length < cost) {
+    if (instructionEl) {
+      instructionEl.innerHTML = '<div style="background:#fee2e2;border:1.5px solid #fca5a5;border-radius:12px;padding:10px 14px;color:#991b1b;font-size:13px">' +
+        '⚠️ チケットが たりないよ！（ひつよう: <strong>' + cost + '枚</strong> / いま持っている: <strong>' + myTickets.length + '枚</strong>）<br>' +
+        'さいごの ポケモンを ゲットしたり、ドリルを クリアして チケットを あつめてね！' +
+      '</div>';
+    }
+    if (ticketsGrid) ticketsGrid.innerHTML = '';
+    if (btnConfirm) btnConfirm.disabled = true;
+    switchMoncolleView('spend');
+    return;
+  }
+
+  if (instructionEl) {
+    instructionEl.innerHTML = '<div style="color:#1e293b">つかう チケットを <strong>' + cost + 'まい</strong> えらんでね（タップで せんたく）：' +
+      '<span id="spendCountStatus" style="margin-left:8px;font-size:13px;color:#2563eb;font-weight:900">0 / ' + cost + ' まい せんたく中</span>' +
+    '</div>';
+  }
+
+  renderSpendTicketsList(cost);
+  if (btnConfirm) btnConfirm.disabled = true;
+  switchMoncolleView('spend');
+}
+
+function renderSpendTicketsList(requiredCost) {
+  const ticketsGrid = document.getElementById('moncolleSpendTicketsGrid');
+  if (!ticketsGrid) return;
+  const myTickets = S.moncolleTickets || [];
+
+  ticketsGrid.innerHTML = myTickets.map(t => {
+    const isSelected = selectedTicketIds.includes(t.id);
+    return '<div class="moncolle-ticket-card selectable ' + (isSelected ? 'selected' : '') + '" onclick="toggleTicketForSpend(\'' + t.id + '\', ' + requiredCost + ')">' +
+      '<div class="moncolle-ticket-header">' +
+        '<span class="moncolle-ticket-num">No. ' + String(t.num || 1).padStart(3, '0') + '</span>' +
+        '<span style="font-size:13px;font-weight:900;color:' + (isSelected ? '#2563eb' : '#d97706') + '">' +
+          (isSelected ? '✅ せんたく中' : 'チケット') +
+        '</span>' +
+      '</div>' +
+      '<div class="moncolle-ticket-title">🎫 モンコレチケット</div>' +
+      '<div class="moncolle-ticket-reason">' + (t.reason || 'ドリル クリア ごほうび') + '</div>' +
+      '<div class="moncolle-ticket-date">' + (t.date || '') + '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function toggleTicketForSpend(ticketId, requiredCost) {
+  playMarimbaPop(1.1);
+  const idx = selectedTicketIds.indexOf(ticketId);
+  if (idx !== -1) {
+    selectedTicketIds.splice(idx, 1);
+  } else {
+    if (selectedTicketIds.length >= requiredCost) {
+      selectedTicketIds.shift(); // rotate selection
+    }
+    selectedTicketIds.push(ticketId);
+  }
+
+  renderSpendTicketsList(requiredCost);
+
+  const statusEl = document.getElementById('spendCountStatus');
+  if (statusEl) {
+    statusEl.textContent = selectedTicketIds.length + ' / ' + requiredCost + ' まい せんたく中';
+    statusEl.style.color = (selectedTicketIds.length === requiredCost) ? '#16a34a' : '#2563eb';
+  }
+
+  const btnConfirm = document.getElementById('btnConfirmMoncolleSpend');
+  if (btnConfirm) {
+    btnConfirm.disabled = (selectedTicketIds.length !== requiredCost);
+  }
+}
+
+function openMoncolleConfirmModal() {
+  playMarimbaPop(1.3);
+  const m = currentSpendingTarget;
+  if (!m) return;
+  const cost = getMoncolleTicketCost(m);
+
+  const previewEl = document.getElementById('confirmMoncollePreview');
+  const countEl = document.getElementById('confirmTicketCount');
+  if (countEl) countEl.textContent = String(cost);
+
+  const imgUrl = moncolleImg(m);
+  const fbUrl = ART(pokeId(m.name) || 25);
+
+  if (previewEl) {
+    previewEl.innerHTML = '<img src="' + imgUrl + '" onerror="this.onerror=null;this.src=\'' + fbUrl + '\';" style="width:140px;height:140px;object-fit:contain;filter:drop-shadow(0 6px 12px rgba(0,0,0,0.18));margin-bottom:8px">' +
+      '<div style="font-size:20px;font-weight:900;color:#1e293b">✨ モンコレ「' + m.name + '」</div>';
+  }
+
+  openModal('mMoncolleConfirmModal');
+}
+
+function confirmMoncolleExchange() {
+  const m = currentSpendingTarget;
+  if (!m) return;
+  const cost = getMoncolleTicketCost(m);
+
+  if (selectedTicketIds.length !== cost) {
+    toast('チケットの まい数が たりないよ！', 1500);
+    return;
+  }
+
+  // チケットを消費
+  S.moncolleTickets = (S.moncolleTickets || []).filter(t => !selectedTicketIds.includes(t.id));
+
+  // 獲得済みモンコレに追加
+  if (!Array.isArray(S.collectedMoncolle)) S.collectedMoncolle = [];
+  S.collectedMoncolle.push({
+    name: m.name,
+    slug: m.slug,
+    date: new Date().toLocaleDateString('ja-JP')
+  });
+
+  save();
+  updateTicketBadges();
+
+  closeModal('mMoncolleConfirmModal');
+  closeModal('mMoncolleTicketModal');
+
+  // 大発表モーダル表示
+  try { playFanfare(); } catch(e) {}
+  const imgEl = document.getElementById('moncolleGetImg');
+  const nameEl = document.getElementById('moncolleGetName');
+  if (imgEl) {
+    imgEl.onerror = () => { imgEl.onerror = null; imgEl.src = ART(pokeId(m.name) || 25); };
+    imgEl.src = moncolleImg(m);
+  }
+  if (nameEl) {
+    nameEl.textContent = '🎉 ' + m.name + ' ゲット！ ✨';
+  }
+
+  openModal('mMoncolleGetModal');
+}
+
+function finishMoncolleGet() {
+  closeModal('mMoncolleGetModal');
+  openMoncolleTicketModal('tickets');
+}
+
 /* ================= ごほうび ================= */
 function checkRewards(){
+  // 1. 最後のポケモン（ミュウ / Battle 55 または 全問クリア）のチケット発行
+  const isFinalClear = (typeof curIdx === 'number' && (curIdx === (ROWS.length - 1) || curIdx === 54)) || 
+                       (ROWS.length && S.cleared.length >= ROWS.length);
+  if (isFinalClear && !S.finalBattleTicketIssued) {
+    S.finalBattleTicketIssued = true;
+    save();
+    issueMoncolleTickets(2, '🏆 さいごの ポケモン（ミュウ）ゲット！');
+    return;
+  }
+
+  // 2. 1000ptごとのマイルストーンチケット発行
   if(Math.floor(S.points / REWARD_STEP) > S.rewardsGiven){
     S.rewardsGiven = Math.floor(S.points / REWARD_STEP);
     save();
-    showReward(`🎁 ${S.rewardsGiven * REWARD_STEP}pt たっせい！`, `${S.name}さん すごい！ モンコレを ゲットしたよ！`);
+    issueMoncolleTickets(1, `🎁 ${S.rewardsGiven * REWARD_STEP}pt たっせい！`);
     return;
   }
+
+  // 3. 全問クリア時の保険（未発行の場合）
   if(ROWS.length && S.cleared.length >= ROWS.length && !S.allClearRewarded){
     S.allClearRewarded = true;
     save();
-    showReward('🏆 ドリル ぜんぶ クリア！', `${S.name}さん おめでとう！ ごほうびの モンコレだよ！`);
+    issueMoncolleTickets(2, '🏆 ドリル ぜんぶ クリア！');
   }
 }
 

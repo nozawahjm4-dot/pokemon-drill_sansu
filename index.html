@@ -3659,26 +3659,9 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
   transform: none !important;
 }
 
-/* ===== 読み上げボタン（ドリルヘッダー＆各問題） ===== */
-.drill-voice-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  background: #eff6ff;
-  color: #1d4ed8;
-  border: 2px solid #3b82f6;
-  border-radius: 999px;
-  padding: 4px 10px;
-  font-size: 13px;
-  font-weight: 900;
-  cursor: pointer;
-  box-shadow: 0 2px 5px rgba(59, 130, 246, 0.22);
-  transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
-  vertical-align: middle;
-  user-select: none;
-  flex-shrink: 0;
-  line-height: 1.2;
+/* ===== 読み上げボタン（ユーザー指示により完全非表示） ===== */
+.drill-voice-btn, .q-voice, .voice-btn {
+  display: none !important;
 }
 .drill-voice-btn:hover {
   background: #dbeafe;
@@ -5009,6 +4992,7 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
   <div class="hdr-spacer"></div>
   <button class="hbtn" id="btnHome" style="background:#fef3c7;border-color:#f59e0b;color:#b45309;font-weight:900" title="ドリル選択ホームへ">🏠 ホーム</button>
   <span class="pt" id="pt">🪙 0 pt</span>
+  <button class="hbtn" id="btnBgm" style="background:#fef08a;border-color:#eab308;color:#854d0e;font-weight:900" title="BGMの おんがく を つける/けす">🎵 BGM: ON</button>
   <button class="hbtn" id="btnToolClock" style="background:#fef3c7;border-color:#f59e0b;color:#b45309;font-weight:900" title="じゆうに うごかせる とけい">⏰ とけい</button>
   <button class="hbtn" id="btnToolCompare" style="background:#e0f2fe;border-color:#38bdf8;color:#0369a1;font-weight:900" title="2つのかずを くらべる">⚖️ かずくらべ</button>
   <button class="hbtn" id="btnZukan">📖 ずかん</button>
@@ -5053,11 +5037,11 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
           <div class="drill-card-body">
             <div class="drill-icon-box sansu-icon-box">
               <span class="drill-math-symbol">📐</span>
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/255.png" alt="アチャモ" class="drill-poke-thumb">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/151.png" alt="ミュウ" class="drill-poke-thumb">
             </div>
             <div class="drill-info">
               <h3 class="drill-title">📐 さんすうドリル</h3>
-              <div class="drill-theme">はじまりの そうげん 〜 てんくうしんでん</div>
+              <div class="drill-theme">はじまりの そうげん 〜 てんくうしんでん <span style="color:#d946ef;font-weight:900">（さいごは ミュウ！）</span></div>
               <p class="drill-desc">かずの かぞえかた・たしざん・ひきざん・とけい・めいろ など 全55ステージ！</p>
               <div class="drill-progress-wrap">
                 <div class="drill-progress-labels">
@@ -5259,12 +5243,18 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
 </div></div>
 
 <!-- ポケモンずかんモーダル -->
-<div class="modal" id="mZukan"><div class="mbox">
+<div class="modal" id="mZukan"><div class="mbox" style="max-width:760px;max-height:88vh;display:flex;flex-direction:column">
   <button class="mclose" data-close>✕</button>
-  <h2>📖 ポケモンずかん</h2>
-  <div class="center" id="zkCount" style="font-weight:900"></div>
-  <div class="progress"><div id="zkBar"></div></div>
-  <div class="zukan-grid" id="zukanGrid"></div>
+  <h2 id="zkModalTitle" style="margin-bottom:8px">📖 ポケモンずかん</h2>
+  <div style="display:flex;justify-content:center;gap:8px;margin-bottom:10px">
+    <button type="button" class="sugoroku-tray-tab active" id="zkTabAll" onclick="buildZukan('all')">🌐 ぜんこく図鑑 (ナンバー順)</button>
+    <button type="button" class="sugoroku-tray-tab" id="zkTabSansu" onclick="buildZukan('sansu')">📐 さんすう (ドリル順)</button>
+  </div>
+  <div class="center" id="zkCount" style="font-weight:900;font-size:14px;margin-bottom:4px"></div>
+  <div class="progress" style="margin-bottom:12px"><div id="zkBar"></div></div>
+  <div style="overflow-y:auto;flex:1;padding-right:4px">
+    <div class="zukan-grid" id="zukanGrid"></div>
+  </div>
 </div></div>
 
 <!-- モンコレごほうびモーダル -->
@@ -6192,7 +6182,7 @@ function initFreeClockWidget() {
   window.fcUpdateClock();
 }
 
-// リアル教科書ヘッダービルダー
+// リアル教科書ヘッダービルダー（説明文の読み上げボタンなし）
 function makeDrillBookHeader(battleNum, targetPokemonName, targetFurigana, title, promptHtml, pokeId) {
   return '<div class="drill-book-header">' +
     '<div style="flex:1">' +
@@ -6202,9 +6192,6 @@ function makeDrillBookHeader(battleNum, targetPokemonName, targetFurigana, title
       '</div>' +
       '<h2 class="drill-book-title">' + title + '</h2>' +
       '<div class="drill-prompt-wrap">' +
-        '<button type="button" class="drill-voice-btn drill-header-voice" onclick="speakDrillPrompt(this)" aria-label="せつめいを よみあげる" title="せつめいを きく">' +
-          '<span class="voice-icon">🔊</span><span class="voice-label">せつめいを きく</span>' +
-        '</button>' +
         '<div class="drill-book-prompt" style="margin:0;flex:1">' + promptHtml + '</div>' +
       '</div>' +
     '</div>' +
@@ -6259,77 +6246,8 @@ function speakFromTarget(btn) {
 }
 
 function attachVoiceButtonsToDrill(container) {
-  if (!container) return;
-
-  // 1. Math sentences (.t-math-sentence)
-  container.querySelectorAll('.t-math-sentence').forEach(sentence => {
-    if (!sentence.querySelector('.drill-voice-btn')) {
-      const btn = createProblemVoiceButton();
-      sentence.insertBefore(btn, sentence.firstChild);
-    }
-  });
-
-  // 2. Number trees (Battles 12 to 19: .qtree-card, .qtree-frame-wrapper)
-  container.querySelectorAll('.qtree-card, .qtree-frame-wrapper').forEach(card => {
-    if (!card.querySelector('.drill-voice-btn')) {
-      const topTitle = card.querySelector('div, span, h3, h4');
-      const btn = createProblemVoiceButton();
-      if (topTitle) topTitle.insertBefore(btn, topTitle.firstChild);
-      else card.insertBefore(btn, card.firstChild);
-    }
-  });
-
-  // 3. Battle 22 cards (.b22-card)
-  container.querySelectorAll('.b22-card').forEach(card => {
-    if (!card.querySelector('.drill-voice-btn')) {
-      const title = card.querySelector('div');
-      const btn = createProblemVoiceButton();
-      if (title) title.insertBefore(btn, title.firstChild);
-      else card.insertBefore(btn, card.firstChild);
-    }
-  });
-
-  // 4. Battle 3 & 7 rows (.tc-poke-row)
-  container.querySelectorAll('.tc-poke-row').forEach(row => {
-    if (!row.querySelector('.drill-voice-btn')) {
-      const btn = createProblemVoiceButton();
-      row.insertBefore(btn, row.firstChild);
-    }
-  });
-
-  // 5. Battle 36 step rows (.b36-step-row)
-  container.querySelectorAll('.b36-step-row').forEach(row => {
-    if (!row.querySelector('.drill-voice-btn')) {
-      const btn = createProblemVoiceButton();
-      row.insertBefore(btn, row.firstChild);
-    }
-  });
-
-  // 6. Battle 5 & 6 apple split problems (.b5-prob-card)
-  container.querySelectorAll('.b5-prob-card').forEach(card => {
-    if (!card.querySelector('.drill-voice-btn')) {
-      const btn = createProblemVoiceButton();
-      card.insertBefore(btn, card.firstChild);
-    }
-  });
-
-  // 7. Ordinals and comparisons (.ordinal-row, .b11-compare-row, .b24-choice-card)
-  container.querySelectorAll('.ordinal-row, .b11-compare-row, .b24-choice-card, .drill-sub-question').forEach(item => {
-    if (!item.querySelector('.drill-voice-btn')) {
-      const btn = createProblemVoiceButton();
-      item.insertBefore(btn, item.firstChild);
-    }
-  });
-
-  // 8. Single-problem instruction banners (e.g. Battle 1, 20, 21, 23, 33, 34, 35)
-  container.querySelectorAll('#b33GardenArea, #b34EggArea, #matchBox, #b36Maze, .b23-maze-outer').forEach(area => {
-    const prev = area.previousElementSibling;
-    if (prev && !prev.querySelector('.drill-voice-btn') && prev.textContent.trim().length > 0) {
-      const btn = createProblemVoiceButton('せつめい');
-      btn.style.margin = '0 6px 0 0';
-      prev.insertBefore(btn, prev.firstChild);
-    }
-  });
+  // ユーザー指示により説明文の読み上げ・音声ボタンは完全無効化
+  return;
 }
 
 // リアル教科書フッタービルダー
@@ -6907,22 +6825,11 @@ function cleanSpeechText(text) {
 }
 
 function speak(text, btn){
-  if(!('speechSynthesis' in window)) return;
-  speechSynthesis.cancel();
-  document.querySelectorAll('.drill-voice-btn.speaking, .q-voice.speaking').forEach(b => b.classList.remove('speaking'));
-  const cleaned = cleanSpeechText(text);
-  if(!cleaned) return;
-  const u = new SpeechSynthesisUtterance(cleaned);
-  u.lang = 'ja-JP';
-  u.rate = 0.98;
-  u.pitch = 1.05;
-  const v = getBestJaVoice();
-  if(v) u.voice = v;
-  if(btn){
-    btn.classList.add('speaking');
-    u.onend = u.onerror = () => btn.classList.remove('speaking');
+  // ユーザー指示により説明文の読み上げは完全停止
+  if ('speechSynthesis' in window) {
+    try { speechSynthesis.cancel(); } catch(e) {}
   }
-  speechSynthesis.speak(u);
+  return;
 }
 
 function openModal(id){ $(id).classList.add('open'); }
@@ -14287,15 +14194,325 @@ function buildKana(){
   $('kanaGrid').onclick = e => { if(e.target.classList.contains('kana')) speak(e.target.textContent); };
 }
 
-function buildZukan(){
-  const names = [...new Set(ROWS.map(r => r.pokemon_name.replace(/[(（].*$/, '')))];
-  const got = names.filter(n => S.caught.includes(n)).length;
-  $('zkCount').textContent = `${got} / ${names.length} ひき ゲット！`;
-  $('zkBar').style.width = (names.length ? (got / names.length * 100) : 0) + '%';
-  $('zukanGrid').innerHTML = names.map((n, i) => {
-    const c = S.caught.includes(n);
-    return `<div class="zk ${c?'':'no'}"><img loading="lazy" src="${ART(pokeId(n)||132)}" alt=""><div>No.${i+1}<br>${c ? n : '？？？'}</div></div>`;
-  }).join('');
+/* =========================================================
+   ポケモンBGM 8-bit サウンドエンジン（Web Audio API 完全無料実装）
+   名曲：マサラタウン〜1ばんどうろ（Route 1）テーマ
+   ========================================================= */
+let bgmAudioCtx = null;
+let bgmGainNode = null;
+let bgmPlaying = false;
+let bgmStepIndex = 0;
+let bgmNextNoteTime = 0;
+let bgmTimer = null;
+let bgmEnabled = (localStorage.getItem('poke_bgm_enabled') !== 'false');
+
+const NOTE_FREQ = {
+  REST: 0,
+  C3: 130.81, D3: 146.83, E3: 164.81, F3: 174.61, G3: 196.00, A3: 220.00, B3: 246.94,
+  C4: 261.63, D4: 293.66, E4: 329.63, F4: 349.23, G4: 392.00, A4: 440.00, B4: 493.88,
+  C5: 523.25, D5: 587.33, E5: 659.25, F5: 698.46, G5: 783.99, A5: 880.00, B5: 987.77,
+  C6: 1046.50, D6: 1174.66, E6: 1318.51
+};
+
+const BGM_STEP_SEC = 60 / 144 / 4;
+
+function flattenTrack(events) {
+  const grid = [];
+  events.forEach(([note, len]) => {
+    const freq = NOTE_FREQ[note] || 0;
+    const durSec = len * BGM_STEP_SEC;
+    grid.push({ freq, isNew: true, durSec });
+    for (let i = 1; i < len; i++) {
+      grid.push({ freq, isNew: false, durSec });
+    }
+  });
+  return grid;
+}
+
+const bgmMelodyGrid = flattenTrack([
+  ['G4', 2], ['C5', 2], ['D5', 2], ['E5', 2], ['G5', 4], ['E5', 2], ['D5', 2],
+  ['C5', 4], ['D5', 2], ['E5', 2], ['D5', 4], ['B4', 4],
+  ['G4', 2], ['A4', 2], ['B4', 2], ['C5', 2], ['D5', 4], ['G5', 2], ['E5', 2],
+  ['D5', 2], ['C5', 2], ['D5', 2], ['E5', 2], ['C5', 8],
+  ['G4', 2], ['C5', 2], ['D5', 2], ['E5', 2], ['G5', 4], ['E5', 2], ['D5', 2],
+  ['C5', 4], ['D5', 2], ['E5', 2], ['D5', 4], ['B4', 4],
+  ['G4', 2], ['A4', 2], ['B4', 2], ['C5', 2], ['D5', 4], ['E5', 2], ['D5', 2],
+  ['C5', 12], ['REST', 4],
+  ['E5', 4], ['F5', 2], ['G5', 2], ['A5', 2], ['G5', 2], ['F5', 2], ['E5', 2],
+  ['F5', 4], ['G5', 2], ['A5', 2], ['B5', 2], ['A5', 2], ['G5', 2], ['F5', 2],
+  ['G5', 4], ['A5', 2], ['B5', 2], ['C6', 2], ['B5', 2], ['A5', 2], ['G5', 2],
+  ['A5', 4], ['B5', 4], ['C6', 4], ['D6', 4],
+  ['C6', 4], ['G5', 2], ['E5', 2], ['F5', 4], ['A5', 4],
+  ['G5', 4], ['E5', 2], ['C5', 2], ['D5', 4], ['B4', 4],
+  ['C5', 2], ['E5', 2], ['G5', 2], ['C6', 2], ['B5', 4], ['D6', 4],
+  ['C6', 12], ['REST', 4]
+]);
+
+const bgmHarmonyGrid = flattenTrack([
+  ['E4', 2], ['G4', 2], ['B4', 2], ['C5', 2], ['E5', 4], ['C5', 2], ['B4', 2],
+  ['A4', 4], ['B4', 2], ['C5', 2], ['B4', 4], ['G4', 4],
+  ['E4', 2], ['F4', 2], ['G4', 2], ['A4', 2], ['B4', 4], ['E5', 2], ['C5', 2],
+  ['B4', 2], ['A4', 2], ['B4', 2], ['C5', 2], ['G4', 8],
+  ['E4', 2], ['G4', 2], ['B4', 2], ['C5', 2], ['E5', 4], ['C5', 2], ['B4', 2],
+  ['A4', 4], ['B4', 2], ['C5', 2], ['B4', 4], ['G4', 4],
+  ['E4', 2], ['F4', 2], ['G4', 2], ['A4', 2], ['B4', 4], ['C5', 2], ['B4', 2],
+  ['G4', 12], ['REST', 4],
+  ['C5', 4], ['D5', 2], ['E5', 2], ['F5', 2], ['E5', 2], ['D5', 2], ['C5', 2],
+  ['D5', 4], ['E5', 2], ['F5', 2], ['G5', 2], ['F5', 2], ['E5', 2], ['D5', 2],
+  ['E5', 4], ['F5', 2], ['G5', 2], ['A5', 2], ['G5', 2], ['F5', 2], ['E5', 2],
+  ['F5', 4], ['G5', 4], ['A5', 4], ['B5', 4],
+  ['A5', 4], ['E5', 2], ['C5', 2], ['D5', 4], ['F5', 4],
+  ['E5', 4], ['C5', 2], ['A4', 2], ['B4', 4], ['G4', 4],
+  ['A4', 2], ['C5', 2], ['E5', 2], ['A5', 2], ['G5', 4], ['B5', 4],
+  ['G5', 12], ['REST', 4]
+]);
+
+const bgmBassGrid = flattenTrack([
+  ['C3', 4], ['G3', 4], ['C3', 4], ['E3', 4],
+  ['F3', 4], ['C3', 4], ['G3', 4], ['D3', 4],
+  ['G3', 4], ['D3', 4], ['G3', 4], ['B3', 4],
+  ['C3', 4], ['G3', 4], ['C3', 4], ['G3', 4],
+  ['C3', 4], ['G3', 4], ['C3', 4], ['E3', 4],
+  ['F3', 4], ['C3', 4], ['G3', 4], ['D3', 4],
+  ['G3', 4], ['D3', 4], ['G3', 4], ['B3', 4],
+  ['C3', 4], ['G3', 4], ['C3', 4], ['REST', 4],
+  ['C3', 4], ['G3', 4], ['C3', 4], ['G3', 4],
+  ['D3', 4], ['A3', 4], ['D3', 4], ['A3', 4],
+  ['E3', 4], ['B3', 4], ['E3', 4], ['B3', 4],
+  ['F3', 4], ['G3', 4], ['A3', 4], ['B3', 4],
+  ['C3', 4], ['G3', 4], ['F3', 4], ['C3', 4],
+  ['G3', 4], ['E3', 4], ['D3', 4], ['B3', 4],
+  ['C3', 4], ['E3', 4], ['G3', 4], ['B3', 4],
+  ['C3', 4], ['G3', 4], ['C3', 4], ['REST', 4]
+]);
+
+function initBgmAudioContext() {
+  if (!bgmAudioCtx) {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (AudioCtx) {
+      bgmAudioCtx = new AudioCtx();
+      bgmGainNode = bgmAudioCtx.createGain();
+      bgmGainNode.gain.setValueAtTime(0.12, bgmAudioCtx.currentTime);
+      bgmGainNode.connect(bgmAudioCtx.destination);
+    }
+  }
+}
+
+function playBgmTone(freq, time, dur, type, vol) {
+  if (!bgmAudioCtx || !bgmGainNode || freq <= 0) return;
+  const osc = bgmAudioCtx.createOscillator();
+  const gain = bgmAudioCtx.createGain();
+  osc.type = type;
+  osc.frequency.setValueAtTime(freq, time);
+
+  gain.gain.setValueAtTime(0.001, time);
+  gain.gain.linearRampToValueAtTime(vol, time + 0.012);
+  gain.gain.setValueAtTime(vol * 0.8, time + Math.max(0.02, dur - 0.025));
+  gain.gain.linearRampToValueAtTime(0.0001, time + dur);
+
+  osc.connect(gain);
+  gain.connect(bgmGainNode);
+  osc.start(time);
+  osc.stop(time + dur + 0.02);
+}
+
+function playBgmNoise(time, isSnare) {
+  if (!bgmAudioCtx || !bgmGainNode) return;
+  const bufferSize = Math.floor(bgmAudioCtx.sampleRate * (isSnare ? 0.045 : 0.02));
+  const buffer = bgmAudioCtx.createBuffer(1, bufferSize, bgmAudioCtx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < bufferSize; i++) {
+    data[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize);
+  }
+  const noise = bgmAudioCtx.createBufferSource();
+  noise.buffer = buffer;
+  const gain = bgmAudioCtx.createGain();
+  gain.gain.setValueAtTime(isSnare ? 0.06 : 0.025, time);
+  gain.gain.linearRampToValueAtTime(0.001, time + (isSnare ? 0.045 : 0.02));
+  noise.connect(gain);
+  gain.connect(bgmGainNode);
+  noise.start(time);
+}
+
+function bgmScheduleLoop() {
+  if (!bgmPlaying || !bgmAudioCtx) return;
+  while (bgmNextNoteTime < bgmAudioCtx.currentTime + 0.25) {
+    const s = bgmStepIndex;
+    const m = bgmMelodyGrid[s];
+    if (m && m.isNew && m.freq > 0) {
+      playBgmTone(m.freq, bgmNextNoteTime, m.durSec, 'square', 0.22);
+    }
+    const h = bgmHarmonyGrid[s];
+    if (h && h.isNew && h.freq > 0) {
+      playBgmTone(h.freq, bgmNextNoteTime, h.durSec, 'square', 0.12);
+    }
+    const b = bgmBassGrid[s];
+    if (b && b.isNew && b.freq > 0) {
+      playBgmTone(b.freq, bgmNextNoteTime, b.durSec, 'triangle', 0.38);
+    }
+    // リズム（スネア・ハイハット）
+    if (s % 16 === 4 || s % 16 === 12) {
+      playBgmNoise(bgmNextNoteTime, true);
+    } else if (s % 4 === 0) {
+      playBgmNoise(bgmNextNoteTime, false);
+    }
+
+    bgmNextNoteTime += BGM_STEP_SEC;
+    bgmStepIndex = (bgmStepIndex + 1) % 256;
+  }
+}
+
+function startPokemonBgm() {
+  if (!bgmEnabled) return;
+  initBgmAudioContext();
+  if (!bgmAudioCtx) return;
+  if (bgmAudioCtx.state === 'suspended') {
+    bgmAudioCtx.resume();
+  }
+  if (!bgmPlaying) {
+    bgmPlaying = true;
+    bgmNextNoteTime = bgmAudioCtx.currentTime + 0.05;
+    if (bgmTimer) clearInterval(bgmTimer);
+    bgmTimer = setInterval(bgmScheduleLoop, 60);
+  }
+  updateBgmButtonUi();
+}
+
+function stopPokemonBgm() {
+  bgmPlaying = false;
+  if (bgmTimer) {
+    clearInterval(bgmTimer);
+    bgmTimer = null;
+  }
+  updateBgmButtonUi();
+}
+
+function togglePokemonBgm() {
+  bgmEnabled = !bgmEnabled;
+  localStorage.setItem('poke_bgm_enabled', bgmEnabled ? 'true' : 'false');
+  if (bgmEnabled) {
+    startPokemonBgm();
+  } else {
+    stopPokemonBgm();
+  }
+}
+
+function updateBgmButtonUi() {
+  const btn = document.getElementById('btnBgm');
+  if (!btn) return;
+  if (bgmEnabled && bgmPlaying) {
+    btn.innerHTML = '🎵 BGM: ON';
+    btn.style.background = '#fef08a';
+    btn.style.borderColor = '#eab308';
+    btn.style.color = '#854d0e';
+  } else {
+    btn.innerHTML = '🔇 BGM: OFF';
+    btn.style.background = '#f1f5f9';
+    btn.style.borderColor = '#cbd5e1';
+    btn.style.color = '#64748b';
+  }
+}
+
+function setupBgmAutoStart() {
+  const unlock = () => {
+    if (bgmEnabled && !bgmPlaying) {
+      startPokemonBgm();
+    }
+  };
+  window.addEventListener('click', unlock, { once: true, passive: true });
+  window.addEventListener('keydown', unlock, { once: true, passive: true });
+  window.addEventListener('touchstart', unlock, { once: true, passive: true });
+}
+
+/* =========================================================
+   要件④：ポケモン図鑑（ホーム＝全国ナンバー順 / ドリル内＝ドリル順）
+   ========================================================= */
+let currentZukanMode = 'all';
+
+function buildZukan(mode){
+  if (!mode) {
+    const isHome = $('home') && $('home').classList.contains('active');
+    mode = isHome ? 'all' : 'sansu';
+  }
+  currentZukanMode = mode;
+
+  const tabAll = $('zkTabAll');
+  const tabSansu = $('zkTabSansu');
+  if (tabAll && tabSansu) {
+    tabAll.classList.toggle('active', mode === 'all');
+    tabSansu.classList.toggle('active', mode === 'sansu');
+  }
+
+  const titleEl = $('zkModalTitle');
+  const countEl = $('zkCount');
+  const barEl = $('zkBar');
+  const gridEl = $('zukanGrid');
+  if (!gridEl) return;
+
+  if (mode === 'all') {
+    if (titleEl) titleEl.innerHTML = '📖 ぜんこく ポケモンずかん <span style="font-size:12px;color:#6b7280;font-weight:normal">（ナンバー順）</span>';
+    // 全ドリルに登場する全ポケモン一覧（重複なし、全国図鑑ナンバー順で整列）
+    const allNames = new Set();
+    if (typeof ROWS !== 'undefined' && ROWS.length) {
+      ROWS.forEach(r => {
+        if (r && r.pokemon_name) allNames.add(r.pokemon_name.replace(/[(（].*$/, '').trim());
+      });
+    }
+    (S.caught || []).forEach(n => {
+      if (n) allNames.add(n.replace(/[(（].*$/, '').trim());
+    });
+
+    const pokeList = Array.from(allNames).map(name => {
+      return { name, id: pokeId(name) || 999 };
+    }).sort((a, b) => a.id - b.id);
+
+    const gotCount = pokeList.filter(p => (S.caught || []).includes(p.name)).length;
+    if (countEl) countEl.textContent = `${gotCount} / ${pokeList.length} ひき ゲット！`;
+    if (barEl) barEl.style.width = (pokeList.length ? (gotCount / pokeList.length * 100) : 0) + '%';
+
+    gridEl.innerHTML = pokeList.map(p => {
+      const isCaught = (S.caught || []).includes(p.name);
+      const numLabel = 'No.' + String(p.id).padStart(3, '0');
+      return `<div class="zk ${isCaught ? 'caught-zk' : 'no'}" style="${isCaught ? 'border-color:#eab308;background:#fefce8;' : ''}">` +
+        `<img loading="lazy" src="${ART(p.id)}" alt="${p.name}">` +
+        `<div style="font-weight:900;font-size:11px;margin-top:2px">` +
+          `<span style="color:#d97706;font-size:10px">${numLabel}</span><br>` +
+          `${isCaught ? p.name : '？？？'}` +
+        `</div>` +
+      `</div>`;
+    }).join('');
+
+  } else {
+    // ドリル内図鑑（さんすう）：そのドリルでゲットできる55匹のみをステージ順に表示
+    if (titleEl) titleEl.innerHTML = '📖 さんすうドリル ずかん <span style="font-size:12px;color:#6b7280;font-weight:normal">（ステージ順・全55匹）</span>';
+
+    const sansuList = (typeof ROWS !== 'undefined' ? ROWS : []).map((r, i) => {
+      const name = r.pokemon_name.replace(/[(（].*$/, '').trim();
+      return { battleNum: i + 1, name, id: pokeId(name) || 132 };
+    });
+
+    const gotCount = sansuList.filter(p => (S.caught || []).includes(p.name)).length;
+    if (countEl) countEl.textContent = `${gotCount} / ${sansuList.length} ひき ゲット！`;
+    if (barEl) barEl.style.width = (sansuList.length ? (gotCount / sansuList.length * 100) : 0) + '%';
+
+    gridEl.innerHTML = sansuList.map(p => {
+      const isCaught = (S.caught || []).includes(p.name);
+      return `<div class="zk ${isCaught ? 'caught-zk' : 'no'}" style="${isCaught ? 'border-color:#3b82f6;background:#eff6ff;' : ''}">` +
+        `<img loading="lazy" src="${ART(p.id)}" alt="${p.name}">` +
+        `<div style="font-weight:900;font-size:11px;margin-top:2px">` +
+          `<span style="color:#2563eb;font-size:10px">バトル${p.battleNum}</span><br>` +
+          `${isCaught ? p.name : '？？？'}` +
+        `</div>` +
+      `</div>`;
+    }).join('');
+  }
+}
+
+function openZukan(requestedMode) {
+  const isHome = $('home') && $('home').classList.contains('active');
+  const mode = requestedMode || (isHome ? 'all' : 'sansu');
+  buildZukan(mode);
+  openModal('mZukan');
 }
 
 function updatePoints(bump){
@@ -14372,7 +14589,11 @@ function init(){
       initCompareTool();
       openModal('mToolCompareModal');
     });
-    bindClick('btnZukan', () => { buildZukan(); openModal('mZukan'); });
+    bindClick('btnBgm', togglePokemonBgm);
+    bindClick('btnZukan', () => openZukan());
+    bindClick('homeZkChip', () => openZukan('all'));
+    setupBgmAutoStart();
+    updateBgmButtonUi();
     bindClick('btnResetProgress', () => openModal('mResetModal'));
     bindClick('btnBack', backToMap);
     bindClick('btnThrow', throwBall);

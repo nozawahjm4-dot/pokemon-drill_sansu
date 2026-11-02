@@ -4796,6 +4796,7 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
   box-sizing: border-box !important;
   width: 100% !important;
   height: 100% !important;
+  position: relative !important;
 }
 
 .sugoroku-grid .s-poke-card img {
@@ -4908,7 +4909,7 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
 /* =========================================================
    すごろく コース接続パイプライン
    ========================================================= */
-.s-cell .s-conn-r {
+.s-cell .s-conn-r, .s-poke-card .s-conn-r, .s-poke-card .s-conn-r-top {
   position: absolute;
   top: 50%;
   right: -8px;
@@ -4922,7 +4923,11 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
   pointer-events: none;
   box-shadow: 0 1px 3px rgba(0,0,0,0.18);
 }
-.s-cell .s-conn-l {
+.s-poke-card .s-conn-r-top {
+  top: 25% !important;
+}
+
+.s-cell .s-conn-l, .s-poke-card .s-conn-l, .s-poke-card .s-conn-l-top {
   position: absolute;
   top: 50%;
   left: -8px;
@@ -4936,7 +4941,11 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
   pointer-events: none;
   box-shadow: 0 1px 3px rgba(0,0,0,0.18);
 }
-.s-cell .s-conn-d {
+.s-poke-card .s-conn-l-top {
+  top: 25% !important;
+}
+
+.s-cell .s-conn-d, .s-poke-card .s-conn-d, .s-poke-card .s-conn-d-left {
   position: absolute;
   bottom: -8px;
   left: 50%;
@@ -4950,7 +4959,11 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
   pointer-events: none;
   box-shadow: 0 1px 3px rgba(0,0,0,0.18);
 }
-.s-cell .s-conn-u {
+.s-poke-card .s-conn-d-left {
+  left: 25% !important;
+}
+
+.s-cell .s-conn-u, .s-poke-card .s-conn-u, .s-poke-card .s-conn-u-right {
   position: absolute;
   top: -8px;
   left: 50%;
@@ -4963,6 +4976,9 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
   z-index: 3;
   pointer-events: none;
   box-shadow: 0 1px 3px rgba(0,0,0,0.18);
+}
+.s-poke-card .s-conn-u-right {
+  left: 75% !important;
 }
 .s-cell .conn-turn-arrow {
   position: absolute;
@@ -6745,12 +6761,18 @@ function setupMathBoxController(container, expectedAnswers, onComplete, customNu
       if (val === 'erase') {
         playMarimbaPop(0.8);
         delete targetBox.dataset.val;
-        targetBox.textContent = '？';
+        const pipeEl = targetBox.querySelector('[class*="s-conn-"]');
+        const arrowEl = targetBox.querySelector('.conn-turn-arrow');
+        const pipeHtml = (pipeEl ? pipeEl.outerHTML : '') + (arrowEl ? arrowEl.outerHTML : '');
+        targetBox.innerHTML = pipeHtml + '？' + (targetBox.classList.contains('s-blank') ? '<span class="sticker-label">シール</span>' : '');
         targetBox.classList.remove('filled', 'correct');
       } else {
         playMarimbaPop(1.2);
         targetBox.dataset.val = val;
-        targetBox.textContent = val;
+        const pipeEl = targetBox.querySelector('[class*="s-conn-"]');
+        const arrowEl = targetBox.querySelector('.conn-turn-arrow');
+        const pipeHtml = (pipeEl ? pipeEl.outerHTML : '') + (arrowEl ? arrowEl.outerHTML : '');
+        targetBox.innerHTML = pipeHtml + val;
         targetBox.classList.add('filled');
 
         // 次の未入力マスへ自動移動
@@ -10842,35 +10864,32 @@ function renderInteractiveStage(row){
     const rowsDef = [
       // Row 0
       [
-        { type:'poke', name:'ケーシィ', num:'スタート▶', bg:'#fef08a', bc:'#eab308', tc:'#854d0e', pokeId:63, is1x1:true, pipe:'r' },
+        { type:'poke', name:'ケーシィ', num:'スタート▶', bg:'#fef08a', bc:'#eab308', tc:'#854d0e', pokeId:63, span2:true, pipe:'r-top' },
         { type:'num', val:0, pipe:'r' },
         { type:'blank', val:1, pipe:'r' },
         { type:'num', val:2, pipe:'r' },
         { type:'num', val:3, pipe:'r' },
         { type:'num', val:4, pipe:'r' },
-        { type:'num', val:5, pipe:'d', turnArrow:'▼' },
-        { type:'empty' }
+        { type:'num', val:5, pipe:'d' }
       ],
       // Row 1
       [
-        { type:'empty' },
-        { type:'num', val:11, pipe:'d', turnArrow:'▼' },
+        { type:'num', val:11, pipe:'d' },
         { type:'num', val:10, pipe:'l' },
         { type:'num', val:9, pipe:'l' },
         { type:'num', val:8, pipe:'l' },
         { type:'blank', val:7, pipe:'l' },
-        { type:'num', val:6, pipe:'l' },
-        { type:'empty' }
+        { type:'num', val:6, pipe:'l' }
       ],
       // Row 2 (ヤドン spans col 4-5, row 2-3)
       [
-        { type:'num', val:14, pipe:'d', turnArrow:'▼' },
+        { type:'num', val:14, pipe:'d' },
         { type:'num', val:13, pipe:'l' },
         { type:'blank', val:12, pipe:'l' },
         { type:'num', val:19, pipe:'r' },
-        { type:'poke', name:'ヤドン', num:'20', bg:'#fed7aa', bc:'#f97316', tc:'#9a3412', pokeId:79, span2:true, pipe:'r' },
+        { type:'poke', name:'ヤドン', num:'20', bg:'#fed7aa', bc:'#f97316', tc:'#9a3412', pokeId:79, span2:true, pipe:'r-top' },
         { type:'num', val:21, pipe:'r' },
-        { type:'num', val:22, pipe:'d', turnArrow:'▼' }
+        { type:'num', val:22, pipe:'d' }
       ],
       // Row 3
       [
@@ -10878,26 +10897,26 @@ function renderInteractiveStage(row){
         { type:'num', val:16, pipe:'r' },
         { type:'num', val:17, pipe:'r' },
         { type:'num', val:18, pipe:'u', turnArrow:'▲' },
-        { type:'num', val:24, pipe:'d', turnArrow:'▼' },
+        { type:'num', val:24, pipe:'d' },
         { type:'blank', val:23, pipe:'l' }
       ],
       // Row 4
       [
-        { type:'num', val:35, pipe:'d', turnArrow:'▼' },
+        { type:'num', val:35, pipe:'d' },
         { type:'num', val:34, pipe:'l' },
         { type:'blank', val:33, pipe:'l' },
         { type:'num', val:32, pipe:'l' },
         { type:'num', val:31, pipe:'l' },
         { type:'num', val:30, pipe:'l' },
         { type:'num', val:25, pipe:'r' },
-        { type:'num', val:26, pipe:'d', turnArrow:'▼' }
+        { type:'num', val:26, pipe:'d' }
       ],
       // Row 5 (スリープ spans col 2-3, row 5-6)
       [
         { type:'blank', val:36, pipe:'d' },
         { type:'num', val:39, pipe:'r' },
-        { type:'poke', name:'スリープ', num:'40', bg:'#fef08a', bc:'#eab308', tc:'#854d0e', pokeId:96, span2:true, pipe:'r' },
-        { type:'blank', val:41, pipe:'d', turnArrow:'▼' },
+        { type:'poke', name:'スリープ', num:'40', bg:'#fef08a', bc:'#eab308', tc:'#854d0e', pokeId:96, span2:true, pipe:'r-top' },
+        { type:'blank', val:41, pipe:'d' },
         { type:'blank', val:29, pipe:'u', turnArrow:'▲' },
         { type:'num', val:28, pipe:'l' },
         { type:'num', val:27, pipe:'l' }
@@ -10909,11 +10928,11 @@ function renderInteractiveStage(row){
         { type:'num', val:42, pipe:'r' },
         { type:'blank', val:43, pipe:'r' },
         { type:'num', val:44, pipe:'r' },
-        { type:'num', val:45, pipe:'d', turnArrow:'▼' }
+        { type:'num', val:45, pipe:'d' }
       ],
       // Row 7
       [
-        { type:'num', val:53, pipe:'d', turnArrow:'▼' },
+        { type:'num', val:53, pipe:'d' },
         { type:'blank', val:52, pipe:'l' },
         { type:'num', val:51, pipe:'l' },
         { type:'blank', val:50, pipe:'l' },
@@ -10929,18 +10948,18 @@ function renderInteractiveStage(row){
         { type:'blank', val:56, pipe:'r' },
         { type:'num', val:57, pipe:'r' },
         { type:'num', val:58, pipe:'r' },
-        { type:'num', val:59, pipe:'d', turnArrow:'▼' },
+        { type:'num', val:59, pipe:'d' },
         { type:'num', val:61, pipe:'r' },
-        { type:'num', val:62, pipe:'d', turnArrow:'▼' }
+        { type:'num', val:62, pipe:'d' }
       ],
       // Row 9 (タマタマ spans col 5-6, row 9-10)
       [
-        { type:'blank', val:74, pipe:'d', turnArrow:'▼' },
+        { type:'blank', val:74, pipe:'d' },
         { type:'num', val:73, pipe:'l' },
         { type:'num', val:72, pipe:'l' },
         { type:'num', val:71, pipe:'l' },
         { type:'blank', val:70, pipe:'l' },
-        { type:'poke', name:'タマタマ', num:'60', bg:'#fed7aa', bc:'#f97316', tc:'#9a3412', pokeId:102, span2:true, pipe:'u' },
+        { type:'poke', name:'タマタマ', num:'60', bg:'#fed7aa', bc:'#f97316', tc:'#9a3412', pokeId:102, span2:true, pipe:'u-right' },
         { type:'blank', val:63, pipe:'d' }
       ],
       // Row 10
@@ -10948,14 +10967,14 @@ function renderInteractiveStage(row){
         { type:'num', val:75, pipe:'r' },
         { type:'num', val:76, pipe:'r' },
         { type:'num', val:77, pipe:'r' },
-        { type:'blank', val:78, pipe:'d', turnArrow:'▼' },
+        { type:'blank', val:78, pipe:'d' },
         { type:'num', val:69, pipe:'u' },
         { type:'num', val:64, pipe:'d' }
       ],
       // Row 11 (バリヤード spans col 1-2, row 11-12)
       [
         { type:'blank', val:81, pipe:'d' },
-        { type:'poke', name:'バリヤード', num:'80', bg:'#fce7f3', bc:'#ec4899', tc:'#9d174d', pokeId:122, span2:true, pipe:'l' },
+        { type:'poke', name:'バリヤード', num:'80', bg:'#fce7f3', bc:'#ec4899', tc:'#9d174d', pokeId:122, span2:true, pipe:'l-top' },
         { type:'num', val:79, pipe:'l' },
         { type:'num', val:68, pipe:'u', turnArrow:'▲' },
         { type:'num', val:67, pipe:'l' },
@@ -10969,7 +10988,7 @@ function renderInteractiveStage(row){
         { type:'num', val:88, pipe:'r' },
         { type:'num', val:89, pipe:'r' },
         { type:'blank', val:90, pipe:'r' },
-        { type:'num', val:91, pipe:'d', turnArrow:'▼' }
+        { type:'num', val:91, pipe:'d' }
       ],
       // Row 13
       [
@@ -10977,35 +10996,35 @@ function renderInteractiveStage(row){
         { type:'num', val:84, pipe:'r' },
         { type:'num', val:85, pipe:'r' },
         { type:'num', val:86, pipe:'u', turnArrow:'▲' },
-        { type:'blank', val:95, pipe:'u', turnArrow:'▲' },
+        { type:'blank', val:95, pipe:'d' },
         { type:'num', val:94, pipe:'l' },
         { type:'num', val:93, pipe:'l' },
         { type:'blank', val:92, pipe:'l' }
       ],
       // Row 14 (ルージュラ spans col 0-1, row 14-15)
       [
-        { type:'poke', name:'ルージュラ', num:'100', bg:'#fed7aa', bc:'#ea580c', tc:'#9a3412', pokeId:124, span2:true, pipe:'d' },
-        { type:'num', val:98, pipe:'l' },
+        { type:'poke', name:'ルージュラ', num:'100', bg:'#fed7aa', bc:'#ea580c', tc:'#9a3412', pokeId:124, span2:true, pipe:'d-left' },
+        { type:'num', val:98, pipe:'d' },
         { type:'num', val:97, pipe:'l' },
         { type:'num', val:96, pipe:'l' },
         { type:'blank', val:116, pipe:'r' },
         { type:'num', val:117, pipe:'r' },
-        { type:'num', val:118, pipe:'d', turnArrow:'▼' }
+        { type:'num', val:118, pipe:'d' }
       ],
       // Row 15
       [
         { type:'blank', val:99, pipe:'l' },
         { type:'num', val:109, pipe:'r' },
-        { type:'blank', val:110, pipe:'d', turnArrow:'▼' },
+        { type:'blank', val:110, pipe:'d' },
         { type:'num', val:115, pipe:'u' },
         { type:'empty' },
-        { type:'num', val:119, pipe:'d', turnArrow:'▼' }
+        { type:'num', val:119, pipe:'d' }
       ],
       // Row 16 (ミュウ spans col 6-7, row 16-17)
       [
         { type:'blank', val:101, pipe:'d' },
-        { type:'blank', val:104, pipe:'u' },
-        { type:'num', val:105, pipe:'d', turnArrow:'▼' },
+        { type:'blank', val:104, pipe:'r' },
+        { type:'num', val:105, pipe:'d' },
         { type:'blank', val:108, pipe:'u' },
         { type:'num', val:111, pipe:'d' },
         { type:'num', val:114, pipe:'u' },
@@ -11073,16 +11092,21 @@ function renderInteractiveStage(row){
       });
     });
 
-    // 全32枚のシール選択肢（昇順ソート）
-    const allStickerChoices = [
-      '1', '7', '12', '15', '23', '29', '33', '36', '41', '43', '47', '50', '52', '56',
-      '63', '66', '70', '74', '78', '81', '83', '87', '90', '92', '95', '99', '101', '104', '108', '110', '112', '116'
-    ];
+    // シール選択肢（正解32枚 ＋ ダミー16枚、各タブ内でシャッフルして簡単すぎないように工夫）
+    const p1Blanks = ['1', '7', '12', '15', '23', '29', '33', '36', '41', '43', '47', '50', '52', '56'];
+    const p1Dummies = ['3', '8', '14', '21', '25', '34', '42', '55'];
+    const p2Blanks = ['63', '66', '70', '74', '78', '81', '83', '87', '90', '92', '95', '99', '101', '104', '108', '110', '112', '116'];
+    const p2Dummies = ['65', '73', '79', '82', '93', '103', '105', '115'];
+
+    const p1Choices = shuffle([...p1Blanks, ...p1Dummies]);
+    const p2Choices = shuffle([...p2Blanks, ...p2Dummies]);
 
     let stickerBtnsHtml = '';
-    allStickerChoices.forEach(n => {
-      const g = parseInt(n) <= 60 ? 'tray-btn-p1' : 'tray-btn-p2';
-      stickerBtnsHtml += '<button type="button" class="num-choice-btn ' + g + '" data-val="' + n + '">' + n + '</button>';
+    p1Choices.forEach(n => {
+      stickerBtnsHtml += '<button type="button" class="num-choice-btn tray-btn-p1" data-val="' + n + '">' + n + '</button>';
+    });
+    p2Choices.forEach(n => {
+      stickerBtnsHtml += '<button type="button" class="num-choice-btn tray-btn-p2" data-val="' + n + '">' + n + '</button>';
     });
 
     card.innerHTML = 
@@ -11103,9 +11127,9 @@ function renderInteractiveStage(row){
         // スティッキー統合シールトレイ（タブ切り替え対応）
         '<div id="sugorokuStickyTray" style="position:sticky;bottom:8px;z-index:90;background:rgba(255,255,255,0.96);backdrop-filter:blur(10px);border:2.5px solid #c084fc;border-radius:20px;padding:10px 14px;box-shadow:0 8px 24px rgba(0,0,0,0.22);margin:16px 0">' +
           '<div style="display:flex;justify-content:center;gap:8px;margin-bottom:8px">' +
-            '<button type="button" class="sugoroku-tray-tab active" id="tabP1" onclick="switchSugorokuTray(\'p1\')">🌸 1〜60 (14こ)</button>' +
-            '<button type="button" class="sugoroku-tray-tab" id="tabP2" onclick="switchSugorokuTray(\'p2\')">⭐ 61〜120 (18こ)</button>' +
-            '<button type="button" class="sugoroku-tray-tab" id="tabAll" onclick="switchSugorokuTray(\'all\')">ぜんぶ (32こ)</button>' +
+            '<button type="button" class="sugoroku-tray-tab active" id="tabP1" onclick="switchSugorokuTray(\'p1\')">🌸 1〜60</button>' +
+            '<button type="button" class="sugoroku-tray-tab" id="tabP2" onclick="switchSugorokuTray(\'p2\')">⭐ 61〜120</button>' +
+            '<button type="button" class="sugoroku-tray-tab" id="tabAll" onclick="switchSugorokuTray(\'all\')">ぜんぶ</button>' +
           '</div>' +
           '<div class="num-choice-tray" style="margin:0;gap:6px">' +
             stickerBtnsHtml +

@@ -43,86 +43,87 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
 
 /* ===== マップ画面（完全フルスクリーン 100vw、余白なし） ===== */
 #map{width:100vw;max-width:100vw;height:calc(100vh - var(--hdr, 64px));overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;position:relative}
-#map-wrapper{position:relative;width:100vw;max-width:100vw;height:2800px;overflow:hidden;background:#181236}
+#map-wrapper{position:relative;width:100vw;max-width:100vw;height:4700px;overflow:hidden;background:#181236}
 
 /* ポケモン風デフォルメ5大バイオーム背景レイヤー */
 .biome-layer{position:absolute;left:0;right:0;width:100%;background-size:cover;background-position:center;background-repeat:no-repeat;pointer-events:none;z-index:1}
 .biome-temple{
-  top:0;height:600px;
+  top:0;height:1000px;
   background-image:url('map_bg_temple.jpg');
-  -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 78%, rgba(0,0,0,0) 100%);
-  mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 78%, rgba(0,0,0,0) 100%);
+  -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%);
+  mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%);
 }
 .biome-ice{
-  top:540px;height:620px;
+  top:900px;height:1000px;
   background-image:url('map_bg_ice.jpg');
-  -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%);
-  mask-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%);
+  -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 16%, rgba(0,0,0,1) 84%, rgba(0,0,0,0) 100%);
+  mask-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 16%, rgba(0,0,0,1) 84%, rgba(0,0,0,0) 100%);
 }
 .biome-canyon{
-  top:1100px;height:620px;
+  top:1800px;height:1000px;
   background-image:url('map_bg_canyon.jpg');
-  -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%);
-  mask-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%);
+  -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 16%, rgba(0,0,0,1) 84%, rgba(0,0,0,0) 100%);
+  mask-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 16%, rgba(0,0,0,1) 84%, rgba(0,0,0,0) 100%);
 }
 .biome-water{
-  top:1660px;height:620px;
+  top:2700px;height:1000px;
   background-image:url('map_bg_water.jpg');
-  -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%);
-  mask-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%);
+  -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 16%, rgba(0,0,0,1) 84%, rgba(0,0,0,0) 100%);
+  mask-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 16%, rgba(0,0,0,1) 84%, rgba(0,0,0,0) 100%);
 }
 .biome-grassland{
-  top:2220px;height:580px;
+  top:3600px;height:1100px;
   background-image:url('map_bg_grassland.jpg');
-  -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%, rgba(0,0,0,1) 100%);
-  mask-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%, rgba(0,0,0,1) 100%);
+  -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 100%);
+  mask-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 100%);
 }
 
 /* エリア見出し看板（左右交互・各フィールドテーマ枠） */
 .area-banner{
-  position:absolute;display:flex;align-items:center;gap:10px;
-  padding:10px 20px;border-radius:22px;
-  box-shadow:0 8px 24px rgba(0,0,0,.45);pointer-events:none;z-index:5;
-  backdrop-filter:blur(6px);white-space:nowrap;
+  position:absolute;z-index:4;
+  padding:6px 14px;border-radius:16px;
+  display:inline-flex;align-items:center;gap:8px;
+  max-width:200px;
+  font-family:'M PLUS Rounded 1c', sans-serif;
+  pointer-events:none;
 }
-.area-banner-icon{font-size:28px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.35))}
-.area-banner-info{display:flex;flex-direction:column}
-.area-banner-title{font-size:18px;font-weight:900;letter-spacing:0.5px;line-height:1.2}
-.area-banner-sub{font-size:12px;font-weight:800;opacity:.92;letter-spacing:0.5px}
+.area-banner-icon{font-size:20px;line-height:1}
+.area-banner-info{display:flex;flex-direction:column;line-height:1.15}
+.area-banner-title{font-size:14px;font-weight:900;letter-spacing:0.5px;white-space:nowrap}
+.area-banner-sub{font-size:10px;font-weight:800;opacity:.9;white-space:nowrap}
 
-/* 草原エリア：左端・ツタや葉が絡む木目グリーン枠 */
+/* 草原エリア：左端・草のつるが絡む枠 */
 .banner-grassland{
-  left:14px;
-  background:linear-gradient(135deg,rgba(20,83,45,.95) 0%,rgba(22,101,52,.92) 100%);
-  border:3.5px solid #22c55e;color:#f0fdf4;
-  box-shadow:0 8px 24px rgba(22,101,52,.45), inset 0 0 12px rgba(34,197,94,.3);
-}
-.banner-grassland .vine-decor{position:absolute;font-size:20px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.4))}
-.banner-grassland .vine-tl{top:-12px;left:-10px;transform:rotate(-25deg)}
-.banner-grassland .vine-br{bottom:-10px;right:-8px;transform:rotate(15deg)}
 
-/* 水辺エリア：右端・波しぶきと水面ブルー枠 */
+  background:linear-gradient(135deg,rgba(20,83,45,.95) 0%,rgba(101,163,13,.9) 100%);
+  border:3.5px solid #86efac;color:#ffffff;
+  box-shadow:0 8px 24px rgba(22,101,52,.5), inset 0 0 12px rgba(134,239,172,.4);
+}
+.banner-grassland .vine-decor{position:absolute;font-size:18px;pointer-events:none}
+.banner-grassland .vine-tl{top:-12px;left:-8px;transform:rotate(-15deg)}
+.banner-grassland .vine-br{bottom:-10px;right:-8px;transform:rotate(20deg)}
+
+/* 水辺エリア：右端・水滴としぶき枠 */
 .banner-water{
-  right:14px;
-  background:linear-gradient(135deg,rgba(12,74,110,.95) 0%,rgba(3,105,161,.92) 100%);
-  border:3.5px solid #38bdf8;color:#f0f9ff;
-  box-shadow:0 8px 24px rgba(3,105,161,.45), inset 0 0 12px rgba(56,189,248,.35);
-}
-.banner-water .water-bubble{position:absolute;font-size:20px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.3))}
-.banner-water .b1{top:-12px;right:-8px;transform:rotate(15deg)}
 
-/* 渓谷エリア：左端・切り立つ岩石ブロック枠 */
+  background:linear-gradient(135deg,rgba(12,74,110,.95) 0%,rgba(2,132,199,.9) 100%);
+  border:3.5px solid #7dd3fc;color:#ffffff;
+  box-shadow:0 8px 24px rgba(3,105,161,.5), inset 0 0 12px rgba(125,211,252,.4);
+}
+.banner-water .water-bubble{position:absolute;font-size:18px;top:-10px;right:-6px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.3))}
+
+/* 渓谷エリア：左端・岩肌とひび割れ枠 */
 .banner-canyon{
-  left:14px;
-  background:linear-gradient(135deg,rgba(41,37,36,.95) 0%,rgba(87,83,78,.92) 100%);
-  border:3.5px solid #f59e0b;color:#fef3c7;
-  box-shadow:0 8px 24px rgba(0,0,0,.5), inset 0 0 10px rgba(245,158,11,.3);
+
+  background:linear-gradient(135deg,rgba(68,64,60,.95) 0%,rgba(180,83,9,.9) 100%);
+  border:3.5px solid #fed7aa;color:#ffffff;
+  box-shadow:0 8px 24px rgba(120,53,15,.5), inset 0 0 12px rgba(254,215,170,.4);
 }
 .banner-canyon .rock-decor{position:absolute;font-size:20px;top:-12px;left:-10px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.4))}
 
 /* 雪山エリア：右端・凍てつく氷晶とフロスト枠 */
 .banner-ice{
-  right:14px;
+
   background:linear-gradient(135deg,rgba(15,23,42,.95) 0%,rgba(14,116,144,.9) 100%);
   border:3.5px solid #bae6fd;color:#ffffff;
   box-shadow:0 8px 24px rgba(14,116,144,.5), inset 0 0 12px rgba(186,230,253,.4);
@@ -131,7 +132,7 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
 
 /* 天空神殿エリア：左端・神聖な黄金の雲と柱 */
 .banner-temple{
-  left:14px;
+
   background:linear-gradient(135deg,rgba(88,28,135,.95) 0%,rgba(161,98,7,.92) 100%);
   border:3.5px solid #facc15;color:#fef08a;
   box-shadow:0 8px 24px rgba(234,179,8,.5), inset 0 0 14px rgba(250,204,21,.4);
@@ -150,41 +151,49 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
   pointer-events:none;white-space:nowrap;z-index:4;
 }
 
-#map-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2;filter:drop-shadow(0 4px 8px rgba(0,0,0,.45))}
+#map-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2;filter:drop-shadow(0 6px 12px rgba(0,0,0,.35))}
 #tiles-container{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:6}
 
-/* バトルマス */
-.tile{position:absolute;width:56px;height:56px;border-radius:18px;transform:translate(-50%,-50%);
-  background:#fff;border:4px solid var(--blue);display:flex;align-items:center;justify-content:center;
-  font-weight:900;font-size:20px;color:var(--blue-d);box-shadow:0 5px 0 #1e4fb8,0 8px 16px rgba(0,0,0,.35);
-  transition:transform .12s, box-shadow .12s;pointer-events:auto;cursor:pointer;z-index:6}
+/* バトルマス（数字がはっきり読める独立した円形立体ステージ） */
+.tile{
+  position:absolute;width:48px;height:48px;border-radius:50%;transform:translate(-50%,-50%);
+  background:#fff;border:3.5px solid var(--blue);display:flex;align-items:center;justify-content:center;
+  font-weight:900;font-size:19px;color:var(--blue-d);box-shadow:0 4px 0 #1e4fb8,0 6px 14px rgba(0,0,0,.35);
+  transition:transform .12s, box-shadow .12s;pointer-events:auto;cursor:pointer;
+}
 .tile:active{transform:translate(-50%,-46%) scale(.95);box-shadow:0 2px 0 #1e4fb8}
-.tile.cleared{background:var(--green);border-color:var(--green-d);color:#fff;box-shadow:0 5px 0 var(--green-d),0 8px 16px rgba(0,0,0,.35)}
-.tile.cleared::after{content:"✓";position:absolute;right:-6px;bottom:-6px;background:#fff;color:var(--green-d);border:3px solid var(--green-d);
-  width:24px;height:24px;border-radius:50%;font-size:14px;display:flex;align-items:center;justify-content:center;font-weight:900;box-shadow:0 2px 4px rgba(0,0,0,.25)}
-.tile.current{background:var(--yellow);border-color:var(--yellow-d);color:#6b4a00;box-shadow:0 5px 0 var(--yellow-d),0 8px 16px rgba(0,0,0,.35);animation:pulse 1.3s infinite;z-index:8}
-.tile.locked{filter:saturate(.4) brightness(.9);opacity:.88}
+.tile.cleared{background:var(--green);border-color:var(--green-d);color:#fff;box-shadow:0 4px 0 var(--green-d),0 6px 14px rgba(0,0,0,.35)}
+.tile.cleared::after{content:"✓";position:absolute;right:-5px;bottom:-5px;background:#fff;color:var(--green-d);border:2.5px solid var(--green-d);
+  width:20px;height:20px;border-radius:50%;font-size:12px;display:flex;align-items:center;justify-content:center;font-weight:900;box-shadow:0 2px 4px rgba(0,0,0,.25)}
+.tile.current{background:var(--yellow);border-color:var(--yellow-d);color:#6b4a00;box-shadow:0 4px 0 var(--yellow-d),0 6px 14px rgba(0,0,0,.35);animation:pulse 1.3s infinite}
+.tile.locked{filter:saturate(.4) brightness(.9);opacity:.9}
 @keyframes pulse{
-  0%,100%{box-shadow:0 6px 0 rgba(0,0,0,.35),0 0 0 0 rgba(255,210,63,.95)}
-  50%{box-shadow:0 6px 0 rgba(0,0,0,.35),0 0 0 16px rgba(255,210,63,0)}
+  0%,100%{box-shadow:0 5px 0 rgba(0,0,0,.35),0 0 0 0 rgba(255,210,63,.95)}
+  50%{box-shadow:0 5px 0 rgba(0,0,0,.35),0 0 0 12px rgba(255,210,63,0)}
 }
 
-/* マスの上に登場するポケモン（マスの約1.5倍：84px） */
+/* マスの横に堂々と並び立つポケモン（数字やマス、隣と絶対に被らない配置：64px） */
 .map-tile-pokemon{
-  position:absolute;bottom:28px;left:50%;transform:translateX(-50%);
-  width:84px;height:84px;object-fit:contain;pointer-events:none;
-  filter:drop-shadow(0 6px 10px rgba(0,0,0,.45));z-index:7;
+  position:absolute;
+  width:64px;height:64px;object-fit:contain;pointer-events:none;
+  filter:drop-shadow(0 4px 8px rgba(0,0,0,.4));z-index:7;
   transition:transform .2s ease;
 }
+.map-tile-pokemon.poke-side-left{
+  right:48px;top:-12px;
+}
+.map-tile-pokemon.poke-side-right{
+  left:48px;top:-12px;
+}
 .tile.current .map-tile-pokemon{
-  animation:tilePokeHop 1.6s ease-in-out infinite alternate;
+  animation:tilePokeHop 1.5s ease-in-out infinite alternate;
 }
 @keyframes tilePokeHop{
-  0%{transform:translateX(-50%) translateY(0)}
-  100%{transform:translateX(-50%) translateY(-8px) scale(1.05)}
+  0%{transform:translateY(0)}
+  100%{transform:translateY(-6px) scale(1.06)}
 }
 .tile.locked .map-tile-pokemon{
-  filter:brightness(0.18) drop-shadow(0 4px 6px rgba(0,0,0,.35));
+  filter:brightness(0.18) drop-shadow(0 2px 4px rgba(0,0,0,.4));
   opacity:.85;
 }
 
@@ -5257,8 +5266,8 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
       <!-- バイオーム見出しリボン（端に大きく左右交互配置・各フィールドテーマ枠） -->
       <div class="map-flag" style="top:25px">🏆 ゴール（ミュウの てんくうしんでん）</div>
 
-      <!-- 天空神殿：左端 -->
-      <div class="area-banner banner-temple" style="top:85px">
+      <!-- 天空神殿：右端（パスが左側を通るため右端で完全クリア） -->
+      <div class="area-banner banner-temple" style="top:480px;right:14px">
         <div class="area-banner-icon">✨</div>
         <div class="area-banner-info">
           <div class="area-banner-title">てんくう しんでん</div>
@@ -5267,8 +5276,8 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
         <div class="star-decor">⭐</div>
       </div>
 
-      <!-- 雪山：右端 -->
-      <div class="area-banner banner-ice" style="top:520px">
+      <!-- 雪山：左端（パスが右側を通るため左端で完全クリア） -->
+      <div class="area-banner banner-ice" style="top:1250px;left:14px">
         <div class="area-banner-icon">❄️</div>
         <div class="area-banner-info">
           <div class="area-banner-title">こごえる ゆきやま</div>
@@ -5277,8 +5286,8 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
         <div class="ice-decor">🧊</div>
       </div>
 
-      <!-- 渓谷：左端 -->
-      <div class="area-banner banner-canyon" style="top:1080px">
+      <!-- 渓谷：右端（パスが左側を通るため右端で完全クリア） -->
+      <div class="area-banner banner-canyon" style="top:1950px;right:14px">
         <div class="area-banner-icon">⛰️</div>
         <div class="area-banner-info">
           <div class="area-banner-title">ごつごつ けいこく</div>
@@ -5287,8 +5296,8 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
         <div class="rock-decor">⚡</div>
       </div>
 
-      <!-- 水辺：右端 -->
-      <div class="area-banner banner-water" style="top:1640px">
+      <!-- 水辺：右端（パスが左側を通るため右端で完全クリア） -->
+      <div class="area-banner banner-water" style="top:3350px;right:14px">
         <div class="area-banner-icon">🌊</div>
         <div class="area-banner-info">
           <div class="area-banner-title">きらめきの みずべ</div>
@@ -5297,8 +5306,8 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
         <div class="water-bubble b1">💧</div>
       </div>
 
-      <!-- 草原：左端 -->
-      <div class="area-banner banner-grassland" style="top:2200px">
+      <!-- 草原：左端（パスが右側を通るため左端で完全クリア） -->
+      <div class="area-banner banner-grassland" style="top:4150px;left:14px">
         <div class="area-banner-icon">🌿</div>
         <div class="area-banner-info">
           <div class="area-banner-title">はじまりの そうげん</div>
@@ -7043,13 +7052,35 @@ document.addEventListener('click', e => {
    ========================================================= */
 function computeMapTiles(total){
   const pts = [];
-  const startY = 2680, endY = 120;
-  for(let i=0; i<total; i++){
-    const t = i / (total - 1);
+  const startY = 4540, endY = 160;
+  const W_REF = 430;
+  const fineN = 2000;
+  const dense = [];
+  for(let i=0; i<=fineN; i++){
+    const t = i / fineN;
     const y = startY - t * (startY - endY);
-    /* 画面横幅100vw（16%〜84%）をゆったりS字カーブで蛇行 */
-    const x = 50 + 32 * Math.sin(t * Math.PI * 7) + 6 * Math.sin(t * Math.PI * 14);
-    pts.push({ x: Math.round(x * 10) / 10, y: Math.round(y) });
+    const xPct = 50 + 24 * Math.sin(t * Math.PI * 6);
+    dense.push({ xPct, xPx: (xPct / 100) * W_REF, y });
+  }
+
+  // 弧長等間隔サンプリングにより、55マス全てが均等な距離（約84px）で美しく配置され、衝突ゼロ！
+  const arc = [0];
+  for(let i=1; i<=fineN; i++){
+    const dx = dense[i].xPx - dense[i-1].xPx;
+    const dy = dense[i].y - dense[i-1].y;
+    arc.push(arc[i-1] + Math.hypot(dx, dy));
+  }
+  const totalLen = arc[fineN];
+
+  for(let i=0; i<total; i++){
+    const target = (i / (total - 1)) * totalLen;
+    let lo = 0, hi = fineN;
+    while(lo < hi){
+      const mid = (lo + hi) >> 1;
+      if(arc[mid] < target) lo = mid + 1;
+      else hi = mid;
+    }
+    pts.push({ x: Math.round(dense[lo].xPct * 10) / 10, y: Math.round(dense[lo].y) });
   }
   return pts;
 }
@@ -7074,40 +7105,28 @@ function layoutMap(){
 
     const pts = computeMapTiles(n);
     const W = wrap.clientWidth || window.innerWidth || 800;
-    const H = 2800;
+    const H = 4700;
     svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
 
-    // 5大バイオーム別の立体階段テーマ定義（草が生えた階段、雪の階段、岩山、木道、天空）
+    // 5大バイオーム別の立体階段テーマ定義（黒い影を完全撤廃し、立体的な厚み基底・側壁・踏み面・エッジハイライト）
     const biomes = [
-      { minY: 0, maxY: 500, stepRiser: '#78350f', stepTread: '#facc15', trim: '#fef08a' },       // 天空神殿：黄金階段
-      { minY: 500, maxY: 1050, stepRiser: '#0284c7', stepTread: '#ffffff', trim: '#bae6fd' },     // 雪山：雪と氷の立体階段
-      { minY: 1050, maxY: 1600, stepRiser: '#292524', stepTread: '#78716c', trim: '#d6d3d1' },    // 渓谷：ごつごつの岩山階段
-      { minY: 1600, maxY: 2150, stepRiser: '#451a03', stepTread: '#d97706', trim: '#38bdf8' },    // 水辺：木道・飛び石階段
-      { minY: 2150, maxY: 2900, stepRiser: '#5a381e', stepTread: '#22c55e', trim: '#86efac' }     // 草原：草が生えた立体階段
+      { minY: 0, maxY: 950, curbBase: '#78350f', curbTop: '#b45309', stepRiser: '#92400e', stepTread: '#facc15', edge: '#fef9c3' },       // 天空神殿：黄金大理石階段
+      { minY: 950, maxY: 1850, curbBase: '#0369a1', curbTop: '#0284c7', stepRiser: '#7dd3fc', stepTread: '#f0f9ff', edge: '#ffffff' },     // 雪山：雪と氷の立体階段
+      { minY: 1850, maxY: 2750, curbBase: '#1c1917', curbTop: '#44403c', stepRiser: '#292524', stepTread: '#a8a29e', edge: '#fafaf9' },    // 渓谷：ごつごつの岩山階段
+      { minY: 2750, maxY: 3650, curbBase: '#082f49', curbTop: '#0369a1', stepRiser: '#0c4a6e', stepTread: '#38bdf8', edge: '#f0f9ff' },    // 水辺：澄んだ水面クリスタル階段
+      { minY: 3650, maxY: 4800, curbBase: '#1a0c04', curbTop: '#78350f', stepRiser: '#3f1a04', stepTread: '#65a30d', edge: '#f7fee7' }     // 草原：草が生えた立体土石段
     ];
     function getBiome(y) {
       return biomes.find(b => y >= b.minY && y < b.maxY) || biomes[4];
     }
 
-    // 階段全体のベース土台（影＋ベース道）
-    const dPath = pts.map((p, i) => {
-      const px = (p.x / 100) * W;
-      return `${i === 0 ? 'M' : 'L'} ${px} ${p.y}`;
-    }).join(' ');
+    let svgHtml = '';
+    const stairHalfW = 26;
 
-    let svgHtml = `
-      <!-- 階段の土台マウンドと影 -->
-      <path d="${dPath}" fill="none" stroke="rgba(0,0,0,0.5)" stroke-width="72" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="${dPath}" fill="none" stroke="#1c1917" stroke-width="60" stroke-linecap="round" stroke-linejoin="round"/>
-    `;
-
-    // マス間の各区間に立体的な階段ステップを生成（上から下へ描画して自然な重なりを演出）
-    const stepLen = 20;
-    const stairHalfW = 28;
-
+    // 各区間にシームレスな3D階段を描画（奥から手前へ描画することで手前の段が上に重なる自然な3D遠近法）
     for (let i = pts.length - 2; i >= 0; i--) {
-      const p1 = pts[i];
-      const p2 = pts[i + 1];
+      const p1 = pts[i + 1]; // 手前（下、y大）
+      const p2 = pts[i];     // 奥（上、y小）
       const x1 = (p1.x / 100) * W;
       const y1 = p1.y;
       const x2 = (p2.x / 100) * W;
@@ -7116,79 +7135,83 @@ function layoutMap(){
       const dx = x2 - x1;
       const dy = y2 - y1;
       const dist = Math.hypot(dx, dy);
-      const numSteps = Math.max(3, Math.round(dist / stepLen));
+      const numSteps = Math.max(4, Math.round(dist / 14));
 
       const ux = dx / dist;
       const uy = dy / dist;
       const px = -uy;
       const py = ux;
 
+      const segBiome = getBiome((y1 + y2) / 2);
+
+      // 1. 区間の滑らかな3D基礎基底（後ろの黒い影を廃止し、バイオームに調和した厚みのある石造り基礎アンダーケーシング）
+      const segD = `M ${x1.toFixed(1)} ${y1.toFixed(1)} L ${x2.toFixed(1)} ${y2.toFixed(1)}`;
+      svgHtml += `<path d="${segD}" fill="none" stroke="${segBiome.curbBase}" stroke-width="${stairHalfW * 2 + 8}" stroke-linecap="round" stroke-linejoin="round" transform="translate(0, 8)"/>`;
+      svgHtml += `<path d="${segD}" fill="none" stroke="${segBiome.curbTop}" stroke-width="${stairHalfW * 2 + 4}" stroke-linecap="round" stroke-linejoin="round"/>`;
+
+      // 2. シームレスに連なる立体ステップ（踏み面・蹴上げ面・エッジハイライト）
       for (let s = numSteps - 1; s >= 0; s--) {
-        const t = (s + 0.5) / numSteps;
-        const cx = x1 + dx * t;
-        const cy = y1 + dy * t;
-        const biome = getBiome(cy);
+        const tBack = (s + 1) / numSteps;
+        const tMid = (s + 0.35) / numSteps;
+        const tFront = s / numSteps;
 
-        const halfW = stairHalfW;
-        const halfD = 7;
-        const riserH = 7;
+        const cBack = { x: x1 + dx * tBack, y: y1 + dy * tBack };
+        const cMid = { x: x1 + dx * tMid, y: y1 + dy * tMid };
+        const cFront = { x: x1 + dx * tFront, y: y1 + dy * tFront };
 
-        // 踏み面（水平面）の4頂点
-        const pTL = { x: cx - px * halfW + ux * halfD, y: cy - py * halfW + uy * halfD };
-        const pTR = { x: cx + px * halfW + ux * halfD, y: cy + py * halfW + uy * halfD };
-        const pBR = { x: cx + px * halfW - ux * halfD, y: cy + py * halfW - uy * halfD };
-        const pBL = { x: cx - px * halfW - ux * halfD, y: cy - py * halfW - uy * halfD };
+        const tl = { x: cBack.x - px * stairHalfW, y: cBack.y - py * stairHalfW };
+        const tr = { x: cBack.x + px * stairHalfW, y: cBack.y + py * stairHalfW };
+        const ml = { x: cMid.x - px * stairHalfW, y: cMid.y - py * stairHalfW };
+        const mr = { x: cMid.x + px * stairHalfW, y: cMid.y + py * stairHalfW };
+        const bl = { x: cFront.x - px * stairHalfW, y: cFront.y - py * stairHalfW };
+        const br = { x: cFront.x + px * stairHalfW, y: cFront.y + py * stairHalfW };
 
-        // 蹴込み面（手前面・垂直立体部）
-        const rBL = { x: pBL.x, y: pBL.y + riserH };
-        const rBR = { x: pBR.x, y: pBR.y + riserH };
+        const treadPoly = `${tl.x.toFixed(1)},${tl.y.toFixed(1)} ${tr.x.toFixed(1)},${tr.y.toFixed(1)} ${mr.x.toFixed(1)},${mr.y.toFixed(1)} ${ml.x.toFixed(1)},${ml.y.toFixed(1)}`;
+        const riserPoly = `${ml.x.toFixed(1)},${ml.y.toFixed(1)} ${mr.x.toFixed(1)},${mr.y.toFixed(1)} ${br.x.toFixed(1)},${br.y.toFixed(1)} ${bl.x.toFixed(1)},${bl.y.toFixed(1)}`;
 
-        const treadPoly = `${pTL.x.toFixed(1)},${pTL.y.toFixed(1)} ${pTR.x.toFixed(1)},${pTR.y.toFixed(1)} ${pBR.x.toFixed(1)},${pBR.y.toFixed(1)} ${pBL.x.toFixed(1)},${pBL.y.toFixed(1)}`;
-        const riserPoly = `${pBL.x.toFixed(1)},${pBL.y.toFixed(1)} ${pBR.x.toFixed(1)},${pBR.y.toFixed(1)} ${rBR.x.toFixed(1)},${rBR.y.toFixed(1)} ${rBL.x.toFixed(1)},${rBL.y.toFixed(1)}`;
-
-        // 影
-        svgHtml += `<polygon points="${riserPoly}" fill="rgba(0,0,0,0.3)" transform="translate(0, 3)"/>`;
-        // 蹴込み面（手前垂直面）
-        svgHtml += `<polygon points="${riserPoly}" fill="${biome.stepRiser}" stroke="#1e293b" stroke-width="0.8"/>`;
-        // 踏み面（上面）
-        svgHtml += `<polygon points="${treadPoly}" fill="${biome.stepTread}" stroke="${biome.trim}" stroke-width="1.2"/>`;
-        // 縁取りハイライト
-        svgHtml += `<line x1="${pBL.x.toFixed(1)}" y1="${pBL.y.toFixed(1)}" x2="${pBR.x.toFixed(1)}" y2="${pBR.y.toFixed(1)}" stroke="${biome.trim}" stroke-width="2" stroke-linecap="round"/>`;
+        // 垂直蹴上げ面（影）
+        svgHtml += `<polygon points="${riserPoly}" fill="${segBiome.stepRiser}"/>`;
+        // 水平踏み面（光）
+        svgHtml += `<polygon points="${treadPoly}" fill="${segBiome.stepTread}"/>`;
+        // ステップエッジのシャープな光沢ハイライト
+        svgHtml += `<line x1="${ml.x.toFixed(1)}" y1="${ml.y.toFixed(1)}" x2="${mr.x.toFixed(1)}" y2="${mr.y.toFixed(1)}" stroke="${segBiome.edge}" stroke-width="2.2" stroke-linecap="round"/>`;
       }
     }
 
     svg.innerHTML = svgHtml;
 
-    const clearedArr = Array.isArray(S && S.cleared) ? S.cleared : [];
-    const curIdx = (S && typeof S.currentBattleIndex === 'number') ? S.currentBattleIndex : 0;
+    // マス（ボタン）の生成と配置
+    const clearedArr = S.clearedBattles || [];
+    const curIdx = S.currentBattleIndex || 0;
 
     pts.forEach((p, i) => {
-      const row = ROWS[i];
-      if(!row) return;
-
-      const t = document.createElement('button');
+      const row = ROWS[i] || {};
+      const t = document.createElement('div');
       t.className = 'tile';
       t.id = 'tile-' + (i + 1);
       t.style.left = p.x + '%';
       t.style.top = p.y + 'px';
+      // 下の段（手前）ほど高い z-index にして、手前のマスが奥の階段の前に立つ自然な遠近法
+      t.style.zIndex = String(10 + (pts.length - i));
       t.textContent = i + 1;
 
       if(clearedArr.includes(i)) t.classList.add('cleared');
       else if(i === curIdx) t.classList.add('current');
       else if(i > curIdx) t.classList.add('locked');
 
-      // タイプバッジを廃止し、マスの上に登場ポケモンを1.5倍（84px）で堂々配置
+      // ポケモンをマスの横（カーブの内側中央寄り）に堂々と配置！数字や他のマスと絶対に被らない！
       const pid = pokeId(row.pokemon_name) || (i + 1);
       const pokeImg = document.createElement('img');
-      pokeImg.className = 'map-tile-pokemon';
-      pokeImg.src = ART(pid);
-      pokeImg.alt = row.pokemon_name;
+      const sideClass = p.x > 50 ? 'poke-side-left' : 'poke-side-right';
+      pokeImg.className = 'map-tile-pokemon ' + sideClass;
+      pokeImg.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pid}.png`;
+      pokeImg.alt = row.pokemon_name || '';
       t.appendChild(pokeImg);
 
-      t.onclick = () => {
-        playPikaanSound();
+      t.addEventListener('click', () => {
         openBattle(i);
-      };
+      });
+
       tilesBox.appendChild(t);
     });
   } catch(err) {

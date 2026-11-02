@@ -6519,6 +6519,677 @@ function completeBookDrill() {
   updateThrow();
 }
 
+/* ===== RESTORED DRILL INITIALIZERS ===== */
+function initBattle35Sandile() {
+  const container = document.querySelector('.drill-book-page');
+  if (!container) return;
+
+  const cells = Array.from(container.querySelectorAll('.b23-cell.blank'));
+  let activeStep = 12;
+
+  function setActive(step) {
+    activeStep = step;
+    cells.forEach(c => {
+      if (parseInt(c.dataset.step) === activeStep) c.classList.add('active');
+      else c.classList.remove('active');
+    });
+  }
+
+  cells.forEach(c => {
+    c.onclick = () => {
+      playMarimbaPop(1.1);
+      setActive(parseInt(c.dataset.step));
+    };
+  });
+
+  const firstUnfilled = cells.find(c => !c.dataset.val);
+  setActive(firstUnfilled ? parseInt(firstUnfilled.dataset.step) : 12);
+
+  const tray = container.querySelector('.num-choice-tray');
+  if (tray) {
+    tray.onclick = (e) => {
+      const btn = e.target.closest('.num-choice-btn');
+      if (!btn) return;
+      const val = btn.dataset.val;
+      const targetCell = document.getElementById('b35_cell_' + activeStep);
+      if (!targetCell) return;
+
+      const arrow = targetCell.querySelector('.b23-dir-arrow');
+      const arrowHtml = arrow ? arrow.outerHTML : '';
+
+      if (val === 'erase') {
+        playMarimbaPop(0.8);
+        delete targetCell.dataset.val;
+        targetCell.innerHTML = arrowHtml + '？';
+        targetCell.classList.remove('filled', 'correct');
+      } else {
+        playMarimbaPop(1.2);
+        targetCell.dataset.val = val;
+        targetCell.innerHTML = arrowHtml + val;
+        targetCell.classList.add('filled');
+
+        if (val === targetCell.dataset.ans) {
+          targetCell.classList.add('correct');
+        } else {
+          targetCell.classList.remove('correct');
+        }
+
+        const blankSteps = [12, 13, 14, 16, 17, 18, 20, 21, 23, 24, 25, 27, 29, 30];
+        const nextBlank = blankSteps.find(s => s > activeStep && !document.getElementById('b35_cell_' + s)?.dataset.val);
+        if (nextBlank) {
+          setActive(nextBlank);
+        } else {
+          const anyBlank = blankSteps.find(s => !document.getElementById('b35_cell_' + s)?.dataset.val);
+          if (anyBlank) setActive(anyBlank);
+        }
+      }
+
+      const allCorrect = cells.every(c => c.dataset.val === c.dataset.ans);
+      if (allCorrect) {
+        cells.forEach(c => c.classList.add('correct'));
+        completeBookDrill();
+      }
+    };
+  }
+}
+
+
+function initBattle36Togedemaru() {
+  const container = document.querySelector('.drill-book-page');
+  if (!container) return;
+
+  const correctPicks = { '1': '21', '2': '25', '3': '24', '4': '29', '5': '28', '6': '30' };
+  const userPicks = {};
+
+  container.querySelectorAll('.b36-step-row').forEach(row => {
+    const s = row.dataset.step;
+    const btns = row.querySelectorAll('.b36-fork-btn');
+    btns.forEach(btn => {
+      btn.onclick = () => {
+        const val = btn.dataset.val;
+        if (val === correctPicks[s]) {
+          playMarimbaPop(1.3);
+          btns.forEach(b => b.classList.remove('correct', 'wrong'));
+          btn.classList.add('correct');
+          userPicks[s] = val;
+
+          // Check all 6 steps
+          const allSteps = Object.keys(correctPicks).every(k => userPicks[k] === correctPicks[k]);
+          if (allSteps) {
+            stampDrillSuccess();
+            (S.answers[curIdx] = S.answers[curIdx] || {})._completed = true;
+            save();
+            updateThrow();
+          }
+        } else {
+          playMarimbaPop(0.7);
+          btn.classList.add('wrong');
+          setTimeout(() => btn.classList.remove('wrong'), 600);
+        }
+      };
+    });
+  });
+}
+
+
+
+/* ===== AUTHENTIC INITIALIZERS (Battles 34 to 55_2) ===== */
+
+/* ===== BATTLES 5, 6, 20, 21 INITIALIZERS ===== */
+
+/* 統一教科書UIコントローラー群（Battle 1〜19） */
+
+function checkUnifiedCompletion(neededCount) {
+  const a = S.answers[curIdx] || {};
+  let count = 0;
+  for(let i=0; i<neededCount; i++){
+    if(a[i] != null) count++;
+  }
+  if(count === neededCount){
+    stampDrillSuccess();
+    a._completed = true;
+    save();
+    updateThrow();
+  }
+}
+
+
+function initAchamoMatchUnified(){
+  initAchamoMatch();
+  // もんだい②と③の選択肢ボタン
+  const q2Box = $('b1_q2_choices');
+  if(q2Box){
+    q2Box.innerHTML = '';
+    ['りんご', 'アチャモ'].forEach(ch => {
+      const b = document.createElement('button');
+      b.className = 'choice' + ((S.answers[curIdx]||{})[1] === ch ? ' sel' : '');
+      b.textContent = ch;
+      b.style.fontSize = '16px';
+      b.style.padding = '8px 16px';
+      b.onclick = () => {
+        playMarimbaPop(1.2);
+        q2Box.querySelectorAll('.choice').forEach(x => x.classList.remove('sel'));
+        b.classList.add('sel');
+        (S.answers[curIdx] = S.answers[curIdx] || {})[1] = ch;
+        save();
+        updateThrow();
+        const a = S.answers[curIdx] || {};
+        if(a[1] === 'りんご' && a[2] === 'たりる') stampDrillSuccess();
+      };
+      q2Box.appendChild(b);
+    });
+  }
+
+  const q3Box = $('b1_q3_choices');
+  if(q3Box){
+    q3Box.innerHTML = '';
+    ['たりる', 'たりない'].forEach(ch => {
+      const b = document.createElement('button');
+      b.className = 'choice' + ((S.answers[curIdx]||{})[2] === ch ? ' sel' : '');
+      b.textContent = ch;
+      b.style.fontSize = '16px';
+      b.style.padding = '8px 16px';
+      b.onclick = () => {
+        playMarimbaPop(1.2);
+        q3Box.querySelectorAll('.choice').forEach(x => x.classList.remove('sel'));
+        b.classList.add('sel');
+        (S.answers[curIdx] = S.answers[curIdx] || {})[2] = ch;
+        save();
+        updateThrow();
+        const a = S.answers[curIdx] || {};
+        if(a[1] === 'りんご' && a[2] === 'たりる') stampDrillSuccess();
+      };
+      q3Box.appendChild(b);
+    });
+  }
+}
+
+
+function initBattle2Unified(){
+  initBattle2Count();
+  const q1Box = $('b2_q1_choices');
+  if(q1Box){
+    q1Box.innerHTML = '';
+    ['4', '5', '6', '7'].forEach(ch => {
+      const b = document.createElement('button');
+      b.className = 'choice' + ((S.answers[curIdx]||{})[0] === ch ? ' sel' : '');
+      b.textContent = ch + 'ひき';
+      b.style.fontSize = '16px';
+      b.style.padding = '8px 14px';
+      b.onclick = () => {
+        playMarimbaPop(1.2);
+        q1Box.querySelectorAll('.choice').forEach(x => x.classList.remove('sel'));
+        b.classList.add('sel');
+        (S.answers[curIdx] = S.answers[curIdx] || {})[0] = ch;
+        save();
+        updateThrow();
+        const a = S.answers[curIdx] || {};
+        if(a[0] === '6' && a[1] === '7') stampDrillSuccess();
+      };
+      q1Box.appendChild(b);
+    });
+  }
+
+  const q2Box = $('b2_q2_choices');
+  if(q2Box){
+    q2Box.innerHTML = '';
+    ['5', '6', '7', '8'].forEach(ch => {
+      const b = document.createElement('button');
+      b.className = 'choice' + ((S.answers[curIdx]||{})[1] === ch ? ' sel' : '');
+      b.textContent = ch + 'ひき';
+      b.style.fontSize = '16px';
+      b.style.padding = '8px 14px';
+      b.onclick = () => {
+        playMarimbaPop(1.2);
+        q2Box.querySelectorAll('.choice').forEach(x => x.classList.remove('sel'));
+        b.classList.add('sel');
+        (S.answers[curIdx] = S.answers[curIdx] || {})[1] = ch;
+        save();
+        updateThrow();
+        const a = S.answers[curIdx] || {};
+        if(a[0] === '6' && a[1] === '7') stampDrillSuccess();
+      };
+      q2Box.appendChild(b);
+    });
+  }
+}
+
+
+function initBattle3Unified(shuffledNums){
+  // まる塗りインタラクション
+  document.querySelectorAll('.drill-book-page .pd-dot.tap-dot').forEach(dot => {
+    dot.onclick = () => {
+      playMarimbaPop(1.3);
+      dot.classList.toggle('filled');
+    };
+  });
+
+  // 数字選択ボタン
+  document.querySelectorAll('.drill-book-page .pd-btn').forEach(btn => {
+    btn.onclick = () => {
+      const q = parseInt(btn.dataset.q, 10);
+      const val = btn.dataset.val;
+      const parent = $('b3_choices_' + q);
+      if(parent) parent.querySelectorAll('.pd-btn').forEach(b => b.classList.remove('sel'));
+      btn.classList.add('sel');
+      playMarimbaPop(1.2);
+
+
+      (S.answers[curIdx] = S.answers[curIdx] || {})[q] = val;
+      save();
+      updateThrow();
+
+      // 正解チェック
+      const a = S.answers[curIdx] || {};
+      let allCorrect = true;
+      for(let i=0; i<shuffledNums.length; i++){
+        if(a[i] !== String(shuffledNums[i])) allCorrect = false;
+      }
+      if(allCorrect) stampDrillSuccess();
+    };
+  });
+}
+
+
+function initBattle7Unified(shuffledNums){
+  // まる塗りインタラクション
+  document.querySelectorAll('.drill-book-page .pd-dot.tap-dot').forEach(dot => {
+    dot.onclick = () => {
+      playMarimbaPop(1.3);
+      dot.classList.toggle('filled');
+    };
+  });
+
+  // 数字選択ボタン
+  document.querySelectorAll('.drill-book-page .pd-btn').forEach(btn => {
+    btn.onclick = () => {
+      const q = parseInt(btn.dataset.q, 10);
+      const val = btn.dataset.val;
+      const parent = $('b7_choices_' + q);
+      if(parent) parent.querySelectorAll('.pd-btn').forEach(b => b.classList.remove('sel'));
+      btn.classList.add('sel');
+      playMarimbaPop(1.2);
+
+
+      (S.answers[curIdx] = S.answers[curIdx] || {})[q] = val;
+      save();
+      updateThrow();
+
+      // 正解チェック
+      const a = S.answers[curIdx] || {};
+      let allCorrect = true;
+      for(let i=0; i<shuffledNums.length; i++){
+        if(a[i] !== String(shuffledNums[i])) allCorrect = false;
+      }
+      if(allCorrect) stampDrillSuccess();
+    };
+  });
+}
+
+
+function initBattleTreeUnified(meta){
+  document.querySelectorAll('.drill-book-page .choice[data-q]').forEach(btn => {
+    btn.onclick = () => {
+      const q = parseInt(btn.dataset.q, 10);
+      const val = btn.dataset.val;
+      const parent = $('treeChoices_' + q);
+      if(parent) parent.querySelectorAll('.choice').forEach(b => b.classList.remove('sel'));
+      btn.classList.add('sel');
+      playMarimbaPop(1.2);
+
+      const targetBox = $('treeTarget_' + q);
+      if(targetBox){
+        targetBox.textContent = val;
+        targetBox.classList.add('filled');
+        targetBox.style.border = '3px solid #10b981';
+        targetBox.style.background = '#ecfdf5';
+        targetBox.style.color = '#047857';
+        targetBox.style.boxShadow = '0 4px 0 #059669';
+      }
+      const iconsBox = $('treeTargetIcons_' + q);
+      if(iconsBox){
+        iconsBox.textContent = meta.icon.repeat(parseInt(val, 10));
+        iconsBox.style.color = 'inherit';
+      }
+
+      (S.answers[curIdx] = S.answers[curIdx] || {})[q] = val;
+      save();
+      updateThrow();
+
+      // 全問正解チェック
+      const a = S.answers[curIdx] || {};
+      let allCorrect = true;
+      for(let g=1; g<meta.total; g++){
+        const expected = String(meta.total - g);
+        if(a[g-1] !== expected) allCorrect = false;
+      }
+      if(allCorrect) stampDrillSuccess();
+    };
+  });
+}
+
+
+function initBattle17Unified(qs){
+  document.querySelectorAll('.drill-book-page .choice[data-q]').forEach(btn => {
+    btn.onclick = () => {
+      const q = parseInt(btn.dataset.q, 10);
+      const val = btn.dataset.val;
+      const parent = $('b17_choices_' + q);
+      if(parent) parent.querySelectorAll('.choice').forEach(b => b.classList.remove('sel'));
+      btn.classList.add('sel');
+      playMarimbaPop(1.2);
+
+      (S.answers[curIdx] = S.answers[curIdx] || {})[q] = val;
+      save();
+      updateThrow();
+
+      const a = S.answers[curIdx] || {};
+      if(qs.every((item, i) => a[i] === item.ans)) stampDrillSuccess();
+    };
+  });
+}
+
+
+function initBattle18Unified(qs){
+  document.querySelectorAll('.drill-book-page .choice[data-q]').forEach(btn => {
+    btn.onclick = () => {
+      const q = parseInt(btn.dataset.q, 10);
+      const val = btn.dataset.val;
+      const parent = $('b18_choices_' + q);
+      if(parent) parent.querySelectorAll('.choice').forEach(b => b.classList.remove('sel'));
+      btn.classList.add('sel');
+      playMarimbaPop(1.2);
+
+      (S.answers[curIdx] = S.answers[curIdx] || {})[q] = val;
+      save();
+      updateThrow();
+
+      const a = S.answers[curIdx] || {};
+      if(qs.every((item, i) => a[i] === item.ans)) stampDrillSuccess();
+    };
+  });
+}
+
+
+function initBattle19New() {
+  const p = document.querySelector('.drill-book-page');
+  if(!p) return;
+
+  const expectedAnswers = {
+    'plate_0': 3,
+    'plate_1': 2,
+    'plate_2': 1,
+    'plate_3': 0,
+    'ring_0': 1,
+    'ring_1': 3,
+    'ring_2': 0,
+    'ring_3': 2
+  };
+
+  const userAnswers = {};
+  const cards = [
+    p.querySelector('#b19_card_0'),
+    p.querySelector('#b19_card_1'),
+    p.querySelector('#b19_card_2'),
+    p.querySelector('#b19_card_3'),
+    p.querySelector('#b19_card_4'),
+    p.querySelector('#b19_card_5'),
+    p.querySelector('#b19_card_6'),
+    p.querySelector('#b19_card_7')
+  ];
+
+  p.querySelectorAll('.b19-choice-btn').forEach(btn => {
+    btn.onclick = () => {
+      const qid = btn.dataset.qid;
+      const val = parseInt(btn.dataset.val, 10);
+      userAnswers[qid] = val;
+
+      const group = p.querySelector('#b19_group_' + qid);
+      if(group) {
+        group.querySelectorAll('.b19-choice-btn').forEach(b => b.classList.remove('selected'));
+      }
+      btn.classList.add('selected');
+
+      const isRight = expectedAnswers[qid] === val;
+      playMarimbaPop(isRight ? 1.3 : 0.8);
+
+      // Check card
+      const cardIdx = ['plate_0', 'plate_1', 'plate_2', 'plate_3', 'ring_0', 'ring_1', 'ring_2', 'ring_3'].indexOf(qid);
+      if(cardIdx !== -1 && cards[cardIdx]) {
+        if(isRight) cards[cardIdx].classList.add('is-correct');
+        else cards[cardIdx].classList.remove('is-correct');
+      }
+
+      // Check all
+      const allDone = Object.keys(expectedAnswers).every(k => userAnswers[k] === expectedAnswers[k]);
+      if(allDone) {
+        setTimeout(completeBookDrill, 400);
+      }
+    };
+  });
+}
+
+function initAppleSplitSequential(isB5) {
+  const top1 = isB5 ? 1 : 3;
+  const maxBot1 = isB5 ? 4 : 2;
+  const top2 = isB5 ? 2 : 4;
+  const maxBot2 = isB5 ? 3 : 1;
+
+  let bot1 = 0, bot2 = 0;
+  const p1Bot = $('p1_plateBot');
+  const p1Total = $('p1_total');
+  const p2Bot = $('p2_plateBot');
+  const p2Total = $('p2_total');
+
+  function renderP1() {
+    let h = '';
+    for(let k=0; k<bot1; k++) h += '<span class="plate-apple" style="font-size:24px;line-height:1;margin:2px">🍎</span>';
+    if(p1Bot) p1Bot.innerHTML = h;
+    if(p1Total) p1Total.textContent = top1 + bot1;
+  }
+  function renderP2() {
+    let h = '';
+    for(let k=0; k<bot2; k++) h += '<span class="plate-apple" style="font-size:24px;line-height:1;margin:2px">🍎</span>';
+    if(p2Bot) p2Bot.innerHTML = h;
+    if(p2Total) p2Total.textContent = top2 + bot2;
+  }
+
+  const p1Add = $('p1_btnAdd');
+  const p1Rem = $('p1_btnRemove');
+  if(p1Add) p1Add.onclick = () => {
+    if(bot1 < maxBot1){
+      playMarimbaPop(1.3);
+      bot1++;
+      renderP1();
+    }
+  };
+  if(p1Rem) p1Rem.onclick = () => {
+    if(bot1 > 0){
+      playMarimbaPop(0.9);
+      bot1--;
+      renderP1();
+    }
+  };
+
+  const p2Add = $('p2_btnAdd');
+  const p2Rem = $('p2_btnRemove');
+  if(p2Add) p2Add.onclick = () => {
+    if(bot2 < maxBot2){
+      playMarimbaPop(1.3);
+      bot2++;
+      renderP2();
+    }
+  };
+  if(p2Rem) p2Rem.onclick = () => {
+    if(bot2 > 0){
+      playMarimbaPop(0.9);
+      bot2--;
+      renderP2();
+    }
+  };
+
+  // Choice buttons for Problem 1
+  const saved = S.answers[curIdx] || {};
+  const p1Box = $('p1_choices');
+  if(p1Box){
+    p1Box.innerHTML = '';
+    ['1', '2', '3', '4', '5'].forEach(ch => {
+      const b = document.createElement('button');
+      b.className = 'choice';
+      b.style.fontSize = '17px';
+      b.style.padding = '8px 14px';
+      b.innerHTML = '<span style="font-weight:900;font-size:20px">' + ch + '</span>';
+      b.style.minWidth = '52px';
+      b.style.height = '48px';
+      b.style.display = 'inline-flex';
+      b.style.alignItems = 'center';
+      b.style.justifyContent = 'center';
+      if(saved[0] === ch) b.classList.add('sel');
+      b.onclick = () => {
+        playMarimbaPop(1.2);
+        p1Box.querySelectorAll('.choice').forEach(x => x.classList.remove('sel'));
+        b.classList.add('sel');
+        if(!S.answers[curIdx]) S.answers[curIdx] = {};
+        S.answers[curIdx][0] = ch;
+        save();
+        updateThrow();
+        const a = S.answers[curIdx] || {};
+        const exp1 = String(5 - top1);
+        const exp2 = String(5 - top2);
+        if(a[0] === exp1 && a[1] === exp2) stampDrillSuccess();
+      };
+      p1Box.appendChild(b);
+    });
+  }
+
+  // Choice buttons for Problem 2
+  const p2Box = $('p2_choices');
+  if(p2Box){
+    p2Box.innerHTML = '';
+    ['1', '2', '3', '4', '5'].forEach(ch => {
+      const b = document.createElement('button');
+      b.className = 'choice';
+      b.style.fontSize = '17px';
+      b.style.padding = '8px 14px';
+      b.innerHTML = '<span style="font-weight:900;font-size:20px">' + ch + '</span>';
+      b.style.minWidth = '52px';
+      b.style.height = '48px';
+      b.style.display = 'inline-flex';
+      b.style.alignItems = 'center';
+      b.style.justifyContent = 'center';
+      if(saved[1] === ch) b.classList.add('sel');
+      b.onclick = () => {
+        playMarimbaPop(1.2);
+        p2Box.querySelectorAll('.choice').forEach(x => x.classList.remove('sel'));
+        b.classList.add('sel');
+        if(!S.answers[curIdx]) S.answers[curIdx] = {};
+        S.answers[curIdx][1] = ch;
+        save();
+        updateThrow();
+        const a = S.answers[curIdx] || {};
+        const exp1 = String(5 - top1);
+        const exp2 = String(5 - top2);
+        if(a[0] === exp1 && a[1] === exp2) stampDrillSuccess();
+      };
+      p2Box.appendChild(b);
+    });
+  }
+
+  renderP1();
+  renderP2();
+}
+
+
+function initAppleSplitTabs(isB5) {
+  let activeTab = 1;
+  const pTop = $('plateTop');
+  const pBottom = $('plateBottom');
+  const btnAdd = $('btnAddApple');
+  const btnRemove = $('btnRemoveApple');
+  const lblTotal = $('plateTotal');
+  const tab1 = $('b5Tab1');
+  const tab2 = $('b5Tab2');
+
+  let bottomCount = 0;
+
+  function renderState() {
+    let topCount = 1;
+    let maxBottom = 4;
+
+    if (isB5) {
+      topCount = activeTab === 1 ? 1 : 2;
+      maxBottom = activeTab === 1 ? 4 : 3;
+    } else {
+      topCount = activeTab === 1 ? 3 : 4;
+      maxBottom = activeTab === 1 ? 2 : 1;
+    }
+
+    if (bottomCount > maxBottom) bottomCount = maxBottom;
+
+    let topHtml = '';
+    for (let k = 0; k < topCount; k++) topHtml += '<span class="plate-apple">🍎</span>';
+    pTop.innerHTML = topHtml;
+
+    let botHtml = '';
+    for (let k = 0; k < bottomCount; k++) botHtml += '<span class="plate-apple">🍎</span>';
+    pBottom.innerHTML = botHtml;
+
+    lblTotal.textContent = topCount + bottomCount;
+  }
+
+  if (tab1) {
+    tab1.onclick = () => {
+      activeTab = 1;
+      bottomCount = 0;
+      tab1.style.background = '#ea580c';
+      tab1.style.color = '#fff';
+      if (tab2) { tab2.style.background = '#fdba74'; tab2.style.color = '#9a3412'; }
+      renderState();
+    };
+  }
+
+  if (tab2) {
+    tab2.onclick = () => {
+      activeTab = 2;
+      bottomCount = 0;
+      tab2.style.background = '#ea580c';
+      tab2.style.color = '#fff';
+      if (tab1) { tab1.style.background = '#fdba74'; tab1.style.color = '#9a3412'; }
+      renderState();
+    };
+  }
+
+  btnAdd.onclick = () => {
+    let maxBottom = isB5 ? (activeTab === 1 ? 4 : 3) : (activeTab === 1 ? 2 : 1);
+    if (bottomCount < maxBottom) {
+      playMarimbaPop(1.3);
+      bottomCount++;
+      renderState();
+    }
+  };
+
+  btnRemove.onclick = () => {
+    if (bottomCount > 0) {
+      playMarimbaPop(0.9);
+      bottomCount--;
+      renderState();
+    }
+  };
+
+  renderState();
+}
+
+
+function initBattle20Pikachu() {
+  const p = document.querySelector('.drill-book-page');
+  if (!p) return;
+  setupMathBoxController(p, ['5', '6', '4', '3', '2', '4', '2'], () => {
+    playCrystalSparkle();
+    completeBookDrill();
+  });
+}
+
+
 function initBattle21Ribombee() {
   const p = document.querySelector('.drill-book-page');
   if (!p) return;
@@ -14620,34 +15291,38 @@ const BGM_TRACKS = [
     desc: '初代ポケモンの冒険の始まりを告げる伝説のファンファーレとマーチ',
     bpm: 136,
     melody: [
-      // m1: ミ ソ ドー、ミ ソ レー
-      ['E4', 2], ['G4', 2], ['C5', 4], ['E4', 2], ['G4', 2], ['D5', 4],
-      // m2: ミ ソ ラ ソ ファ ミ レー
-      ['E4', 2], ['G4', 2], ['A4', 2], ['G4', 2], ['F4', 2], ['E4', 2], ['D4', 4],
-      // m3-4: ド ミ ソ ドーー、シ ラ ソーー
-      ['C4', 2], ['E4', 2], ['G4', 2], ['C5', 6], ['B4', 2], ['A4', 2],
-      ['G4', 8], ['REST', 8],
-      // m5-6: ファ ラ ド ファー、ミ レ ドーー
-      ['F4', 2], ['A4', 2], ['C5', 2], ['F5', 6], ['E5', 2], ['D5', 2],
-      ['C5', 8], ['REST', 8],
-      // m7-8: レ ファ ラ レー、ド シ ラーー
-      ['D4', 2], ['F4', 2], ['A4', 2], ['D5', 6], ['C5', 2], ['B4', 2],
-      ['A4', 8], ['REST', 8],
-      // m9-10: ソ ラ シ ド レ ミ ファ ソ！ ドーーーン！
-      ['G4', 2], ['A4', 2], ['B4', 2], ['C5', 2], ['D5', 2], ['E5', 2], ['F5', 2], ['G5', 2],
-      ['C5', 12], ['REST', 4]
+      // m1-2: ゲンガーVSニドリーノ 緊迫のバトルイントロリフ (D minor)
+      ['D4', 2], ['F4', 2], ['G4', 2], ['GS4', 2], ['A4', 4], ['D5', 4],
+      ['C5', 2], ['A4', 2], ['F4', 2], ['D4', 2], ['E4', 4], ['D4', 4],
+      // m3-4: タイトル画面へ切り替わる上昇グリッサンド＆キック
+      ['D4', 1], ['F4', 1], ['A4', 1], ['C5', 1], ['D5', 4], ['C5', 2], ['A4', 2], ['G4', 2], ['F4', 2],
+      ['G4', 4], ['A4', 4], ['D4', 6], ['REST', 2],
+      // m5-6: 栄光のタイトル画面メインファンファーレ（ド・ミ・ソ・ドー・ド・シ・ラ・ソー）
+      ['C5', 2], ['E5', 2], ['G5', 2], ['C6', 6], ['B5', 2], ['A5', 2],
+      ['G5', 8], ['REST', 8],
+      // m7-8: ファ・ソ・ラ・ド・シ・ラ・ソー、ファー・ミー・レー
+      ['F5', 2], ['G5', 2], ['A5', 2], ['C6', 4], ['B5', 2], ['A5', 2], ['G5', 2],
+      ['F5', 4], ['E5', 4], ['D5', 8],
+      // m9-10: ド・ミ・ソ・ドー・ド・シ・ラ・ソー、ラ・ソ・ファ・ミ・レー・ドー
+      ['C5', 2], ['E5', 2], ['G5', 2], ['C6', 6], ['B5', 2], ['A5', 2],
+      ['G5', 2], ['A5', 2], ['G5', 2], ['F5', 2], ['E5', 2], ['D5', 2], ['C5', 4]
     ],
     bass: [
-      ['C3', 4], ['G3', 4], ['C3', 4], ['E3', 4],
-      ['F3', 4], ['C3', 4], ['G3', 4], ['D3', 4],
+      // m1-2: GB名物 D-D-A-D 高速刻み
+      ['D3', 2], ['D3', 2], ['A3', 2], ['D3', 2], ['D3', 2], ['A3', 2], ['D3', 2], ['C3', 2],
+      ['D3', 2], ['D3', 2], ['A3', 2], ['D3', 2], ['D3', 2], ['A3', 2], ['D3', 2], ['C3', 2],
+      // m3-4
+      ['D3', 2], ['D3', 2], ['A3', 2], ['D3', 2], ['F3', 4], ['G3', 4],
+      ['A3', 4], ['AS3', 4], ['D3', 6], ['REST', 2],
+      // m5-6: Cメジャーファンファーレウォーキングベース
       ['C3', 4], ['G3', 4], ['C3', 4], ['E3', 4],
       ['G3', 4], ['D3', 4], ['G3', 4], ['B3', 4],
+      // m7-8
       ['F3', 4], ['C3', 4], ['F3', 4], ['A3', 4],
+      ['D3', 4], ['A3', 4], ['G3', 4], ['B3', 4],
+      // m9-10
       ['C3', 4], ['G3', 4], ['C3', 4], ['E3', 4],
-      ['D3', 4], ['A3', 4], ['D3', 4], ['FS3', 4],
-      ['G3', 4], ['D3', 4], ['G3', 4], ['B3', 4],
-      ['C3', 2], ['D3', 2], ['E3', 2], ['F3', 2], ['G3', 4], ['B3', 4],
-      ['C3', 12], ['REST', 4]
+      ['F3', 4], ['G3', 4], ['C3', 8]
     ]
   },
   {
@@ -14657,90 +15332,90 @@ const BGM_TRACKS = [
     desc: 'スタジアムが熱狂するアップテンポな疾走バトルテーマ',
     bpm: 142,
     melody: [
-      // m1-2: 疾走ブラスリフ
-      ['G4', 4], ['G4', 2], ['G4', 2], ['AS4', 4], ['C5', 4],
-      ['AS4', 4], ['G4', 4], ['F4', 4], ['G4', 4],
-      // m3-4:
-      ['G4', 4], ['G4', 2], ['G4', 2], ['D5', 4], ['C5', 4],
-      ['AS4', 2], ['C5', 2], ['D5', 8], ['REST', 4],
-      // m5-6:
+      // m1-2: ガラルジム戦 疾走メインブラスフック (Gm)
+      ['G4', 2], ['A4', 2], ['AS4', 2], ['D5', 6], ['D5', 2], ['AS4', 2],
+      ['A4', 2], ['G4', 2], ['FS4', 2], ['E4', 4], ['REST', 6],
+      // m3-4: 駆け上がるシンコペーション展開
+      ['G4', 2], ['A4', 2], ['AS4', 2], ['D5', 6], ['F5', 2], ['E5', 2],
+      ['D5', 2], ['C5', 2], ['AS4', 2], ['A4', 2], ['G4', 4], ['REST', 4],
+      // m5-6: スタジアム熱狂のハイピッチ・ブラス
       ['D5', 4], ['D5', 2], ['F5', 2], ['G5', 6], ['F5', 2],
       ['D5', 4], ['C5', 2], ['AS4', 2], ['C5', 4], ['D5', 4],
-      // m7-8:
+      // m7-8: 決めのキメフレーズ
       ['C5', 4], ['AS4', 2], ['G4', 2], ['F4', 4], ['D4', 4],
-      ['G4', 12], ['REST', 4]
+      ['G4', 4], ['AS4', 4], ['G4', 6], ['REST', 2]
     ],
     bass: [
-      ['G2', 2], ['G2', 2], ['G2', 2], ['G2', 2], ['AS2', 4], ['C3', 4],
-      ['AS2', 4], ['G2', 4], ['F2', 4], ['G2', 4],
-      ['G2', 2], ['G2', 2], ['G2', 2], ['G2', 2], ['D3', 4], ['C3', 4],
-      ['AS2', 2], ['C3', 2], ['D3', 8], ['REST', 4],
-      ['DS3', 4], ['DS3', 4], ['F3', 4], ['F3', 4],
-      ['G3', 4], ['F3', 4], ['DS3', 4], ['D3', 4],
-      ['C3', 4], ['D3', 4], ['DS3', 4], ['F3', 4],
-      ['G2', 8], ['G3', 4], ['REST', 4]
+      ['G3', 4], ['D3', 4], ['G3', 4], ['AS3', 4],
+      ['DS3', 4], ['AS3', 4], ['F3', 4], ['C3', 4],
+      ['G3', 4], ['D3', 4], ['G3', 4], ['AS3', 4],
+      ['DS3', 4], ['F3', 4], ['G3', 4], ['D3', 4],
+      ['AS3', 4], ['F3', 4], ['AS3', 4], ['D4', 4],
+      ['C3', 4], ['G3', 4], ['C3', 4], ['E3', 4],
+      ['DS3', 4], ['AS3', 4], ['F3', 4], ['C3', 4],
+      ['G3', 4], ['D3', 4], ['G3', 6], ['REST', 2]
     ]
   },
   {
     id: 'dynamax_swsh',
-    title: 'ソード・シールド：ダイマックス（大合唱）',
+    title: 'ソード・シールド：ダイマックス（スタジアム大歓声）',
     shortTitle: 'ダイマックス',
-    desc: 'スタジアム中の観客が「ウォ〜オ〜オ〜」と歌うクライマックス合唱',
-    bpm: 132,
+    desc: '観客全員による伝説の大合唱「ウォーオ・オオオ」',
+    bpm: 128,
     melody: [
-      // m1-2: ウォ〜オ〜オ〜、オ〜オ〜、ウォ〜オ〜オ〜オ〜オ〜〜
-      ['G4', 6], ['AS4', 2], ['C5', 4], ['AS4', 4],
-      ['G4', 6], ['F4', 2], ['G4', 8],
-      // m3-4: ウォ〜オ〜オ〜、オ〜オ〜、ウォ〜オ〜オ〜オ〜オ〜〜
-      ['AS4', 6], ['C5', 2], ['D5', 4], ['C5', 4],
-      ['AS4', 6], ['A4', 2], ['G4', 8],
-      // m5-6: 大合唱クライマックス
-      ['D5', 4], ['C5', 2], ['AS4', 2], ['C5', 4], ['D5', 4],
-      ['F5', 4], ['D5', 2], ['C5', 2], ['AS4', 4], ['G4', 4],
-      // m7-8:
-      ['AS4', 4], ['C5', 4], ['D5', 4], ['F5', 4],
-      ['G5', 12], ['REST', 4]
+      // m1-2: 「ウォー・オ・オ！ オ・オ・オ・オ！」
+      ['F4', 4], ['AS4', 4], ['C5', 8],
+      ['CS5', 4], ['C5', 2], ['AS4', 2], ['GS4', 4], ['AS4', 4],
+      // m3-4: 「ウォー・オ・オ！ オ・オ・オ〜！」
+      ['F4', 4], ['AS4', 4], ['C5', 8],
+      ['CS5', 4], ['DS5', 4], ['F5', 4], ['C5', 4],
+      // m5-6: 「ウォー・オ・オ・オ！ ウォー・オ・オ・オ！」
+      ['CS5', 4], ['C5', 2], ['AS4', 2], ['GS4', 4], ['F4', 4],
+      ['AS4', 4], ['C5', 4], ['CS5', 4], ['DS5', 4],
+      // m7-8: スタジアム大歓声のクライマックス！
+      ['F5', 6], ['DS5', 2], ['CS5', 4], ['C5', 4],
+      ['AS4', 12], ['REST', 4]
     ],
     bass: [
-      ['G2', 4], ['D3', 4], ['DS3', 4], ['F3', 4],
-      ['G2', 4], ['D3', 4], ['G2', 8],
-      ['AS2', 4], ['F3', 4], ['G3', 4], ['C3', 4],
-      ['DS3', 4], ['F3', 4], ['G2', 8],
-      ['DS3', 4], ['AS2', 4], ['F3', 4], ['C3', 4],
-      ['G2', 4], ['D3', 4], ['DS3', 4], ['F3', 4],
-      ['DS3', 4], ['F3', 4], ['G3', 4], ['AS3', 4],
-      ['G2', 8], ['G3', 4], ['REST', 4]
+      ['AS2', 4], ['F3', 4], ['AS2', 4], ['F3', 4],
+      ['FS2', 4], ['CS3', 4], ['GS2', 4], ['DS3', 4],
+      ['AS2', 4], ['F3', 4], ['AS2', 4], ['F3', 4],
+      ['FS2', 4], ['CS3', 4], ['F2', 4], ['C3', 4],
+      ['FS2', 4], ['CS3', 4], ['GS2', 4], ['DS3', 4],
+      ['AS2', 4], ['F3', 4], ['FS2', 4], ['CS3', 4],
+      ['DS2', 4], ['AS2', 4], ['F2', 4], ['C3', 4],
+      ['AS2', 12], ['REST', 4]
     ]
   },
   {
     id: 'pasapasa_poco',
     title: 'ぽこあポケモン：パサパサこうや',
     shortTitle: 'ぱさぱさこうや',
-    desc: '荒野を元気に行進する、アコースティックで陽気なカントリーメロディ',
-    bpm: 126,
+    desc: '開拓フロンティアの乾いた風と口笛が心地よいカントリー調',
+    bpm: 108,
     melody: [
-      // m1-2: 荒野を口笛で行進するカントリーメロディ
-      ['G4', 4], ['B4', 2], ['D5', 2], ['E5', 4], ['D5', 4],
-      ['B4', 2], ['A4', 2], ['G4', 4], ['E4', 4], ['D4', 4],
-      // m3-4:
-      ['A4', 4], ['B4', 2], ['C5', 2], ['B4', 4], ['A4', 4],
-      ['D5', 8], ['REST', 4], ['D4', 4],
-      // m5-6:
-      ['G4', 4], ['B4', 2], ['D5', 2], ['E5', 4], ['D5', 4],
-      ['B4', 2], ['C5', 2], ['D5', 4], ['G5', 4], ['E5', 4],
-      // m7-8:
-      ['D5', 4], ['B4', 2], ['G4', 2], ['A4', 4], ['D5', 4],
-      ['G4', 12], ['REST', 4]
+      // m1-2: 荒野の昼ののどかな口笛アコースティックメロディ (G major)
+      ['D4', 2], ['G4', 2], ['B4', 2], ['D5', 4], ['E5', 2], ['D5', 2], ['B4', 2],
+      ['A4', 2], ['B4', 2], ['C5', 2], ['B4', 2], ['A4', 2], ['G4', 2], ['E4', 2], ['D4', 2],
+      // m3-4: 軽やかにスキップするフレーズ
+      ['G4', 2], ['A4', 2], ['B4', 2], ['D5', 4], ['E5', 2], ['G5', 2], ['E5', 2],
+      ['D5', 4], ['B4', 2], ['A4', 2], ['G4', 6], ['REST', 2],
+      // m5-6: 陽気なカントリー展開
+      ['B4', 2], ['C5', 2], ['D5', 4], ['G5', 4], ['FS5', 2], ['E5', 2],
+      ['D5', 4], ['B4', 2], ['G4', 2], ['A4', 6], ['D4', 2],
+      // m7-8: 温かみのある結び
+      ['G4', 2], ['B4', 2], ['D5', 2], ['E5', 4], ['D5', 2], ['B4', 2], ['A4', 2],
+      ['G4', 8], ['REST', 8]
     ],
     bass: [
-      ['G2', 4], ['D3', 4], ['G2', 4], ['D3', 4],
-      ['G2', 4], ['D3', 4], ['C3', 4], ['G2', 4],
-      ['D3', 4], ['A2', 4], ['D3', 4], ['FS3', 4],
-      ['G3', 4], ['D3', 4], ['G2', 4], ['REST', 4],
-      ['G2', 4], ['D3', 4], ['G2', 4], ['D3', 4],
-      ['C3', 4], ['G3', 4], ['C3', 4], ['E3', 4],
-      ['D3', 4], ['A3', 4], ['D3', 4], ['FS3', 4],
-      ['G3', 4], ['D3', 4], ['G2', 8]
+      ['G2', 4], ['D3', 4], ['G2', 4], ['B2', 4],
+      ['C3', 4], ['G2', 4], ['A2', 4], ['D3', 4],
+      ['G2', 4], ['D3', 4], ['G2', 4], ['B2', 4],
+      ['C3', 4], ['D3', 4], ['G2', 6], ['REST', 2],
+      ['G2', 4], ['B2', 4], ['C3', 4], ['CS3', 4],
+      ['D3', 4], ['A2', 4], ['D3', 6], ['C3', 2],
+      ['B2', 4], ['G2', 4], ['C3', 4], ['D3', 4],
+      ['G2', 8], ['REST', 8]
     ]
   },
   {

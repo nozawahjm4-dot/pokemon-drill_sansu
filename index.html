@@ -168,11 +168,23 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
 .tile.cleared{background:var(--green);border-color:var(--green-d);color:#fff;box-shadow:0 4px 0 var(--green-d),0 6px 14px rgba(0,0,0,.35)}
 .tile.cleared::after{content:"✓";position:absolute;right:-5px;bottom:-5px;background:#fff;color:var(--green-d);border:2.5px solid var(--green-d);
   width:20px;height:20px;border-radius:50%;font-size:12px;display:flex;align-items:center;justify-content:center;font-weight:900;box-shadow:0 2px 4px rgba(0,0,0,.25)}
-.tile.current{background:var(--yellow);border-color:var(--yellow-d);color:#6b4a00;box-shadow:0 4px 0 var(--yellow-d),0 6px 14px rgba(0,0,0,.35);animation:pulse 1.3s infinite}
-.tile.locked{filter:saturate(.4) brightness(.9);opacity:.9}
-@keyframes pulse{
-  0%,100%{box-shadow:0 5px 0 rgba(0,0,0,.35),0 0 0 0 rgba(255,210,63,.95)}
-  50%{box-shadow:0 5px 0 rgba(0,0,0,.35),0 0 0 12px rgba(255,210,63,0)}
+.tile.current{
+  background: linear-gradient(135deg, #fef08a 0%, #eab308 100%) !important;
+  border-color: #ca8a04 !important;
+  color: #713f12 !important;
+  box-shadow: 0 4px 0 #a16207, 0 0 16px rgba(250, 204, 21, 0.9) !important;
+  animation: pulseTile 1.3s infinite !important;
+}
+.tile.locked{filter:saturate(.4) brightness(.9);opacity:.9;cursor:not-allowed}
+@keyframes pulseTile{
+  0%,100%{
+    transform: translate(-50%,-50%) scale(1.05);
+    box-shadow: 0 4px 0 #a16207, 0 0 0 0 rgba(250, 204, 21, 0.95), 0 0 16px rgba(234, 179, 8, 0.75);
+  }
+  50%{
+    transform: translate(-50%,-50%) scale(1.16);
+    box-shadow: 0 5px 0 #a16207, 0 0 0 14px rgba(250, 204, 21, 0), 0 0 28px rgba(250, 204, 21, 0.95);
+  }
 }
 
 /* マスの横に堂々と並び立つポケモン（数字やマス、隣と絶対に被らない配置：64px） */
@@ -5138,6 +5150,7 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
   <button class="hbtn" id="btnToolClock" style="background:#fef3c7;border-color:#f59e0b;color:#b45309;font-weight:900" title="じゆうに うごかせる とけい">⏰ とけい</button>
   <button class="hbtn" id="btnToolCompare" style="background:#e0f2fe;border-color:#38bdf8;color:#0369a1;font-weight:900" title="2つのかずを くらべる">⚖️ かずくらべ</button>
   <button class="hbtn" id="btnZukan">📖 ずかん</button>
+  <button class="hbtn" id="btnJumpProgress" style="background:#f0fdf4;border-color:#86efac;color:#166534;font-weight:900" title="すきな マスへ すすむ（おとな用・データふっき）">⏩ マスをえらぶ</button>
   <button class="hbtn" id="btnResetProgress" style="background:#fef2f2;border-color:#fca5a5;color:#b91c1c;font-weight:900" title="さいしょから やりなおす">🔄 さいしょから</button>
   <button class="hbtn" id="btnQuit">🚪 おわる</button>
 </header>
@@ -6479,6 +6492,44 @@ function makeDrillBookFooter(pokeName, zukanText, typeText, heightText, weightTe
   '</div>';
 }
 
+// ドリル正解クリア・進行・ポイント獲得・図鑑登録の一元管理
+function recordDrillVictory(idx) {
+  if (typeof idx !== 'number' || idx < 0) return;
+  const row = (ROWS && ROWS[idx]) ? ROWS[idx] : null;
+  const name = row ? row.pokemon_name.replace(/[(（].*$/, '') : '';
+  const first = !S.cleared.includes(idx);
+
+  // 1. 解答完了フラグ
+  (S.answers[idx] = S.answers[idx] || {})._completed = true;
+
+  // 2. クリア配列へ追加（S.cleared と S.clearedBattles を両方同期）
+  if (first) {
+    S.cleared.push(idx);
+  }
+  S.clearedBattles = [...S.cleared];
+
+  // 3. 次のマスへ進捗更新（現在のマス以下なら必ず次マスへ進む）
+  const maxIdx = (ROWS && ROWS.length) ? ROWS.length - 1 : 54;
+  if (typeof S.currentBattleIndex !== 'number' || S.currentBattleIndex <= idx) {
+    S.currentBattleIndex = Math.min(idx + 1, maxIdx);
+  }
+
+  // 4. ポケモンを図鑑に登録
+  if (name && !S.caught.includes(name)) {
+    S.caught.push(name);
+  }
+
+  // 5. 初回クリアならポイント付与
+  if (first) {
+    S.points = (S.points || 0) + POINT_PER_CLEAR;
+    updatePoints(true);
+  }
+
+  save();
+  updateThrow();
+  if (typeof updateHomeStats === 'function') updateHomeStats();
+}
+
 // 「たいへんよくできました！」スタンプ押印
 function stampDrillSuccess() {
   const page = document.querySelector('.drill-book-page');
@@ -6509,6 +6560,9 @@ function stampDrillSuccess() {
   playFanfare();
   toast('🎉 たいへん よくできました！ 💮', 2200);
 
+  // 正解した瞬間に確実にクリア進捗・次マス解放・ポイントを保存！
+  recordDrillVictory(curIdx);
+
   // 正解してシールが貼られたら、ゲットできるポケモンがページ中央に大きく出現！
   setTimeout(() => {
     openCatchCeremony();
@@ -6516,10 +6570,8 @@ function stampDrillSuccess() {
 }
 
 function completeBookDrill() {
+  recordDrillVictory(curIdx);
   stampDrillSuccess();
-  (S.answers[curIdx] = S.answers[curIdx] || {})._completed = true;
-  save();
-  updateThrow();
 }
 
 /* ===== RESTORED DRILL INITIALIZERS ===== */
@@ -7855,14 +7907,15 @@ function layoutMap(){
     svg.innerHTML = svgHtml;
 
     // マス（ボタン）の生成と配置
-    const clearedArr = S.clearedBattles || [];
+    const clearedArr = S.cleared || S.clearedBattles || [];
     const curIdx = S.currentBattleIndex || 0;
 
     pts.forEach((p, i) => {
       const row = ROWS[i] || {};
       const t = document.createElement('div');
-      t.className = 'tile';
+      t.className = 'tile map-tile';
       t.id = 'tile-' + (i + 1);
+      t.dataset.idx = String(i);
       t.style.left = p.x + '%';
       t.style.top = p.y + 'px';
       // 下の段（手前）ほど高い z-index にして、手前のマスが奥の階段の前に立つ自然な遠近法
@@ -7883,6 +7936,12 @@ function layoutMap(){
       t.appendChild(pokeImg);
 
       t.addEventListener('click', () => {
+        if(i > (S.currentBattleIndex || 0)){
+          playMarimbaPop(0.7);
+          toast(`🔒 バトル ${i + 1} は まだ ロックされているよ！<br>ひかっている バトル ${(S.currentBattleIndex || 0) + 1} から じゅんばんに すすめよう！`, 2000);
+          scrollToCurrent();
+          return;
+        }
         openBattle(i);
       });
 
@@ -12319,9 +12378,7 @@ function initSequenceFill(board, correctAnswers, paletteChips){
     if(filledCount === emptyIndices.length){
       if(correct){
         $('seqDoneMsg').style.display = 'block';
-        (S.answers[curIdx] = S.answers[curIdx] || {})._completed = true;
-        save();
-        updateThrow();
+        recordDrillVictory(curIdx);
         speak('ぜんぶの マスが ただしく ならんだよ！ すばらしい！');
         stampDrillSuccess();
       } else {
@@ -15248,12 +15305,17 @@ function backToMap(){
   }
   document.querySelectorAll('.drill-flying-ball, .catch-sparkle-item').forEach(el => el.remove());
 
+  // ドリル画面で正解していた場合は確実にクリア＆進行＆ポイントを確定！
+  if(typeof curIdx === 'number' && curIdx >= 0 && S.answers && S.answers[curIdx] && S.answers[curIdx]._completed){
+    recordDrillVictory(curIdx);
+  }
+
   $('home').classList.remove('active');
   $('battle').classList.remove('active');
   $('map').classList.add('active');
   if($('hdrTitleSmall')) $('hdrTitleSmall').innerHTML = '入学準備 さんすう <span class="ver-badge" style="background:#dcfce7;color:#15803d;padding:1px 6px;border-radius:6px;font-size:11px;font-weight:900">Ver 3.0 最新版</span>';
   layoutMap();
-  setTimeout(scrollToCurrent, 80);
+  setTimeout(scrollToCurrent, 120);
 }
 
 function throwBall(){
@@ -15263,18 +15325,9 @@ function throwBall(){
 function onCaught(){
   const row = ROWS[curIdx];
   if (!row) { backToMap(); return; }
-  const first = !S.cleared.includes(curIdx);
   const name = row.pokemon_name.replace(/[(（].*$/, '');
 
-  if(first){
-    S.cleared.push(curIdx);
-    if(S.currentBattleIndex === curIdx) S.currentBattleIndex = Math.min(curIdx + 1, ROWS.length - 1);
-    if(!S.caught.includes(name)) S.caught.push(name);
-  }
-  // ポケモンをゲットしたら毎回10pt入る
-  S.points += POINT_PER_CLEAR;
-  save();
-  updatePoints(true);
+  recordDrillVictory(curIdx);
 
   toast(`🎉 ${name} ゲット！<br>🪙 +${POINT_PER_CLEAR} pt`, 2200);
   backToMap();
@@ -15985,6 +16038,115 @@ function updatePoints(bump){
 }
 
 /* ================= 初期化 ================= */
+
+function openJumpModal() {
+  const modal = $('mJumpModal');
+  const sel = $('jumpTargetSelect');
+  const preview = $('jumpPreviewInfo');
+  const quizQ = $('jumpQuizQuestion');
+  const quizOpts = $('jumpQuizOptions');
+  if (!modal || !sel || !quizQ || !quizOpts) return;
+
+  // 1. セレクトボックスの選択肢構築（Battle 1 〜 55）
+  if (ROWS && ROWS.length) {
+    sel.innerHTML = '';
+    ROWS.forEach((r, idx) => {
+      const opt = document.createElement('option');
+      opt.value = idx + 1; // 1-based battle number
+      const pName = r.pokemon_name ? r.pokemon_name.replace(/[(（].*$/, '') : '';
+      const pts = idx * POINT_PER_CLEAR;
+      opt.textContent = `バトル ${idx + 1}：${pName}（${idx + 1}マス目 / +${pts} pt）`;
+      sel.appendChild(opt);
+    });
+    // 現在の進捗マスを選択状態にしておく
+    sel.value = Math.min((S.currentBattleIndex || 0) + 1, ROWS.length);
+  }
+
+  function updatePreview() {
+    const targetBattleNum = parseInt(sel.value, 10) || 1;
+    const targetIdx = targetBattleNum - 1;
+    const targetPoints = targetIdx * POINT_PER_CLEAR;
+    preview.innerHTML = `📍 <strong>バトル ${targetBattleNum}</strong> に進みます。<br>前までの <strong>${targetIdx} マス分（+${targetPoints} pt）</strong> と、そこまでのポケモン図鑑がすべて復帰されます。`;
+  }
+  sel.onchange = updatePreview;
+  updatePreview();
+
+  // 2. 保護者用セキュリティ九九クイズ（小1では習わない九九の後半）
+  const n1 = 6 + Math.floor(Math.random() * 4); // 6〜9
+  const n2 = 6 + Math.floor(Math.random() * 4); // 6〜9
+  const ans = n1 * n2;
+  quizQ.textContent = `${n1} × ${n2} は なに？`;
+
+  // 誤答ダミーの生成
+  const opts = new Set([ans]);
+  while (opts.size < 4) {
+    const diff = (Math.random() < 0.5 ? -1 : 1) * (Math.floor(Math.random() * 3) + 1) * (Math.random() < 0.5 ? 1 : 10);
+    const fake = ans + diff;
+    if (fake > 0 && fake !== ans && fake <= 100) opts.add(fake);
+  }
+  const shuffled = Array.from(opts).sort(() => Math.random() - 0.5);
+
+  quizOpts.innerHTML = '';
+  shuffled.forEach(val => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'mbtn jump-quiz-opt';
+    btn.dataset.val = String(val);
+    btn.style.cssText = 'background:#fff;color:#15803d;border:2px solid #86efac;font-size:18px;font-weight:900;padding:10px;border-radius:10px;cursor:pointer';
+    btn.textContent = String(val);
+    btn.onclick = () => {
+      if (val === ans) {
+        const targetBattleNum = parseInt(sel.value, 10) || 1;
+        const targetIdx = targetBattleNum - 1;
+        const targetPoints = targetIdx * POINT_PER_CLEAR;
+
+        // 進行度を復帰
+        S.currentBattleIndex = targetIdx;
+        S.cleared = [];
+        for (let k = 0; k < targetIdx; k++) S.cleared.push(k);
+        S.clearedBattles = [...S.cleared];
+
+        // 図鑑の復帰
+        if (ROWS && ROWS.length) {
+          for (let k = 0; k < targetIdx; k++) {
+            if (ROWS[k]) {
+              const pName = ROWS[k].pokemon_name.replace(/[(（].*$/, '');
+              if (pName && !S.caught.includes(pName)) S.caught.push(pName);
+            }
+          }
+        }
+
+        // ポイント付与（スキップ分）
+        S.points = Math.max(S.points || 0, targetPoints);
+        save();
+        updatePoints(true);
+        if (typeof updateHomeStats === 'function') updateHomeStats();
+
+        // モーダルを閉じてマップへ移動
+        closeModal(modal);
+        const homeEl = $('home');
+        const bEl = $('battle');
+        const mEl = $('map');
+        if (homeEl) homeEl.classList.remove('active');
+        if (bEl) bEl.classList.remove('active');
+        if (mEl) mEl.classList.add('active');
+
+        layoutMap();
+        setTimeout(scrollToCurrent, 150);
+        playFanfare();
+        toast(`🎉 バトル ${targetBattleNum} までの データを ふっきしました！<br>🪙 +${targetPoints} pt ゲット！`, 3000);
+      } else {
+        playMarimbaPop(0.7);
+        toast('ちがうよ！ ステージふっきを キャンセルしました。', 1500);
+        closeModal(modal);
+      }
+    };
+    quizOpts.appendChild(btn);
+  });
+
+  openModal('mJumpModal');
+}
+
 function init(){
   const urlParams = new URLSearchParams(window.location.search);
   const autoB = urlParams.get('b') || urlParams.get('battle');
@@ -16060,6 +16222,7 @@ function init(){
     bindClick('homeZkChip', () => openZukan('all'));
     setupBgmAutoStart();
     updateBgmButtonUi();
+    bindClick('btnJumpProgress', openJumpModal);
     bindClick('btnResetProgress', () => openModal('mResetModal'));
     bindClick('btnBack', backToMap);
     bindClick('btnThrow', throwBall);
@@ -16160,6 +16323,38 @@ window.addEventListener('load', () => {
 </div>
 
 <!-- ゲット儀式モーダル（中央巨大ポケモン＆ボール投げ） -->
+<!-- ステージ復帰・マス選択モーダル（大人用保護者セキュリティゲート付き） -->
+<div class="modal" id="mJumpModal">
+  <div class="modal-box" style="max-width:460px;text-align:center">
+    <div style="font-size:32px;margin-bottom:6px">⏩</div>
+    <h3 style="margin:0 0 6px;font-size:20px;color:#166534">ほごしゃのかたへ（ステージふっき）</h3>
+    <p style="font-size:13px;color:#4b5563;line-height:1.5;margin-bottom:12px">
+      アップデートや端末変更等でデータが消えた場合、好きなマスまで進めて復帰できます。<br>
+      <span style="color:#15803d;font-weight:900">進んだマス分のポイント（1マス10pt）と図鑑データもすべて自動で付与されます。</span>
+    </p>
+
+    <!-- ステージ選択エリア -->
+    <div style="background:#f8fafc;border:2px solid #e2e8f0;border-radius:12px;padding:12px;margin-bottom:12px;text-align:left">
+      <label for="jumpTargetSelect" style="display:block;font-size:13px;font-weight:900;color:#334155;margin-bottom:6px">
+        すすみたい マス（バトル）を えらんでください：
+      </label>
+      <select id="jumpTargetSelect" style="width:100%;padding:10px 12px;font-size:15px;font-weight:900;border:2px solid #94a3b8;border-radius:10px;background:#fff;color:#0f172a;cursor:pointer">
+      </select>
+      <div id="jumpPreviewInfo" style="margin-top:8px;font-size:12px;color:#64748b;font-weight:700"></div>
+    </div>
+
+    <!-- 保護者セキュリティ計算クイズ -->
+    <div style="background:#f0fdf4;border:2px dashed #86efac;border-radius:14px;padding:12px;margin-bottom:14px">
+      <div style="font-size:12px;font-weight:900;color:#166534;margin-bottom:4px">【おとなのかたの かくにん】けいさんして こたえを えらんでください</div>
+      <div id="jumpQuizQuestion" style="font-size:22px;font-weight:900;color:#15803d;margin-bottom:8px">8 × 7 = なに？</div>
+      <div id="jumpQuizOptions" style="display:grid;grid-template-columns:repeat(2, 1fr);gap:8px;max-width:280px;margin:0 auto">
+      </div>
+    </div>
+
+    <button type="button" class="mbtn" data-close style="background:#e5e7eb;color:#374151;font-weight:900;padding:8px 20px">キャンセル</button>
+  </div>
+</div>
+
 <div id="drillCatchModal" class="drill-catch-modal">
   <div class="drill-catch-card">
     <div class="catch-congrats-tag">🎉 ぜんぶ せいかい！ たいへん よくできました！ 💮</div>

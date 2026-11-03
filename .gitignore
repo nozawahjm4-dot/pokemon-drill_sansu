@@ -1,4 +1,6 @@
-﻿*.gsheet
+*.gsheet
 desktop.ini
 .tmp.drivedownload/
 .tmp.driveupload/
+scratch/
+verify_*.png

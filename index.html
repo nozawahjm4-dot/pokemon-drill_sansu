@@ -5314,6 +5314,666 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
   border: 1px solid #7dd3fc;
 }
 
+
+
+/* ===== こくごマップ画面 ===== */
+#kokugoMap {
+  width: 100vw;
+  max-width: 100vw;
+  height: calc(100vh - var(--hdr, 64px));
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+}
+#kokugo-map-wrapper {
+  position: relative;
+  width: 100vw;
+  max-width: 100vw;
+  height: 4700px;
+  overflow: hidden;
+  background: #181236;
+}
+#kokugo-map-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+#kokugo-tiles-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: auto;
+  z-index: 20;
+}
+
+/* ミニゲームノードのスタイル */
+.kokugo-minigame-tile {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fef08a, #f59e0b);
+  border: 3.5px solid #ffffff;
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.45);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 25;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+}
+.kokugo-minigame-tile:hover {
+  transform: translate(-50%, -50%) scale(1.15);
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.7);
+}
+.kokugo-minigame-tile.cleared {
+  background: linear-gradient(135deg, #86efac, #22c55e);
+  box-shadow: 0 4px 14px rgba(34, 197, 94, 0.4);
+}
+.kokugo-minigame-tile .mg-icon {
+  font-size: 20px;
+  line-height: 1;
+}
+.kokugo-minigame-tile .mg-badge {
+  font-size: 10px;
+  font-weight: 900;
+  color: #78350f;
+  margin-top: 1px;
+}
+.kokugo-minigame-tile.cleared .mg-badge {
+  color: #064e3b;
+}
+
+/* ===== こくごドリル画面 ===== */
+#kokugoDrill {
+  width: 100vw;
+  max-width: 100vw;
+  min-height: calc(100vh - var(--hdr, 64px));
+  overflow-y: auto;
+  padding: 16px 14px 100px;
+  background: linear-gradient(180deg, #eff6ff 0%, #f8fafc 100%);
+}
+.kokugo-drill-wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.k-drill-header-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+  border: 2px solid #e2e8f0;
+  margin-bottom: 16px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.k-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.k-badge-num {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 900;
+  padding: 4px 14px;
+  border-radius: 9999px;
+  box-shadow: 0 2px 6px rgba(220, 38, 38, 0.3);
+}
+.k-drill-banner {
+  font-size: 20px;
+  font-weight: 900;
+  color: #1e293b;
+  margin: 0;
+}
+.k-header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.k-score-meter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f8fafc;
+  padding: 6px 14px;
+  border-radius: 12px;
+  border: 1.5px solid #cbd5e1;
+}
+.k-score-label {
+  font-size: 12px;
+  font-weight: 800;
+  color: #64748b;
+}
+.k-score-val {
+  font-size: 18px;
+  font-weight: 900;
+  color: #2563eb;
+}
+.k-pass-badge {
+  font-size: 11px;
+  font-weight: 900;
+  background: #dcfce7;
+  color: #15803d;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+/* 2カラムレイアウト（教科書原本の完全再現） */
+.k-drill-body-grid {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 18px;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .k-drill-body-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 左カラム：ポケモンカード & シール枠 */
+.k-poke-card {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 20px;
+  border: 2.5px solid #e2e8f0;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.06);
+  position: sticky;
+  top: 16px;
+}
+.k-poke-img-wrap {
+  width: 100%;
+  aspect-ratio: 1;
+  background: radial-gradient(circle, #f1f5f9 0%, #e2e8f0 100%);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  margin-bottom: 14px;
+  box-shadow: inset 0 2px 8px rgba(0,0,0,0.04);
+}
+.k-poke-art {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.15));
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.k-poke-img-wrap:hover .k-poke-art {
+  transform: scale(1.06);
+}
+.k-poke-info-box {
+  background: #0f172a;
+  border-radius: 16px;
+  padding: 12px 16px;
+  color: #ffffff;
+  margin-bottom: 14px;
+}
+.k-poke-name-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  border-bottom: 1px solid #334155;
+  padding-bottom: 6px;
+}
+.k-poke-name {
+  font-size: 20px;
+  font-weight: 900;
+  color: #f8fafc;
+  letter-spacing: 0.05em;
+}
+.k-poke-cat {
+  font-size: 11px;
+  color: #94a3b8;
+  font-weight: 700;
+}
+.k-poke-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  font-size: 11px;
+  text-align: center;
+}
+.k-stat-label {
+  color: #94a3b8;
+  display: block;
+  font-size: 10px;
+  margin-bottom: 2px;
+}
+.k-stat-val {
+  font-weight: 900;
+  color: #f1f5f9;
+}
+.type-badge {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 6px;
+  font-weight: 900;
+  font-size: 11px;
+}
+
+/* シール枠 & 得点 */
+.k-seal-card {
+  background: #eff6ff;
+  border: 2px dashed #93c5fd;
+  border-radius: 16px;
+  padding: 12px;
+  text-align: center;
+}
+.k-seal-meta-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 800;
+  color: #1e40af;
+  margin-bottom: 8px;
+}
+.k-seal-slot {
+  width: 100%;
+  height: 90px;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1.5px solid #bfdbfe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.k-seal-placeholder {
+  color: #93c5fd;
+  font-size: 13px;
+  font-weight: 900;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.k-seal-placeholder small {
+  font-size: 10px;
+  font-weight: 700;
+  color: #60a5fa;
+}
+.k-seal-stamped {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fef08a, #f59e0b 70%, #d97706 100%);
+  border: 3px solid #ffffff;
+  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #78350f;
+  font-weight: 900;
+  animation: sealPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+@keyframes sealPop {
+  0% { transform: scale(0) rotate(-45deg); opacity: 0; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+/* 右カラム：問題カード群 */
+.k-work-col {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.k-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 18px 20px;
+  border: 2px solid #e2e8f0;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+}
+.k-card-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.k-card-title {
+  font-size: 17px;
+  font-weight: 900;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+.k-card-step-badge {
+  background: #3b82f6;
+  color: #ffffff;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 900;
+}
+.k-card-points {
+  font-size: 13px;
+  font-weight: 900;
+  color: #dc2626;
+  background: #fef2f2;
+  padding: 3px 10px;
+  border-radius: 8px;
+  border: 1px solid #fecaca;
+}
+
+/* 練習エリアのレイアウト（お手本＋書き込みマス） */
+.k-practice-row {
+  display: flex;
+  gap: 20px;
+  align-items: stretch;
+  flex-wrap: wrap;
+}
+
+/* お手本ボックス */
+.k-model-box {
+  width: 170px;
+  background: #f8fafc;
+  border: 2px solid #cbd5e1;
+  border-radius: 16px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+.k-model-char-wrap {
+  width: 140px;
+  height: 140px;
+  border: 2px solid #94a3b8;
+  border-radius: 12px;
+  background: #ffffff;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.04);
+}
+.k-model-char-wrap::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  border-top: 2px dashed #cbd5e1;
+}
+.k-model-char-wrap::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  border-left: 2px dashed #cbd5e1;
+}
+.k-model-char {
+  font-family: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif;
+  font-size: 110px;
+  font-weight: 900;
+  color: #0f172a;
+  line-height: 1;
+  z-index: 2;
+  user-select: none;
+}
+.k-model-tips {
+  margin-top: 10px;
+  font-size: 11px;
+  color: #475569;
+  font-weight: 700;
+  line-height: 1.5;
+  width: 100%;
+}
+.k-model-tips-list {
+  padding-left: 14px;
+  margin: 4px 0 0;
+}
+
+/* お絵描き・書き込みキャンバスボックス */
+.k-canvas-box {
+  flex: 1;
+  min-width: 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.k-canvas-wrap {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  border: 3px solid #3b82f6;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(59, 130, 246, 0.12);
+  touch-action: none;
+}
+.k-canvas-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.k-canvas-grid::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  border-top: 2px dashed #93c5fd;
+}
+.k-canvas-grid::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  border-left: 2px dashed #93c5fd;
+}
+.k-canvas-start-dot {
+  position: absolute;
+  top: 22%;
+  left: 22%;
+  width: 10px;
+  height: 10px;
+  background: #ef4444;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  box-shadow: 0 0 6px rgba(239, 68, 68, 0.6);
+}
+.k-canvas-guide-glyph {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif;
+  font-size: 150px;
+  font-weight: 900;
+  color: rgba(148, 163, 184, 0.22);
+  user-select: none;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.k-canvas-elem {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+}
+
+/* ツールバー */
+.k-tools-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.k-tool-btn {
+  padding: 6px 12px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 900;
+  border: 1.5px solid #cbd5e1;
+  background: #ffffff;
+  color: #334155;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.15s ease;
+}
+.k-tool-btn:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+}
+.k-tool-btn.active {
+  background: #3b82f6;
+  color: #ffffff;
+  border-color: #2563eb;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
+}
+.k-judge-btn {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: #ffffff;
+  border-color: #b91c1c;
+  padding: 7px 16px;
+  font-size: 13px;
+  box-shadow: 0 3px 8px rgba(220, 38, 38, 0.35);
+}
+.k-judge-btn:hover {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+}
+
+/* 判定結果スタンプ */
+.k-eval-result {
+  min-height: 28px;
+  font-size: 14px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.k-eval-pass {
+  color: #16a34a;
+}
+.k-eval-fail {
+  color: #dc2626;
+}
+
+/* 語彙イラストカード */
+.k-vocab-card {
+  margin-top: 14px;
+  background: #fdf2f8;
+  border: 1.5px solid #fbcfe8;
+  border-radius: 14px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.k-vocab-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.k-vocab-icon {
+  font-size: 26px;
+}
+.k-vocab-word {
+  font-size: 18px;
+  font-weight: 900;
+  color: #831843;
+}
+.k-vocab-ruby {
+  font-size: 11px;
+  color: #db2777;
+  font-weight: 700;
+}
+
+/* ポケモン名前穴埋めカード */
+.k-name-fill-grid {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.k-name-card {
+  flex: 1;
+  min-width: 200px;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.k-name-char-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.k-name-box {
+  width: 52px;
+  height: 52px;
+  border-radius: 10px;
+  border: 2px solid #cbd5e1;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 900;
+  color: #0f172a;
+}
+.k-name-box.target-box {
+  border: 2.5px dashed #ef4444;
+  background: #fef2f2;
+  color: #dc2626;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.2);
+  transition: all 0.2s ease;
+}
+.k-name-box.target-box.filled {
+  border-style: solid;
+  border-color: #22c55e;
+  background: #f0fdf4;
+  color: #15803d;
+}
+
+/* ミニゲームモーダル */
+#mKokugoMinigame .mbox {
+  max-width: 650px;
+  padding: 20px;
+  border-radius: 24px;
+}
+
 </style>
   <script src="https://www.youtube.com/iframe_api"></script>
 </head>
@@ -5352,6 +6012,7 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
             <span class="home-stat-chip" id="homePtChip">🪙 0 pt</span>
             <span class="home-stat-chip" id="homeZkChip">📖 ずかん: 0 ひき</span>
             <span class="home-stat-chip" id="homeClearChip">🚩 さんすう: 0/55</span>
+            <span class="home-stat-chip" id="homeKokugoClearChip">✏️ こくご: 0/55</span>
             <span class="home-stat-chip" id="homeTicketChip" onclick="openMoncolleTicketModal()" style="cursor:pointer;background:#fffbeb;border-color:#f59e0b;color:#b45309;font-weight:900" title="モンコレチケットを見る">🎫 チケット: <span id="homeTicketCount">0</span>まい</span>
           </div>
         </div>
@@ -5414,27 +6075,35 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
           </div>
         </div>
 
-        <!-- 2. こくごドリル（準備中） -->
-        <div class="home-drill-card kokugo-card coming-soon" onclick="toast('📖 こくごドリルは もうすぐ とうじょうするよ！ おたのしみに！', 2000)">
+        <!-- 2. こくごドリル（プレイ可能！） -->
+        <div class="home-drill-card kokugo-card" onclick="selectDrill('kokugo')">
           <div class="drill-card-badge-row">
-            <span class="drill-status-badge lock-badge">🔒 じゅんび中</span>
-            <span class="drill-grade-tag">にゅうがくじゅんび・小1</span>
+            <span class="drill-status-badge active-badge">✨ あそべるよ！</span>
+            <span class="drill-grade-tag">小学1年 ひらがな・カタカナ</span>
           </div>
           <div class="drill-card-body">
-            <div class="drill-icon-box kokugo-icon-box">
-              <span class="drill-kana-symbol">あ</span>
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/722.png" alt="モクロー" class="drill-poke-thumb">
+            <div class="drill-icon-box kokugo-icon-box" style="background:linear-gradient(135deg,#dcfce7,#bbf7d0)">
+              <span class="drill-kana-symbol" style="color:#16a34a">あ</span>
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/384.png" alt="レックウザ" class="drill-poke-thumb">
             </div>
             <div class="drill-info">
               <h3 class="drill-title">📖 こくごドリル</h3>
-              <div class="drill-theme">ひらがな・カタカナ・ことばの もり</div>
-              <p class="drill-desc">ひらがなの かきかた、ことばあそび、おはなしクイズを ポケモンと いっしょに まなぼう！</p>
-              <div class="drill-preview-badge">✨ ただいま せいさく中！ もうすぐ あそべるよ ✨</div>
+              <div class="drill-theme">はじまりの そうげん 〜 てんくうしんでん <span style="color:#16a34a;font-weight:900">（さいごは レックウザ！）</span></div>
+              <p class="drill-desc">ひらがな・カタカナのかきかた、ことばあそび、ミニゲームなど 全55ステージ！</p>
+              <div class="drill-progress-wrap">
+                <div class="drill-progress-labels">
+                  <span>しんちょく</span>
+                  <span id="homeKokugoProgressText">0 / 55 バトル</span>
+                </div>
+                <div class="drill-progress-bar">
+                  <div class="drill-progress-fill" id="homeKokugoProgressFill" style="width:0%;background:linear-gradient(90deg,#22c55e,#16a34a)"></div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="drill-card-footer">
-            <button type="button" class="btn-drill-locked" disabled>
-              🔒 もうすぐ とうじょう！
+            <button type="button" class="btn-drill-launch" style="background:linear-gradient(135deg,#22c55e,#15803d)" onclick="event.stopPropagation(); selectDrill('kokugo')">
+              こくごの ぼうけんへ すすむ！ ▶️
             </button>
           </div>
         </div>
@@ -5582,6 +6251,166 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
 <div id="bgmYtHost" style="position:fixed;bottom:-9999px;left:-9999px;width:1px;height:1px;opacity:0.001;pointer-events:none;z-index:-999;overflow:hidden" aria-hidden="true">
   <div id="bgmYtPlayer"></div>
 </div>
+
+  <!-- こくごマップ画面 -->
+  <section id="kokugoMap" class="screen" aria-label="こくごマップ">
+    <div id="kokugo-map-wrapper">
+      <!-- ポケモン風デフォルメ5大バイオーム背景 -->
+      <div class="biome-layer biome-temple"></div>
+      <div class="biome-layer biome-ice"></div>
+      <div class="biome-layer biome-canyon"></div>
+      <div class="biome-layer biome-water"></div>
+      <div class="biome-layer biome-grassland"></div>
+
+      <!-- バイオーム見出しリボン -->
+      <div class="map-flag" style="top:25px">🏆 ゴール（レックウザの てんくうしんでん）</div>
+
+      <!-- 天空神殿 -->
+      <div class="area-banner banner-temple" style="top:480px;right:16px">
+        <div class="area-banner-icon">✨</div>
+        <div class="area-banner-info">
+          <div class="area-banner-title">てんくう しんでん</div>
+          <div class="area-banner-sub">Battle 51 〜 55（レックウザ）</div>
+        </div>
+        <div class="star-decor">⭐</div>
+      </div>
+
+      <!-- 雪山 -->
+      <div class="area-banner banner-ice" style="top:1250px;left:16px">
+        <div class="area-banner-icon">❄️</div>
+        <div class="area-banner-info">
+          <div class="area-banner-title">こごえる ゆきやま</div>
+          <div class="area-banner-sub">Battle 42 〜 50（マギアナ）</div>
+        </div>
+        <div class="ice-decor">🧊</div>
+      </div>
+
+      <!-- 渓谷 -->
+      <div class="area-banner banner-canyon" style="top:2050px;right:16px">
+        <div class="area-banner-icon">⛰️</div>
+        <div class="area-banner-info">
+          <div class="area-banner-title">ごつごつ けいこく</div>
+          <div class="area-banner-sub">Battle 28 〜 41（コライドン）</div>
+        </div>
+        <div class="rock-decor">⚡</div>
+      </div>
+
+      <!-- 水辺 -->
+      <div class="area-banner banner-water" style="top:3350px;right:16px">
+        <div class="area-banner-icon">🌊</div>
+        <div class="area-banner-info">
+          <div class="area-banner-title">きらめきの みずべ</div>
+          <div class="area-banner-sub">Battle 14 〜 27（ライコウ）</div>
+        </div>
+        <div class="water-bubble b1">💧</div>
+      </div>
+
+      <!-- 草原 -->
+      <div class="area-banner banner-grassland" style="top:4150px;left:16px">
+        <div class="area-banner-icon">🌿</div>
+        <div class="area-banner-info">
+          <div class="area-banner-title">はじまりの そうげん</div>
+          <div class="area-banner-sub">Battle 1 〜 13（ダークライ）</div>
+        </div>
+        <div class="vine-decor vine-tl">🌱</div>
+      </div>
+
+      <div class="map-flag" style="bottom:25px">🚩 スタート！（アブソルの もり）</div>
+
+      <svg id="kokugo-map-svg"></svg>
+      <div id="kokugo-tiles-container"></div>
+    </div>
+  </section>
+
+  <!-- こくごドリル画面 -->
+  <section id="kokugoDrill" class="screen" aria-label="こくごドリル">
+    <div class="kokugo-drill-wrap">
+      <!-- 上部ヘッダーカード -->
+      <div class="k-drill-header-card">
+        <div class="k-header-left">
+          <button type="button" class="hbtn k-back-btn" onclick="backToMap()">🗺️ マップにもどる</button>
+          <span class="k-badge-num" id="kDrillBadge">バトル 1</span>
+          <h2 class="k-drill-banner" id="kDrillBanner">アブソルをつかまえよう！</h2>
+        </div>
+        <div class="k-header-right">
+          <div class="k-score-meter">
+            <span class="k-score-label">てんすう:</span>
+            <span class="k-score-val" id="kDrillScore">0 / 100 てん</span>
+            <span class="k-pass-badge" id="kDrillPassBadge">60てん いじょうで クリア！</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2カラム本文（左：ポケモン情報・シール枠、右：問題ワークエリア） -->
+      <div class="k-drill-body-grid">
+        <!-- 左カラム -->
+        <div class="k-poke-col">
+          <div class="k-poke-card">
+            <div class="k-poke-img-wrap">
+              <img id="kPokeImg" alt="ポケモン" class="k-poke-art">
+            </div>
+            <div class="k-poke-info-box">
+              <div class="k-poke-name-row">
+                <span class="k-poke-name" id="kPokeName">アブソル</span>
+                <span class="k-poke-cat" id="kPokeCat">わざわいポケモン</span>
+              </div>
+              <div class="k-poke-stats-grid">
+                <div class="k-stat-item">
+                  <span class="k-stat-label">タイプ</span>
+                  <span class="k-stat-val type-badge" id="kPokeType">あく</span>
+                </div>
+                <div class="k-stat-item">
+                  <span class="k-stat-label">たかさ</span>
+                  <span class="k-stat-val" id="kPokeHeight">1.2m</span>
+                </div>
+                <div class="k-stat-item">
+                  <span class="k-stat-label">おもさ</span>
+                  <span class="k-stat-val" id="kPokeWeight">47.0kg</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- シール枠 & 得点記録 -->
+            <div class="k-seal-card">
+              <div class="k-seal-meta-row">
+                <span class="k-seal-date" id="kSealDate">クリアした ひ: ──</span>
+                <span class="k-seal-score" id="kSealScore">てんすう: 0 てん</span>
+              </div>
+              <div class="k-seal-slot" id="kSealSlot">
+                <div class="k-seal-placeholder">
+                  <span>💮 クリア！シール</span>
+                  <small>60てん いじょうで はれるよ！</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 右カラム：問題ワークエリア -->
+        <div class="k-work-col" id="kWorkCol"></div>
+      </div>
+
+      <!-- 原本ドリル確認（折りたたみアコーディオン） -->
+      <div class="card" style="margin-top:16px">
+        <details class="sheet-accordion" id="kOriginalAccordion">
+          <summary>📄 おてほんの プリントを みる（原本）</summary>
+          <img class="sheet-img" id="kSheetImg" alt="原本プリント" style="margin-top:10px">
+        </details>
+      </div>
+
+      <!-- 下部バー -->
+      <div class="bottom-bar">
+        <button type="button" class="big back" onclick="backToMap()">🗺️ マップにもどる</button>
+        <button type="button" class="big throw" id="btnKokugoThrow" disabled onclick="throwKokugoBall()">ボールを なげる！ ⚾</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- こくごミニゲームモーダル -->
+  <div class="modal" id="mKokugoMinigame"><div class="mbox" style="max-width:680px">
+    <button type="button" class="mclose" onclick="closeKokugoMinigame()">✕</button>
+    <div id="kMinigameContent"></div>
+  </div></div>
 
 </main>
 
@@ -15684,7 +16513,7 @@ function updateHomeStats(){
   if(zkChip) zkChip.textContent = `📖 ずかん: ${(S.caught || []).length} ひき`;
 
   const clearCount = (S.cleared || []).length;
-  const totalCount = ROWS.length || 55;
+  const totalCount = (ROWS && ROWS.length) || 55;
 
   const clearChip = $('homeClearChip');
   if(clearChip) clearChip.textContent = `🚩 さんすう: ${clearCount}/${totalCount}`;
@@ -15696,6 +16525,22 @@ function updateHomeStats(){
   if(progFill){
     const pct = totalCount > 0 ? Math.min(100, Math.round((clearCount / totalCount) * 100)) : 0;
     progFill.style.width = pct + '%';
+  }
+
+  // こくご進捗の更新
+  const kokugoClearCount = (S.kokugoCleared || []).length;
+  const kokugoTotalCount = (typeof KOKUGO_ROWS !== 'undefined' && KOKUGO_ROWS.length) || 55;
+
+  const kokugoClearChip = $('homeKokugoClearChip');
+  if(kokugoClearChip) kokugoClearChip.textContent = `✏️ こくご: ${kokugoClearCount}/${kokugoTotalCount}`;
+
+  const kokugoProgText = $('homeKokugoProgressText');
+  if(kokugoProgText) kokugoProgText.textContent = `${kokugoClearCount} / ${kokugoTotalCount} バトル`;
+
+  const kokugoProgFill = $('homeKokugoProgressFill');
+  if(kokugoProgFill){
+    const kpct = kokugoTotalCount > 0 ? Math.min(100, Math.round((kokugoClearCount / kokugoTotalCount) * 100)) : 0;
+    kokugoProgFill.style.width = kpct + '%';
   }
 }
 
@@ -16598,37 +17443,39 @@ function openJumpModal() {
   const quizOpts = $('jumpQuizOptions');
   if (!modal || !sel || !quizQ || !quizOpts) return;
 
+  const isKokugo = (currentAppMode === 'kokugo');
+  const rows = isKokugo ? KOKUGO_ROWS : ROWS;
+
   // 1. セレクトボックスの選択肢構築（Battle 1 〜 55）
-  if (ROWS && ROWS.length) {
+  if (rows && rows.length) {
     sel.innerHTML = '';
-    ROWS.forEach((r, idx) => {
+    rows.forEach((r, idx) => {
       const opt = document.createElement('option');
-      opt.value = idx + 1; // 1-based battle number
-      const pName = r.pokemon_name ? r.pokemon_name.replace(/[(（].*$/, '') : '';
+      opt.value = idx + 1;
+      const pName = isKokugo ? r.poke : (r.pokemon_name ? r.pokemon_name.replace(/[(（].*$/, '') : '');
       const pts = idx * POINT_PER_CLEAR;
-      opt.textContent = `バトル ${idx + 1}：${pName}（${idx + 1}マス目 / +${pts} pt）`;
+      opt.textContent = `${isKokugo ? '【こくご】' : '【さんすう】'}バトル ${idx + 1}：${pName}（+${pts} pt）`;
       sel.appendChild(opt);
     });
-    // 現在の進捗マスを選択状態にしておく
-    sel.value = Math.min((S.currentBattleIndex || 0) + 1, ROWS.length);
+    const curVal = isKokugo ? (S.kokugoCurrentBattleIndex || 0) : (S.currentBattleIndex || 0);
+    sel.value = Math.min(curVal + 1, rows.length);
   }
 
   function updatePreview() {
     const targetBattleNum = parseInt(sel.value, 10) || 1;
     const targetIdx = targetBattleNum - 1;
     const targetPoints = targetIdx * POINT_PER_CLEAR;
-    preview.innerHTML = `📍 <strong>バトル ${targetBattleNum}</strong> に進みます。<br>前までの <strong>${targetIdx} マス分（+${targetPoints} pt）</strong> と、そこまでのポケモン図鑑がすべて復帰されます。`;
+    preview.innerHTML = `📍 <strong>${isKokugo ? 'こくご' : 'さんすう'} バトル ${targetBattleNum}</strong> に進みます。<br>前までの <strong>${targetIdx} マス分（+${targetPoints} pt）</strong> と、そこまでのポケモン図鑑がすべて復帰されます。`;
   }
   sel.onchange = updatePreview;
   updatePreview();
 
   // 2. 保護者用セキュリティ九九クイズ（小1では習わない九九の後半）
-  const n1 = 6 + Math.floor(Math.random() * 4); // 6〜9
-  const n2 = 6 + Math.floor(Math.random() * 4); // 6〜9
+  const n1 = 6 + Math.floor(Math.random() * 4);
+  const n2 = 6 + Math.floor(Math.random() * 4);
   const ans = n1 * n2;
   quizQ.textContent = `${n1} × ${n2} は なに？`;
 
-  // 誤答ダミーの生成
   const opts = new Set([ans]);
   while (opts.size < 4) {
     const diff = (Math.random() < 0.5 ? -1 : 1) * (Math.floor(Math.random() * 3) + 1) * (Math.random() < 0.5 ? 1 : 10);
@@ -16651,45 +17498,49 @@ function openJumpModal() {
         const targetIdx = targetBattleNum - 1;
         const targetPoints = targetIdx * POINT_PER_CLEAR;
 
-        // 進行度を復帰
-        S.currentBattleIndex = targetIdx;
-        S.cleared = [];
-        for (let k = 0; k < targetIdx; k++) S.cleared.push(k);
-        S.clearedBattles = [...S.cleared];
-
-        // 図鑑の復帰
-        if (ROWS && ROWS.length) {
-          for (let k = 0; k < targetIdx; k++) {
-            if (ROWS[k]) {
-              const pName = ROWS[k].pokemon_name.replace(/[(（].*$/, '');
-              if (pName && !S.caught.includes(pName)) S.caught.push(pName);
+        if (isKokugo) {
+          S.kokugoCurrentBattleIndex = targetIdx;
+          S.kokugoCleared = [];
+          for (let k = 0; k < targetIdx; k++) S.kokugoCleared.push(k);
+          if (KOKUGO_ROWS && KOKUGO_ROWS.length) {
+            for (let k = 0; k < targetIdx; k++) {
+              const p = KOKUGO_ROWS[k].poke;
+              if (p && !S.kokugoCaught.includes(p)) S.kokugoCaught.push(p);
+              if (p && !S.caught.includes(p)) S.caught.push(p);
             }
           }
+          S.points = (S.points || 0) + targetPoints;
+          save();
+          layoutKokugoMap();
+          setTimeout(scrollToCurrentKokugo, 100);
+          updateHomeStats();
+          closeModal(modal);
+          playFanfare();
+          toast(`📍 こくご バトル ${targetBattleNum} に進みました！（+${targetPoints} pt を獲得！）`, 3500);
+        } else {
+          S.currentBattleIndex = targetIdx;
+          S.cleared = [];
+          for (let k = 0; k < targetIdx; k++) S.cleared.push(k);
+          S.clearedBattles = [...S.cleared];
+          if (ROWS && ROWS.length) {
+            for (let k = 0; k < targetIdx; k++) {
+              const r = ROWS[k];
+              const p = r.pokemon_name ? r.pokemon_name.replace(/[(（].*$/, '') : '';
+              if (p && !S.caught.includes(p)) S.caught.push(p);
+            }
+          }
+          S.points = (S.points || 0) + targetPoints;
+          save();
+          layoutMap();
+          setTimeout(scrollToCurrent, 100);
+          updateHomeStats();
+          closeModal(modal);
+          playFanfare();
+          toast(`📍 バトル ${targetBattleNum} に進みました！（+${targetPoints} pt を獲得！）`, 3500);
         }
-
-        // ポイント付与（スキップ分）
-        S.points = Math.max(S.points || 0, targetPoints);
-        save();
-        updatePoints(true);
-        if (typeof updateHomeStats === 'function') updateHomeStats();
-
-        // モーダルを閉じてマップへ移動
-        closeModal(modal);
-        const homeEl = $('home');
-        const bEl = $('battle');
-        const mEl = $('map');
-        if (homeEl) homeEl.classList.remove('active');
-        if (bEl) bEl.classList.remove('active');
-        if (mEl) mEl.classList.add('active');
-
-        layoutMap();
-        setTimeout(scrollToCurrent, 150);
-        playFanfare();
-        toast(`🎉 バトル ${targetBattleNum} までの データを ふっきしました！<br>🪙 +${targetPoints} pt ゲット！`, 3000);
       } else {
         playMarimbaPop(0.7);
-        toast('ちがうよ！ ステージふっきを キャンセルしました。', 1500);
-        closeModal(modal);
+        toast('ちがうよ！ もういちど けいさんしてみてね！', 1500);
       }
     };
     quizOpts.appendChild(btn);
@@ -16850,6 +17701,3350 @@ window.addEventListener('load', () => {
   layoutMap();
   setTimeout(scrollToCurrent, 100);
 });
+
+/* ========================================================================== */
+/*               こくごドリル システム (小学1年 ひらがな・カタカナ)           */
+/* ========================================================================== */
+
+const KOKUGO_ROWS = [
+  {
+    "battle": 1,
+    "title": "あ・ア",
+    "poke": "アブソル",
+    "dex": 359,
+    "category": "わざわいポケモン",
+    "type": "あく",
+    "height": "1.2m",
+    "weight": "47.0kg",
+    "hira": "あ",
+    "kata": "ア",
+    "hiraStrokes": 3,
+    "kataStrokes": 2,
+    "hiraTips": [
+      "① よこに ひく",
+      "② たてに おろす",
+      "③ ぐるっと まわして とめる"
+    ],
+    "kataTips": [
+      "① よこに ひいて 左へ はらう",
+      "② まんなかから 左へ はらう"
+    ],
+    "hiraWord": {
+      "word": "あさ",
+      "kana": "あさ",
+      "icon": "🌅",
+      "meaning": "あさ"
+    },
+    "kataWord": {
+      "word": "アイロン",
+      "kana": "あいろん",
+      "icon": "👔",
+      "meaning": "アイロン"
+    },
+    "pokeHira": "あぶそる",
+    "pokeKata": "アブソル",
+    "missingChar": "あ",
+    "missingKata": "ア"
+  },
+  {
+    "battle": 2,
+    "title": "い・イ",
+    "poke": "イーブイ",
+    "dex": 133,
+    "category": "しんかポケモン",
+    "type": "ノーマル",
+    "height": "0.3m",
+    "weight": "6.5kg",
+    "hira": "い",
+    "kata": "イ",
+    "hiraStrokes": 2,
+    "kataStrokes": 2,
+    "hiraTips": [
+      "① 左がわを はねる",
+      "② 右がわを とめる"
+    ],
+    "kataTips": [
+      "① 左ななめに はらう",
+      "② たてに おろして とめる"
+    ],
+    "hiraWord": {
+      "word": "いぬ",
+      "kana": "いぬ",
+      "icon": "🐕",
+      "meaning": "いぬ"
+    },
+    "kataWord": {
+      "word": "インク",
+      "kana": "いんく",
+      "icon": "✒️",
+      "meaning": "インク"
+    },
+    "pokeHira": "いーぶい",
+    "pokeKata": "イーブイ",
+    "missingChar": "い",
+    "missingKata": "イ"
+  },
+  {
+    "battle": 3,
+    "title": "う・ウ",
+    "poke": "ウソッキー",
+    "dex": 185,
+    "category": "まねポケモン",
+    "type": "いわ",
+    "height": "1.2m",
+    "weight": "38.0kg",
+    "hira": "う",
+    "kata": "ウ",
+    "hiraStrokes": 2,
+    "kataStrokes": 3,
+    "hiraTips": [
+      "① てんを うつ",
+      "② ぐるっと まわして はらう"
+    ],
+    "kataTips": [
+      "① 上にてんを うつ",
+      "② 左にてんを うつ",
+      "③ まげて 左へ はらう"
+    ],
+    "hiraWord": {
+      "word": "うし",
+      "kana": "うし",
+      "icon": "🐄",
+      "meaning": "うし"
+    },
+    "kataWord": {
+      "word": "ウクレレ",
+      "kana": "うくれれ",
+      "icon": "🎸",
+      "meaning": "ウクレレ"
+    },
+    "pokeHira": "うそっきー",
+    "pokeKata": "ウソッキー",
+    "missingChar": "う",
+    "missingKata": "ウ"
+  },
+  {
+    "battle": 4,
+    "title": "え・エ",
+    "poke": "エレズン",
+    "dex": 848,
+    "category": "あかごポケモン",
+    "type": "でんき・どく",
+    "height": "0.4m",
+    "weight": "11.0kg",
+    "hira": "え",
+    "kata": "エ",
+    "hiraStrokes": 2,
+    "kataStrokes": 3,
+    "hiraTips": [
+      "① てんを うつ",
+      "② おろして まげて とめる"
+    ],
+    "kataTips": [
+      "① 上の よこぼう",
+      "② まんなかの たてぼう",
+      "③ 下の よこぼう"
+    ],
+    "hiraWord": {
+      "word": "えんぴつ",
+      "kana": "えんぴつ",
+      "icon": "✏️",
+      "meaning": "えんぴつ"
+    },
+    "kataWord": {
+      "word": "エプロン",
+      "kana": "えぷろん",
+      "icon": "🎽",
+      "meaning": "エプロン"
+    },
+    "pokeHira": "えれずん",
+    "pokeKata": "エレズン",
+    "missingChar": "え",
+    "missingKata": "エ"
+  },
+  {
+    "battle": 5,
+    "title": "お・オ",
+    "poke": "オーロット",
+    "dex": 709,
+    "category": "ろうぼくポケモン",
+    "type": "ゴースト・くさ",
+    "height": "1.5m",
+    "weight": "71.0kg",
+    "hira": "お",
+    "kata": "オ",
+    "hiraStrokes": 3,
+    "kataStrokes": 3,
+    "hiraTips": [
+      "① よこに ひく",
+      "② おろして むすんで はらう",
+      "③ 右上に てんを うつ"
+    ],
+    "kataTips": [
+      "① よこに ひく",
+      "② たてに おろして はねる",
+      "③ 左へ はらう"
+    ],
+    "hiraWord": {
+      "word": "おにぎり",
+      "kana": "おにぎり",
+      "icon": "🍙",
+      "meaning": "おにぎり"
+    },
+    "kataWord": {
+      "word": "オウム",
+      "kana": "おうむ",
+      "icon": "🦜",
+      "meaning": "オウム"
+    },
+    "pokeHira": "おーろっと",
+    "pokeKata": "オーロット",
+    "missingChar": "お",
+    "missingKata": "オ"
+  },
+  {
+    "battle": 6,
+    "title": "か・カ",
+    "poke": "カイリュー",
+    "dex": 149,
+    "category": "ドラゴンポケモン",
+    "type": "ドラゴン・ひこう",
+    "height": "2.2m",
+    "weight": "210.0kg",
+    "hira": "か",
+    "kata": "カ",
+    "hiraStrokes": 3,
+    "kataStrokes": 2,
+    "hiraTips": [
+      "① おろして はねる",
+      "② 左ななめに はらう",
+      "③ 右上に てんを うつ"
+    ],
+    "kataTips": [
+      "① おろして はねる",
+      "② 左へ はらう"
+    ],
+    "hiraWord": {
+      "word": "かさ",
+      "kana": "かさ",
+      "icon": "☂️",
+      "meaning": "かさ"
+    },
+    "kataWord": {
+      "word": "カメラ",
+      "kana": "かめら",
+      "icon": "📷",
+      "meaning": "カメラ"
+    },
+    "pokeHira": "かいりゅー",
+    "pokeKata": "カイリュー",
+    "missingChar": "か",
+    "missingKata": "カ"
+  },
+  {
+    "battle": 7,
+    "title": "き・キ",
+    "poke": "キバゴ",
+    "dex": 610,
+    "category": "キバポケモン",
+    "type": "ドラゴン",
+    "height": "0.6m",
+    "weight": "18.0kg",
+    "hira": "き",
+    "kata": "キ",
+    "hiraStrokes": 4,
+    "kataStrokes": 3,
+    "hiraTips": [
+      "① 上の よこぼう",
+      "② 下の よこぼう",
+      "③ ななめに おろして はねる",
+      "④ 下を ぐるっと とめる"
+    ],
+    "kataTips": [
+      "① 上の よこぼう",
+      "② 下の よこぼう",
+      "③ ななめに はらう"
+    ],
+    "hiraWord": {
+      "word": "きつつき",
+      "kana": "きつつき",
+      "icon": "🐦",
+      "meaning": "きつつき"
+    },
+    "kataWord": {
+      "word": "キーウィ",
+      "kana": "きーうぃ",
+      "icon": "🥝",
+      "meaning": "キーウィ"
+    },
+    "pokeHira": "きばご",
+    "pokeKata": "キバゴ",
+    "missingChar": "き",
+    "missingKata": "キ"
+  },
+  {
+    "battle": 8,
+    "title": "く・ク",
+    "poke": "クワッス",
+    "dex": 912,
+    "category": "こがもポケモン",
+    "type": "みず",
+    "height": "0.5m",
+    "weight": "6.1kg",
+    "hira": "く",
+    "kata": "ク",
+    "hiraStrokes": 1,
+    "kataStrokes": 2,
+    "hiraTips": [
+      "① ななめに おろして まげて とめる"
+    ],
+    "kataTips": [
+      "① 左ななめに はらう",
+      "② よこから まげて 左へ はらう"
+    ],
+    "hiraWord": {
+      "word": "くるま",
+      "kana": "くるま",
+      "icon": "🚗",
+      "meaning": "くるま"
+    },
+    "kataWord": {
+      "word": "クレーン",
+      "kana": "くれーん",
+      "icon": "🏗️",
+      "meaning": "クレーン"
+    },
+    "pokeHira": "くわっす",
+    "pokeKata": "クワッス",
+    "missingChar": "く",
+    "missingKata": "ク"
+  },
+  {
+    "battle": 9,
+    "title": "け・ケ",
+    "poke": "ケンタロス",
+    "dex": 128,
+    "category": "あばれうしポケモン",
+    "type": "ノーマル",
+    "height": "1.4m",
+    "weight": "88.4kg",
+    "hira": "け",
+    "kata": "ケ",
+    "hiraStrokes": 3,
+    "kataStrokes": 3,
+    "hiraTips": [
+      "① 左がわを はねる",
+      "② よこに ひく",
+      "③ まんなかを はらう"
+    ],
+    "kataTips": [
+      "① 左ななめに はらう",
+      "② よこに ひく",
+      "③ まんなかを はらう"
+    ],
+    "hiraWord": {
+      "word": "けむし",
+      "kana": "けむし",
+      "icon": "🐛",
+      "meaning": "けむし"
+    },
+    "kataWord": {
+      "word": "ケチャップ",
+      "kana": "けちゃっぷ",
+      "icon": "🍅",
+      "meaning": "ケチャップ"
+    },
+    "pokeHira": "けんたろす",
+    "pokeKata": "ケンタロス",
+    "missingChar": "け",
+    "missingKata": "ケ"
+  },
+  {
+    "battle": 10,
+    "title": "こ・コ",
+    "poke": "コリンク",
+    "dex": 403,
+    "category": "せんこうポケモン",
+    "type": "でんき",
+    "height": "0.5m",
+    "weight": "9.5kg",
+    "hira": "こ",
+    "kata": "コ",
+    "hiraStrokes": 2,
+    "kataStrokes": 2,
+    "hiraTips": [
+      "① 上を よこに ひいて はねる",
+      "② 下を ぐるっと とめる"
+    ],
+    "kataTips": [
+      "① 上を よこに ひいて おろす",
+      "② 下を よこに ひく"
+    ],
+    "hiraWord": {
+      "word": "こま",
+      "kana": "こま",
+      "icon": "🪀",
+      "meaning": "こま"
+    },
+    "kataWord": {
+      "word": "コップ",
+      "kana": "こっぷ",
+      "icon": "🥛",
+      "meaning": "コップ"
+    },
+    "pokeHira": "こりんく",
+    "pokeKata": "コリンク",
+    "missingChar": "こ",
+    "missingKata": "コ"
+  },
+  {
+    "battle": 11,
+    "title": "バトル1〜10まとめ",
+    "poke": "ダークライ",
+    "dex": 491,
+    "category": "あんこくポケモン",
+    "type": "あく",
+    "height": "1.5m",
+    "weight": "50.5kg",
+    "isReview": true,
+    "reviewTitle": "あ・い・う・え・お・か・き・く・け・こ まとめ",
+    "reviewSummary": "バトル1から10で まなんだ ひらがな・カタカナの そうふくしゅう！",
+    "words": [
+      "ちいさい",
+      "おおきい",
+      "あし",
+      "いす",
+      "うきわ",
+      "えり",
+      "おうかん",
+      "かさ",
+      "きん",
+      "くし",
+      "けいと",
+      "こうえん"
+    ]
+  },
+  {
+    "battle": 12,
+    "title": "さ・サ",
+    "poke": "サーナイト",
+    "dex": 282,
+    "category": "ほうようポケモン",
+    "type": "エスパー・フェアリー",
+    "height": "1.6m",
+    "weight": "48.4kg",
+    "hira": "さ",
+    "kata": "サ",
+    "hiraStrokes": 3,
+    "kataStrokes": 3,
+    "hiraTips": [
+      "① よこに ひく",
+      "② ななめに おろして はねる",
+      "③ 下を ぐるっと とめる"
+    ],
+    "kataTips": [
+      "① よこに ひく",
+      "② 左の たてぼう",
+      "③ 右の はらい"
+    ],
+    "hiraWord": {
+      "word": "さかな",
+      "kana": "さかな",
+      "icon": "🐟",
+      "meaning": "さかな"
+    },
+    "kataWord": {
+      "word": "サンドイッチ",
+      "kana": "さんどいっち",
+      "icon": "🥪",
+      "meaning": "サンドイッチ"
+    },
+    "pokeHira": "さーないと",
+    "pokeKata": "サーナイト",
+    "missingChar": "さ",
+    "missingKata": "サ"
+  },
+  {
+    "battle": 13,
+    "title": "し・シ",
+    "poke": "シママ",
+    "dex": 522,
+    "category": "たいでんポケモン",
+    "type": "でんき",
+    "height": "0.8m",
+    "weight": "29.8kg",
+    "hira": "し",
+    "kata": "シ",
+    "hiraStrokes": 1,
+    "kataStrokes": 3,
+    "hiraTips": [
+      "① 上から おろして ぐるっと すくいあげる"
+    ],
+    "kataTips": [
+      "① 上にてんを うつ",
+      "② まんなかにてんを うつ",
+      "③ 下から 右上へ すくいあげる"
+    ],
+    "hiraWord": {
+      "word": "しか",
+      "kana": "しか",
+      "icon": "🦌",
+      "meaning": "しか"
+    },
+    "kataWord": {
+      "word": "シール",
+      "kana": "しーる",
+      "icon": "🏷️",
+      "meaning": "シール"
+    },
+    "pokeHira": "しまま",
+    "pokeKata": "シママ",
+    "missingChar": "し",
+    "missingKata": "シ"
+  },
+  {
+    "battle": 14,
+    "title": "す・ス",
+    "poke": "ストリンダー",
+    "dex": 849,
+    "category": "パンクロックポケモン",
+    "type": "でんき・どく",
+    "height": "1.6m",
+    "weight": "40.0kg",
+    "hira": "す",
+    "kata": "ス",
+    "hiraStrokes": 2,
+    "kataStrokes": 2,
+    "hiraTips": [
+      "① よこに ひく",
+      "② たてに おろして むすんで とめる"
+    ],
+    "kataTips": [
+      "① よこに ひいて 左へ はらう",
+      "② 右ななめに はらう"
+    ],
+    "hiraWord": {
+      "word": "すいか",
+      "kana": "すいか",
+      "icon": "🍉",
+      "meaning": "すいか"
+    },
+    "kataWord": {
+      "word": "スプーン",
+      "kana": "すぷーん",
+      "icon": "🥄",
+      "meaning": "スプーン"
+    },
+    "pokeHira": "すとりんだー",
+    "pokeKata": "ストリンダー",
+    "missingChar": "す",
+    "missingKata": "ス"
+  },
+  {
+    "battle": 15,
+    "title": "せ・セ",
+    "poke": "セグレイブ",
+    "dex": 998,
+    "category": "きょりゅうポケモン",
+    "type": "ドラゴン・こおり",
+    "height": "2.1m",
+    "weight": "210.0kg",
+    "hira": "せ",
+    "kata": "セ",
+    "hiraStrokes": 3,
+    "kataStrokes": 2,
+    "hiraTips": [
+      "① よこに ひく",
+      "② 右がわを まげて はねる",
+      "③ 左がわを まげて とめる"
+    ],
+    "kataTips": [
+      "① よこから まげて 左へ はらう",
+      "② たてに おろして とめる"
+    ],
+    "hiraWord": {
+      "word": "せみ",
+      "kana": "せみ",
+      "icon": "🦗",
+      "meaning": "せみ"
+    },
+    "kataWord": {
+      "word": "セーター",
+      "kana": "せーたー",
+      "icon": "🧶",
+      "meaning": "セーター"
+    },
+    "pokeHira": "せぐれいぶ",
+    "pokeKata": "セグレイブ",
+    "missingChar": "せ",
+    "missingKata": "セ"
+  },
+  {
+    "battle": 16,
+    "title": "そ・ソ",
+    "poke": "ソウブレイズ",
+    "dex": 937,
+    "category": "ひのけんしポケモン",
+    "type": "ほのお・ゴースト",
+    "height": "1.6m",
+    "weight": "62.0kg",
+    "hira": "そ",
+    "kata": "ソ",
+    "hiraStrokes": 1,
+    "kataStrokes": 2,
+    "hiraTips": [
+      "① よこから ぎざぎざに おろして ぐるっと とめる"
+    ],
+    "kataTips": [
+      "① 左にてんを うつ",
+      "② 右上から 左下へ はらう"
+    ],
+    "hiraWord": {
+      "word": "そら",
+      "kana": "そら",
+      "icon": "☁️",
+      "meaning": "そら"
+    },
+    "kataWord": {
+      "word": "ソフトクリーム",
+      "kana": "そふとくりーむ",
+      "icon": "🍦",
+      "meaning": "ソフトクリーム"
+    },
+    "pokeHira": "そうぶれいず",
+    "pokeKata": "ソウブレイズ",
+    "missingChar": "そ",
+    "missingKata": "ソ"
+  },
+  {
+    "battle": 17,
+    "title": "た・タ",
+    "poke": "タブンネ",
+    "dex": 531,
+    "category": "ヒヤリングポケモン",
+    "type": "ノーマル",
+    "height": "1.1m",
+    "weight": "31.0kg",
+    "hira": "た",
+    "kata": "タ",
+    "hiraStrokes": 4,
+    "kataStrokes": 3,
+    "hiraTips": [
+      "① よこに ひく",
+      "② ななめに おろす",
+      "③ こ を かくように とめる"
+    ],
+    "kataTips": [
+      "① 左ななめに はらう",
+      "② よこから 左へ はらう",
+      "③ ななめに ぬける"
+    ],
+    "hiraWord": {
+      "word": "たいこ",
+      "kana": "たいこ",
+      "icon": "🥁",
+      "meaning": "たいこ"
+    },
+    "kataWord": {
+      "word": "タイヤ",
+      "kana": "たいや",
+      "icon": "🛞",
+      "meaning": "タイヤ"
+    },
+    "pokeHira": "たぶんね",
+    "pokeKata": "タブンネ",
+    "missingChar": "た",
+    "missingKata": "タ"
+  },
+  {
+    "battle": 18,
+    "title": "ち・チ",
+    "poke": "チルタリス",
+    "dex": 334,
+    "category": "ハミングポケモン",
+    "type": "ドラゴン・ひこう",
+    "height": "1.1m",
+    "weight": "20.6kg",
+    "hira": "ち",
+    "kata": "チ",
+    "hiraStrokes": 2,
+    "kataStrokes": 3,
+    "hiraTips": [
+      "① よこに ひく",
+      "② おろして ぐるっと まわして とめる"
+    ],
+    "kataTips": [
+      "① 左ななめに はらう",
+      "② よこに ひく",
+      "③ まんなかを はらう"
+    ],
+    "hiraWord": {
+      "word": "ちょう",
+      "kana": "ちょう",
+      "icon": "🦋",
+      "meaning": "ちょう"
+    },
+    "kataWord": {
+      "word": "チーズ",
+      "kana": "ちーず",
+      "icon": "🧀",
+      "meaning": "チーズ"
+    },
+    "pokeHira": "ちるたりす",
+    "pokeKata": "チルタリス",
+    "missingChar": "ち",
+    "missingKata": "チ"
+  },
+  {
+    "battle": 19,
+    "title": "つ・ツ",
+    "poke": "ツツケラ",
+    "dex": 731,
+    "category": "きつつきポケモン",
+    "type": "ノーマル・ひこう",
+    "height": "0.3m",
+    "weight": "2.1kg",
+    "hira": "つ",
+    "kata": "ツ",
+    "hiraStrokes": 1,
+    "kataStrokes": 3,
+    "hiraTips": [
+      "① よこから 右へ まげて 左下へ はらう"
+    ],
+    "kataTips": [
+      "① 左上にてん",
+      "② まんなかにてん",
+      "③ 右上から 左下へ はらう"
+    ],
+    "hiraWord": {
+      "word": "つくえ",
+      "kana": "つくえ",
+      "icon": "🪑",
+      "meaning": "つくえ"
+    },
+    "kataWord": {
+      "word": "ツリー",
+      "kana": "つりー",
+      "icon": "🎄",
+      "meaning": "ツリー"
+    },
+    "pokeHira": "つつけら",
+    "pokeKata": "ツツケラ",
+    "missingChar": "つ",
+    "missingKata": "ツ"
+  },
+  {
+    "battle": 20,
+    "title": "て・テ",
+    "poke": "テッポウオ",
+    "dex": 223,
+    "category": "ふんしゃポケモン",
+    "type": "みず",
+    "height": "0.6m",
+    "weight": "12.0kg",
+    "hira": "て",
+    "kata": "テ",
+    "hiraStrokes": 1,
+    "kataStrokes": 3,
+    "hiraTips": [
+      "① よこに ひいて ななめに おろして ぐるっと とめる"
+    ],
+    "kataTips": [
+      "① 左ななめに はらう",
+      "② よこに ひく",
+      "③ まんなかから 左へ はらう"
+    ],
+    "hiraWord": {
+      "word": "てがみ",
+      "kana": "てがみ",
+      "icon": "✉️",
+      "meaning": "てがみ"
+    },
+    "kataWord": {
+      "word": "テレビ",
+      "kana": "てれび",
+      "icon": "📺",
+      "meaning": "テレビ"
+    },
+    "pokeHira": "てっぽうお",
+    "pokeKata": "テッポウオ",
+    "missingChar": "て",
+    "missingKata": "テ"
+  },
+  {
+    "battle": 21,
+    "title": "と・ト",
+    "poke": "トゲピー",
+    "dex": 175,
+    "category": "はりたまポケモン",
+    "type": "フェアリー",
+    "height": "0.3m",
+    "weight": "1.5kg",
+    "hira": "と",
+    "kata": "ト",
+    "hiraStrokes": 2,
+    "kataStrokes": 2,
+    "hiraTips": [
+      "① ななめに おろす",
+      "② ぐるっと まわして とめる"
+    ],
+    "kataTips": [
+      "① たてに おろす",
+      "② 右ななめに おろす"
+    ],
+    "hiraWord": {
+      "word": "とけい",
+      "kana": "とけい",
+      "icon": "⏰",
+      "meaning": "とけい"
+    },
+    "kataWord": {
+      "word": "トマト",
+      "kana": "とまと",
+      "icon": "🍅",
+      "meaning": "トマト"
+    },
+    "pokeHira": "とげぴー",
+    "pokeKata": "トゲピー",
+    "missingChar": "と",
+    "missingKata": "ト"
+  },
+  {
+    "battle": 22,
+    "title": "バトル12〜21まとめ",
+    "poke": "ライコウ",
+    "dex": 243,
+    "category": "いかずちポケモン",
+    "type": "でんき",
+    "height": "1.9m",
+    "weight": "178.0kg",
+    "isReview": true,
+    "reviewTitle": "さ・し・す・せ・そ・た・ち・つ・て・と まとめ",
+    "reviewSummary": "さ行・た行の ひらがな・カタカナを マスターしよう！",
+    "words": [
+      "さなぎ",
+      "しんか",
+      "さいふ",
+      "しま",
+      "すいか",
+      "せんろ",
+      "そり"
+    ]
+  },
+  {
+    "battle": 23,
+    "title": "な・ナ",
+    "poke": "ナマコブシ",
+    "dex": 771,
+    "category": "なまこポケモン",
+    "type": "みず",
+    "height": "0.3m",
+    "weight": "1.2kg",
+    "hira": "な",
+    "kata": "ナ",
+    "hiraStrokes": 4,
+    "kataStrokes": 2,
+    "hiraTips": [
+      "① よこに ひく",
+      "② ななめに おろす",
+      "③ てんを うつ",
+      "④ むすんで とめる"
+    ],
+    "kataTips": [
+      "① よこに ひく",
+      "② 左へ はらう"
+    ],
+    "hiraWord": {
+      "word": "なし",
+      "kana": "なし",
+      "icon": "🍐",
+      "meaning": "なし"
+    },
+    "kataWord": {
+      "word": "ナイフ",
+      "kana": "ないふ",
+      "icon": "🔪",
+      "meaning": "ナイフ"
+    },
+    "pokeHira": "なまこぶし",
+    "pokeKata": "ナマコブシ",
+    "missingChar": "な",
+    "missingKata": "ナ"
+  },
+  {
+    "battle": 24,
+    "title": "に・ニ",
+    "poke": "ニャオハ",
+    "dex": 906,
+    "category": "くさねこポケモン",
+    "type": "くさ",
+    "height": "0.4m",
+    "weight": "4.1kg",
+    "hira": "に",
+    "kata": "ニ",
+    "hiraStrokes": 3,
+    "kataStrokes": 2,
+    "hiraTips": [
+      "① たてに おろして はねる",
+      "② 上を よこに ひく",
+      "③ 下を よこに ひく"
+    ],
+    "kataTips": [
+      "① 上の よこぼう",
+      "② 下の よこぼう（ながく）"
+    ],
+    "hiraWord": {
+      "word": "にじ",
+      "kana": "にじ",
+      "icon": "🌈",
+      "meaning": "にじ"
+    },
+    "kataWord": {
+      "word": "ニス",
+      "kana": "にす",
+      "icon": "🖌️",
+      "meaning": "ニス"
+    },
+    "pokeHira": "にゃおは",
+    "pokeKata": "ニャオハ",
+    "missingChar": "に",
+    "missingKata": "ニ"
+  },
+  {
+    "battle": 25,
+    "title": "ぬ・ヌ",
+    "poke": "ヌメラ",
+    "dex": 704,
+    "category": "なんたいポケモン",
+    "type": "ドラゴン",
+    "height": "0.3m",
+    "weight": "2.8kg",
+    "hira": "ぬ",
+    "kata": "ヌ",
+    "hiraStrokes": 2,
+    "kataStrokes": 2,
+    "hiraTips": [
+      "① ななめに おろす",
+      "② ぐるっと まわして むすんで とめる"
+    ],
+    "kataTips": [
+      "① よこから 左へ はらう",
+      "② 右ななめに とめる"
+    ],
+    "hiraWord": {
+      "word": "ぬいぐるみ",
+      "kana": "ぬいぐるみ",
+      "icon": "🧸",
+      "meaning": "ぬいぐるみ"
+    },
+    "kataWord": {
+      "word": "ヌードル",
+      "kana": "ぬーどる",
+      "icon": "🍜",
+      "meaning": "ヌードル"
+    },
+    "pokeHira": "ぬめら",
+    "pokeKata": "ヌメラ",
+    "missingChar": "ぬ",
+    "missingKata": "ヌ"
+  },
+  {
+    "battle": 26,
+    "title": "ね・ネ",
+    "poke": "ネギガナイト",
+    "dex": 865,
+    "category": "かるがもポケモン",
+    "type": "かくとう",
+    "height": "0.8m",
+    "weight": "117.0kg",
+    "hira": "ね",
+    "kata": "ネ",
+    "hiraStrokes": 2,
+    "kataStrokes": 4,
+    "hiraTips": [
+      "① たてに おろす",
+      "② よこから ぎざぎざに むすんで とめる"
+    ],
+    "kataTips": [
+      "① てんを うつ",
+      "② よこから 左へ はらう",
+      "③ まんなかを おろす",
+      "④ 右ななめに とめる"
+    ],
+    "hiraWord": {
+      "word": "ねこ",
+      "kana": "ねこ",
+      "icon": "🐱",
+      "meaning": "ねこ"
+    },
+    "kataWord": {
+      "word": "ネクタイ",
+      "kana": "ねくたい",
+      "icon": "👔",
+      "meaning": "ネクタイ"
+    },
+    "pokeHira": "ねぎがないと",
+    "pokeKata": "ネギガナイト",
+    "missingChar": "ね",
+    "missingKata": "ネ"
+  },
+  {
+    "battle": 27,
+    "title": "の・ノ",
+    "poke": "ノコッチ",
+    "dex": 206,
+    "category": "つちへびポケモン",
+    "type": "ノーマル",
+    "height": "1.5m",
+    "weight": "14.0kg",
+    "hira": "の",
+    "kata": "ノ",
+    "hiraStrokes": 1,
+    "kataStrokes": 1,
+    "hiraTips": [
+      "① ななめに おろして ぐるっと まわして はらう"
+    ],
+    "kataTips": [
+      "① 右上から 左下へ はらう"
+    ],
+    "hiraWord": {
+      "word": "のり",
+      "kana": "のり",
+      "icon": "🍙",
+      "meaning": "のり"
+    },
+    "kataWord": {
+      "word": "ノート",
+      "kana": "のーと",
+      "icon": "📓",
+      "meaning": "ノート"
+    },
+    "pokeHira": "のこっち",
+    "pokeKata": "ノコッチ",
+    "missingChar": "の",
+    "missingKata": "ノ"
+  },
+  {
+    "battle": 28,
+    "title": "は・ハ",
+    "poke": "ハッサム",
+    "dex": 212,
+    "category": "はさみポケモン",
+    "type": "むし・はがね",
+    "height": "1.8m",
+    "weight": "118.0kg",
+    "hira": "は",
+    "kata": "ハ",
+    "hiraStrokes": 3,
+    "kataStrokes": 2,
+    "hiraTips": [
+      "① たてに おろして はねる",
+      "② よこに ひく",
+      "③ おろして むすんで とめる"
+    ],
+    "kataTips": [
+      "① 左ななめに はらう",
+      "② 右ななめに とめる"
+    ],
+    "hiraWord": {
+      "word": "はな",
+      "kana": "はな",
+      "icon": "🌸",
+      "meaning": "はな"
+    },
+    "kataWord": {
+      "word": "ハンバーガー",
+      "kana": "はんばーがー",
+      "icon": "🍔",
+      "meaning": "ハンバーガー"
+    },
+    "pokeHira": "はっさむ",
+    "pokeKata": "ハッサム",
+    "missingChar": "は",
+    "missingKata": "ハ"
+  },
+  {
+    "battle": 29,
+    "title": "ひ・ヒ",
+    "poke": "ヒバニー",
+    "dex": 813,
+    "category": "うさぎポケモン",
+    "type": "ほのお",
+    "height": "0.3m",
+    "weight": "4.5kg",
+    "hira": "ひ",
+    "kata": "ヒ",
+    "hiraStrokes": 1,
+    "kataStrokes": 2,
+    "hiraTips": [
+      "① よこから おろして うけとめて 右へ はらう"
+    ],
+    "kataTips": [
+      "① よこに ひいて 左へ はらう",
+      "② まげて よこに ひく"
+    ],
+    "hiraWord": {
+      "word": "ひよこ",
+      "kana": "ひよこ",
+      "icon": "🐥",
+      "meaning": "ひよこ"
+    },
+    "kataWord": {
+      "word": "ヒーター",
+      "kana": "ひーたー",
+      "icon": "🔥",
+      "meaning": "ヒーター"
+    },
+    "pokeHira": "ひばにー",
+    "pokeKata": "ヒバニー",
+    "missingChar": "ひ",
+    "missingKata": "ヒ"
+  },
+  {
+    "battle": 30,
+    "title": "ふ・フ",
+    "poke": "フカマル",
+    "dex": 443,
+    "category": "りくざめポケモン",
+    "type": "ドラゴン・じめん",
+    "height": "0.7m",
+    "weight": "20.5kg",
+    "hira": "ふ",
+    "kata": "フ",
+    "hiraStrokes": 4,
+    "kataStrokes": 1,
+    "hiraTips": [
+      "① てんを うつ",
+      "② まんなかを ぐるっと おろす",
+      "③ 左にてん",
+      "④ 右にてん"
+    ],
+    "kataTips": [
+      "① よこから 左へ はらう"
+    ],
+    "hiraWord": {
+      "word": "ふね",
+      "kana": "ふね",
+      "icon": "🚢",
+      "meaning": "ふね"
+    },
+    "kataWord": {
+      "word": "フォーク",
+      "kana": "ふぉーく",
+      "icon": "🍴",
+      "meaning": "フォーク"
+    },
+    "pokeHira": "ふかまる",
+    "pokeKata": "フカマル",
+    "missingChar": "ふ",
+    "missingKata": "フ"
+  },
+  {
+    "battle": 31,
+    "title": "へ・ヘ",
+    "poke": "ヘイガニ",
+    "dex": 341,
+    "category": "ならずものポケモン",
+    "type": "みず",
+    "height": "0.6m",
+    "weight": "11.5kg",
+    "hira": "へ",
+    "kata": "ヘ",
+    "hiraStrokes": 1,
+    "kataStrokes": 1,
+    "hiraTips": [
+      "① ななめに あがって 右下に おろす"
+    ],
+    "kataTips": [
+      "① ななめに あがって 右下に おろす"
+    ],
+    "hiraWord": {
+      "word": "へび",
+      "kana": "へび",
+      "icon": "🐍",
+      "meaning": "へび"
+    },
+    "kataWord": {
+      "word": "ヘリコプター",
+      "kana": "へりこぷたー",
+      "icon": "🚁",
+      "meaning": "ヘリコプター"
+    },
+    "pokeHira": "へいがに",
+    "pokeKata": "ヘイガニ",
+    "missingChar": "へ",
+    "missingKata": "ヘ"
+  },
+  {
+    "battle": 32,
+    "title": "ほ・ホ",
+    "poke": "ホゲータ",
+    "dex": 909,
+    "category": "ほのおワニポケモン",
+    "type": "ほのお",
+    "height": "0.4m",
+    "weight": "9.8kg",
+    "hira": "ほ",
+    "kata": "ホ",
+    "hiraStrokes": 4,
+    "kataStrokes": 4,
+    "hiraTips": [
+      "① たてに おろして はねる",
+      "② 上の よこぼう",
+      "③ 下の よこぼう",
+      "④ まんなかを おろして むすぶ"
+    ],
+    "kataTips": [
+      "① よこぼう",
+      "② まんなかを おろして はねる",
+      "③ 左のはらい",
+      "④ 右のとめ"
+    ],
+    "hiraWord": {
+      "word": "ほし",
+      "kana": "ほし",
+      "icon": "⭐",
+      "meaning": "ほし"
+    },
+    "kataWord": {
+      "word": "ホットケーキ",
+      "kana": "ほっとけーき",
+      "icon": "🥞",
+      "meaning": "ホットケーキ"
+    },
+    "pokeHira": "ほげーた",
+    "pokeKata": "ホゲータ",
+    "missingChar": "ほ",
+    "missingKata": "ホ"
+  },
+  {
+    "battle": 33,
+    "title": "バトル23〜32まとめ",
+    "poke": "コライドン",
+    "dex": 1007,
+    "category": "ツバサノオウポケモン",
+    "type": "かくとう・ドラゴン",
+    "height": "2.5m",
+    "weight": "303.0kg",
+    "isReview": true,
+    "reviewTitle": "な・に・ぬ・ね・の・は・ひ・ふ・へ・ほ まとめ",
+    "reviewSummary": "な行・は行の ひらがな・カタカナを マスターしよう！",
+    "words": [
+      "なきごえ",
+      "にがおえ",
+      "なべ",
+      "にもつ",
+      "ぬりえ",
+      "ねじ",
+      "のこぎり"
+    ]
+  },
+  {
+    "battle": 34,
+    "title": "ま・マ",
+    "poke": "マホイップ",
+    "dex": 869,
+    "category": "クリームポケモン",
+    "type": "フェアリー",
+    "height": "0.3m",
+    "weight": "0.5kg",
+    "hira": "ま",
+    "kata": "マ",
+    "hiraStrokes": 3,
+    "kataStrokes": 2,
+    "hiraTips": [
+      "① 上の よこぼう",
+      "② 下の よこぼう",
+      "③ おろして むすんで とめる"
+    ],
+    "kataTips": [
+      "① よこから 左へ はらう",
+      "② 右ななめに とめる"
+    ],
+    "hiraWord": {
+      "word": "まど",
+      "kana": "まど",
+      "icon": "🪟",
+      "meaning": "まど"
+    },
+    "kataWord": {
+      "word": "マイク",
+      "kana": "まいく",
+      "icon": "🎤",
+      "meaning": "マイク"
+    },
+    "pokeHira": "まほいっぷ",
+    "pokeKata": "マホイップ",
+    "missingChar": "ま",
+    "missingKata": "マ"
+  },
+  {
+    "battle": 35,
+    "title": "み・ミ",
+    "poke": "ミカルゲ",
+    "dex": 442,
+    "category": "ふういんポケモン",
+    "type": "ゴースト・あく",
+    "height": "1.0m",
+    "weight": "108.0kg",
+    "hira": "み",
+    "kata": "ミ",
+    "hiraStrokes": 2,
+    "kataStrokes": 3,
+    "hiraTips": [
+      "① おろして むすんで 右へ ひく",
+      "② 右上から 左下へ はらう"
+    ],
+    "kataTips": [
+      "① 上のはらい",
+      "② まんなかのはらい",
+      "③ 下のはらい"
+    ],
+    "hiraWord": {
+      "word": "みかん",
+      "kana": "みかん",
+      "icon": "🍊",
+      "meaning": "みかん"
+    },
+    "kataWord": {
+      "word": "ミルク",
+      "kana": "みるく",
+      "icon": "🥛",
+      "meaning": "ミルク"
+    },
+    "pokeHira": "みかるげ",
+    "pokeKata": "ミカルゲ",
+    "missingChar": "み",
+    "missingKata": "ミ"
+  },
+  {
+    "battle": 36,
+    "title": "む・ム",
+    "poke": "ムンナ",
+    "dex": 517,
+    "category": "ゆめくいポケモン",
+    "type": "エスパー",
+    "height": "0.6m",
+    "weight": "23.3kg",
+    "hira": "む",
+    "kata": "ム",
+    "hiraStrokes": 3,
+    "kataStrokes": 2,
+    "hiraTips": [
+      "① よこに ひく",
+      "② おろして むすんで すくいあげる",
+      "③ 右上に てんを うつ"
+    ],
+    "kataTips": [
+      "① まげて はらう",
+      "② 右に てんを うつ"
+    ],
+    "hiraWord": {
+      "word": "むし",
+      "kana": "むし",
+      "icon": "🐞",
+      "meaning": "むし"
+    },
+    "kataWord": {
+      "word": "ムース",
+      "kana": "むーす",
+      "icon": "🍮",
+      "meaning": "ムース"
+    },
+    "pokeHira": "むんな",
+    "pokeKata": "ムンナ",
+    "missingChar": "む",
+    "missingKata": "ム"
+  },
+  {
+    "battle": 37,
+    "title": "め・メ",
+    "poke": "メタモン",
+    "dex": 132,
+    "category": "へんしんポケモン",
+    "type": "ノーマル",
+    "height": "0.3m",
+    "weight": "4.0kg",
+    "hira": "め",
+    "kata": "メ",
+    "hiraStrokes": 2,
+    "kataStrokes": 2,
+    "hiraTips": [
+      "① ななめに おろす",
+      "② ぐるっと まわして はらう"
+    ],
+    "kataTips": [
+      "① 左ななめに はらう",
+      "② 右上から 左下へ はらう"
+    ],
+    "hiraWord": {
+      "word": "めがね",
+      "kana": "めがね",
+      "icon": "👓",
+      "meaning": "めがね"
+    },
+    "kataWord": {
+      "word": "メロン",
+      "kana": "めろん",
+      "icon": "🍈",
+      "meaning": "メロン"
+    },
+    "pokeHira": "めたもん",
+    "pokeKata": "メタモン",
+    "missingChar": "め",
+    "missingKata": "メ"
+  },
+  {
+    "battle": 38,
+    "title": "も・モ",
+    "poke": "モスノウ",
+    "dex": 873,
+    "category": "こおりがポケモン",
+    "type": "こおり・むし",
+    "height": "1.3m",
+    "weight": "42.0kg",
+    "hira": "も",
+    "kata": "モ",
+    "hiraStrokes": 3,
+    "kataStrokes": 3,
+    "hiraTips": [
+      "① まんなかを おろして すくいあげる",
+      "② 上の よこぼう",
+      "③ 下の よこぼう"
+    ],
+    "kataTips": [
+      "① 上の よこぼう",
+      "② 下の よこぼう",
+      "③ まんなかを おろして まげる"
+    ],
+    "hiraWord": {
+      "word": "もも",
+      "kana": "もも",
+      "icon": "🍑",
+      "meaning": "もも"
+    },
+    "kataWord": {
+      "word": "モーター",
+      "kana": "もーたー",
+      "icon": "⚙️",
+      "meaning": "モーター"
+    },
+    "pokeHira": "もすのう",
+    "pokeKata": "モスノウ",
+    "missingChar": "も",
+    "missingKata": "モ"
+  },
+  {
+    "battle": 39,
+    "title": "や・ヤ",
+    "poke": "ヤヤコマ",
+    "dex": 661,
+    "category": "コマドリポケモン",
+    "type": "ノーマル・ひこう",
+    "height": "0.3m",
+    "weight": "1.7kg",
+    "hira": "や",
+    "kata": "ヤ",
+    "hiraStrokes": 3,
+    "kataStrokes": 2,
+    "hiraTips": [
+      "① まげて はねる",
+      "② 左上に てんを うつ",
+      "③ 右がわを はらう"
+    ],
+    "kataTips": [
+      "① まげて とめる",
+      "② 右がわを はらう"
+    ],
+    "hiraWord": {
+      "word": "やま",
+      "kana": "やま",
+      "icon": "⛰️",
+      "meaning": "やま"
+    },
+    "kataWord": {
+      "word": "ヤットコ",
+      "kana": "やっとこ",
+      "icon": "🔧",
+      "meaning": "ヤットコ"
+    },
+    "pokeHira": "ややこま",
+    "pokeKata": "ヤヤコマ",
+    "missingChar": "や",
+    "missingKata": "ヤ"
+  },
+  {
+    "battle": 40,
+    "title": "ゆ・ユ",
+    "poke": "ユキノオー",
+    "dex": 460,
+    "category": "じゅひょうポケモン",
+    "type": "くさ・こおり",
+    "height": "2.2m",
+    "weight": "135.8kg",
+    "hira": "ゆ",
+    "kata": "ユ",
+    "hiraStrokes": 2,
+    "kataStrokes": 2,
+    "hiraTips": [
+      "① おろして まわして まげる",
+      "② 上から まんなかを はらう"
+    ],
+    "kataTips": [
+      "① まげて よこに ひく",
+      "② まんなかを おろす"
+    ],
+    "hiraWord": {
+      "word": "ゆき",
+      "kana": "ゆき",
+      "icon": "❄️",
+      "meaning": "ゆき"
+    },
+    "kataWord": {
+      "word": "ヨット",
+      "kana": "よっと",
+      "icon": "⛵",
+      "meaning": "ヨット"
+    },
+    "pokeHira": "ゆきのきー",
+    "pokeKata": "ユキノオー",
+    "missingChar": "ゆ",
+    "missingKata": "ユ"
+  },
+  {
+    "battle": 41,
+    "title": "よ・ヨ",
+    "poke": "ヨクバリス",
+    "dex": 820,
+    "category": "よくばりポケモン",
+    "type": "ノーマル",
+    "height": "0.6m",
+    "weight": "6.0kg",
+    "hira": "よ",
+    "kata": "ヨ",
+    "hiraStrokes": 2,
+    "kataStrokes": 3,
+    "hiraTips": [
+      "① よこに ひく",
+      "② おろして むすんで とめる"
+    ],
+    "kataTips": [
+      "① まげて よこに ひく",
+      "② まんなかの よこぼう",
+      "③ 下の よこぼう"
+    ],
+    "hiraWord": {
+      "word": "よる",
+      "kana": "よる",
+      "icon": "🌙",
+      "meaning": "よる"
+    },
+    "kataWord": {
+      "word": "ヨーグルト",
+      "kana": "よーぐると",
+      "icon": "🥣",
+      "meaning": "ヨーグルト"
+    },
+    "pokeHira": "よくばりす",
+    "pokeKata": "ヨクバリス",
+    "missingChar": "よ",
+    "missingKata": "ヨ"
+  },
+  {
+    "battle": 42,
+    "title": "ら・ラ",
+    "poke": "ラプラス",
+    "dex": 131,
+    "category": "のりものポケモン",
+    "type": "みず・こおり",
+    "height": "2.5m",
+    "weight": "220.0kg",
+    "hira": "ら",
+    "kata": "ラ",
+    "hiraStrokes": 2,
+    "kataStrokes": 2,
+    "hiraTips": [
+      "① てんを うつ",
+      "② おろして ぐるっと とめる"
+    ],
+    "kataTips": [
+      "① よこぼう",
+      "② まげて 左へ はらう"
+    ],
+    "hiraWord": {
+      "word": "らいおん",
+      "kana": "らいおん",
+      "icon": "🦁",
+      "meaning": "らいおん"
+    },
+    "kataWord": {
+      "word": "ラジオ",
+      "kana": "らじお",
+      "icon": "📻",
+      "meaning": "ラジオ"
+    },
+    "pokeHira": "らぷらす",
+    "pokeKata": "ラプラス",
+    "missingChar": "ら",
+    "missingKata": "ラ"
+  },
+  {
+    "battle": 43,
+    "title": "り・リ",
+    "poke": "リオル",
+    "dex": 447,
+    "category": "はもんポケモン",
+    "type": "かくとう",
+    "height": "0.7m",
+    "weight": "20.2kg",
+    "hira": "り",
+    "kata": "リ",
+    "hiraStrokes": 2,
+    "kataStrokes": 2,
+    "hiraTips": [
+      "① 左がわを はねる",
+      "② 右がわを はらう"
+    ],
+    "kataTips": [
+      "① 左の たてぼう",
+      "② 右がわを はらう"
+    ],
+    "hiraWord": {
+      "word": "りんご",
+      "kana": "りんご",
+      "icon": "🍎",
+      "meaning": "りんご"
+    },
+    "kataWord": {
+      "word": "リボン",
+      "kana": "りぼん",
+      "icon": "🎀",
+      "meaning": "リボン"
+    },
+    "pokeHira": "りおる",
+    "pokeKata": "リオル",
+    "missingChar": "り",
+    "missingKata": "リ"
+  },
+  {
+    "battle": 44,
+    "title": "る・ル",
+    "poke": "ルカリオ",
+    "dex": 448,
+    "category": "はどうポケモン",
+    "type": "かくとう・はがね",
+    "height": "1.2m",
+    "weight": "54.0kg",
+    "hira": "る",
+    "kata": "ル",
+    "hiraStrokes": 1,
+    "kataStrokes": 2,
+    "hiraTips": [
+      "① ぎざぎざに おろして むすんで とめる"
+    ],
+    "kataTips": [
+      "① 左へ はらう",
+      "② まげて すくいあげる"
+    ],
+    "hiraWord": {
+      "word": "るすばん",
+      "kana": "るすばん",
+      "icon": "🏠",
+      "meaning": "るすばん"
+    },
+    "kataWord": {
+      "word": "ルビー",
+      "kana": "るびー",
+      "icon": "💎",
+      "meaning": "ルビー"
+    },
+    "pokeHira": "るかりお",
+    "pokeKata": "ルカリオ",
+    "missingChar": "る",
+    "missingKata": "ル"
+  },
+  {
+    "battle": 45,
+    "title": "れ・レ",
+    "poke": "レントラー",
+    "dex": 405,
+    "category": "がんこうポケモン",
+    "type": "でんき",
+    "height": "1.4m",
+    "weight": "42.0kg",
+    "hira": "れ",
+    "kata": "レ",
+    "hiraStrokes": 2,
+    "kataStrokes": 1,
+    "hiraTips": [
+      "① たてに おろす",
+      "② ぎざぎざから 右へ まげて はねる"
+    ],
+    "kataTips": [
+      "① おろして 右へ まげて はねる"
+    ],
+    "hiraWord": {
+      "word": "れもん",
+      "kana": "れもん",
+      "icon": "🍋",
+      "meaning": "れもん"
+    },
+    "kataWord": {
+      "word": "レモン",
+      "kana": "れもん",
+      "icon": "🍋",
+      "meaning": "レモン"
+    },
+    "pokeHira": "れんとらー",
+    "pokeKata": "レントラー",
+    "missingChar": "れ",
+    "missingKata": "レ"
+  },
+  {
+    "battle": 46,
+    "title": "ろ・ロ",
+    "poke": "ローブシン",
+    "dex": 534,
+    "category": "きょうこつポケモン",
+    "type": "かくとう",
+    "height": "1.4m",
+    "weight": "87.0kg",
+    "hira": "ろ",
+    "kata": "ロ",
+    "hiraStrokes": 1,
+    "kataStrokes": 3,
+    "hiraTips": [
+      "① ぎざぎざに おろして ぐるっと とめる"
+    ],
+    "kataTips": [
+      "① たてに おろす",
+      "② よこから おろす",
+      "③ 下をとじる"
+    ],
+    "hiraWord": {
+      "word": "ろうそく",
+      "kana": "ろうそく",
+      "icon": "🕯️",
+      "meaning": "ろうそく"
+    },
+    "kataWord": {
+      "word": "ロケット",
+      "kana": "ろけっと",
+      "icon": "🚀",
+      "meaning": "ロケット"
+    },
+    "pokeHira": "ろーぶしん",
+    "pokeKata": "ローブシン",
+    "missingChar": "ろ",
+    "missingKata": "ロ"
+  },
+  {
+    "battle": 47,
+    "title": "わ・ワ",
+    "poke": "ワンパチ",
+    "dex": 835,
+    "category": "こいぬポケモン",
+    "type": "でんき",
+    "height": "0.3m",
+    "weight": "13.5kg",
+    "hira": "わ",
+    "kata": "ワ",
+    "hiraStrokes": 2,
+    "kataStrokes": 2,
+    "hiraTips": [
+      "① たてに おろす",
+      "② ぎざぎざから ぐるっと まわして とめる"
+    ],
+    "kataTips": [
+      "① たてに おろす",
+      "② よこから 左へ はらう"
+    ],
+    "hiraWord": {
+      "word": "わに",
+      "kana": "わに",
+      "icon": "🐊",
+      "meaning": "わに"
+    },
+    "kataWord": {
+      "word": "ワイシャツ",
+      "kana": "わいしゃつ",
+      "icon": "👔",
+      "meaning": "ワイシャツ"
+    },
+    "pokeHira": "わんぱち",
+    "pokeKata": "ワンパチ",
+    "missingChar": "わ",
+    "missingKata": "ワ"
+  },
+  {
+    "battle": 48,
+    "title": "を・ヲ",
+    "poke": "パモ",
+    "dex": 921,
+    "category": "ねずみポケモン",
+    "type": "でんき",
+    "height": "0.3m",
+    "weight": "2.5kg",
+    "hira": "を",
+    "kata": "ヲ",
+    "hiraStrokes": 3,
+    "kataStrokes": 3,
+    "hiraTips": [
+      "① よこに ひく",
+      "② ななめから まげる",
+      "③ と を かくように とめる"
+    ],
+    "kataTips": [
+      "① 上の よこぼう",
+      "② 下の よこぼう",
+      "③ まんなかを はらう"
+    ],
+    "hiraWord": {
+      "word": "ほんをよむ",
+      "kana": "ほんをよむ",
+      "icon": "📖",
+      "meaning": "ほんをよむ"
+    },
+    "kataWord": {
+      "word": "ヲ",
+      "kana": "を",
+      "icon": "⚡",
+      "meaning": "ヲ"
+    },
+    "pokeHira": "ぱもを",
+    "pokeKata": "パモヲ",
+    "missingChar": "を",
+    "missingKata": "ヲ"
+  },
+  {
+    "battle": 49,
+    "title": "ん・ン",
+    "poke": "イワンコ",
+    "dex": 745,
+    "category": "こいぬポケモン",
+    "type": "いわ",
+    "height": "0.5m",
+    "weight": "9.2kg",
+    "hira": "ん",
+    "kata": "ン",
+    "hiraStrokes": 1,
+    "kataStrokes": 2,
+    "hiraTips": [
+      "① ななめに おろして 上がって ぐるっと 右へ はねる"
+    ],
+    "kataTips": [
+      "① 左上にてん",
+      "② 左下から 右上へ すくいあげる"
+    ],
+    "hiraWord": {
+      "word": "きりん",
+      "kana": "きりん",
+      "icon": "🦒",
+      "meaning": "きりん"
+    },
+    "kataWord": {
+      "word": "パン",
+      "kana": "ぱん",
+      "icon": "🍞",
+      "meaning": "パン"
+    },
+    "pokeHira": "いわんこ",
+    "pokeKata": "イワンコ",
+    "missingChar": "ん",
+    "missingKata": "ン"
+  },
+  {
+    "battle": 50,
+    "title": "バトル34〜49まとめ",
+    "poke": "マギアナ",
+    "dex": 801,
+    "category": "じんぞうポケモン",
+    "type": "はがね・フェアリー",
+    "height": "1.0m",
+    "weight": "80.5kg",
+    "isReview": true,
+    "reviewTitle": "ま行〜わ行・を・ん まとめ",
+    "reviewSummary": "五十音を ぜんぶ かけるように なったよ！",
+    "words": [
+      "みずうみ",
+      "もり",
+      "まど",
+      "みみ",
+      "むしば",
+      "め",
+      "もち"
+    ]
+  },
+  {
+    "battle": 51,
+    "title": "「゛」濁点",
+    "poke": "パンプジン",
+    "dex": 711,
+    "category": "かぼちゃポケモン",
+    "type": "ゴースト・くさ",
+    "height": "0.9m",
+    "weight": "12.5kg",
+    "isSpecial": true,
+    "hira": "が",
+    "kata": "ガ",
+    "hiraStrokes": 5,
+    "kataStrokes": 4,
+    "specialType": "dakuten",
+    "hiraTips": [
+      "① か を かく",
+      "② 右上に てんてん（濁点）を うつ"
+    ],
+    "kataTips": [
+      "① カ を かく",
+      "② 右上に てんてん（濁点）を うつ"
+    ],
+    "hiraWord": {
+      "word": "がっこう",
+      "kana": "がっこう",
+      "icon": "🏫",
+      "meaning": "がっこう"
+    },
+    "kataWord": {
+      "word": "ガラス",
+      "kana": "がらす",
+      "icon": "🪟",
+      "meaning": "ガラス"
+    },
+    "pokeHira": "ぱんぷじん",
+    "pokeKata": "パンプジン",
+    "missingChar": "が",
+    "missingKata": "ガ"
+  },
+  {
+    "battle": 52,
+    "title": "「ゃ・ゅ・ょ」拗音",
+    "poke": "ピカチュウ",
+    "dex": 25,
+    "category": "ねずみポケモン",
+    "type": "でんき",
+    "height": "0.4m",
+    "weight": "6.0kg",
+    "isSpecial": true,
+    "hira": "ゃ",
+    "kata": "ャ",
+    "hiraStrokes": 3,
+    "kataStrokes": 2,
+    "specialType": "youon",
+    "hiraTips": [
+      "① ちいさく マスの 右下に かこう！"
+    ],
+    "kataTips": [
+      "① ちいさく マスの 右下に かこう！"
+    ],
+    "hiraWord": {
+      "word": "でんしゃ",
+      "kana": "でんしゃ",
+      "icon": "🚃",
+      "meaning": "でんしゃ"
+    },
+    "kataWord": {
+      "word": "シャツ",
+      "kana": "しゃつ",
+      "icon": "👕",
+      "meaning": "シャツ"
+    },
+    "pokeHira": "ぴかちゅう",
+    "pokeKata": "ピカチュウ",
+    "missingChar": "ゅ",
+    "missingKata": "ュ"
+  },
+  {
+    "battle": 53,
+    "title": "よこがき",
+    "poke": "ポッチャマ",
+    "dex": 393,
+    "category": "ペンギンポケモン",
+    "type": "みず",
+    "height": "0.4m",
+    "weight": "5.2kg",
+    "isSpecial": true,
+    "hira": "ぽ",
+    "kata": "ポ",
+    "hiraStrokes": 5,
+    "kataStrokes": 5,
+    "specialType": "yokogaki",
+    "hiraTips": [
+      "① 左から 右へ よこがきで かこう！"
+    ],
+    "kataTips": [
+      "① 左から 右へ よこがきで かこう！"
+    ],
+    "hiraWord": {
+      "word": "ペンギン",
+      "kana": "ぺんぎん",
+      "icon": "🐧",
+      "meaning": "ペンギン"
+    },
+    "kataWord": {
+      "word": "ポッチャマ",
+      "kana": "ぽっちゃま",
+      "icon": "💧",
+      "meaning": "ポッチャマ"
+    },
+    "pokeHira": "ぽっちゃま",
+    "pokeKata": "ポッチャマ",
+    "missingChar": "ぽ",
+    "missingKata": "ポ"
+  },
+  {
+    "battle": 54,
+    "title": "のばすおと「ー」",
+    "poke": "ボーマンダ",
+    "dex": 373,
+    "category": "ドラゴンポケモン",
+    "type": "ドラゴン・ひこう",
+    "height": "1.5m",
+    "weight": "102.6kg",
+    "isSpecial": true,
+    "hira": "ー",
+    "kata": "ー",
+    "hiraStrokes": 1,
+    "kataStrokes": 1,
+    "specialType": "chouon",
+    "hiraTips": [
+      "① まっすぐ よこに のばす！"
+    ],
+    "kataTips": [
+      "① まっすぐ よこに のばす！"
+    ],
+    "hiraWord": {
+      "word": "ケーキ",
+      "kana": "けーき",
+      "icon": "🍰",
+      "meaning": "ケーキ"
+    },
+    "kataWord": {
+      "word": "ボーマンダ",
+      "kana": "ぼーまんだ",
+      "icon": "🐉",
+      "meaning": "ボーマンダ"
+    },
+    "pokeHira": "ぼーまんだ",
+    "pokeKata": "ボーマンダ",
+    "missingChar": "ー",
+    "missingKata": "ー"
+  },
+  {
+    "battle": 55,
+    "title": "1〜54総まとめ",
+    "poke": "レックウザ",
+    "dex": 384,
+    "category": "てんくうポケモン",
+    "type": "ドラゴン・ひこう",
+    "height": "7.0m",
+    "weight": "206.5kg",
+    "isReview": true,
+    "isFinal": true,
+    "reviewTitle": "ひらがな・カタカナ 総まとめ",
+    "reviewSummary": "でんせつの ポケモン レックウザが まっている！ すべての ちからを はっきしよう！",
+    "words": [
+      "あぶそる",
+      "にゃおは",
+      "きばご",
+      "ぬめら",
+      "たぶんね",
+      "しまま",
+      "めたもん",
+      "わんぱち",
+      "クワッス",
+      "フカマル",
+      "ツツケラ",
+      "ケンタロス",
+      "ノコッチ",
+      "ポッチャマ",
+      "ムンナ",
+      "レントラー",
+      "レックウザ"
+    ]
+  }
+];
+
+const KOKUGO_MINIGAMES = [
+  {
+    "id": 1,
+    "afterBattle": 5,
+    "title": "ミニゲーム1：この かげは だれかな？",
+    "badge": "🎮 1",
+    "desc": "シルエットと なまえの うすいじを みて、ただしい ポケモンを えらぼう！",
+    "problems": [
+      {
+        "shadowDex": 728,
+        "kana": "アシマリ",
+        "choices": [
+          "アシマリ",
+          "イトマル",
+          "ゴマゾウ"
+        ],
+        "ans": "アシマリ",
+        "hint": "あしかポケモン"
+      },
+      {
+        "shadowDex": 167,
+        "kana": "イトマル",
+        "choices": [
+          "ポチエナ",
+          "イトマル",
+          "オタマロ"
+        ],
+        "ans": "イトマル",
+        "hint": "くもポケモン"
+      },
+      {
+        "shadowDex": 231,
+        "kana": "ゴマゾウ",
+        "choices": [
+          "ゴマゾウ",
+          "アシマリ",
+          "ポチエナ"
+        ],
+        "ans": "ゴマゾウ",
+        "hint": "こぞうポケモン"
+      },
+      {
+        "shadowDex": 261,
+        "kana": "ポチエナ",
+        "choices": [
+          "イトマル",
+          "オタマロ",
+          "ポチエナ"
+        ],
+        "ans": "ポチエナ",
+        "hint": "こいぬポケモン"
+      },
+      {
+        "shadowDex": 535,
+        "kana": "オタマロ",
+        "choices": [
+          "オタマロ",
+          "ゴマゾウ",
+          "アシマリ"
+        ],
+        "ans": "オタマロ",
+        "hint": "おたまポケモン"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "afterBattle": 11,
+    "title": "ミニゲーム2：もじが あるのは どっち？",
+    "badge": "🎮 2",
+    "desc": "スタートから ゴールまで、［ ］の もじが はいっている ポケモンを えらんで めいろを すすもう！",
+    "steps": [
+      {
+        "target": "カ",
+        "choices": [
+          {
+            "name": "カメール",
+            "dex": 8,
+            "has": true
+          },
+          {
+            "name": "ジメレオン",
+            "dex": 817,
+            "has": false
+          }
+        ]
+      },
+      {
+        "target": "ケ",
+        "choices": [
+          {
+            "name": "ケロマツ",
+            "dex": 656,
+            "has": true
+          },
+          {
+            "name": "アーボ",
+            "dex": 23,
+            "has": false
+          }
+        ]
+      },
+      {
+        "target": "ク",
+        "choices": [
+          {
+            "name": "クラブ",
+            "dex": 98,
+            "has": true
+          },
+          {
+            "name": "パラス",
+            "dex": 46,
+            "has": false
+          }
+        ]
+      },
+      {
+        "target": "キ",
+        "choices": [
+          {
+            "name": "キマワリ",
+            "dex": 192,
+            "has": true
+          },
+          {
+            "name": "アマカジ",
+            "dex": 761,
+            "has": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "afterBattle": 16,
+    "title": "ミニゲーム3：2かい なぞった じは どれ？",
+    "badge": "🎮 3",
+    "desc": "ポケモンの なまえを なぞって、2かい でてきた じを まんなかに かこう！",
+    "pokes": [
+      "サンド",
+      "ニャース",
+      "トランセル",
+      "シママ",
+      "フシギソウ"
+    ],
+    "ans": "ン",
+    "choices": [
+      "サ",
+      "ン",
+      "ド",
+      "シ",
+      "マ"
+    ]
+  },
+  {
+    "id": 4,
+    "afterBattle": 22,
+    "title": "ミニゲーム4：おなじ もじが あるのは どれ？",
+    "badge": "🎮 4",
+    "desc": "タ・チ・ツ・テ・ト と おなじ もじが はいっている ポケモンを せんで つなごう！",
+    "matches": [
+      {
+        "kana": "タ",
+        "poke": "エビワラー",
+        "dex": 107
+      },
+      {
+        "kana": "チ",
+        "poke": "チラチーノ",
+        "dex": 573
+      },
+      {
+        "kana": "ツ",
+        "poke": "ウツドン",
+        "dex": 70
+      },
+      {
+        "kana": "テ",
+        "poke": "キテルグマ",
+        "dex": 760
+      },
+      {
+        "kana": "ト",
+        "poke": "エンペルト",
+        "dex": 395
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "afterBattle": 27,
+    "title": "ミニゲーム5：いちばん おおい もじは どれ？",
+    "badge": "🎮 5",
+    "desc": "ポケモンの なまえの なかで、「ナ・ニ・ヌ・ネ・ノ」の うち いちばん おおい もじは どれかな？",
+    "pokes": [
+      {
+        "name": "ジュナイパー",
+        "has": "ナ",
+        "dex": 724
+      },
+      {
+        "name": "テールナー",
+        "has": "ナ",
+        "dex": 654
+      },
+      {
+        "name": "ニャローテ",
+        "has": "ニ",
+        "dex": 907
+      },
+      {
+        "name": "ヌメラ",
+        "has": "ヌ",
+        "dex": 704
+      },
+      {
+        "name": "デデンネ",
+        "has": "ネ",
+        "dex": 702
+      },
+      {
+        "name": "ノズパス",
+        "has": "ノ",
+        "dex": 299
+      }
+    ],
+    "ans": "ナ",
+    "choices": [
+      "ナ",
+      "ニ",
+      "ヌ",
+      "ネ",
+      "ノ"
+    ]
+  },
+  {
+    "id": 6,
+    "afterBattle": 33,
+    "title": "ミニゲーム6：ただしい みちは どれ？",
+    "badge": "🎮 6",
+    "desc": "「ハ・ヒ・フ・ヘ・ホ」の もじを もつ ポケモンを じゅんばんに とおって ゴールへ いこう！",
+    "path": [
+      {
+        "kana": "ハ",
+        "poke": "ハリマロン",
+        "dex": 650
+      },
+      {
+        "kana": "ヒ",
+        "poke": "ニャヒート",
+        "dex": 726
+      },
+      {
+        "kana": "フ",
+        "poke": "フカマル",
+        "dex": 443
+      },
+      {
+        "kana": "ヘ",
+        "poke": "ヘラクロス",
+        "dex": 214
+      },
+      {
+        "kana": "ホ",
+        "poke": "ホゲータ",
+        "dex": 909
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "afterBattle": 41,
+    "title": "ミニゲーム7：かこんだ もじを かけるかな？",
+    "badge": "🎮 7",
+    "desc": "ポケモンの なまえから「マ・ミ・ム・メ・モ」を みつけて かこう！",
+    "items": [
+      {
+        "target": "マ",
+        "poke": "マダツボミ",
+        "dex": 69
+      },
+      {
+        "target": "ミ",
+        "poke": "ミミッキュ",
+        "dex": 778
+      },
+      {
+        "target": "ム",
+        "poke": "ムウマ",
+        "dex": 200
+      },
+      {
+        "target": "メ",
+        "poke": "メタモン",
+        "dex": 132
+      },
+      {
+        "target": "モ",
+        "poke": "モトトカゲ",
+        "dex": 967
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "afterBattle": 50,
+    "title": "ミニゲーム8：おなじ もじは どこかな？",
+    "badge": "🎮 8",
+    "desc": "「ラ・リ・ル・レ・ロ」の もじが はいっている ポケモンを みつけて つなごう！",
+    "items": [
+      {
+        "target": "レ",
+        "poke": "レディバ",
+        "dex": 165
+      },
+      {
+        "target": "ル",
+        "poke": "ルガルガン",
+        "dex": 745
+      },
+      {
+        "target": "リ",
+        "poke": "キリンリキ",
+        "dex": 203
+      },
+      {
+        "target": "ロ",
+        "poke": "トロッゴン",
+        "dex": 838
+      },
+      {
+        "target": "ラ",
+        "poke": "ラプラス",
+        "dex": 131
+      }
+    ]
+  }
+];
+
+
+/* ===== こくごドリル システム (小学1年 ひらがな・カタカナ) ===== */
+
+let currentAppMode = 'sansu';
+let curKokugoIdx = 0;
+let kokugoDrillScores = { p1: 0, p2: 0, p3: 0 };
+
+// 状態初期化
+if (!Array.isArray(S.kokugoCleared)) S.kokugoCleared = [];
+if (!Array.isArray(S.kokugoCaught)) S.kokugoCaught = [];
+if (!Array.isArray(S.kokugoMinigamesCleared)) S.kokugoMinigamesCleared = [];
+if (typeof S.kokugoCurrentBattleIndex !== 'number') S.kokugoCurrentBattleIndex = 0;
+
+// ドリル選択処理
+function selectDrill(subject) {
+  if (subject === 'sansu') {
+    currentAppMode = 'sansu';
+    playPikaanSound();
+    $('home').classList.remove('active');
+    $('battle').classList.remove('active');
+    $('kokugoDrill').classList.remove('active');
+    $('kokugoMap').classList.remove('active');
+    $('map').classList.add('active');
+    if ($('hdrTitleSmall')) $('hdrTitleSmall').innerHTML = '入学準備 さんすう <span class="ver-badge" style="background:#dcfce7;color:#15803d;padding:1px 6px;border-radius:6px;font-size:11px;font-weight:900">Ver 3.0 最新版</span>';
+    layoutMap();
+    setTimeout(scrollToCurrent, 80);
+  } else if (subject === 'kokugo') {
+    currentAppMode = 'kokugo';
+    playPikaanSound();
+    $('home').classList.remove('active');
+    $('battle').classList.remove('active');
+    $('kokugoDrill').classList.remove('active');
+    $('map').classList.remove('active');
+    $('kokugoMap').classList.add('active');
+    if ($('hdrTitleSmall')) $('hdrTitleSmall').innerHTML = '小学1年 ひらがな・カタカナ <span class="ver-badge" style="background:#fef08a;color:#854d0e;padding:1px 6px;border-radius:6px;font-size:11px;font-weight:900">Ver 3.0 最新版</span>';
+    layoutKokugoMap();
+    setTimeout(scrollToCurrentKokugo, 80);
+  } else {
+    playMarimbaPop(0.8);
+    toast('このドリルは もうすぐ とうじょうするよ！ おたのしみに！', 2000);
+  }
+}
+
+// マップへ戻る
+function backToMap() {
+  if ('speechSynthesis' in window) speechSynthesis.cancel();
+  const catchModal = $('drillCatchModal');
+  if (catchModal) {
+    catchModal.classList.remove('open');
+    catchModal.style.display = 'none';
+  }
+  document.querySelectorAll('.drill-flying-ball, .catch-sparkle-item').forEach(el => el.remove());
+
+  $('home').classList.remove('active');
+  $('battle').classList.remove('active');
+  $('kokugoDrill').classList.remove('active');
+
+  if (currentAppMode === 'kokugo') {
+    $('kokugoMap').classList.add('active');
+    if ($('hdrTitleSmall')) $('hdrTitleSmall').innerHTML = '小学1年 ひらがな・カタカナ <span class="ver-badge" style="background:#fef08a;color:#854d0e;padding:1px 6px;border-radius:6px;font-size:11px;font-weight:900">Ver 3.0 最新版</span>';
+    layoutKokugoMap();
+    setTimeout(scrollToCurrentKokugo, 80);
+  } else {
+    $('map').classList.add('active');
+    if ($('hdrTitleSmall')) $('hdrTitleSmall').innerHTML = '入学準備 さんすう <span class="ver-badge" style="background:#dcfce7;color:#15803d;padding:1px 6px;border-radius:6px;font-size:11px;font-weight:900">Ver 3.0 最新版</span>';
+    layoutMap();
+    setTimeout(scrollToCurrent, 80);
+  }
+}
+
+// こくごマップの配置 & 描画
+function layoutKokugoMap() {
+  try {
+    const wrap = $('kokugo-map-wrapper');
+    const tilesBox = $('kokugo-tiles-container');
+    const svg = $('kokugo-map-svg');
+    if (!wrap || !tilesBox || !svg) return;
+
+    const n = KOKUGO_ROWS.length;
+    tilesBox.innerHTML = '';
+
+    const pts = computeMapTiles(n);
+    const W = wrap.clientWidth || window.innerWidth || 800;
+    const H = 4700;
+    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+
+    const biomes = [
+      { minY: 0, maxY: 950, curbBase: '#78350f', curbTop: '#b45309', stepRiser: '#92400e', stepTread: '#facc15', edge: '#fef9c3' },
+      { minY: 950, maxY: 1850, curbBase: '#0369a1', curbTop: '#0284c7', stepRiser: '#7dd3fc', stepTread: '#f0f9ff', edge: '#ffffff' },
+      { minY: 1850, maxY: 2750, curbBase: '#1c1917', curbTop: '#44403c', stepRiser: '#292524', stepTread: '#a8a29e', edge: '#fafaf9' },
+      { minY: 2750, maxY: 3650, curbBase: '#082f49', curbTop: '#0369a1', stepRiser: '#0c4a6e', stepTread: '#38bdf8', edge: '#f0f9ff' },
+      { minY: 3650, maxY: 4800, curbBase: '#1a0c04', curbTop: '#78350f', stepRiser: '#3f1a04', stepTread: '#65a30d', edge: '#f7fee7' }
+    ];
+    function getBiome(y) {
+      return biomes.find(b => y >= b.minY && y < b.maxY) || biomes[4];
+    }
+
+    let svgHtml = '';
+    const stairHalfW = 26;
+
+    // 3D階段の描画
+    for (let i = pts.length - 2; i >= 0; i--) {
+      const p1 = pts[i + 1];
+      const p2 = pts[i];
+      const x1 = (p1.x / 100) * W;
+      const y1 = p1.y;
+      const x2 = (p2.x / 100) * W;
+      const y2 = p2.y;
+
+      const dx = x2 - x1;
+      const dy = y2 - y1;
+      const dist = Math.hypot(dx, dy);
+      const numSteps = Math.max(4, Math.round(dist / 14));
+
+      const ux = dx / dist;
+      const uy = dy / dist;
+      const px = -uy;
+      const py = ux;
+
+      const segBiome = getBiome((y1 + y2) / 2);
+      const segD = `M ${x1.toFixed(1)} ${y1.toFixed(1)} L ${x2.toFixed(1)} ${y2.toFixed(1)}`;
+      svgHtml += `<path d="${segD}" fill="none" stroke="${segBiome.curbBase}" stroke-width="${stairHalfW * 2 + 8}" stroke-linecap="round" stroke-linejoin="round" transform="translate(0, 8)"/>`;
+      svgHtml += `<path d="${segD}" fill="none" stroke="${segBiome.curbTop}" stroke-width="${stairHalfW * 2 + 4}" stroke-linecap="round" stroke-linejoin="round"/>`;
+
+      for (let s = numSteps - 1; s >= 0; s--) {
+        const tBack = (s + 1) / numSteps;
+        const tMid = (s + 0.35) / numSteps;
+        const tFront = s / numSteps;
+
+        const cBack = { x: x1 + dx * tBack, y: y1 + dy * tBack };
+        const cMid = { x: x1 + dx * tMid, y: y1 + dy * tMid };
+        const cFront = { x: x1 + dx * tFront, y: y1 + dy * tFront };
+
+        const tl = { x: cBack.x - px * stairHalfW, y: cBack.y - py * stairHalfW };
+        const tr = { x: cBack.x + px * stairHalfW, y: cBack.y + py * stairHalfW };
+        const ml = { x: cMid.x - px * stairHalfW, y: cMid.y - py * stairHalfW };
+        const mr = { x: cMid.x + px * stairHalfW, y: cMid.y + py * stairHalfW };
+        const bl = { x: cFront.x - px * stairHalfW, y: cFront.y - py * stairHalfW };
+        const br = { x: cFront.x + px * stairHalfW, y: cFront.y + py * stairHalfW };
+
+        svgHtml += `<polygon points="${ml.x.toFixed(1)},${ml.y.toFixed(1)} ${mr.x.toFixed(1)},${mr.y.toFixed(1)} ${br.x.toFixed(1)},${br.y.toFixed(1)} ${bl.x.toFixed(1)},${bl.y.toFixed(1)}" fill="${segBiome.stepRiser}"/>`;
+        svgHtml += `<polygon points="${tl.x.toFixed(1)},${tl.y.toFixed(1)} ${tr.x.toFixed(1)},${tr.y.toFixed(1)} ${mr.x.toFixed(1)},${mr.y.toFixed(1)} ${ml.x.toFixed(1)},${ml.y.toFixed(1)}" fill="${segBiome.stepTread}"/>`;
+        svgHtml += `<line x1="${ml.x.toFixed(1)}" y1="${ml.y.toFixed(1)}" x2="${mr.x.toFixed(1)}" y2="${mr.y.toFixed(1)}" stroke="${segBiome.edge}" stroke-width="1.8" stroke-linecap="round"/>`;
+      }
+    }
+    svg.innerHTML = svgHtml;
+
+    // 55マスのバトルタイル配置
+    const curBattle = typeof S.kokugoCurrentBattleIndex === 'number' ? S.kokugoCurrentBattleIndex : 0;
+    pts.forEach((pt, i) => {
+      const row = KOKUGO_ROWS[i];
+      const isCleared = S.kokugoCleared && S.kokugoCleared.includes(i);
+      const isCurrent = (i === curBattle);
+      const isLocked = i > curBattle;
+
+      const tile = document.createElement('div');
+      tile.className = 'tile' + (isCurrent ? ' current glowing-beacon' : '') + (isCleared ? ' cleared' : '') + (isLocked ? ' locked' : '') + (row.isReview ? ' boss' : '');
+      tile.id = `kokugo-tile-${i}`;
+      tile.style.left = pt.x + '%';
+      tile.style.top = pt.y + 'px';
+      tile.textContent = row.battle;
+
+      // ポケモン公式アート（マスの横に64pxで配置）
+      const pokeImg = document.createElement('img');
+      const sideClass = pt.x > 50 ? 'poke-side-left' : 'poke-side-right';
+      pokeImg.className = 'map-tile-pokemon ' + sideClass;
+      pokeImg.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${row.dex}.png`;
+      pokeImg.alt = row.poke;
+      pokeImg.loading = 'lazy';
+      tile.appendChild(pokeImg);
+
+      // かなバッジ（マスの真下に中央揃え）
+      const kanaBadge = document.createElement('div');
+      kanaBadge.style.cssText = 'position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,0.95);border:1.5px solid #94a3b8;border-radius:6px;padding:1px 6px;font-size:11px;font-weight:900;color:#1e293b;white-space:nowrap;box-shadow:0 2px 4px rgba(0,0,0,0.15);pointer-events:none';
+      kanaBadge.textContent = row.title;
+      tile.appendChild(kanaBadge);
+
+      if (isCurrent) {
+        const pin = document.createElement('div');
+        pin.style.cssText = 'position:absolute;top:-28px;left:50%;transform:translateX(-50%);font-size:22px;animation:tilePokeHop 1s infinite alternate;pointer-events:none';
+        pin.textContent = '📍';
+        tile.appendChild(pin);
+      }
+
+      tile.onclick = () => {
+        if (isLocked) {
+          playMarimbaPop(0.8);
+          toast(`🔒 バトル ${i + 1} は ロックされています！ まえの バトルを クリアしてね！`, 2000);
+          return;
+        }
+        playPikaanSound();
+        openKokugoBattle(i);
+      };
+
+      tilesBox.appendChild(tile);
+    });
+
+    // 8つのミニゲームノードをマップ上に散りばめて配置
+    KOKUGO_MINIGAMES.forEach(mg => {
+      const anchorIdx = Math.min(pts.length - 2, mg.afterBattle - 1);
+      const p1 = pts[anchorIdx];
+      const p2 = pts[anchorIdx + 1];
+      // 2つのマスの間、やや横にオフセット配置
+      const mx = (p1.x + p2.x) / 2 + (anchorIdx % 2 === 0 ? 12 : -12);
+      const my = (p1.y + p2.y) / 2;
+
+      const isMgCleared = S.kokugoMinigamesCleared && S.kokugoMinigamesCleared.includes(mg.id);
+
+      const mgTile = document.createElement('div');
+      mgTile.className = 'kokugo-minigame-tile' + (isMgCleared ? ' cleared' : '');
+      mgTile.style.left = mx + '%';
+      mgTile.style.top = my + 'px';
+      mgTile.title = mg.title;
+      mgTile.innerHTML = `
+        <div class="mg-icon">${isMgCleared ? '⭐' : '🎮'}</div>
+        <div class="mg-badge">ミニ${mg.id}</div>
+      `;
+
+      mgTile.onclick = () => {
+        playPikaanSound();
+        openKokugoMinigame(mg.id);
+      };
+
+      tilesBox.appendChild(mgTile);
+    });
+
+  } catch (err) {
+    console.error('Error laying out kokugo map:', err);
+  }
+}
+
+function scrollToCurrentKokugo() {
+  const curBattle = typeof S.kokugoCurrentBattleIndex === 'number' ? S.kokugoCurrentBattleIndex : 0;
+  const tile = $(`kokugo-tile-${curBattle}`);
+  if (tile && $('kokugoMap')) {
+    const top = tile.offsetTop - (window.innerHeight / 2);
+    $('kokugoMap').scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+  }
+}
+
+// こくごバトル画面を開く
+function openKokugoBattle(idx) {
+  curKokugoIdx = idx;
+  kokugoDrillScores = { p1: 0, p2: 0, p3: 0 };
+
+  const r = KOKUGO_ROWS[idx];
+  if (!r) return;
+
+  $('home').classList.remove('active');
+  $('map').classList.remove('active');
+  $('battle').classList.remove('active');
+  $('kokugoMap').classList.remove('active');
+  $('kokugoDrill').classList.add('active');
+
+  // ヘッダー情報
+  $('kDrillBadge').textContent = `バトル ${r.battle}`;
+  $('kDrillBanner').textContent = `${r.poke}をつかまえよう！`;
+  $('kDrillScore').textContent = '0 / 100 てん';
+  $('btnKokugoThrow').disabled = true;
+
+  // ポケモンカード
+  const artUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${r.dex}.png`;
+  $('kPokeImg').src = artUrl;
+  $('kPokeName').textContent = r.poke;
+  $('kPokeCat').textContent = r.category;
+  $('kPokeType').textContent = r.type;
+  $('kPokeHeight').textContent = r.height;
+  $('kPokeWeight').textContent = r.weight;
+
+  // 原本画像
+  const sheetImg = $(`kSheetImg`);
+  if (sheetImg) {
+    sheetImg.src = `kokugo_drills/バトル${r.battle}.jpg`;
+  }
+  const acc = $('kOriginalAccordion');
+  if (acc) acc.open = false;
+
+  // シール枠のクリア状態チェック
+  const isCleared = S.kokugoCleared && S.kokugoCleared.includes(idx);
+  const sealSlot = $('kSealSlot');
+  const sealDate = $('kSealDate');
+  const sealScore = $('kSealScore');
+
+  if (isCleared) {
+    sealSlot.innerHTML = `<div class="k-seal-stamped">💮<br>クリア！</div>`;
+    sealDate.textContent = 'クリアした ひ: 💮 ゲットずみ！';
+    sealScore.textContent = 'てんすう: 100 てん';
+    $('kDrillScore').textContent = '100 / 100 てん';
+    $('btnKokugoThrow').disabled = false;
+  } else {
+    sealSlot.innerHTML = `
+      <div class="k-seal-placeholder">
+        <span>💮 クリア！シール</span>
+        <small>60てん いじょうで はれるよ！</small>
+      </div>
+    `;
+    sealDate.textContent = 'クリアした ひ: ──';
+    sealScore.textContent = 'てんすう: 0 てん';
+  }
+
+  // 右カラム：問題ワークエリア描画
+  renderKokugoWorkArea(r, idx, isCleared);
+}
+
+// ワークエリアの構築（通常バトル・まとめバトル・特別バトル対応）
+function renderKokugoWorkArea(r, idx, isCleared) {
+  const col = $('kWorkCol');
+  if (!col) return;
+  col.innerHTML = '';
+
+  if (r.isReview) {
+    // まとめバトル（ダークライ、ライコウ、コライドン、マギアナ、レックウザ）
+    renderReviewWorkArea(r, idx, isCleared, col);
+    return;
+  }
+
+  // 通常・特別バトル
+  // 問題1: ひらがな書き練習 (30点)
+  const c1 = document.createElement('div');
+  c1.className = 'k-card';
+  c1.innerHTML = `
+    <div class="k-card-title-row">
+      <h3 class="k-card-title">
+        <span class="k-card-step-badge">1</span>
+        <span>ひらがな「${r.hira}」を かきましょう。</span>
+      </h3>
+      <span class="k-card-points">30 てん</span>
+    </div>
+    <div class="k-practice-row">
+      <div class="k-model-box">
+        <div class="k-model-char-wrap">
+          <div class="k-model-char">${r.hira}</div>
+        </div>
+        <div class="k-model-tips">
+          <div style="font-weight:900;color:#2563eb">かくすう: ${r.hiraStrokes} かく</div>
+          <ul class="k-model-tips-list">
+            ${(r.hiraTips || []).map(t => `<li>${t}</li>`).join('')}
+          </ul>
+        </div>
+      </div>
+      <div class="k-canvas-box">
+        <div class="k-canvas-wrap" id="kWrapHira">
+          <div class="k-canvas-grid"></div>
+          <div class="k-canvas-start-dot"></div>
+          <div class="k-canvas-guide-glyph" id="kGuideHira">${r.hira}</div>
+          <canvas class="k-canvas-elem" id="kCanvasHira" width="200" height="200"></canvas>
+        </div>
+        <div class="k-tools-row">
+          <button type="button" class="k-tool-btn active" id="btnPenHira" onclick="setCanvasTool('Hira', 'pen')">✏️ えんぴつ</button>
+          <button type="button" class="k-tool-btn" id="btnEraserHira" onclick="setCanvasTool('Hira', 'eraser')">🧽 けしゴム</button>
+          <button type="button" class="k-tool-btn" onclick="clearKanaCanvas('Hira')">🔄 ぜんぶけす</button>
+          <button type="button" class="k-tool-btn" onclick="toggleGuideGlyph('Hira')">👁️ おてほん</button>
+          <button type="button" class="k-tool-btn k-judge-btn" onclick="judgeCanvas('Hira')">💮 はんてい！</button>
+          <button type="button" class="k-tool-btn" onclick="autoTraceCanvas('Hira')" style="color:#2563eb">💡 おたすけ</button>
+        </div>
+        <div class="k-eval-result" id="kEvalHira">${isCleared ? '<span class="k-eval-pass">💮 たいへん よく できました！ (100てん)</span>' : ''}</div>
+      </div>
+    </div>
+    ${r.hiraWord ? `
+      <div class="k-vocab-card">
+        <div class="k-vocab-content">
+          <span class="k-vocab-icon">${r.hiraWord.icon || '📖'}</span>
+          <div>
+            <div class="k-vocab-word">${r.hiraWord.word}</div>
+            <div class="k-vocab-ruby">${r.hiraWord.kana}</div>
+          </div>
+        </div>
+        <button type="button" class="hbtn" style="font-size:12px;background:#fbcfe8;border-color:#f472b6;color:#831843" onclick="speakText('${r.hiraWord.word}')">🔊 よむ</button>
+      </div>
+    ` : ''}
+  `;
+  col.appendChild(c1);
+
+  // 問題2: カタカナ書き練習 (30点)
+  const c2 = document.createElement('div');
+  c2.className = 'k-card';
+  c2.innerHTML = `
+    <div class="k-card-title-row">
+      <h3 class="k-card-title">
+        <span class="k-card-step-badge">2</span>
+        <span>カタカナ「${r.kata}」を かきましょう。</span>
+      </h3>
+      <span class="k-card-points">30 てん</span>
+    </div>
+    <div class="k-practice-row">
+      <div class="k-model-box">
+        <div class="k-model-char-wrap">
+          <div class="k-model-char">${r.kata}</div>
+        </div>
+        <div class="k-model-tips">
+          <div style="font-weight:900;color:#2563eb">かくすう: ${r.kataStrokes} かく</div>
+          <ul class="k-model-tips-list">
+            ${(r.kataTips || []).map(t => `<li>${t}</li>`).join('')}
+          </ul>
+        </div>
+      </div>
+      <div class="k-canvas-box">
+        <div class="k-canvas-wrap" id="kWrapKata">
+          <div class="k-canvas-grid"></div>
+          <div class="k-canvas-start-dot"></div>
+          <div class="k-canvas-guide-glyph" id="kGuideKata">${r.kata}</div>
+          <canvas class="k-canvas-elem" id="kCanvasKata" width="200" height="200"></canvas>
+        </div>
+        <div class="k-tools-row">
+          <button type="button" class="k-tool-btn active" id="btnPenKata" onclick="setCanvasTool('Kata', 'pen')">✏️ えんぴつ</button>
+          <button type="button" class="k-tool-btn" id="btnEraserKata" onclick="setCanvasTool('Kata', 'eraser')">🧽 けしゴム</button>
+          <button type="button" class="k-tool-btn" onclick="clearKanaCanvas('Kata')">🔄 ぜんぶけす</button>
+          <button type="button" class="k-tool-btn" onclick="toggleGuideGlyph('Kata')">👁️ おてほん</button>
+          <button type="button" class="k-tool-btn k-judge-btn" onclick="judgeCanvas('Kata')">💮 はんてい！</button>
+          <button type="button" class="k-tool-btn" onclick="autoTraceCanvas('Kata')" style="color:#2563eb">💡 おたすけ</button>
+        </div>
+        <div class="k-eval-result" id="kEvalKata">${isCleared ? '<span class="k-eval-pass">💮 たいへん よく できました！ (100てん)</span>' : ''}</div>
+      </div>
+    </div>
+    ${r.kataWord ? `
+      <div class="k-vocab-card">
+        <div class="k-vocab-content">
+          <span class="k-vocab-icon">${r.kataWord.icon || '📖'}</span>
+          <div>
+            <div class="k-vocab-word">${r.kataWord.word}</div>
+            <div class="k-vocab-ruby">${r.kataWord.kana}</div>
+          </div>
+        </div>
+        <button type="button" class="hbtn" style="font-size:12px;background:#fbcfe8;border-color:#f472b6;color:#831843" onclick="speakText('${r.kataWord.word}')">🔊 よむ</button>
+      </div>
+    ` : ''}
+  `;
+  col.appendChild(c2);
+
+  // 問題3: ポケモン名前穴埋め (40点)
+  const c3 = document.createElement('div');
+  c3.className = 'k-card';
+  c3.innerHTML = `
+    <div class="k-card-title-row">
+      <h3 class="k-card-title">
+        <span class="k-card-step-badge">3</span>
+        <span>かいた じを いれて ポケモンの なまえを かんせいさせよう！</span>
+      </h3>
+      <span class="k-card-points">40 てん</span>
+    </div>
+    <div class="k-name-fill-grid">
+      <!-- ひらがな名前カード -->
+      <div class="k-name-card">
+        <div style="font-size:12px;font-weight:900;color:#64748b">ひらがな で かんせい！</div>
+        <div class="k-name-char-row">
+          ${(r.pokeHira || 'あぶそる').split('').map((ch, i) => {
+            const isTarget = (ch === r.hira);
+            return `<div class="k-name-box ${isTarget ? 'target-box' : ''} ${isCleared ? 'filled' : ''}" id="kNameHiraBox_${i}" onclick="fillTargetNameChar('Hira', ${i}, '${r.hira}')">${(isTarget && !isCleared) ? '？' : ch}</div>`;
+          }).join('')}
+        </div>
+        <button type="button" class="hbtn" style="font-size:12px;background:#e0f2fe;border-color:#38bdf8;color:#0369a1" onclick="speakText('${r.pokeHira}')">🔊 こえに だして よむ</button>
+      </div>
+
+      <!-- カタカナ名前カード -->
+      <div class="k-name-card">
+        <div style="font-size:12px;font-weight:900;color:#64748b">カタカナ で かんせい！</div>
+        <div class="k-name-char-row">
+          ${(r.pokeKata || 'アブソル').split('').map((ch, i) => {
+            const isTarget = (ch === r.kata);
+            return `<div class="k-name-box ${isTarget ? 'target-box' : ''} ${isCleared ? 'filled' : ''}" id="kNameKataBox_${i}" onclick="fillTargetNameChar('Kata', ${i}, '${r.kata}')">${(isTarget && !isCleared) ? '？' : ch}</div>`;
+          }).join('')}
+        </div>
+        <button type="button" class="hbtn" style="font-size:12px;background:#e0f2fe;border-color:#38bdf8;color:#0369a1" onclick="speakText('${r.pokeKata}')">🔊 こえに だして よむ</button>
+      </div>
+    </div>
+  `;
+  col.appendChild(c3);
+
+  // キャンバスの初期化
+  setTimeout(() => {
+    initKanaCanvas('Hira', r.hira, r.hiraStrokes);
+    initKanaCanvas('Kata', r.kata, r.kataStrokes);
+  }, 50);
+}
+
+// まとめバトルの描画（ボス仕様）
+function renderReviewWorkArea(r, idx, isCleared, col) {
+  const card = document.createElement('div');
+  card.className = 'k-card';
+  card.innerHTML = `
+    <div class="k-card-title-row">
+      <h3 class="k-card-title">
+        <span class="k-card-step-badge">★</span>
+        <span>${r.reviewTitle || 'そうふくしゅう バトル！'}</span>
+      </h3>
+      <span class="k-card-points">100 てん</span>
+    </div>
+    <p style="font-size:14px;color:#475569;margin-bottom:16px">${r.reviewSummary || 'これまでに まなんだ もじを つかって ボスに ちょうせんだ！'}</p>
+
+    <!-- 単語穴埋めチャレンジ -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:12px;margin-bottom:20px">
+      ${(r.words || ['あさ', 'よる', 'やま']).slice(0, 6).map((w, wIdx) => `
+        <div style="background:#f8fafc;border:2px solid #e2e8f0;border-radius:14px;padding:12px;display:flex;align-items:center;justify-content:space-between">
+          <div style="font-size:18px;font-weight:900;color:#1e293b;letter-spacing:0.1em">
+            ${w.split('').map((c, ci) => ci === 0 ? `<span class="k-name-box target-box ${isCleared ? 'filled' : ''}" id="kRevBox_${wIdx}" style="display:inline-flex;width:38px;height:38px;font-size:22px;vertical-align:middle;margin-right:4px">${isCleared ? c : '？'}</span>` : c).join('')}
+          </div>
+          <button type="button" class="hbtn" style="font-size:11px;padding:4px 8px" onclick="fillReviewBox(${wIdx}, '${w[0]}')">かく ✏️</button>
+        </div>
+      `).join('')}
+    </div>
+
+    <!-- 一括正解ボタン -->
+    <div style="text-align:center;margin-top:10px">
+      <button type="button" class="mbtn" style="font-size:16px;padding:10px 24px;background:#22c55e;color:#fff;border-radius:14px;font-weight:900" onclick="passReviewBattle()">
+        💮 ぜんぶ かけたよ！ (はんてい)
+      </button>
+    </div>
+  `;
+  col.appendChild(card);
+}
+
+// キャンバス管理
+const kanaCanvases = {};
+
+function initKanaCanvas(type, char, strokes) {
+  const cv = $(`kCanvas${type}`);
+  if (!cv) return;
+  const ctx = cv.getContext('2d');
+
+  kanaCanvases[type] = {
+    canvas: cv,
+    ctx: ctx,
+    char: char,
+    expectedStrokes: strokes,
+    tool: 'pen',
+    strokes: [],
+    currentStroke: [],
+    drawing: false,
+    guideVisible: true
+  };
+
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.lineWidth = 10;
+  ctx.strokeStyle = '#1e293b';
+
+  cv.onpointerdown = e => {
+    const s = kanaCanvases[type];
+    if (!s) return;
+    s.drawing = true;
+    cv.setPointerCapture(e.pointerId);
+    const rect = cv.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    s.currentStroke = [{ x, y }];
+    s.ctx.beginPath();
+    s.ctx.moveTo(x, y);
+  };
+
+  cv.onpointermove = e => {
+    const s = kanaCanvases[type];
+    if (!s || !s.drawing) return;
+    const rect = cv.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    s.currentStroke.push({ x, y });
+
+    s.ctx.strokeStyle = (s.tool === 'eraser') ? '#ffffff' : '#1e293b';
+    s.ctx.lineWidth = (s.tool === 'eraser') ? 22 : 10;
+    s.ctx.lineTo(x, y);
+    s.ctx.stroke();
+  };
+
+  cv.onpointerup = e => {
+    const s = kanaCanvases[type];
+    if (!s || !s.drawing) return;
+    s.drawing = false;
+    if (s.currentStroke.length > 0) {
+      s.strokes.push(s.currentStroke);
+      s.currentStroke = [];
+    }
+  };
+}
+
+function setCanvasTool(type, tool) {
+  const s = kanaCanvases[type];
+  if (!s) return;
+  s.tool = tool;
+  $(`btnPen${type}`).classList.toggle('active', tool === 'pen');
+  $(`btnEraser${type}`).classList.toggle('active', tool === 'eraser');
+}
+
+function clearKanaCanvas(type) {
+  const s = kanaCanvases[type];
+  if (!s) return;
+  s.ctx.clearRect(0, 0, s.canvas.width, s.canvas.height);
+  s.strokes = [];
+  $(`kEval${type}`).innerHTML = '';
+}
+
+function toggleGuideGlyph(type) {
+  const el = $(`kGuide${type}`);
+  if (!el) return;
+  el.style.opacity = (el.style.opacity === '0') ? '1' : '0';
+}
+
+function autoTraceCanvas(type) {
+  const s = kanaCanvases[type];
+  if (!s) return;
+  clearKanaCanvas(type);
+  s.ctx.save();
+  s.ctx.font = 'bold 140px "Zen Maru Gothic", sans-serif';
+  s.ctx.fillStyle = '#1e293b';
+  s.ctx.textAlign = 'center';
+  s.ctx.textBaseline = 'middle';
+  s.ctx.fillText(s.char, 100, 105);
+  s.ctx.restore();
+  s.strokes = Array(s.expectedStrokes || 2).fill([{ x: 100, y: 100 }]);
+  judgeCanvas(type);
+}
+
+// 判定ロジック
+function judgeCanvas(type) {
+  const s = kanaCanvases[type];
+  if (!s) return;
+
+  const res = evaluateHandwritingEngine(s.canvas, s.strokes.length, s.char, s.expectedStrokes);
+  const evalEl = $(`kEval${type}`);
+
+  if (res.passed) {
+    playPikaanSound();
+    evalEl.innerHTML = `<span class="k-eval-pass">💮 たいへん よく できました！ (${res.score}てん)</span>`;
+    kokugoDrillScores[type === 'Hira' ? 'p1' : 'p2'] = 30;
+    checkKokugoDrillProgress();
+  } else {
+    playMarimbaPop(0.7);
+    evalEl.innerHTML = `<span class="k-eval-fail">${res.msg} (${res.score}てん)</span>`;
+  }
+}
+
+// 手書き文字の類似度判定エンジン
+function evaluateHandwritingEngine(canvas, drawnStrokesCount, targetChar, expectedStrokes) {
+  const W = canvas.width, H = canvas.height;
+  const drawnData = canvas.getContext('2d').getImageData(0, 0, W, H).data;
+
+  // 隠しオフスクリーンキャンバスに手本グリフを描画
+  const refCanvas = document.createElement('canvas');
+  refCanvas.width = W; refCanvas.height = H;
+  const refCtx = refCanvas.getContext('2d');
+  refCtx.font = 'bold 140px "Zen Maru Gothic", sans-serif';
+  refCtx.fillStyle = '#000000';
+  refCtx.textAlign = 'center';
+  refCtx.textBaseline = 'middle';
+  refCtx.fillText(targetChar, W / 2, H / 2 + 5);
+  const refData = refCtx.getImageData(0, 0, W, H).data;
+
+  const S = 25;
+  const drawnGrid = new Uint8Array(S * S);
+  const refGrid = new Uint8Array(S * S);
+  const blockW = W / S, blockH = H / S;
+
+  for (let gy = 0; gy < S; gy++) {
+    for (let gx = 0; gx < S; gx++) {
+      let dCount = 0, rCount = 0;
+      for (let py = Math.floor(gy * blockH); py < Math.floor((gy + 1) * blockH); py++) {
+        for (let px = Math.floor(gx * blockW); px < Math.floor((gx + 1) * blockW); px++) {
+          const idx = (py * W + px) * 4;
+          if (drawnData[idx + 3] > 40) dCount++;
+          if (refData[idx + 3] > 40) rCount++;
+        }
+      }
+      if (dCount > (blockW * blockH * 0.1)) drawnGrid[gy * S + gx] = 1;
+      if (rCount > (blockW * blockH * 0.1)) refGrid[gy * S + gx] = 1;
+    }
+  }
+
+  function dilate(grid) {
+    const out = new Uint8Array(S * S);
+    for (let y = 0; y < S; y++) {
+      for (let x = 0; x < S; x++) {
+        if (grid[y * S + x]) {
+          for (let dy = -1; dy <= 1; dy++) {
+            for (let dx = -1; dx <= 1; dx++) {
+              const ny = y + dy, nx = x + dx;
+              if (ny >= 0 && ny < S && nx >= 0 && nx < S) out[ny * S + nx] = 1;
+            }
+          }
+        }
+      }
+    }
+    return out;
+  }
+
+  const dDilated = dilate(drawnGrid);
+  const rDilated = dilate(refGrid);
+
+  let drawnCount = 0, refCount = 0, overlapDrawnInRef = 0, overlapRefInDrawn = 0;
+  for (let i = 0; i < S * S; i++) {
+    if (drawnGrid[i]) {
+      drawnCount++;
+      if (rDilated[i]) overlapDrawnInRef++;
+    }
+    if (refGrid[i]) {
+      refCount++;
+      if (dDilated[i]) overlapRefInDrawn++;
+    }
+  }
+
+  if (drawnCount < 5) {
+    return { score: 10, passed: false, msg: 'もっと たくさん かいてみよう！' };
+  }
+
+  const precision = drawnCount > 0 ? overlapDrawnInRef / drawnCount : 0;
+  const recall = refCount > 0 ? overlapRefInDrawn / refCount : 0;
+
+  let strokePenalty = 1.0;
+  if (expectedStrokes > 0 && drawnStrokesCount > 0) {
+    const diff = Math.abs(drawnStrokesCount - expectedStrokes);
+    if (diff === 0) strokePenalty = 1.0;
+    else if (diff === 1) strokePenalty = 0.95;
+    else if (diff === 2) strokePenalty = 0.85;
+    else strokePenalty = 0.7;
+  }
+
+  const rawScore = (precision * 0.45 + recall * 0.55) * strokePenalty;
+  let finalScore = Math.min(100, Math.round(rawScore * 115));
+  if (finalScore >= 60 && finalScore < 80) finalScore = Math.min(100, finalScore + 10);
+
+  return {
+    score: Math.max(20, finalScore),
+    passed: finalScore >= 60,
+    msg: finalScore >= 60 ? '💮 たいへん よく できました！' : 'もうすこし！ おてほんを なぞってみよう！'
+  };
+}
+
+// ポケモン名前穴埋めのクリック
+function fillTargetNameChar(type, index, char) {
+  playPikaanSound();
+  const el = $(`kName${type}Box_${index}`);
+  if (el) {
+    el.textContent = char;
+    el.classList.add('filled');
+  }
+  kokugoDrillScores.p3 = 40;
+  checkKokugoDrillProgress();
+}
+
+function fillReviewBox(wIdx, char) {
+  playPikaanSound();
+  const el = $(`kRevBox_${wIdx}`);
+  if (el) {
+    el.textContent = char;
+    el.classList.add('filled');
+  }
+}
+
+function passReviewBattle() {
+  playPikaanSound();
+  kokugoDrillScores = { p1: 30, p2: 30, p3: 40 };
+  checkKokugoDrillProgress();
+}
+
+// 得点確認 & クリアシール貼り付け
+function checkKokugoDrillProgress() {
+  const total = kokugoDrillScores.p1 + kokugoDrillScores.p2 + kokugoDrillScores.p3;
+  $('kDrillScore').textContent = `${total} / 100 てん`;
+  $('kSealScore').textContent = `てんすう: ${total} てん`;
+
+  if (total >= 60) {
+    $('btnKokugoThrow').disabled = false;
+    const sealSlot = $('kSealSlot');
+    if (sealSlot && !sealSlot.querySelector('.k-seal-stamped')) {
+      playMarimbaPop(1.2);
+      sealSlot.innerHTML = `<div class="k-seal-stamped">💮<br>クリア！</div>`;
+      $('kSealDate').textContent = 'クリアした ひ: 💮 ごうかく！';
+      toast('💮 60てん いじょう とれたよ！ ボールを なげて ポケモンを ゲットしよう！⚾', 3000);
+    }
+  }
+}
+
+// ボールを投げてポケモンをゲット！
+function throwKokugoBall() {
+  const r = KOKUGO_ROWS[curKokugoIdx];
+  if (!r) return;
+
+  if (typeof playFanfare === 'function') playFanfare();
+  if (typeof playCrystalSparkle === 'function') playCrystalSparkle();
+
+  // 進行状況の記録
+  if (!S.kokugoCleared.includes(curKokugoIdx)) {
+    S.kokugoCleared.push(curKokugoIdx);
+    S.points = (S.points || 0) + 100;
+  }
+  if (!S.kokugoCaught.includes(r.poke)) {
+    S.kokugoCaught.push(r.poke);
+  }
+  if (!S.caught.includes(r.poke)) {
+    S.caught.push(r.poke);
+  }
+
+  // レックウザ（Battle 55）撃破時はでんせつポケモンなのでチケット2枚発行！
+  if (r.battle === 55 || r.isFinal) {
+    issueMoncolleTickets(2, 'でんせつポケモン レックウザ ゲット！', true);
+  }
+
+  // 次のバトルへ進む
+  if (curKokugoIdx === S.kokugoCurrentBattleIndex) {
+    S.kokugoCurrentBattleIndex = Math.min(KOKUGO_ROWS.length - 1, curKokugoIdx + 1);
+  }
+  save();
+  updateHomeStats();
+
+  toast(`🎉 ${r.poke}を つかまえた！ (+100 pt)`, 3000);
+
+  // マップへ戻り次のマスを光らせる
+  setTimeout(() => {
+    backToMap();
+  }, 1200);
+}
+
+// 8つのミニゲーム処理
+function openKokugoMinigame(mgId) {
+  const mg = KOKUGO_MINIGAMES.find(m => m.id === mgId);
+  if (!mg) return;
+
+  const modal = $('mKokugoMinigame');
+  const box = $('kMinigameContent');
+  if (!modal || !box) return;
+
+  modal.classList.add('open');
+  modal.style.display = 'flex';
+
+  // ミニゲーム1：シルエットクイズ
+  if (mg.id === 1) {
+    box.innerHTML = `
+      <h2 style="font-size:20px;margin-bottom:8px">${mg.title}</h2>
+      <p style="font-size:14px;color:#475569;margin-bottom:16px">${mg.desc}</p>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        ${mg.problems.map((p, pIdx) => `
+          <div style="display:flex;align-items:center;justify-content:space-between;background:#f8fafc;border:2px solid #e2e8f0;border-radius:14px;padding:10px 14px">
+            <div style="display:flex;align-items:center;gap:12px">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.shadowDex}.png" style="width:50px;height:50px;object-fit:contain;filter:brightness(0)" alt="かげ">
+              <span style="font-size:16px;font-weight:900;color:#64748b">なまえ: ${p.kana}</span>
+            </div>
+            <div style="display:flex;gap:6px">
+              ${p.choices.map(c => `
+                <button type="button" class="mbtn" style="font-size:13px;padding:6px 12px;background:#fff;border:1.5px solid #cbd5e1;color:#1e293b" onclick="checkMgChoice(this, '${c}', '${p.ans}')">${c}</button>
+              `).join('')}
+            </div>
+          </div>
+        `).join('')}
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <button type="button" class="mbtn" style="background:#22c55e;color:#fff;font-size:16px;padding:8px 24px" onclick="clearMinigame(${mg.id})">⭐ クリア！</button>
+      </div>
+    `;
+  }
+  // ミニゲーム2：めいろ
+  else if (mg.id === 2) {
+    box.innerHTML = `
+      <h2 style="font-size:20px;margin-bottom:8px">${mg.title}</h2>
+      <p style="font-size:14px;color:#475569;margin-bottom:16px">${mg.desc}</p>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        ${mg.steps.map((s, si) => `
+          <div style="background:#f8fafc;border:2px solid #e2e8f0;border-radius:14px;padding:12px">
+            <div style="font-size:15px;font-weight:900;color:#2563eb;margin-bottom:8px">「${s.target}」が なまえに あるのは どっち？</div>
+            <div style="display:flex;gap:12px">
+              ${s.choices.map(c => `
+                <button type="button" class="mbtn" style="flex:1;background:#fff;border:2px solid #cbd5e1;padding:10px;font-weight:900" onclick="checkMgChoice(this, ${c.has}, true)">
+                  <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${c.dex}.png" style="width:40px;height:40px;object-fit:contain;display:block;margin:0 auto 4px">
+                  ${c.name}
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        `).join('')}
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <button type="button" class="mbtn" style="background:#22c55e;color:#fff;font-size:16px;padding:8px 24px" onclick="clearMinigame(${mg.id})">🏆 ゴール！</button>
+      </div>
+    `;
+  }
+  // ミニゲーム3〜8
+  else {
+    box.innerHTML = `
+      <h2 style="font-size:20px;margin-bottom:8px">${mg.title}</h2>
+      <p style="font-size:14px;color:#475569;margin-bottom:16px">${mg.desc}</p>
+      <div style="text-align:center;padding:20px;background:#f8fafc;border-radius:16px;border:2px solid #e2e8f0">
+        <div style="font-size:24px;font-weight:900;color:#1e293b;margin-bottom:12px">せいかいの もじを えらぼう！</div>
+        <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap">
+          ${(mg.choices || ['サ', 'ン', 'ド', 'シ', 'マ']).map(ch => `
+            <button type="button" class="mbtn" style="font-size:22px;width:56px;height:56px;border-radius:12px;background:#fff;border:2px solid #3b82f6;color:#1e40af;font-weight:900" onclick="checkMgChoice(this, '${ch}', '${mg.ans || 'ン'}')">${ch}</button>
+          `).join('')}
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <button type="button" class="mbtn" style="background:#22c55e;color:#fff;font-size:16px;padding:8px 24px" onclick="clearMinigame(${mg.id})">⭐ クリア！</button>
+      </div>
+    `;
+  }
+}
+
+function checkMgChoice(btn, val, expected) {
+  if (val === expected) {
+    playPikaanSound();
+    btn.style.borderColor = '#22c55e';
+    btn.style.background = '#dcfce7';
+    btn.style.color = '#15803d';
+    toast('⭕ せいかい！', 1500);
+  } else {
+    playMarimbaPop(0.7);
+    btn.style.borderColor = '#f87171';
+    btn.style.background = '#fef2f2';
+    toast('もういちど かんがえてみよう！', 1500);
+  }
+}
+
+function clearMinigame(id) {
+  playPikaanSound();
+  if (typeof playCrystalSparkle === 'function') playCrystalSparkle();
+  if (!S.kokugoMinigamesCleared.includes(id)) {
+    S.kokugoMinigamesCleared.push(id);
+    S.points = (S.points || 0) + 50;
+    save();
+    updateHomeStats();
+  }
+  closeKokugoMinigame();
+  toast('🎉 ミニゲーム クリア！ 50 pt ゲット！', 3000);
+  layoutKokugoMap();
+}
+
+function closeKokugoMinigame() {
+  const modal = $('mKokugoMinigame');
+  if (modal) {
+    modal.classList.remove('open');
+    modal.style.display = 'none';
+  }
+}
+
+function speakText(txt) {
+  if ('speechSynthesis' in window) {
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(txt);
+    u.lang = 'ja-JP';
+    u.rate = 0.9;
+    speechSynthesis.speak(u);
+  }
+}
+
+
 </script>
 <!-- リセット保護クイズモーダル（9×9） -->
 <div class="modal" id="mResetModal">

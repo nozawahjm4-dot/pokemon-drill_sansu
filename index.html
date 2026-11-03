@@ -5967,6 +5967,166 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
   color: #15803d;
 }
 
+
+/* 単語・名前穴埋め書き取りスタイル（大マス仕様） */
+.k-word-fill-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.k-word-card {
+  background: #ffffff;
+  border: 2.5px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
+}
+.k-word-card.word-cleared {
+  border-color: #86efac;
+  background: #f0fdf4;
+  box-shadow: 0 6px 18px rgba(34, 197, 94, 0.15);
+}
+.k-word-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border-bottom: 2px solid #f1f5f9;
+  padding-bottom: 10px;
+}
+.k-word-card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.k-word-type-badge {
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+}
+.k-word-type-badge.hira {
+  background: #dbeafe;
+  color: #1d4ed8;
+  border: 1.5px solid #93c5fd;
+}
+.k-word-type-badge.kata {
+  background: #fce7f3;
+  color: #be185d;
+  border: 1.5px solid #f472b6;
+}
+.k-word-type-badge.review {
+  background: #fef3c7;
+  color: #b45309;
+  border: 1.5px solid #fcd34d;
+}
+.k-word-target-prompt {
+  font-size: 16px;
+  font-weight: 900;
+  color: #1e293b;
+}
+.k-word-display-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px 12px;
+  background: #f8fafc;
+  border-radius: 16px;
+  border: 1.5px solid #e2e8f0;
+}
+.k-word-flow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.k-word-canvas-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.k-canvas-wrap.large-word-canvas {
+  width: 180px;
+  height: 180px;
+  border: 3.5px solid #3b82f6;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.2);
+  transition: all 0.3s ease;
+}
+.word-cleared .k-canvas-wrap.large-word-canvas {
+  border-color: #22c55e;
+  box-shadow: 0 4px 16px rgba(34, 197, 94, 0.25);
+}
+.k-canvas-slot-tag {
+  font-size: 13px;
+  font-weight: 900;
+  color: #2563eb;
+  margin-top: 6px;
+}
+.word-cleared .k-canvas-slot-tag {
+  color: #16a34a;
+}
+.k-companion-box {
+  width: 68px;
+  height: 68px;
+  border-radius: 14px;
+  border: 2.5px solid #cbd5e1;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+.k-companion-box::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  border-top: 1.5px dashed #e2e8f0;
+  pointer-events: none;
+}
+.k-companion-box::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  border-left: 1.5px dashed #e2e8f0;
+  pointer-events: none;
+}
+.k-companion-char {
+  font-family: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", sans-serif;
+  font-size: 36px;
+  font-weight: 900;
+  color: #0f172a;
+  position: relative;
+  z-index: 1;
+}
+@media (max-width: 640px) {
+  .k-canvas-wrap.large-word-canvas {
+    width: 150px;
+    height: 150px;
+  }
+  .k-companion-box {
+    width: 52px;
+    height: 52px;
+  }
+  .k-companion-char {
+    font-size: 28px;
+  }
+}
+
 /* ミニゲームモーダル */
 #mKokugoMinigame .mbox {
   max-width: 650px;
@@ -19577,7 +19737,7 @@ const KOKUGO_ROWS = [
   },
   {
     "battle": 51,
-    "title": "「゛」濁点",
+    "title": "ぱ・パ",
     "poke": "パンプジン",
     "dex": 711,
     "category": "かぼちゃポケモン",
@@ -19585,39 +19745,39 @@ const KOKUGO_ROWS = [
     "height": "0.9m",
     "weight": "12.5kg",
     "isSpecial": true,
-    "hira": "が",
-    "kata": "ガ",
-    "hiraStrokes": 5,
-    "kataStrokes": 4,
-    "specialType": "dakuten",
+    "hira": "ぱ",
+    "kata": "パ",
+    "hiraStrokes": 4,
+    "kataStrokes": 3,
+    "specialType": "handakuten",
     "hiraTips": [
-      "① か を かく",
-      "② 右上に てんてん（濁点）を うつ"
+      "① は を かく",
+      "② 右上に まる（半濁点）を かく"
     ],
     "kataTips": [
-      "① カ を かく",
-      "② 右上に てんてん（濁点）を うつ"
+      "① ハ を かく",
+      "② 右上に まる（半濁点）を かく"
     ],
     "hiraWord": {
-      "word": "がっこう",
-      "kana": "がっこう",
-      "icon": "🏫",
-      "meaning": "がっこう"
+      "word": "パン",
+      "kana": "ぱん",
+      "icon": "🍞",
+      "meaning": "パン"
     },
     "kataWord": {
-      "word": "ガラス",
-      "kana": "がらす",
-      "icon": "🪟",
-      "meaning": "ガラス"
+      "word": "パンダ",
+      "kana": "ぱんだ",
+      "icon": "🐼",
+      "meaning": "パンダ"
     },
     "pokeHira": "ぱんぷじん",
     "pokeKata": "パンプジン",
-    "missingChar": "が",
-    "missingKata": "ガ"
+    "missingChar": "ぱ",
+    "missingKata": "パ"
   },
   {
     "battle": 52,
-    "title": "「ゃ・ゅ・ょ」拗音",
+    "title": "ぴ・ピ",
     "poke": "ピカチュウ",
     "dex": 25,
     "category": "ねずみポケモン",
@@ -19625,33 +19785,35 @@ const KOKUGO_ROWS = [
     "height": "0.4m",
     "weight": "6.0kg",
     "isSpecial": true,
-    "hira": "ゃ",
-    "kata": "ャ",
-    "hiraStrokes": 3,
-    "kataStrokes": 2,
-    "specialType": "youon",
+    "hira": "ぴ",
+    "kata": "ピ",
+    "hiraStrokes": 2,
+    "kataStrokes": 3,
+    "specialType": "handakuten",
     "hiraTips": [
-      "① ちいさく マスの 右下に かこう！"
+      "① ひ を かく",
+      "② 右上に まる（半濁点）を かく"
     ],
     "kataTips": [
-      "① ちいさく マスの 右下に かこう！"
+      "① ヒ を かく",
+      "② 右上に まる（半濁点）を かく"
     ],
     "hiraWord": {
-      "word": "でんしゃ",
-      "kana": "でんしゃ",
-      "icon": "🚃",
-      "meaning": "でんしゃ"
+      "word": "ピアノ",
+      "kana": "ぴあの",
+      "icon": "🎹",
+      "meaning": "ピアノ"
     },
     "kataWord": {
-      "word": "シャツ",
-      "kana": "しゃつ",
-      "icon": "👕",
-      "meaning": "シャツ"
+      "word": "ピザ",
+      "kana": "ぴざ",
+      "icon": "🍕",
+      "meaning": "ピザ"
     },
     "pokeHira": "ぴかちゅう",
     "pokeKata": "ピカチュウ",
-    "missingChar": "ゅ",
-    "missingKata": "ュ"
+    "missingChar": "ぴ",
+    "missingKata": "ピ"
   },
   {
     "battle": 53,
@@ -20110,7 +20272,7 @@ const KOKUGO_MINIGAMES = [
 
 let currentAppMode = 'sansu';
 let curKokugoIdx = 0;
-let kokugoDrillScores = { p1: 0, p2: 0, p3: 0 };
+let kokugoDrillScores = { p1: 0, p2: 0, p3: 0, p3_hira: 0, p3_kata: 0 };
 
 // 状態初期化
 if (!Array.isArray(S.kokugoCleared)) S.kokugoCleared = [];
@@ -20348,7 +20510,7 @@ function scrollToCurrentKokugo() {
 // こくごバトル画面を開く
 function openKokugoBattle(idx) {
   curKokugoIdx = idx;
-  kokugoDrillScores = { p1: 0, p2: 0, p3: 0 };
+  kokugoDrillScores = { p1: 0, p2: 0, p3: 0, p3_hira: 0, p3_kata: 0 };
 
   const r = KOKUGO_ROWS[idx];
   if (!r) return;
@@ -20410,6 +20572,36 @@ function openKokugoBattle(idx) {
 }
 
 // ワークエリアの構築（通常バトル・まとめバトル・特別バトル対応）
+function renderWordBoxesFlow(word, targetChar, canvasType, strokes, isCleared) {
+  const chars = (word || targetChar || '').split('');
+  let targetIdx = chars.indexOf(targetChar);
+  if (targetIdx === -1) targetIdx = 0;
+
+  let html = '';
+  chars.forEach((ch, i) => {
+    if (i === targetIdx) {
+      html += `
+        <div class="k-word-canvas-box" id="kWordCanvasBox_${canvasType}">
+          <div class="k-canvas-wrap large-word-canvas" id="kWrap${canvasType}">
+            <div class="k-canvas-grid"></div>
+            <div class="k-canvas-start-dot"></div>
+            <div class="k-canvas-guide-glyph" id="kGuide${canvasType}">${targetChar}</div>
+            <canvas class="k-canvas-elem" id="kCanvas${canvasType}" width="200" height="200"></canvas>
+          </div>
+          <div class="k-canvas-slot-tag">✏️ ここにかくよ</div>
+        </div>
+      `;
+    } else {
+      html += `
+        <div class="k-companion-box">
+          <div class="k-companion-char">${ch}</div>
+        </div>
+      `;
+    }
+  });
+  return html;
+}
+
 function renderKokugoWorkArea(r, idx, isCleared) {
   const col = $('kWorkCol');
   if (!col) return;
@@ -20534,53 +20726,96 @@ function renderKokugoWorkArea(r, idx, isCleared) {
   `;
   col.appendChild(c2);
 
-  // 問題3: ポケモン名前穴埋め (40点)
+  // 問題3: ポケモン名前穴埋め書き取り (40点: ひらがな20点 + カタカナ20点)
   const c3 = document.createElement('div');
   c3.className = 'k-card';
   c3.innerHTML = `
     <div class="k-card-title-row">
       <h3 class="k-card-title">
         <span class="k-card-step-badge">3</span>
-        <span>かいた じを いれて ポケモンの なまえを かんせいさせよう！</span>
+        <span>かいた じを マスに かいて、ポケモンの なまえを かんせいさせよう！</span>
       </h3>
       <span class="k-card-points">40 てん</span>
     </div>
-    <div class="k-name-fill-grid">
-      <!-- ひらがな名前カード -->
-      <div class="k-name-card">
-        <div style="font-size:12px;font-weight:900;color:#64748b">ひらがな で かんせい！</div>
-        <div class="k-name-char-row">
-          ${(r.pokeHira || 'あぶそる').split('').map((ch, i) => {
-            const isTarget = (ch === r.hira);
-            return `<div class="k-name-box ${isTarget ? 'target-box' : ''} ${isCleared ? 'filled' : ''}" id="kNameHiraBox_${i}" onclick="fillTargetNameChar('Hira', ${i}, '${r.hira}')">${(isTarget && !isCleared) ? '？' : ch}</div>`;
-          }).join('')}
+    <p style="font-size:14px;color:#475569;margin-bottom:14px">
+      1と2で れんしゅうした もじを、おおきな マスに かきいれよう！ かけたら こえに だして よんでみよう。
+    </p>
+
+    <div class="k-word-fill-grid">
+      <!-- ① ひらがな名前カード -->
+      <div class="k-word-card ${isCleared ? 'word-cleared' : ''}" id="kWordCard_Hira">
+        <div class="k-word-card-header">
+          <div class="k-word-card-title">
+            <span class="k-word-type-badge hira">ひらがな</span>
+            <span class="k-word-target-prompt">「${r.hira}」を かこう！</span>
+          </div>
+          <button type="button" class="hbtn" style="font-size:12px;background:#e0f2fe;border-color:#38bdf8;color:#0369a1" onclick="speakText('${r.pokeHira}')">🔊 よむ</button>
         </div>
-        <button type="button" class="hbtn" style="font-size:12px;background:#e0f2fe;border-color:#38bdf8;color:#0369a1" onclick="speakText('${r.pokeHira}')">🔊 こえに だして よむ</button>
+
+        <div class="k-word-display-area">
+          <div class="k-word-flow">
+            ${renderWordBoxesFlow(r.pokeHira, r.hira, 'WordHira', r.hiraStrokes, isCleared)}
+          </div>
+        </div>
+
+        <div class="k-tools-row">
+          <button type="button" class="k-tool-btn active" id="btnPenWordHira" onclick="setCanvasTool('WordHira', 'pen')">✏️ えんぴつ</button>
+          <button type="button" class="k-tool-btn" id="btnEraserWordHira" onclick="setCanvasTool('WordHira', 'eraser')">🧽 けしゴム</button>
+          <button type="button" class="k-tool-btn" onclick="clearKanaCanvas('WordHira')">🔄 ぜんぶけす</button>
+          <button type="button" class="k-tool-btn" onclick="toggleGuideGlyph('WordHira')">👁️ おてほん</button>
+          <button type="button" class="k-tool-btn k-judge-btn" onclick="judgeCanvas('WordHira')">💮 はんてい！</button>
+          <button type="button" class="k-tool-btn" onclick="autoTraceCanvas('WordHira')" style="color:#2563eb">💡 おたすけ</button>
+        </div>
+        <div class="k-eval-result" id="kEvalWordHira">${isCleared ? '<span class="k-eval-pass">💮 たいへん よく できました！ (100てん)</span>' : ''}</div>
       </div>
 
-      <!-- カタカナ名前カード -->
-      <div class="k-name-card">
-        <div style="font-size:12px;font-weight:900;color:#64748b">カタカナ で かんせい！</div>
-        <div class="k-name-char-row">
-          ${(r.pokeKata || 'アブソル').split('').map((ch, i) => {
-            const isTarget = (ch === r.kata);
-            return `<div class="k-name-box ${isTarget ? 'target-box' : ''} ${isCleared ? 'filled' : ''}" id="kNameKataBox_${i}" onclick="fillTargetNameChar('Kata', ${i}, '${r.kata}')">${(isTarget && !isCleared) ? '？' : ch}</div>`;
-          }).join('')}
+      <!-- ② カタカナ名前カード -->
+      <div class="k-word-card ${isCleared ? 'word-cleared' : ''}" id="kWordCard_Kata">
+        <div class="k-word-card-header">
+          <div class="k-word-card-title">
+            <span class="k-word-type-badge kata">カタカナ</span>
+            <span class="k-word-target-prompt">「${r.kata}」を かこう！</span>
+          </div>
+          <button type="button" class="hbtn" style="font-size:12px;background:#e0f2fe;border-color:#38bdf8;color:#0369a1" onclick="speakText('${r.pokeKata}')">🔊 よむ</button>
         </div>
-        <button type="button" class="hbtn" style="font-size:12px;background:#e0f2fe;border-color:#38bdf8;color:#0369a1" onclick="speakText('${r.pokeKata}')">🔊 こえに だして よむ</button>
+
+        <div class="k-word-display-area">
+          <div class="k-word-flow">
+            ${renderWordBoxesFlow(r.pokeKata, r.kata, 'WordKata', r.kataStrokes, isCleared)}
+          </div>
+        </div>
+
+        <div class="k-tools-row">
+          <button type="button" class="k-tool-btn active" id="btnPenWordKata" onclick="setCanvasTool('WordKata', 'pen')">✏️ えんぴつ</button>
+          <button type="button" class="k-tool-btn" id="btnEraserWordKata" onclick="setCanvasTool('WordKata', 'eraser')">🧽 けしゴム</button>
+          <button type="button" class="k-tool-btn" onclick="clearKanaCanvas('WordKata')">🔄 ぜんぶけす</button>
+          <button type="button" class="k-tool-btn" onclick="toggleGuideGlyph('WordKata')">👁️ おてほん</button>
+          <button type="button" class="k-tool-btn k-judge-btn" onclick="judgeCanvas('WordKata')">💮 はんてい！</button>
+          <button type="button" class="k-tool-btn" onclick="autoTraceCanvas('WordKata')" style="color:#2563eb">💡 おたすけ</button>
+        </div>
+        <div class="k-eval-result" id="kEvalWordKata">${isCleared ? '<span class="k-eval-pass">💮 たいへん よく できました！ (100てん)</span>' : ''}</div>
       </div>
     </div>
   `;
   col.appendChild(c3);
 
-  // キャンバスの初期化
+  // 全キャンバスの初期化
   setTimeout(() => {
     initKanaCanvas('Hira', r.hira, r.hiraStrokes);
     initKanaCanvas('Kata', r.kata, r.kataStrokes);
+    initKanaCanvas('WordHira', r.hira, r.hiraStrokes);
+    initKanaCanvas('WordKata', r.kata, r.kataStrokes);
+
+    if (isCleared) {
+      autoDrawKanaText('Hira', r.hira);
+      autoDrawKanaText('Kata', r.kata);
+      autoDrawKanaText('WordHira', r.hira);
+      autoDrawKanaText('WordKata', r.kata);
+    }
   }, 50);
 }
 
-// まとめバトルの描画（ボス仕様）
+// まとめバトルの描画（ボス仕様・大きな書き取りマス対応）
 function renderReviewWorkArea(r, idx, isCleared, col) {
   const card = document.createElement('div');
   card.className = 'k-card';
@@ -20592,28 +20827,63 @@ function renderReviewWorkArea(r, idx, isCleared, col) {
       </h3>
       <span class="k-card-points">100 てん</span>
     </div>
-    <p style="font-size:14px;color:#475569;margin-bottom:16px">${r.reviewSummary || 'これまでに まなんだ もじを つかって ボスに ちょうせんだ！'}</p>
+    <p style="font-size:14px;color:#475569;margin-bottom:16px">${r.reviewSummary || 'これまでに まなんだ もじを おおきな マスに かきいれて ボスに ちょうせんだ！'}</p>
 
-    <!-- 単語穴埋めチャレンジ -->
-    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:12px;margin-bottom:20px">
-      ${(r.words || ['あさ', 'よる', 'やま']).slice(0, 6).map((w, wIdx) => `
-        <div style="background:#f8fafc;border:2px solid #e2e8f0;border-radius:14px;padding:12px;display:flex;align-items:center;justify-content:space-between">
-          <div style="font-size:18px;font-weight:900;color:#1e293b;letter-spacing:0.1em">
-            ${w.split('').map((c, ci) => ci === 0 ? `<span class="k-name-box target-box ${isCleared ? 'filled' : ''}" id="kRevBox_${wIdx}" style="display:inline-flex;width:38px;height:38px;font-size:22px;vertical-align:middle;margin-right:4px">${isCleared ? c : '？'}</span>` : c).join('')}
+    <!-- 単語書き取りチャレンジ -->
+    <div class="k-word-fill-grid">
+      ${(r.words || ['あさ', 'よる', 'やま']).slice(0, 3).map((w, wIdx) => {
+        const targetChar = w[0];
+        const pts = (wIdx === 0 ? 34 : 33);
+        return `
+          <div class="k-word-card ${isCleared ? 'word-cleared' : ''}" id="kRevCard_${wIdx}">
+            <div class="k-word-card-header">
+              <div class="k-word-card-title">
+                <span class="k-word-type-badge review">もんだい ${wIdx + 1}</span>
+                <span class="k-word-target-prompt">「${targetChar}」を かこう！</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px">
+                <span class="k-card-points">${pts} てん</span>
+                <button type="button" class="hbtn" style="font-size:12px;background:#e0f2fe;border-color:#38bdf8;color:#0369a1" onclick="speakText('${w}')">🔊 よむ</button>
+              </div>
+            </div>
+
+            <div class="k-word-display-area">
+              <div class="k-word-flow">
+                ${renderWordBoxesFlow(w, targetChar, 'Rev_' + wIdx, 2, isCleared)}
+              </div>
+            </div>
+
+            <div class="k-tools-row">
+              <button type="button" class="k-tool-btn active" id="btnPenRev_${wIdx}" onclick="setCanvasTool('Rev_${wIdx}', 'pen')">✏️ えんぴつ</button>
+              <button type="button" class="k-tool-btn" id="btnEraserRev_${wIdx}" onclick="setCanvasTool('Rev_${wIdx}', 'eraser')">🧽 けしゴム</button>
+              <button type="button" class="k-tool-btn" onclick="clearKanaCanvas('Rev_${wIdx}')">🔄 ぜんぶけす</button>
+              <button type="button" class="k-tool-btn" onclick="toggleGuideGlyph('Rev_${wIdx}')">👁️ おてほん</button>
+              <button type="button" class="k-tool-btn k-judge-btn" onclick="judgeCanvas('Rev_${wIdx}')">💮 はんてい！</button>
+              <button type="button" class="k-tool-btn" onclick="autoTraceCanvas('Rev_${wIdx}')" style="color:#2563eb">💡 おたすけ</button>
+            </div>
+            <div class="k-eval-result" id="kEvalRev_${wIdx}">${isCleared ? '<span class="k-eval-pass">💮 たいへん よく できました！ (' + pts + 'てん)</span>' : ''}</div>
           </div>
-          <button type="button" class="hbtn" style="font-size:11px;padding:4px 8px" onclick="fillReviewBox(${wIdx}, '${w[0]}')">かく ✏️</button>
-        </div>
-      `).join('')}
+        `;
+      }).join('')}
     </div>
 
-    <!-- 一括正解ボタン -->
-    <div style="text-align:center;margin-top:10px">
+    <!-- 一括おたすけ正解ボタン -->
+    <div style="text-align:center;margin-top:20px">
       <button type="button" class="mbtn" style="font-size:16px;padding:10px 24px;background:#22c55e;color:#fff;border-radius:14px;font-weight:900" onclick="passReviewBattle()">
-        💮 ぜんぶ かけたよ！ (はんてい)
+        💮 ぜんぶ かけたよ！ (おたすけ はんてい)
       </button>
     </div>
   `;
   col.appendChild(card);
+
+  setTimeout(() => {
+    (r.words || ['あさ', 'よる', 'やま']).slice(0, 3).forEach((w, wIdx) => {
+      initKanaCanvas('Rev_' + wIdx, w[0], 2);
+      if (isCleared) {
+        autoDrawKanaText('Rev_' + wIdx, w[0]);
+      }
+    });
+  }, 50);
 }
 
 // キャンバス管理
@@ -20628,7 +20898,7 @@ function initKanaCanvas(type, char, strokes) {
     canvas: cv,
     ctx: ctx,
     char: char,
-    expectedStrokes: strokes,
+    expectedStrokes: strokes || 2,
     tool: 'pen',
     strokes: [],
     currentStroke: [],
@@ -20683,8 +20953,10 @@ function setCanvasTool(type, tool) {
   const s = kanaCanvases[type];
   if (!s) return;
   s.tool = tool;
-  $(`btnPen${type}`).classList.toggle('active', tool === 'pen');
-  $(`btnEraser${type}`).classList.toggle('active', tool === 'eraser');
+  const btnP = $(`btnPen${type}`);
+  const btnE = $(`btnEraser${type}`);
+  if (btnP) btnP.classList.toggle('active', tool === 'pen');
+  if (btnE) btnE.classList.toggle('active', tool === 'eraser');
 }
 
 function clearKanaCanvas(type) {
@@ -20692,7 +20964,8 @@ function clearKanaCanvas(type) {
   if (!s) return;
   s.ctx.clearRect(0, 0, s.canvas.width, s.canvas.height);
   s.strokes = [];
-  $(`kEval${type}`).innerHTML = '';
+  const evalEl = $(`kEval${type}`);
+  if (evalEl) evalEl.innerHTML = '';
 }
 
 function toggleGuideGlyph(type) {
@@ -20716,7 +20989,19 @@ function autoTraceCanvas(type) {
   judgeCanvas(type);
 }
 
-// 判定ロジック
+function autoDrawKanaText(type, char) {
+  const s = kanaCanvases[type];
+  if (!s) return;
+  s.ctx.save();
+  s.ctx.font = 'bold 140px "Zen Maru Gothic", sans-serif';
+  s.ctx.fillStyle = '#1e293b';
+  s.ctx.textAlign = 'center';
+  s.ctx.textBaseline = 'middle';
+  s.ctx.fillText(char, 100, 105);
+  s.ctx.restore();
+}
+
+// 判定ロジック（単語書き取り・レビューバトル完全対応）
 function judgeCanvas(type) {
   const s = kanaCanvases[type];
   if (!s) return;
@@ -20725,13 +21010,35 @@ function judgeCanvas(type) {
   const evalEl = $(`kEval${type}`);
 
   if (res.passed) {
-    playPikaanSound();
-    evalEl.innerHTML = `<span class="k-eval-pass">💮 たいへん よく できました！ (${res.score}てん)</span>`;
-    kokugoDrillScores[type === 'Hira' ? 'p1' : 'p2'] = 30;
+    if (typeof playPikaanSound === 'function') playPikaanSound();
+    if (evalEl) evalEl.innerHTML = `<span class="k-eval-pass">💮 たいへん よく できました！ (${res.score}てん)</span>`;
+
+    if (type === 'Hira') {
+      kokugoDrillScores.p1 = 30;
+    } else if (type === 'Kata') {
+      kokugoDrillScores.p2 = 30;
+    } else if (type === 'WordHira') {
+      kokugoDrillScores.p3_hira = 20;
+      kokugoDrillScores.p3 = (kokugoDrillScores.p3_hira || 0) + (kokugoDrillScores.p3_kata || 0);
+      const card = $('kWordCard_Hira');
+      if (card) card.classList.add('word-cleared');
+    } else if (type === 'WordKata') {
+      kokugoDrillScores.p3_kata = 20;
+      kokugoDrillScores.p3 = (kokugoDrillScores.p3_hira || 0) + (kokugoDrillScores.p3_kata || 0);
+      const card = $('kWordCard_Kata');
+      if (card) card.classList.add('word-cleared');
+    } else if (type.startsWith('Rev_')) {
+      const revIdx = parseInt(type.replace('Rev_', ''), 10);
+      const pts = (revIdx === 0 ? 34 : 33);
+      kokugoDrillScores['rev_' + revIdx] = pts;
+      const card = $(`kRevCard_${revIdx}`);
+      if (card) card.classList.add('word-cleared');
+    }
+
     checkKokugoDrillProgress();
   } else {
-    playMarimbaPop(0.7);
-    evalEl.innerHTML = `<span class="k-eval-fail">${res.msg} (${res.score}てん)</span>`;
+    if (typeof playMarimbaPop === 'function') playMarimbaPop(0.7);
+    if (evalEl) evalEl.innerHTML = `<span class="k-eval-fail">${res.msg || 'もうすこし！'} (${res.score}てん)</span>`;
   }
 }
 
@@ -20804,62 +21111,54 @@ function evaluateHandwritingEngine(canvas, drawnStrokesCount, targetChar, expect
   }
 
   if (drawnCount < 5) {
-    return { score: 10, passed: false, msg: 'もっと たくさん かいてみよう！' };
+    return { passed: false, score: 10, msg: 'もっと たくさん かいてみよう！' };
   }
 
-  const precision = drawnCount > 0 ? overlapDrawnInRef / drawnCount : 0;
-  const recall = refCount > 0 ? overlapRefInDrawn / refCount : 0;
+  const covDrawn = overlapDrawnInRef / Math.max(1, drawnCount);
+  const covRef = overlapRefInDrawn / Math.max(1, refCount);
+  const shapeScore = (covDrawn * 0.5 + covRef * 0.5) * 70;
 
-  let strokePenalty = 1.0;
-  if (expectedStrokes > 0 && drawnStrokesCount > 0) {
+  let strokeScore = 30;
+  if (expectedStrokes && expectedStrokes > 0 && drawnStrokesCount > 0) {
     const diff = Math.abs(drawnStrokesCount - expectedStrokes);
-    if (diff === 0) strokePenalty = 1.0;
-    else if (diff === 1) strokePenalty = 0.95;
-    else if (diff === 2) strokePenalty = 0.85;
-    else strokePenalty = 0.7;
+    if (diff === 0) strokeScore = 30;
+    else if (diff === 1) strokeScore = 20;
+    else if (diff === 2) strokeScore = 12;
+    else strokeScore = 5;
   }
 
-  const rawScore = (precision * 0.45 + recall * 0.55) * strokePenalty;
-  let finalScore = Math.min(100, Math.round(rawScore * 115));
-  if (finalScore >= 60 && finalScore < 80) finalScore = Math.min(100, finalScore + 10);
+  const totalScore = Math.min(100, Math.round(shapeScore + strokeScore));
+  const passed = totalScore >= 60;
 
   return {
-    score: Math.max(20, finalScore),
-    passed: finalScore >= 60,
-    msg: finalScore >= 60 ? '💮 たいへん よく できました！' : 'もうすこし！ おてほんを なぞってみよう！'
+    passed,
+    score: totalScore,
+    msg: passed ? 'たいへん よく できました！' : (covRef < 0.4 ? 'おてほんを よくみて かこう！' : 'もうすこし ていねいに かいてみよう！')
   };
 }
 
-// ポケモン名前穴埋めのクリック
-function fillTargetNameChar(type, index, char) {
-  playPikaanSound();
-  const el = $(`kName${type}Box_${index}`);
-  if (el) {
-    el.textContent = char;
-    el.classList.add('filled');
-  }
-  kokugoDrillScores.p3 = 40;
-  checkKokugoDrillProgress();
-}
-
-function fillReviewBox(wIdx, char) {
-  playPikaanSound();
-  const el = $(`kRevBox_${wIdx}`);
-  if (el) {
-    el.textContent = char;
-    el.classList.add('filled');
-  }
-}
-
 function passReviewBattle() {
-  playPikaanSound();
-  kokugoDrillScores = { p1: 30, p2: 30, p3: 40 };
-  checkKokugoDrillProgress();
+  const r = KOKUGO_ROWS[curKokugoIdx];
+  if (!r) return;
+  const words = (r.words || ['あさ', 'よる', 'やま']).slice(0, 3);
+  words.forEach((w, wIdx) => {
+    autoTraceCanvas('Rev_' + wIdx);
+  });
 }
 
 // 得点確認 & クリアシール貼り付け
 function checkKokugoDrillProgress() {
-  const total = kokugoDrillScores.p1 + kokugoDrillScores.p2 + kokugoDrillScores.p3;
+  const r = KOKUGO_ROWS[curKokugoIdx];
+  let total = 0;
+  if (r && r.isReview) {
+    total = Object.keys(kokugoDrillScores)
+      .filter(k => k.startsWith('rev_'))
+      .reduce((sum, k) => sum + (kokugoDrillScores[k] || 0), 0);
+  } else {
+    total = (kokugoDrillScores.p1 || 0) + (kokugoDrillScores.p2 || 0) + (kokugoDrillScores.p3 || 0);
+  }
+  total = Math.min(100, total);
+
   $('kDrillScore').textContent = `${total} / 100 てん`;
   $('kSealScore').textContent = `てんすう: ${total} てん`;
 
@@ -20867,7 +21166,7 @@ function checkKokugoDrillProgress() {
     $('btnKokugoThrow').disabled = false;
     const sealSlot = $('kSealSlot');
     if (sealSlot && !sealSlot.querySelector('.k-seal-stamped')) {
-      playMarimbaPop(1.2);
+      if (typeof playMarimbaPop === 'function') playMarimbaPop(1.2);
       sealSlot.innerHTML = `<div class="k-seal-stamped">💮<br>クリア！</div>`;
       $('kSealDate').textContent = 'クリアした ひ: 💮 ごうかく！';
       toast('💮 60てん いじょう とれたよ！ ボールを なげて ポケモンを ゲットしよう！⚾', 3000);

@@ -18313,8 +18313,8 @@ const KOKUGO_ROWS = [
     "height": "1.5m",
     "weight": "50.5kg",
     "isReview": true,
-    "reviewTitle": "あ・い・う・え・お・か・き・く・け・こ まとめ",
-    "reviewSummary": "バトル1から10で まなんだ ひらがな・カタカナの そうふくしゅう！",
+    "reviewTitle": "バトル1〜10のまとめ（ダークライをつかまえよう！）",
+    "reviewSummary": "これまでに まなんだ ひらがな・カタカナを おおきなマスに かいて ボスに ちょうせんだ！",
     "words": [
       "ちいさい",
       "おおきい",
@@ -18322,12 +18322,95 @@ const KOKUGO_ROWS = [
       "いす",
       "うきわ",
       "えり",
-      "おうかん",
-      "かさ",
-      "きん",
-      "くし",
-      "けいと",
-      "こうえん"
+      "おうかん"
+    ],
+    "reviewProblems": [
+      {
+        "probNum": 1,
+        "title": "もんだい 1",
+        "instruction": "［ ］の ひらがなを かきましょう。",
+        "subtext": "フラベベ（あかいはな）",
+        "pokeArt": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/669.png",
+        "items": [
+          { "type": "write", "char": "ち", "strokes": 2, "id": "B11_P1_Chi" },
+          { "type": "fixed", "char": "い" },
+          { "type": "write", "char": "さ", "strokes": 3, "id": "B11_P1_Sa" },
+          { "type": "fixed", "char": "い" }
+        ],
+        "suffixText": "ポケモン"
+      },
+      {
+        "probNum": 2,
+        "title": "もんだい 2",
+        "instruction": "［ ］の ひらがなを かきましょう。",
+        "subtext": "ホエルオー",
+        "pokeArt": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/321.png",
+        "items": [
+          { "type": "write", "char": "お", "strokes": 3, "id": "B11_P2_O1" },
+          { "type": "write", "char": "お", "strokes": 3, "id": "B11_P2_O2" },
+          { "type": "fixed", "char": "き" },
+          { "type": "write", "char": "い", "strokes": 2, "id": "B11_P2_I" }
+        ],
+        "suffixText": "ポケモン"
+      },
+      {
+        "probNum": 3,
+        "title": "もんだい 3",
+        "instruction": "えを みて ［ ］に ひらがなを かきましょう。",
+        "img": "kokugo_drills/assets/b11/ashi.png",
+        "imgAlt": "あし",
+        "items": [
+          { "type": "write", "char": "あ", "strokes": 3, "id": "B11_P3_A" },
+          { "type": "fixed", "char": "し" }
+        ]
+      },
+      {
+        "probNum": 4,
+        "title": "もんだい 4",
+        "instruction": "えを みて ［ ］に ひらがなを かきましょう。",
+        "img": "kokugo_drills/assets/b11/isu.png",
+        "imgAlt": "いす",
+        "items": [
+          { "type": "write", "char": "い", "strokes": 2, "id": "B11_P4_I" },
+          { "type": "fixed", "char": "す" }
+        ]
+      },
+      {
+        "probNum": 5,
+        "title": "もんだい 5",
+        "instruction": "えを みて ［ ］に ひらがなを かきましょう。",
+        "img": "kokugo_drills/assets/b11/ukiwa.png",
+        "imgAlt": "うきわ",
+        "items": [
+          { "type": "write", "char": "う", "strokes": 2, "id": "B11_P5_U" },
+          { "type": "fixed", "char": "き" },
+          { "type": "fixed", "char": "わ" }
+        ]
+      },
+      {
+        "probNum": 6,
+        "title": "もんだい 6",
+        "instruction": "えを みて ［ ］に ひらがなを かきましょう。",
+        "img": "kokugo_drills/assets/b11/eri.png",
+        "imgAlt": "えり",
+        "items": [
+          { "type": "write", "char": "え", "strokes": 2, "id": "B11_P6_E" },
+          { "type": "fixed", "char": "り" }
+        ]
+      },
+      {
+        "probNum": 7,
+        "title": "もんだい 7",
+        "instruction": "えを みて ［ ］に ひらがなを かきましょう。",
+        "img": "kokugo_drills/assets/b11/oukan.png",
+        "imgAlt": "おうかん",
+        "items": [
+          { "type": "write", "char": "お", "strokes": 3, "id": "B11_P7_O" },
+          { "type": "write", "char": "う", "strokes": 2, "id": "B11_P7_U" },
+          { "type": "fixed", "char": "か" },
+          { "type": "fixed", "char": "ん" }
+        ]
+      }
     ]
   },
   {
@@ -18725,8 +18808,8 @@ const KOKUGO_ROWS = [
     "height": "1.9m",
     "weight": "178.0kg",
     "isReview": true,
-    "reviewTitle": "さ・し・す・せ・そ・た・ち・つ・て・と まとめ",
-    "reviewSummary": "さ行・た行の ひらがな・カタカナを マスターしよう！",
+    "reviewTitle": "バトル12〜21のまとめ（ライコウをつかまえよう！）",
+    "reviewSummary": "これまでに まなんだ ひらがな・カタカナを おおきなマスに かいて ボスに ちょうせんだ！",
     "words": [
       "さなぎ",
       "しんか",
@@ -18735,6 +18818,92 @@ const KOKUGO_ROWS = [
       "すいか",
       "せんろ",
       "そり"
+    ],
+    "reviewProblems": [
+      {
+        "probNum": 1,
+        "title": "もんだい 1",
+        "instruction": "［ ］の ひらがなを かきましょう。",
+        "subtext": "トランセル",
+        "pokeArt": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/11.png",
+        "items": [
+          { "type": "write", "char": "さ", "strokes": 3, "id": "B22_P1_Sa" },
+          { "type": "fixed", "char": "な" },
+          { "type": "fixed", "char": "ぎ" }
+        ],
+        "suffixText": "ポケモン"
+      },
+      {
+        "probNum": 2,
+        "title": "もんだい 2",
+        "instruction": "［ ］の ひらがなを かきましょう。",
+        "subtext": "イーブイ",
+        "pokeArt": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/133.png",
+        "items": [
+          { "type": "write", "char": "し", "strokes": 1, "id": "B22_P2_Shi" },
+          { "type": "fixed", "char": "ん" },
+          { "type": "fixed", "char": "か" }
+        ],
+        "suffixText": "ポケモン"
+      },
+      {
+        "probNum": 3,
+        "title": "もんだい 3",
+        "instruction": "えを みて ［ ］に ひらがなを かきましょう。",
+        "img": "kokugo_drills/assets/b22/saifu.png",
+        "imgAlt": "さいふ",
+        "items": [
+          { "type": "write", "char": "さ", "strokes": 3, "id": "B22_P3_Sa" },
+          { "type": "fixed", "char": "い" },
+          { "type": "fixed", "char": "ふ" }
+        ]
+      },
+      {
+        "probNum": 4,
+        "title": "もんだい 4",
+        "instruction": "えを みて ［ ］に ひらがなを かきましょう。",
+        "img": "kokugo_drills/assets/b22/shima.png",
+        "imgAlt": "しま",
+        "items": [
+          { "type": "write", "char": "し", "strokes": 1, "id": "B22_P4_Shi" },
+          { "type": "fixed", "char": "ま" }
+        ]
+      },
+      {
+        "probNum": 5,
+        "title": "もんだい 5",
+        "instruction": "えを みて ［ ］に ひらがなを かきましょう。",
+        "img": "kokugo_drills/assets/b22/suika.png",
+        "imgAlt": "すいか",
+        "items": [
+          { "type": "write", "char": "す", "strokes": 2, "id": "B22_P5_Su" },
+          { "type": "fixed", "char": "い" },
+          { "type": "fixed", "char": "か" }
+        ]
+      },
+      {
+        "probNum": 6,
+        "title": "もんだい 6",
+        "instruction": "えを みて ［ ］に ひらがなを かきましょう。",
+        "img": "kokugo_drills/assets/b22/senro.png",
+        "imgAlt": "せんろ",
+        "items": [
+          { "type": "write", "char": "せ", "strokes": 3, "id": "B22_P6_Se" },
+          { "type": "fixed", "char": "ん" },
+          { "type": "fixed", "char": "ろ" }
+        ]
+      },
+      {
+        "probNum": 7,
+        "title": "もんだい 7",
+        "instruction": "えを みて ［ ］に ひらがなを かきましょう。",
+        "img": "kokugo_drills/assets/b22/sori.png",
+        "imgAlt": "そり",
+        "items": [
+          { "type": "write", "char": "そ", "strokes": 1, "id": "B22_P7_So" },
+          { "type": "fixed", "char": "り" }
+        ]
+      }
     ]
   },
   {
@@ -20599,9 +20768,17 @@ function openKokugoBattle(idx) {
   const sealDate = $('kSealDate');
   const sealScore = $('kSealScore');
 
+  let req = [];
+  if (r.reviewProblems) {
+    req = r.reviewProblems.flatMap(p => p.items.filter(it => it.type === 'write').map(it => it.id));
+  } else if (r.isReview) {
+    req = ['Rev_0', 'Rev_1', 'Rev_2'];
+  } else {
+    req = ['Hira', 'Kata', 'WordHira', 'WordKata'];
+  }
+
   if (isCleared) {
     kokugoCelebrationTriggered = true;
-    const req = r.isReview ? ['Rev_0', 'Rev_1', 'Rev_2'] : ['Hira', 'Kata', 'WordHira', 'WordKata'];
     req.forEach(t => kokugoDrillEvaluations[t] = 100);
 
     sealSlot.innerHTML = `<div class="k-seal-stamped">💮<br>ごうかく！</div>`;
@@ -20619,8 +20796,7 @@ function openKokugoBattle(idx) {
     `;
     sealDate.textContent = 'クリアした ひ: ──';
     if (sealScore) sealScore.textContent = 'れんしゅうちゅう';
-    const totalReq = r.isReview ? 3 : 4;
-    $('kDrillScore').textContent = `✏️ はんてい: 0 / ${totalReq} もん ごうかく (50てん いじょう)`;
+    $('kDrillScore').textContent = `✏️ はんてい: 0 / ${req.length} もん ごうかく (50てん いじょう)`;
     $('kDrillScore').style.color = '';
     $('btnKokugoThrow').disabled = true;
   }
@@ -20872,6 +21048,120 @@ function renderKokugoWorkArea(r, idx, isCleared) {
 
 // まとめバトルの描画（ボス仕様・大きな書き取りマス対応・点数表示撤廃）
 function renderReviewWorkArea(r, idx, isCleared, col) {
+  // reviewProblemsが定義されている場合（バトル11、バトル22など）
+  if (r.reviewProblems && r.reviewProblems.length > 0) {
+    const headerCard = document.createElement('div');
+    headerCard.className = 'k-card';
+    headerCard.innerHTML = `
+      <div class="k-card-title-row">
+        <h3 class="k-card-title">
+          <span class="k-card-step-badge">★</span>
+          <span>${r.reviewTitle || 'まとめ バトル！'}</span>
+        </h3>
+      </div>
+      <p style="font-size:14px;color:#475569;margin-bottom:8px">${r.reviewSummary || 'これまでに まなんだ もじを おおきな マスに かきいれて ボスに ちょうせんだ！'}</p>
+    `;
+    col.appendChild(headerCard);
+
+    r.reviewProblems.forEach((p) => {
+      const pCard = document.createElement('div');
+      pCard.className = `k-card ${isCleared ? 'word-cleared' : ''}`;
+      pCard.id = `kRevProbCard_${p.probNum}`;
+
+      let artHtml = '';
+      if (p.img) {
+        artHtml = `
+          <div style="display:flex;justify-content:center;margin:10px 0;">
+            <img src="${p.img}" alt="${p.imgAlt || ''}" style="height:105px;border-radius:12px;border:2.5px solid #cbd5e1;background:#fff;padding:6px;box-shadow:0 3px 8px rgba(0,0,0,0.06)">
+          </div>
+        `;
+      } else if (p.pokeArt) {
+        artHtml = `
+          <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin:10px 0;background:#f8fafc;padding:8px 16px;border-radius:14px;border:2px solid #e2e8f0">
+            <img src="${p.pokeArt}" style="height:85px;object-fit:contain">
+            <span style="font-size:17px;font-weight:900;color:#1e293b">${p.subtext || ''}</span>
+          </div>
+        `;
+      }
+
+      let flowHtml = '';
+      p.items.forEach(it => {
+        if (it.type === 'fixed') {
+          flowHtml += `
+            <div class="k-companion-box" style="width:72px;height:72px;border-radius:14px;border:2.5px solid #cbd5e1;background:#fff;display:flex;align-items:center;justify-content:center;position:relative">
+              <span class="k-companion-char" style="font-size:38px;font-weight:900;color:#1e293b;position:relative;z-index:2">${it.char}</span>
+            </div>
+          `;
+        } else if (it.type === 'write') {
+          flowHtml += `
+            <div class="k-word-canvas-box ${isCleared ? 'word-cleared' : ''}" id="kRevBox_${it.id}" style="display:flex;flex-direction:column;align-items:center">
+              <div class="k-canvas-wrap large-word-canvas" id="kWrap${it.id}" style="width:180px;height:180px;border:3.5px solid #3b82f6;border-radius:18px;background:#fff;box-shadow:0 4px 16px rgba(59,130,246,0.15);position:relative">
+                <div class="k-canvas-grid"></div>
+                <div class="k-canvas-start-dot"></div>
+                <!-- まとめ仕様：マスの中にお手本文字は入れない -->
+                <canvas class="k-canvas-elem" id="kCanvas${it.id}" width="200" height="200"></canvas>
+              </div>
+              <div class="k-canvas-slot-tag" style="font-size:13px;font-weight:900;color:#2563eb;margin-top:4px">［${it.char}］を かこう</div>
+              <div class="k-tools-row" style="margin-top:6px;gap:6px">
+                <button type="button" class="k-tool-btn active" id="btnPen${it.id}" onclick="setCanvasTool('${it.id}', 'pen')">✏️ えんぴつ</button>
+                <button type="button" class="k-tool-btn" id="btnEraser${it.id}" onclick="setCanvasTool('${it.id}', 'eraser')">🧽 けしゴム</button>
+                <button type="button" class="k-tool-btn" onclick="clearKanaCanvas('${it.id}')">🔄 ぜんぶけす</button>
+                <button type="button" class="k-tool-btn k-judge-btn" onclick="judgeCanvas('${it.id}')">💮 はんてい！</button>
+                <button type="button" class="k-tool-btn" onclick="autoTraceCanvas('${it.id}')" style="color:#2563eb">💡 おたすけ</button>
+              </div>
+              <div class="k-eval-result" id="kEval${it.id}" style="margin-top:4px">${isCleared ? '<span class="k-eval-pass">💮 ごうかく！ (100てん)</span>' : ''}</div>
+            </div>
+          `;
+        }
+      });
+
+      if (p.suffixText) {
+        flowHtml += `<span style="font-size:26px;font-weight:900;color:#1e293b;margin-left:6px">${p.suffixText}</span>`;
+      }
+
+      pCard.innerHTML = `
+        <div class="k-card-title-row">
+          <h3 class="k-card-title">
+            <span class="k-card-step-badge">${p.probNum}</span>
+            <span>${p.instruction || 'ひらがなを かきましょう。'}</span>
+          </h3>
+        </div>
+        ${artHtml}
+        <div class="k-word-flow" style="display:flex;align-items:center;justify-content:center;gap:12px;margin:14px 0;flex-wrap:wrap">
+          ${flowHtml}
+        </div>
+      `;
+      col.appendChild(pCard);
+    });
+
+    // ぜんもんおたすけボタン
+    const botCard = document.createElement('div');
+    botCard.style.textAlign = 'center';
+    botCard.style.margin = '20px 0 10px';
+    botCard.innerHTML = `
+      <button type="button" class="mbtn" style="font-size:16px;padding:10px 24px;background:#22c55e;color:#fff;border-radius:14px;font-weight:900" onclick="passReviewBattle()">
+        💮 ぜんぶ かけたよ！ (おたすけ はんてい)
+      </button>
+    `;
+    col.appendChild(botCard);
+
+    setTimeout(() => {
+      r.reviewProblems.forEach(p => {
+        p.items.forEach(it => {
+          if (it.type === 'write') {
+            initKanaCanvas(it.id, it.char, it.strokes || 2);
+            if (kanaCanvases[it.id]) kanaCanvases[it.id].guideVisible = false;
+            if (isCleared) {
+              autoDrawKanaText(it.id, it.char);
+            }
+          }
+        });
+      });
+    }, 50);
+    return;
+  }
+
+  // フォールバック
   const card = document.createElement('div');
   card.className = 'k-card';
   card.innerHTML = `
@@ -21078,6 +21368,9 @@ function judgeCanvas(type) {
       const revIdx = parseInt(type.replace('Rev_', ''), 10);
       const card = $(`kRevCard_${revIdx}`);
       if (card) card.classList.add('word-cleared');
+    } else if (type.startsWith('B11_') || type.startsWith('B22_')) {
+      const box = $(`kRevBox_${type}`);
+      if (box) box.classList.add('word-cleared');
     }
   } else {
     if (typeof playMarimbaPop === 'function') playMarimbaPop(0.7);
@@ -21093,6 +21386,9 @@ function judgeCanvas(type) {
       const revIdx = parseInt(type.replace('Rev_', ''), 10);
       const card = $(`kRevCard_${revIdx}`);
       if (card) card.classList.remove('word-cleared');
+    } else if (type.startsWith('B11_') || type.startsWith('B22_')) {
+      const box = $(`kRevBox_${type}`);
+      if (box) box.classList.remove('word-cleared');
     }
   }
 
@@ -21197,10 +21493,20 @@ function evaluateHandwritingEngine(canvas, drawnStrokesCount, targetChar, expect
 function passReviewBattle() {
   const r = KOKUGO_ROWS[curKokugoIdx];
   if (!r) return;
-  const words = (r.words || ['あさ', 'よる', 'やま']).slice(0, 3);
-  words.forEach((w, wIdx) => {
-    autoTraceCanvas('Rev_' + wIdx);
-  });
+  if (r.reviewProblems) {
+    r.reviewProblems.forEach(p => {
+      p.items.forEach(it => {
+        if (it.type === 'write') {
+          autoTraceCanvas(it.id);
+        }
+      });
+    });
+  } else {
+    const words = (r.words || ['あさ', 'よる', 'やま']).slice(0, 3);
+    words.forEach((w, wIdx) => {
+      autoTraceCanvas('Rev_' + wIdx);
+    });
+  }
 }
 
 // 合格判定 ＆ ポケモン出現（すべての問題が判定済み＆それぞれ50点以上で合格）
@@ -21208,7 +21514,14 @@ function checkKokugoDrillProgress() {
   const r = KOKUGO_ROWS[curKokugoIdx];
   if (!r) return;
 
-  const req = r.isReview ? ['Rev_0', 'Rev_1', 'Rev_2'] : ['Hira', 'Kata', 'WordHira', 'WordKata'];
+  let req = [];
+  if (r.reviewProblems) {
+    req = r.reviewProblems.flatMap(p => p.items.filter(it => it.type === 'write').map(it => it.id));
+  } else if (r.isReview) {
+    req = ['Rev_0', 'Rev_1', 'Rev_2'];
+  } else {
+    req = ['Hira', 'Kata', 'WordHira', 'WordKata'];
+  }
   const evaluatedCount = req.filter(t => typeof kokugoDrillEvaluations[t] === 'number').length;
   const passedCount = req.filter(t => typeof kokugoDrillEvaluations[t] === 'number' && kokugoDrillEvaluations[t] >= 50).length;
   const allPassed = (passedCount === req.length);
@@ -21256,6 +21569,8 @@ function throwKokugoBall() {
 }
 
 // 8つのミニゲーム処理
+let currentMinigameState = {};
+
 function openKokugoMinigame(mgId) {
   const mg = KOKUGO_MINIGAMES.find(m => m.id === mgId);
   if (!mg) return;
@@ -21266,45 +21581,44 @@ function openKokugoMinigame(mgId) {
 
   modal.classList.add('open');
   modal.style.display = 'flex';
+  currentMinigameState = { id: mgId, answers: {}, pairs: [] };
 
-  // ミニゲーム1：シルエットクイズ
+  // ミニゲーム1：この かげは だれかな？（シルエット＆2択）
   if (mg.id === 1) {
+    const list = [
+      { num: 1, kana: 'アシマリ', hira: 'あしまり', shadowDex: 728, choices: [{ name: 'パウワウ', dex: 86 }, { name: 'アシマリ', dex: 728, isAns: true }] },
+      { num: 2, kana: 'イトマル', hira: 'いとまる', shadowDex: 167, choices: [{ name: 'イトマル', dex: 167, isAns: true }, { name: 'オニシズクモ', dex: 752 }] },
+      { num: 3, kana: 'ゴマゾウ', hira: 'ごまぞう', shadowDex: 231, choices: [{ name: 'ベロリンガ', dex: 108 }, { name: 'ゴマゾウ', dex: 231, isAns: true }] },
+      { num: 4, kana: 'ポチエナ', hira: 'ぽちえな', shadowDex: 261, choices: [{ name: 'ポチエナ', dex: 261, isAns: true }, { name: 'ブースター', dex: 136 }] },
+      { num: 5, kana: 'オタマロ', hira: 'おたまろ', shadowDex: 535, choices: [{ name: 'クルミル', dex: 540 }, { name: 'オタマロ', dex: 535, isAns: true }] }
+    ];
     box.innerHTML = `
-      <h2 style="font-size:20px;margin-bottom:8px">${mg.title}</h2>
-      <p style="font-size:14px;color:#475569;margin-bottom:16px">${mg.desc}</p>
-      <div style="display:flex;flex-direction:column;gap:14px">
-        ${mg.problems.map((p, pIdx) => `
-          <div style="display:flex;align-items:center;justify-content:space-between;background:#f8fafc;border:2px solid #e2e8f0;border-radius:14px;padding:10px 14px">
+      <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #e2e8f0;padding-bottom:8px;margin-bottom:12px">
+        <h2 style="font-size:20px;color:#1e293b;margin:0">🎮 ミニゲーム 1：この かげは だれかな？</h2>
+        <span style="background:#fef3c7;color:#b45309;padding:3px 10px;border-radius:12px;font-size:13px;font-weight:900">原本再現</span>
+      </div>
+      <p style="font-size:14px;color:#475569;margin-bottom:14px">
+        ①〜⑤の かげを みて、カタカナの なまえを よもう！ したの 2ひきから ただしい ポケモンを えらぼう！
+      </p>
+      <div style="display:flex;flex-direction:column;gap:12px;max-height:60vh;overflow-y:auto;padding-right:6px">
+        ${list.map(p => `
+          <div style="background:#f8fafc;border:2px solid #e2e8f0;border-radius:14px;padding:12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px" id="mg1_row_${p.num}">
             <div style="display:flex;align-items:center;gap:12px">
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.shadowDex}.png" style="width:50px;height:50px;object-fit:contain;filter:brightness(0)" alt="かげ">
-              <span style="font-size:16px;font-weight:900;color:#64748b">なまえ: ${p.kana}</span>
+              <span style="width:24px;height:24px;border-radius:50%;background:#3b82f6;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px">${p.num}</span>
+              <img id="mg1_img_${p.num}" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.shadowDex}.png" style="width:55px;height:55px;object-fit:contain;filter:brightness(0);transition:all 0.3s" alt="かげ">
+              <div style="display:flex;gap:4px">
+                ${p.kana.split('').map((k, ki) => `
+                  <div style="width:36px;height:36px;border:1.5px solid #94a3b8;border-radius:6px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#1e293b;position:relative">
+                    ${k}
+                    <span style="position:absolute;top:-10px;font-size:10px;color:#64748b;font-weight:700">${p.hira[ki] || ''}</span>
+                  </div>
+                `).join('')}
+              </div>
             </div>
-            <div style="display:flex;gap:6px">
-              ${p.choices.map(c => `
-                <button type="button" class="mbtn" style="font-size:13px;padding:6px 12px;background:#fff;border:1.5px solid #cbd5e1;color:#1e293b" onclick="checkMgChoice(this, '${c}', '${p.ans}')">${c}</button>
-              `).join('')}
-            </div>
-          </div>
-        `).join('')}
-      </div>
-      <div style="text-align:center;margin-top:20px">
-        <button type="button" class="mbtn" style="background:#22c55e;color:#fff;font-size:16px;padding:8px 24px" onclick="clearMinigame(${mg.id})">⭐ クリア！</button>
-      </div>
-    `;
-  }
-  // ミニゲーム2：めいろ
-  else if (mg.id === 2) {
-    box.innerHTML = `
-      <h2 style="font-size:20px;margin-bottom:8px">${mg.title}</h2>
-      <p style="font-size:14px;color:#475569;margin-bottom:16px">${mg.desc}</p>
-      <div style="display:flex;flex-direction:column;gap:12px">
-        ${mg.steps.map((s, si) => `
-          <div style="background:#f8fafc;border:2px solid #e2e8f0;border-radius:14px;padding:12px">
-            <div style="font-size:15px;font-weight:900;color:#2563eb;margin-bottom:8px">「${s.target}」が なまえに あるのは どっち？</div>
-            <div style="display:flex;gap:12px">
-              ${s.choices.map(c => `
-                <button type="button" class="mbtn" style="flex:1;background:#fff;border:2px solid #cbd5e1;padding:10px;font-weight:900" onclick="checkMgChoice(this, ${c.has}, true)">
-                  <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${c.dex}.png" style="width:40px;height:40px;object-fit:contain;display:block;margin:0 auto 4px">
+            <div style="display:flex;gap:8px">
+              ${p.choices.map((c) => `
+                <button type="button" class="mbtn" style="display:flex;align-items:center;gap:6px;padding:6px 12px;background:#fff;border:2px solid #cbd5e1;border-radius:10px;font-size:14px;font-weight:900;color:#334155" onclick="checkMg1Pick(${p.num}, ${!!c.isAns}, this)">
+                  <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${c.dex}.png" style="width:32px;height:32px;object-fit:contain">
                   ${c.name}
                 </button>
               `).join('')}
@@ -21312,43 +21626,370 @@ function openKokugoMinigame(mgId) {
           </div>
         `).join('')}
       </div>
-      <div style="text-align:center;margin-top:20px">
-        <button type="button" class="mbtn" style="background:#22c55e;color:#fff;font-size:16px;padding:8px 24px" onclick="clearMinigame(${mg.id})">🏆 ゴール！</button>
+      <div style="text-align:center;margin-top:16px">
+        <button type="button" class="mbtn" id="btnMgClear" style="background:#22c55e;color:#fff;font-size:16px;padding:10px 28px;font-weight:900" onclick="clearMinigame(1)">⭐ クリア！ (50 pt ゲット)</button>
       </div>
     `;
   }
-  // ミニゲーム3〜8
-  else {
+  // ミニゲーム2：もじが あるのは どっち？（めいろ）
+  else if (mg.id === 2) {
+    const steps = [
+      { target: 'カ', choices: [{ name: 'カメール', dex: 8, isAns: true }, { name: 'ジメレオン', dex: 817, isAns: false }] },
+      { target: 'ク', choices: [{ name: 'クラブ', dex: 98, isAns: true }, { name: 'パラス', dex: 46, isAns: false }] },
+      { target: 'キ', choices: [{ name: 'キマワリ', dex: 192, isAns: true }, { name: 'アマカジ', dex: 761, isAns: false }] },
+      { target: 'ケ', choices: [{ name: 'ケロマツ', dex: 656, isAns: true }, { name: 'アーボ', dex: 23, isAns: false }] },
+      { target: 'コ', choices: [{ name: 'コイル', dex: 81, isAns: true }, { name: 'ポッポ', dex: 16, isAns: false }] }
+    ];
     box.innerHTML = `
-      <h2 style="font-size:20px;margin-bottom:8px">${mg.title}</h2>
-      <p style="font-size:14px;color:#475569;margin-bottom:16px">${mg.desc}</p>
-      <div style="text-align:center;padding:20px;background:#f8fafc;border-radius:16px;border:2px solid #e2e8f0">
-        <div style="font-size:24px;font-weight:900;color:#1e293b;margin-bottom:12px">せいかいの もじを えらぼう！</div>
-        <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap">
-          ${(mg.choices || ['サ', 'ン', 'ド', 'シ', 'マ']).map(ch => `
-            <button type="button" class="mbtn" style="font-size:22px;width:56px;height:56px;border-radius:12px;background:#fff;border:2px solid #3b82f6;color:#1e40af;font-weight:900" onclick="checkMgChoice(this, '${ch}', '${mg.ans || 'ン'}')">${ch}</button>
+      <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #e2e8f0;padding-bottom:8px;margin-bottom:12px">
+        <h2 style="font-size:20px;color:#1e293b;margin:0">🎮 ミニゲーム 2：もじが あるのは どっち？</h2>
+        <span style="background:#fef3c7;color:#b45309;padding:3px 10px;border-radius:12px;font-size:13px;font-weight:900">原本再現</span>
+      </div>
+      <p style="font-size:14px;color:#475569;margin-bottom:14px">
+        スタートから ゴールまで、［ ］の もじが なまえに はいっている ポケモンを えらんで めいろを すすもう！
+      </p>
+      <div style="display:flex;flex-direction:column;gap:10px;max-height:60vh;overflow-y:auto;padding-right:6px">
+        ${steps.map((s, idx) => `
+          <div style="background:#f8fafc;border:2px solid #e2e8f0;border-radius:14px;padding:12px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap" id="mg2_step_${idx}">
+            <div style="display:flex;align-items:center;gap:10px">
+              <span style="background:#dbeafe;color:#1d4ed8;font-weight:900;padding:4px 10px;border-radius:8px;font-size:15px">みち ${idx + 1}</span>
+              <span style="font-size:16px;font-weight:900;color:#1e293b">「<span style="color:#2563eb;font-size:22px">${s.target}</span>」が あるのは？</span>
+            </div>
+            <div style="display:flex;gap:10px">
+              ${s.choices.map(c => `
+                <button type="button" class="mbtn" style="display:flex;flex-direction:column;align-items:center;padding:8px 14px;background:#fff;border:2px solid #cbd5e1;border-radius:12px;min-width:100px" onclick="checkMg2Step(${idx}, ${c.isAns}, this)">
+                  <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${c.dex}.png" style="width:44px;height:44px;object-fit:contain;margin-bottom:4px">
+                  <span style="font-size:13px;font-weight:900;color:#334155">${c.name}</span>
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        `).join('')}
+      </div>
+      <div style="text-align:center;margin-top:16px">
+        <button type="button" class="mbtn" id="btnMgClear" style="background:#22c55e;color:#fff;font-size:16px;padding:10px 28px;font-weight:900" onclick="clearMinigame(2)">🏆 ゴール！ (50 pt ゲット)</button>
+      </div>
+    `;
+  }
+  // ミニゲーム3：2かい なぞった じは どれ？
+  else if (mg.id === 3) {
+    const pokes = [
+      { name: 'サンド', dex: 27, chars: [{ c: 'サ', highlight: true }, { c: 'ン' }, { c: 'ド' }] },
+      { name: 'ニャース', dex: 52, chars: [{ c: 'ニ' }, { c: 'ヤ' }, { c: 'ー' }, { c: 'ス', highlight: true }] },
+      { name: 'フシギソウ', dex: 2, chars: [{ c: 'フ' }, { c: 'シ', highlight: true }, { c: 'ギ' }, { c: 'ソ' }, { c: 'ウ' }] },
+      { name: 'シママ', dex: 522, chars: [{ c: 'シ', highlight: true }, { c: 'マ' }, { c: 'マ' }] },
+      { name: 'トランセル', dex: 11, chars: [{ c: 'ト' }, { c: 'ラ' }, { c: 'ン' }, { c: 'セ', highlight: true }, { c: 'ル' }] }
+    ];
+    box.innerHTML = `
+      <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #e2e8f0;padding-bottom:8px;margin-bottom:12px">
+        <h2 style="font-size:20px;color:#1e293b;margin:0">🎮 ミニゲーム 3：2かい なぞった じは どれ？</h2>
+        <span style="background:#fef3c7;color:#b45309;padding:3px 10px;border-radius:12px;font-size:13px;font-weight:900">原本再現</span>
+      </div>
+      <p style="font-size:14px;color:#475569;margin-bottom:14px">
+        青いワクの文字を みてみよう！ なまえの なかで <b>2かい なぞった じ</b> は どれかな？
+      </p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(110px, 1fr));gap:10px;margin-bottom:16px">
+        ${pokes.map(p => `
+          <div style="background:#f8fafc;border:2px solid #e2e8f0;border-radius:14px;padding:8px;text-align:center">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.dex}.png" style="width:48px;height:48px;object-fit:contain;margin-bottom:4px">
+            <div style="font-size:11px;font-weight:900;color:#64748b;margin-bottom:4px">${p.name}</div>
+            <div style="display:flex;flex-direction:column;gap:3px;align-items:center">
+              ${p.chars.map(c => `
+                <div style="width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;${c.highlight ? 'border:2px solid #3b82f6;background:#dbeafe;color:#1e40af' : 'border:1px solid #cbd5e1;background:#fff;color:#475569'}">
+                  ${c.c}
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `).join('')}
+      </div>
+      <div style="background:#eff6ff;border:2px dashed #60a5fa;border-radius:16px;padding:14px;text-align:center">
+        <div style="font-size:15px;font-weight:900;color:#1e40af;margin-bottom:10px">2かい なぞった じを えらぼう！</div>
+        <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap">
+          ${['サ', 'シ', 'ス', 'セ'].map(ch => `
+            <button type="button" class="mbtn" style="width:54px;height:54px;font-size:24px;font-weight:900;border-radius:12px;background:#fff;border:2px solid #3b82f6;color:#1e40af" onclick="checkMgDirectChoice(this, '${ch}', 'シ', 'フシギソウ と シママ で 2かい でてきました！')">${ch}</button>
           `).join('')}
         </div>
+        <div id="mg3Result" style="margin-top:10px;font-size:14px;font-weight:900;color:#16a34a"></div>
       </div>
-      <div style="text-align:center;margin-top:20px">
-        <button type="button" class="mbtn" style="background:#22c55e;color:#fff;font-size:16px;padding:8px 24px" onclick="clearMinigame(${mg.id})">⭐ クリア！</button>
+      <div style="text-align:center;margin-top:16px">
+        <button type="button" class="mbtn" id="btnMgClear" style="background:#22c55e;color:#fff;font-size:16px;padding:10px 28px;font-weight:900" onclick="clearMinigame(3)">⭐ クリア！ (50 pt ゲット)</button>
+      </div>
+    `;
+  }
+  // ミニゲーム4：おなじ もじが あるのは どれ？
+  else if (mg.id === 4) {
+    const list = [
+      { target: 'タ', poke: 'スターミー', dex: 121, letters: 'ス・タ・ー・ミ・ー' },
+      { target: 'チ', poke: 'チラチーノ', dex: 573, letters: 'チ・ラ・チ・ー・ノ' },
+      { target: 'ツ', poke: 'ウツドン', dex: 70, letters: 'ウ・ツ・ド・ン' },
+      { target: 'テ', poke: 'キテルグマ', dex: 760, letters: 'キ・テ・ル・グ・マ' },
+      { target: 'ト', poke: 'エンペルト', dex: 395, letters: 'エ・ン・ペ・ル・ト' },
+      { target: 'なし', poke: 'エビワラー', dex: 107, letters: 'エ・ビ・ワ・ラ・ー', isOddOne: true }
+    ];
+    box.innerHTML = `
+      <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #e2e8f0;padding-bottom:8px;margin-bottom:12px">
+        <h2 style="font-size:20px;color:#1e293b;margin:0">🎮 ミニゲーム 4：おなじ もじが あるのは どれ？</h2>
+        <span style="background:#fef3c7;color:#b45309;padding:3px 10px;border-radius:12px;font-size:13px;font-weight:900">原本再現</span>
+      </div>
+      <p style="font-size:14px;color:#475569;margin-bottom:12px">
+        タ・チ・ツ・テ・ト と つながらなかった、<b>ひとつだけ なかまはずれの ポケモン</b> は だれかな？
+      </p>
+      <div style="display:flex;justify-content:center;gap:10px;margin-bottom:12px;background:#f1f5f9;padding:8px;border-radius:10px">
+        <span style="font-size:14px;font-weight:900;color:#64748b">探す文字：</span>
+        ${['タ', 'チ', 'ツ', 'テ', 'ト'].map(t => `<span style="background:#3b82f6;color:#fff;font-weight:900;padding:2px 8px;border-radius:6px;font-size:15px">${t}</span>`).join('')}
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));gap:10px;margin-bottom:16px">
+        ${list.map(p => `
+          <button type="button" class="mbtn" style="background:#fff;border:2px solid #cbd5e1;border-radius:14px;padding:10px;text-align:center" onclick="checkMg4Odd(this, ${!!p.isOddOne}, '${p.poke}')">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.dex}.png" style="width:48px;height:48px;object-fit:contain;margin-bottom:4px">
+            <div style="font-size:14px;font-weight:900;color:#1e293b">${p.poke}</div>
+            <div style="font-size:11px;color:#64748b">${p.letters}</div>
+          </button>
+        `).join('')}
+      </div>
+      <div id="mg4Result" style="text-align:center;font-size:14px;font-weight:900;color:#16a34a;margin-bottom:12px"></div>
+      <div style="text-align:center">
+        <button type="button" class="mbtn" id="btnMgClear" style="background:#22c55e;color:#fff;font-size:16px;padding:10px 28px;font-weight:900" onclick="clearMinigame(4)">⭐ クリア！ (50 pt ゲット)</button>
+      </div>
+    `;
+  }
+  // ミニゲーム5：いちばん おおい もじは どれ？
+  else if (mg.id === 5) {
+    const list = [
+      { name: 'ジュナイパー', dex: 724, mark: 'ジ・ュ・<b>ナ</b>・イ・パ・ー' },
+      { name: 'テールナー', dex: 654, mark: 'テ・ー・ル・<b>ナ</b>・ー' },
+      { name: 'デデンネ', dex: 702, mark: 'デ・デ・ン・<b>ネ</b>' },
+      { name: 'ヌメラ', dex: 704, mark: '<b>ヌ</b>・メ・ラ' },
+      { name: 'ニャローテ', dex: 907, mark: '<b>ニ</b>・ャ・ロ・ー・テ' },
+      { name: 'ノズパス', dex: 299, mark: '<b>ノ</b>・ズ・パ・ス' }
+    ];
+    box.innerHTML = `
+      <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #e2e8f0;padding-bottom:8px;margin-bottom:12px">
+        <h2 style="font-size:20px;color:#1e293b;margin:0">🎮 ミニゲーム 5：いちばん おおい もじは どれ？</h2>
+        <span style="background:#fef3c7;color:#b45309;padding:3px 10px;border-radius:12px;font-size:13px;font-weight:900">原本再現</span>
+      </div>
+      <p style="font-size:14px;color:#475569;margin-bottom:12px">
+        「ナ・ニ・ヌ・ネ・ノ」の なかで、<b>いちばん おおく でてくる じ</b> は どれかな？
+      </p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));gap:8px;margin-bottom:16px">
+        ${list.map(p => `
+          <div style="background:#f8fafc;border:2px solid #e2e8f0;border-radius:12px;padding:8px;text-align:center">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.dex}.png" style="width:42px;height:42px;object-fit:contain;margin-bottom:4px">
+            <div style="font-size:13px;font-weight:900;color:#1e293b">${p.name}</div>
+            <div style="font-size:11px;color:#334155">${p.mark}</div>
+          </div>
+        `).join('')}
+      </div>
+      <div style="background:#eff6ff;border:2px dashed #60a5fa;border-radius:16px;padding:14px;text-align:center">
+        <div style="font-size:15px;font-weight:900;color:#1e40af;margin-bottom:10px">いちばん おおい じを えらぼう！</div>
+        <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap">
+          ${['ナ', 'ニ', 'ヌ', 'ネ', 'ノ'].map(ch => `
+            <button type="button" class="mbtn" style="width:52px;height:52px;font-size:22px;font-weight:900;border-radius:12px;background:#fff;border:2px solid #3b82f6;color:#1e40af" onclick="checkMgDirectChoice(this, '${ch}', 'ナ', '「ナ」が ジュナイパー と テールナー で 2かい でてきて いちばん おおい！')">${ch}</button>
+          `).join('')}
+        </div>
+        <div id="mg5Result" style="margin-top:10px;font-size:14px;font-weight:900;color:#16a34a"></div>
+      </div>
+      <div style="text-align:center;margin-top:16px">
+        <button type="button" class="mbtn" id="btnMgClear" style="background:#22c55e;color:#fff;font-size:16px;padding:10px 28px;font-weight:900" onclick="clearMinigame(5)">⭐ クリア！ (50 pt ゲット)</button>
+      </div>
+    `;
+  }
+  // ミニゲーム6：ただしい みちは どれ？
+  else if (mg.id === 6) {
+    const list = [
+      { name: 'ハリマロン', dex: 650, char: 'ハ', hasRow: true },
+      { name: 'ニャヒート', dex: 726, char: 'ヒ', hasRow: true },
+      { name: 'ニンフィア', dex: 700, char: 'フ', hasRow: true },
+      { name: 'ヘラクロス', dex: 214, char: 'ヘ', hasRow: true },
+      { name: 'サイホーン', dex: 111, char: 'ホ', hasRow: true },
+      { name: 'トゲデマル', dex: 777, char: 'なし', hasRow: false }
+    ];
+    box.innerHTML = `
+      <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #e2e8f0;padding-bottom:8px;margin-bottom:12px">
+        <h2 style="font-size:20px;color:#1e293b;margin:0">🎮 ミニゲーム 6：ただしい みちは どれ？</h2>
+        <span style="background:#fef3c7;color:#b45309;padding:3px 10px;border-radius:12px;font-size:13px;font-weight:900">原本再現</span>
+      </div>
+      <p style="font-size:14px;color:#475569;margin-bottom:12px">
+        なまえに<b>「ハ・ヒ・フ・ヘ・ホ」</b>が はいっている ポケモンの みちを タップして、ゴールを ひらこう！（5ひき）
+      </p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));gap:10px;margin-bottom:16px">
+        ${list.map(p => `
+          <button type="button" class="mbtn mg6-card" data-has="${p.hasRow}" style="background:#fff;border:2px solid #cbd5e1;border-radius:14px;padding:10px;text-align:center" onclick="toggleMg6Card(this, ${p.hasRow}, '${p.name}')">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.dex}.png" style="width:48px;height:48px;object-fit:contain;margin-bottom:4px">
+            <div style="font-size:14px;font-weight:900;color:#1e293b">${p.name}</div>
+            <div style="font-size:12px;color:#2563eb;font-weight:900">もじ: 「${p.char}」</div>
+          </button>
+        `).join('')}
+      </div>
+      <div id="mg6Result" style="text-align:center;font-size:14px;font-weight:900;color:#16a34a;margin-bottom:12px"></div>
+      <div style="text-align:center">
+        <button type="button" class="mbtn" id="btnMgClear" style="background:#22c55e;color:#fff;font-size:16px;padding:10px 28px;font-weight:900" onclick="clearMinigame(6)">🏆 ゴール！ (50 pt ゲット)</button>
+      </div>
+    `;
+  }
+  // ミニゲーム7：かこんだ もじを かけるかな？
+  else if (mg.id === 7) {
+    const list = [
+      { name: 'マダツボミ', dex: 69, count: 'マ, ミ' },
+      { name: 'マグマッグ', dex: 218, count: 'マ, マ (2かい)' },
+      { name: 'モトトカゲ', dex: 967, count: 'モ' },
+      { name: 'ミミッキュ', dex: 778, count: 'ミ, ミ (2かい)' },
+      { name: 'メタモン', dex: 132, count: 'メ, モ' },
+      { name: 'ムウマ', dex: 200, count: 'ム, マ' }
+    ];
+    box.innerHTML = `
+      <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #e2e8f0;padding-bottom:8px;margin-bottom:12px">
+        <h2 style="font-size:20px;color:#1e293b;margin:0">🎮 ミニゲーム 7：かこんだ もじを かけるかな？</h2>
+        <span style="background:#fef3c7;color:#b45309;padding:3px 10px;border-radius:12px;font-size:13px;font-weight:900">原本再現</span>
+      </div>
+      <p style="font-size:14px;color:#475569;margin-bottom:12px">
+        「マ・ミ・ム・メ・モ」を かぞえよう！ <b>いちばん おおかった じ</b> は どれかな？
+      </p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));gap:8px;margin-bottom:16px">
+        ${list.map(p => `
+          <div style="background:#f8fafc;border:2px solid #e2e8f0;border-radius:12px;padding:8px;text-align:center">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.dex}.png" style="width:42px;height:42px;object-fit:contain;margin-bottom:4px">
+            <div style="font-size:13px;font-weight:900;color:#1e293b">${p.name}</div>
+            <div style="font-size:11px;color:#334155">${p.count}</div>
+          </div>
+        `).join('')}
+      </div>
+      <div style="background:#eff6ff;border:2px dashed #60a5fa;border-radius:16px;padding:14px;text-align:center">
+        <div style="font-size:15px;font-weight:900;color:#1e40af;margin-bottom:10px">いちばん おおかった じを えらぼう！（マは4かい！）</div>
+        <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap">
+          ${['マ', 'ミ', 'ム', 'メ', 'モ'].map(ch => `
+            <button type="button" class="mbtn" style="width:52px;height:52px;font-size:22px;font-weight:900;border-radius:12px;background:#fff;border:2px solid #3b82f6;color:#1e40af" onclick="checkMgDirectChoice(this, '${ch}', 'マ', '「マ」が 4かい で いちばん おおい！')">${ch}</button>
+          `).join('')}
+        </div>
+        <div id="mg7Result" style="margin-top:10px;font-size:14px;font-weight:900;color:#16a34a"></div>
+      </div>
+      <div style="text-align:center;margin-top:16px">
+        <button type="button" class="mbtn" id="btnMgClear" style="background:#22c55e;color:#fff;font-size:16px;padding:10px 28px;font-weight:900" onclick="clearMinigame(7)">⭐ クリア！ (50 pt ゲット)</button>
+      </div>
+    `;
+  }
+  // ミニゲーム8：おなじ もじは どこかな？
+  else if (mg.id === 8) {
+    const pairs = [
+      { top: 'ロコン', topDex: 37, bot: 'トロッゴン', botDex: 838, kana: 'ロ' },
+      { top: 'レディバ', topDex: 165, bot: 'ボクレー', botDex: 708, kana: 'レ' },
+      { top: 'ラビフット', topDex: 814, bot: 'コドラ', botDex: 305, kana: 'ラ' },
+      { top: 'ルガルガン', topDex: 745, bot: 'ギアル', botDex: 599, kana: 'ル' },
+      { top: 'リキキリン', topDex: 981, bot: 'リーフィア', botDex: 470, kana: 'リ' }
+    ];
+    box.innerHTML = `
+      <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #e2e8f0;padding-bottom:8px;margin-bottom:12px">
+        <h2 style="font-size:20px;color:#1e293b;margin:0">🎮 ミニゲーム 8：おなじ もじは どこかな？</h2>
+        <span style="background:#fef3c7;color:#b45309;padding:3px 10px;border-radius:12px;font-size:13px;font-weight:900">原本再現</span>
+      </div>
+      <p style="font-size:14px;color:#475569;margin-bottom:12px">
+        うえの ポケモンと <b>おなじ カタカナ（ラ・リ・ル・レ・ロ）</b>が ある ポケモンを せんで つなごう！
+      </p>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
+        ${pairs.map(p => `
+          <div style="background:#f8fafc;border:2px solid #e2e8f0;border-radius:12px;padding:10px;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">
+            <div style="display:flex;align-items:center;gap:8px">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.topDex}.png" style="width:40px;height:40px;object-fit:contain">
+              <span style="font-size:14px;font-weight:900;color:#1e293b">${p.top}</span>
+            </div>
+            <div style="background:#dbeafe;color:#1e40af;font-weight:900;padding:4px 10px;border-radius:8px;font-size:15px">「${p.kana}」</div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="font-size:14px;font-weight:900;color:#1e293b">${p.bot}</span>
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.botDex}.png" style="width:40px;height:40px;object-fit:contain">
+            </div>
+          </div>
+        `).join('')}
+      </div>
+      <div style="text-align:center">
+        <button type="button" class="mbtn" id="btnMgClear" style="background:#22c55e;color:#fff;font-size:16px;padding:10px 28px;font-weight:900" onclick="clearMinigame(8)">⭐ クリア！ (50 pt ゲット)</button>
       </div>
     `;
   }
 }
 
-function checkMgChoice(btn, val, expected) {
+function checkMg1Pick(num, isAns, btn) {
+  if (isAns) {
+    playPikaanSound();
+    btn.style.borderColor = '#22c55e';
+    btn.style.background = '#dcfce7';
+    btn.style.color = '#15803d';
+    const img = $(`mg1_img_${num}`);
+    if (img) img.style.filter = 'none';
+    toast('⭕ せいかい！', 1200);
+  } else {
+    playMarimbaPop(0.7);
+    btn.style.borderColor = '#f87171';
+    btn.style.background = '#fef2f2';
+    toast('ちがうよ！ もういちど えらんでみよう', 1200);
+  }
+}
+
+function checkMg2Step(idx, isAns, btn) {
+  if (isAns) {
+    playPikaanSound();
+    btn.style.borderColor = '#22c55e';
+    btn.style.background = '#dcfce7';
+    btn.style.color = '#15803d';
+    const row = $(`mg2_step_${idx}`);
+    if (row) row.style.borderColor = '#22c55e';
+    toast('⭕ せいかい！ つぎへ すすもう！', 1200);
+  } else {
+    playMarimbaPop(0.7);
+    btn.style.borderColor = '#f87171';
+    btn.style.background = '#fef2f2';
+    toast('行き止まり！ もう片方をえらんでね', 1200);
+  }
+}
+
+function checkMgDirectChoice(btn, val, expected, desc) {
   if (val === expected) {
     playPikaanSound();
     btn.style.borderColor = '#22c55e';
     btn.style.background = '#dcfce7';
     btn.style.color = '#15803d';
-    toast('⭕ せいかい！', 1500);
+    toast('💮 たいへんよくできました！ ' + (desc || ''), 2000);
   } else {
     playMarimbaPop(0.7);
     btn.style.borderColor = '#f87171';
     btn.style.background = '#fef2f2';
     toast('もういちど かんがえてみよう！', 1500);
+  }
+}
+
+function checkMg4Odd(btn, isOdd, poke) {
+  if (isOdd) {
+    playPikaanSound();
+    btn.style.borderColor = '#22c55e';
+    btn.style.background = '#dcfce7';
+    const res = $('mg4Result');
+    if (res) res.textContent = `💮 大正解！「${poke}」には タ・チ・ツ・テ・ト が はいっていません！`;
+    toast('⭕ せいかい！', 1500);
+  } else {
+    playMarimbaPop(0.7);
+    btn.style.borderColor = '#f87171';
+    btn.style.background = '#fef2f2';
+    toast(`「${poke}」には タ・チ・ツ・テ・ト の 文字があります！`, 1500);
+  }
+}
+
+let mg6Selected = new Set();
+function toggleMg6Card(btn, hasRow, name) {
+  if (!hasRow) {
+    playMarimbaPop(0.7);
+    btn.style.borderColor = '#f87171';
+    btn.style.background = '#fef2f2';
+    toast(`「${name}」には ハ行の文字がありません！`, 1500);
+    return;
+  }
+  playPikaanSound();
+  btn.style.borderColor = '#22c55e';
+  btn.style.background = '#dcfce7';
+  mg6Selected.add(name);
+  if (mg6Selected.size >= 5) {
+    const res = $('mg6Result');
+    if (res) res.textContent = '🏆 ぜんぶの みちが ひらいた！ ゴール！';
+    toast('🏆 ゴール！', 2000);
   }
 }
 

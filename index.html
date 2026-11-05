@@ -22102,6 +22102,19 @@ function renderKokugoWorkArea(r, idx, isCleared) {
     return;
   }
 
+  if (r.battle === 52) {
+    renderBattle52WorkArea(r, idx, isCleared, col);
+    return;
+  }
+  if (r.battle === 53) {
+    renderBattle53WorkArea(r, idx, isCleared, col);
+    return;
+  }
+  if (r.battle === 54) {
+    renderBattle54WorkArea(r, idx, isCleared, col);
+    return;
+  }
+
   // 通常・特別バトル
   // 問題1: ひらがな書き練習
   const c1 = document.createElement('div');
@@ -22356,6 +22369,869 @@ function renderStripCells(items, isCleared) {
 
   return html;
 }
+
+
+
+/* ===== バトル52（ピカチュウ）：ちいさい「ゃ・ゅ・ょ・っ」「ヤ・ユ・ヨ・ッ」（縦書き：右上） ===== */
+let b52Canvases = { g1: [], g2: [], g3: [] };
+
+function renderBattle52WorkArea(r, idx, isCleared, col) {
+  b52Canvases = {
+    g1: ['B52_Hira_xya', 'B52_Hira_xyu', 'B52_Hira_xyo', 'B52_Hira_xtsu'],
+    g2: ['B52_Kata_xya', 'B52_Kata_xyu', 'B52_Kata_xyo', 'B52_Kata_xtsu'],
+    g3: ['B52_Pika_Hira_Xyu', 'B52_Pika_Kata_Xyu']
+  };
+
+  // 全体ヘッダー
+  const headerCard = document.createElement('div');
+  headerCard.className = 'k-card';
+  headerCard.innerHTML = `
+    <div class="k-card-title-row">
+      <h3 class="k-card-title">
+        <span class="k-card-step-badge">52</span>
+        <span>ちいさい「ゃ・ゅ・ょ・っ」「ヤ・ユ・ヨ・ッ」</span>
+      </h3>
+      <span style="background:#fef3c7;color:#b45309;padding:4px 12px;border-radius:12px;font-size:13px;font-weight:900">ドリル原本完全再現</span>
+    </div>
+    <p style="font-size:15px;color:#475569;margin-bottom:6px;font-weight:700">ピカチュウを つかまえよう！ たてがきの ちいさい もじは <b>みぎうえ</b> に かくよ！</p>
+  `;
+  col.appendChild(headerCard);
+
+  // 大問1：ひらがな「ゃ・ゅ・ょ・っ」
+  const c1 = document.createElement('div');
+  c1.className = `k-card ${isCleared ? 'word-cleared' : ''}`;
+  c1.id = 'b52_card_1';
+  c1.innerHTML = `
+    <div class="k-card-title-row">
+      <h3 class="k-card-title">
+        <span class="k-card-step-badge">1</span>
+        <span>ちいさい「ゃ・ゅ・ょ・っ」は <b>みぎうえ</b> に かきます。□の もじを なぞりましょう。</span>
+      </h3>
+    </div>
+    <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin:16px 0">
+      ${[
+        { id: 'B52_Hira_xya', char: 'ゃ', sample: 'しゃしん' },
+        { id: 'B52_Hira_xyu', char: 'ゅ', sample: 'ききゅう' },
+        { id: 'B52_Hira_xyo', char: 'ょ', sample: 'べんきょう' },
+        { id: 'B52_Hira_xtsu', char: 'っ', sample: 'きって' }
+      ].map(item => `
+        <div style="display:flex;flex-direction:column;align-items:center;background:#f8fafc;border:2.5px solid #cbd5e1;border-radius:18px;padding:12px 10px;box-shadow:0 3px 10px rgba(0,0,0,0.04)">
+          <div class="k-canvas-wrap" id="kWrap${item.id}" style="width:130px;height:130px;border:3px solid #3b82f6;border-radius:14px;background:#fff;position:relative">
+            <div class="k-canvas-grid"></div>
+            <!-- 右上エリアのガイド文字 -->
+            <div class="k-canvas-guide-glyph" id="kGuide${item.id}" style="position:absolute;top:6px;right:8px;font-size:52px;opacity:0.25;color:#1e293b;pointer-events:none;font-weight:900">${item.char}</div>
+            <canvas class="k-canvas-elem" id="kCanvas${item.id}" width="260" height="260" style="width:100%;height:100%"></canvas>
+            <div class="k-canvas-slot-tag" style="position:absolute;bottom:2px;left:0;right:0;text-align:center;font-size:11px;font-weight:900;color:#2563eb;pointer-events:none">［みぎうえに ${item.char}］</div>
+            <button type="button" class="k-strip-clear-btn" onclick="clearKanaCanvas('${item.id}')" title="けす">✕</button>
+            <div class="k-strip-eval-badge ${isCleared ? 'show' : ''}" id="kEval${item.id}">${isCleared ? '💮 100' : ''}</div>
+          </div>
+          <div style="margin-top:8px;font-size:13px;font-weight:900;color:#334155;background:#e2e8f0;padding:2px 8px;border-radius:6px">例: ${item.sample}</div>
+        </div>
+      `).join('')}
+    </div>
+    <!-- ツールバー -->
+    <div class="k-rev-toolbar">
+      <div class="k-tools-row" style="margin:0;gap:6px">
+        <button type="button" class="k-tool-btn active" id="btnPen_b52_1" onclick="setB52GroupTool(1, 'pen')">✏️ えんぴつ</button>
+        <button type="button" class="k-tool-btn" id="btnEraser_b52_1" onclick="setB52GroupTool(1, 'eraser')">🧽 けしゴム</button>
+        <button type="button" class="k-tool-btn" onclick="clearB52Group(1)">🔄 ぜんぶけす</button>
+        <button type="button" class="k-tool-btn" onclick="autoTraceB52Group(1)" style="color:#2563eb">💡 おたすけ</button>
+      </div>
+      <button type="button" class="k-tool-btn k-judge-btn" onclick="judgeB52Group(1)" style="padding:8px 20px">💮 はんてい！</button>
+    </div>
+  `;
+  col.appendChild(c1);
+
+  // 大問2：カタカナ「ヤ・ユ・ヨ・ッ」
+  const c2 = document.createElement('div');
+  c2.className = `k-card ${isCleared ? 'word-cleared' : ''}`;
+  c2.id = 'b52_card_2';
+  c2.style.marginTop = '20px';
+  c2.innerHTML = `
+    <div class="k-card-title-row">
+      <h3 class="k-card-title">
+        <span class="k-card-step-badge">2</span>
+        <span>ちいさい「ヤ・ユ・ヨ・ッ」は <b>みぎうえ</b> に かきます。□の もじを なぞりましょう。</span>
+      </h3>
+    </div>
+    <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin:16px 0">
+      ${[
+        { id: 'B52_Kata_xya', char: 'ヤ', sample: 'シャツ' },
+        { id: 'B52_Kata_xyu', char: 'ユ', sample: 'ジュース' },
+        { id: 'B52_Kata_xyo', char: 'ヨ', sample: 'ジョギング' },
+        { id: 'B52_Kata_xtsu', char: 'ッ', sample: 'クッキー' }
+      ].map(item => `
+        <div style="display:flex;flex-direction:column;align-items:center;background:#f8fafc;border:2.5px solid #cbd5e1;border-radius:18px;padding:12px 10px;box-shadow:0 3px 10px rgba(0,0,0,0.04)">
+          <div class="k-canvas-wrap" id="kWrap${item.id}" style="width:130px;height:130px;border:3px solid #3b82f6;border-radius:14px;background:#fff;position:relative">
+            <div class="k-canvas-grid"></div>
+            <!-- 右上エリアのガイド文字 -->
+            <div class="k-canvas-guide-glyph" id="kGuide${item.id}" style="position:absolute;top:6px;right:8px;font-size:52px;opacity:0.25;color:#1e293b;pointer-events:none;font-weight:900">${item.char}</div>
+            <canvas class="k-canvas-elem" id="kCanvas${item.id}" width="260" height="260" style="width:100%;height:100%"></canvas>
+            <div class="k-canvas-slot-tag" style="position:absolute;bottom:2px;left:0;right:0;text-align:center;font-size:11px;font-weight:900;color:#2563eb;pointer-events:none">［みぎうえに ${item.char}］</div>
+            <button type="button" class="k-strip-clear-btn" onclick="clearKanaCanvas('${item.id}')" title="けす">✕</button>
+            <div class="k-strip-eval-badge ${isCleared ? 'show' : ''}" id="kEval${item.id}">${isCleared ? '💮 100' : ''}</div>
+          </div>
+          <div style="margin-top:8px;font-size:13px;font-weight:900;color:#334155;background:#e2e8f0;padding:2px 8px;border-radius:6px">例: ${item.sample}</div>
+        </div>
+      `).join('')}
+    </div>
+    <!-- ツールバー -->
+    <div class="k-rev-toolbar">
+      <div class="k-tools-row" style="margin:0;gap:6px">
+        <button type="button" class="k-tool-btn active" id="btnPen_b52_2" onclick="setB52GroupTool(2, 'pen')">✏️ えんぴつ</button>
+        <button type="button" class="k-tool-btn" id="btnEraser_b52_2" onclick="setB52GroupTool(2, 'eraser')">🧽 けしゴム</button>
+        <button type="button" class="k-tool-btn" onclick="clearB52Group(2)">🔄 ぜんぶけす</button>
+        <button type="button" class="k-tool-btn" onclick="autoTraceB52Group(2)" style="color:#2563eb">💡 おたすけ</button>
+      </div>
+      <button type="button" class="k-tool-btn k-judge-btn" onclick="judgeB52Group(2)" style="padding:8px 20px">💮 はんてい！</button>
+    </div>
+  `;
+  col.appendChild(c2);
+
+  // 大問3：ピカチュウの名前完成
+  const c3 = document.createElement('div');
+  c3.className = `k-card ${isCleared ? 'word-cleared' : ''}`;
+  c3.id = 'b52_card_3';
+  c3.style.marginTop = '20px';
+  c3.innerHTML = `
+    <div class="k-card-title-row">
+      <h3 class="k-card-title">
+        <span class="k-card-step-badge">3</span>
+        <span>1 と 2 で かいた「ゅ・ユ」を □に かいて、ポケモンの なまえに しましょう！</span>
+      </h3>
+    </div>
+    <div style="display:flex;justify-content:center;align-items:center;gap:32px;flex-wrap:wrap;margin:16px 0">
+      <!-- ひらがな短冊「ぴ・か・ち・[ゅ]・う」 -->
+      <div class="k-rev-strip-unit">
+        <div style="font-size:14px;font-weight:900;color:#2563eb;margin-bottom:6px">① ひらがな</div>
+        <div class="k-authentic-strip">
+          <div class="k-strip-cell-fixed"><span>ぴ</span></div>
+          <div class="k-strip-cell-fixed"><span>か</span></div>
+          <div class="k-strip-cell-fixed"><span>ち</span></div>
+          <div class="k-strip-cell-write ${isCleared ? 'cleared' : ''}" id="kRevBox_B52_Pika_Hira_Xyu">
+            <div class="k-canvas-grid"></div>
+            <div class="k-canvas-guide-glyph" id="kGuideB52_Pika_Hira_Xyu" style="position:absolute;top:6px;right:8px;font-size:52px;opacity:0.25;color:#1e293b;pointer-events:none;font-weight:900">ゅ</div>
+            <canvas class="k-canvas-elem" id="kCanvasB52_Pika_Hira_Xyu" width="260" height="260" style="width:100%;height:100%"></canvas>
+            <div class="k-canvas-slot-tag" style="position:absolute;bottom:2px;left:0;right:0;text-align:center;font-size:11px;font-weight:900;color:#2563eb;pointer-events:none">［ゅ］</div>
+            <button type="button" class="k-strip-clear-btn" onclick="clearKanaCanvas('B52_Pika_Hira_Xyu')">✕</button>
+            <div class="k-strip-eval-badge ${isCleared ? 'show' : ''}" id="kEvalB52_Pika_Hira_Xyu">${isCleared ? '💮 100' : ''}</div>
+          </div>
+          <div class="k-strip-cell-fixed"><span>う</span></div>
+        </div>
+      </div>
+
+      <!-- カタカナ短冊「ピ・カ・チ・[ュ]・ウ」 -->
+      <div class="k-rev-strip-unit">
+        <div style="font-size:14px;font-weight:900;color:#2563eb;margin-bottom:6px">② カタカナ</div>
+        <div class="k-authentic-strip">
+          <div class="k-strip-cell-fixed"><span>ピ</span></div>
+          <div class="k-strip-cell-fixed"><span>カ</span></div>
+          <div class="k-strip-cell-fixed"><span>チ</span></div>
+          <div class="k-strip-cell-write ${isCleared ? 'cleared' : ''}" id="kRevBox_B52_Pika_Kata_Xyu">
+            <div class="k-canvas-grid"></div>
+            <div class="k-canvas-guide-glyph" id="kGuideB52_Pika_Kata_Xyu" style="position:absolute;top:6px;right:8px;font-size:52px;opacity:0.25;color:#1e293b;pointer-events:none;font-weight:900">ュ</div>
+            <canvas class="k-canvas-elem" id="kCanvasB52_Pika_Kata_Xyu" width="260" height="260" style="width:100%;height:100%"></canvas>
+            <div class="k-canvas-slot-tag" style="position:absolute;bottom:2px;left:0;right:0;text-align:center;font-size:11px;font-weight:900;color:#2563eb;pointer-events:none">［ュ］</div>
+            <button type="button" class="k-strip-clear-btn" onclick="clearKanaCanvas('B52_Pika_Kata_Xyu')">✕</button>
+            <div class="k-strip-eval-badge ${isCleared ? 'show' : ''}" id="kEvalB52_Pika_Kata_Xyu">${isCleared ? '💮 100' : ''}</div>
+          </div>
+          <div class="k-strip-cell-fixed"><span>ウ</span></div>
+        </div>
+      </div>
+
+      <!-- ピカチュウの公式イラストとスペック -->
+      <div style="display:flex;flex-direction:column;align-items:center;background:#fffbeb;border:2.5px solid #fde047;border-radius:22px;padding:16px 20px;box-shadow:0 4px 14px rgba(250,204,21,0.15);max-width:260px">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png" alt="ピカチュウ" style="height:120px;object-fit:contain;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.12))">
+        <div style="font-size:18px;font-weight:900;color:#854d0e;margin:8px 0 2px">🌟 ピカチュウ</div>
+        <div style="font-size:12px;font-weight:700;color:#a16207;line-height:1.4;text-align:center">
+          ねずみポケモン<br>
+          タイプ: でんき<br>
+          たかさ: 0.4m / おもさ: 6.0kg
+        </div>
+      </div>
+    </div>
+
+    <!-- ツールバー -->
+    <div class="k-rev-toolbar">
+      <div class="k-tools-row" style="margin:0;gap:6px">
+        <button type="button" class="k-tool-btn active" id="btnPen_b52_3" onclick="setB52GroupTool(3, 'pen')">✏️ えんぴつ</button>
+        <button type="button" class="k-tool-btn" id="btnEraser_b52_3" onclick="setB52GroupTool(3, 'eraser')">🧽 けしゴム</button>
+        <button type="button" class="k-tool-btn" onclick="clearB52Group(3)">🔄 ぜんぶけす</button>
+        <button type="button" class="k-tool-btn" onclick="autoTraceB52Group(3)" style="color:#2563eb">💡 おたすけ</button>
+      </div>
+      <button type="button" class="k-tool-btn k-judge-btn" onclick="judgeB52Group(3)" style="padding:8px 20px">💮 はんてい！</button>
+    </div>
+  `;
+  col.appendChild(c3);
+
+  setTimeout(() => {
+    const list = [
+      { id: 'B52_Hira_xya', char: 'ゃ' },
+      { id: 'B52_Hira_xyu', char: 'ゅ' },
+      { id: 'B52_Hira_xyo', char: 'ょ' },
+      { id: 'B52_Hira_xtsu', char: 'っ' },
+      { id: 'B52_Kata_xya', char: 'ヤ' },
+      { id: 'B52_Kata_xyu', char: 'ユ' },
+      { id: 'B52_Kata_xyo', char: 'ヨ' },
+      { id: 'B52_Kata_xtsu', char: 'ッ' },
+      { id: 'B52_Pika_Hira_Xyu', char: 'ゅ' },
+      { id: 'B52_Pika_Kata_Xyu', char: 'ュ' }
+    ];
+    list.forEach(item => {
+      initKanaCanvas(item.id, item.char, 2);
+      if (isCleared) {
+        autoDrawKanaText(item.id, item.char);
+      }
+    });
+  }, 50);
+}
+
+function setB52GroupTool(grp, tool) {
+  const ids = b52Canvases['g' + grp] || [];
+  ids.forEach(id => setCanvasTool(id, tool));
+  const pBtn = $(`btnPen_b52_${grp}`);
+  const eBtn = $(`btnEraser_b52_${grp}`);
+  if (pBtn && eBtn) {
+    pBtn.classList.toggle('active', tool === 'pen');
+    eBtn.classList.toggle('active', tool === 'eraser');
+  }
+}
+
+function clearB52Group(grp) {
+  const ids = b52Canvases['g' + grp] || [];
+  ids.forEach(id => {
+    clearKanaCanvas(id);
+    const b = $(`kEval${id}`);
+    if (b) { b.textContent = ''; b.classList.remove('show'); }
+  });
+}
+
+function autoTraceB52Group(grp) {
+  if (typeof playPikaanSound === 'function') playPikaanSound();
+  const ids = b52Canvases['g' + grp] || [];
+  ids.forEach(id => {
+    autoTraceCanvas(id);
+    const b = $(`kEval${id}`);
+    if (b) { b.textContent = '💮 100'; b.classList.add('show'); }
+  });
+  checkB52Pass();
+}
+
+function judgeB52Group(grp) {
+  const charMap = {
+    B52_Hira_xya: 'ゃ', B52_Hira_xyu: 'ゅ', B52_Hira_xyo: 'ょ', B52_Hira_xtsu: 'っ',
+    B52_Kata_xya: 'ヤ', B52_Kata_xyu: 'ユ', B52_Kata_xyo: 'ヨ', B52_Kata_xtsu: 'ッ',
+    B52_Pika_Hira_Xyu: 'ゅ', B52_Pika_Kata_Xyu: 'ュ'
+  };
+  const ids = b52Canvases['g' + grp] || [];
+  let allPass = true;
+  ids.forEach(id => {
+    const res = evaluateHandwritingEngine(id, charMap[id]);
+    const b = $(`kEval${id}`);
+    if (res && res.score >= 50) {
+      if (b) { b.textContent = `💮 ${res.score}`; b.classList.add('show'); }
+    } else {
+      allPass = false;
+      if (b) { b.textContent = res ? `${res.score}てん` : '0てん'; b.classList.add('show'); }
+    }
+  });
+
+  const card = $(`b52_card_${grp}`);
+  if (allPass) {
+    if (typeof playPikaanSound === 'function') playPikaanSound();
+    toast('💮 たいへん よくできました！', 2000);
+    if (card) card.classList.add('word-cleared');
+    checkB52Pass();
+  } else {
+    if (typeof playMarimbaPop === 'function') playMarimbaPop(0.7);
+    toast('もうすこし！ お手本を みて かいてみよう！', 2000);
+  }
+}
+
+function checkB52Pass() {
+  const allIds = [...b52Canvases.g1, ...b52Canvases.g2, ...b52Canvases.g3];
+  let ok = true;
+  allIds.forEach(id => {
+    const b = $(`kEval${id}`);
+    if (!b || !b.classList.contains('show') || b.textContent.includes('0てん')) ok = false;
+  });
+  if (ok) {
+    const btn = $('btnKokugoCatch');
+    if (btn) {
+      btn.disabled = false;
+      btn.style.pointerEvents = 'auto';
+      btn.style.opacity = '1';
+      btn.style.boxShadow = '0 0 20px #22c55e';
+    }
+  }
+}
+
+
+/* ===== バトル53（ポッチャマ）：よこがきの ちいさい「ゃ・ゅ・ょ・っ」「ヤ・ユ・ヨ・ッ」（横書き：左下） ===== */
+let b53Canvases = { g1: [], g2: [], g3: [] };
+
+function renderBattle53WorkArea(r, idx, isCleared, col) {
+  b53Canvases = {
+    g1: ['B53_Hira_xya', 'B53_Hira_xyu', 'B53_Hira_xyo', 'B53_Hira_xtsu'],
+    g2: ['B53_Kata_xya', 'B53_Kata_xyu', 'B53_Kata_xyo', 'B53_Kata_xtsu'],
+    g3: ['B53_Poccha_Hira_Xtsu', 'B53_Poccha_Hira_Xya', 'B53_Poccha_Kata_Xtsu', 'B53_Poccha_Kata_Xya']
+  };
+
+  // 全体ヘッダー
+  const headerCard = document.createElement('div');
+  headerCard.className = 'k-card';
+  headerCard.innerHTML = `
+    <div class="k-card-title-row">
+      <h3 class="k-card-title">
+        <span class="k-card-step-badge">53</span>
+        <span>よこがきの ちいさい「ゃ・ゅ・ょ・っ」「ヤ・ユ・ヨ・ッ」</span>
+      </h3>
+      <span style="background:#e0f2fe;color:#0369a1;padding:4px 12px;border-radius:12px;font-size:13px;font-weight:900">ドリル原本完全再現</span>
+    </div>
+    <p style="font-size:15px;color:#475569;margin-bottom:6px;font-weight:700">ポッチャマを つかまえよう！ よこがきの ちいさい もじは <b>ひだりした</b> に かくよ！</p>
+  `;
+  col.appendChild(headerCard);
+
+  // 大問1：よこがきの ひらがな「ゃ・ゅ・ょ・っ」
+  const c1 = document.createElement('div');
+  c1.className = `k-card ${isCleared ? 'word-cleared' : ''}`;
+  c1.id = 'b53_card_1';
+  c1.innerHTML = `
+    <div class="k-card-title-row">
+      <h3 class="k-card-title">
+        <span class="k-card-step-badge">1</span>
+        <span>よこがきの ちいさい「ゃ・ゅ・ょ・っ」は <b>ひだりした</b> に かきます。□の もじを なぞりましょう。</span>
+      </h3>
+    </div>
+    <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin:16px 0">
+      ${[
+        { id: 'B53_Hira_xya', char: 'ゃ' },
+        { id: 'B53_Hira_xyu', char: 'ゅ' },
+        { id: 'B53_Hira_xyo', char: 'ょ' },
+        { id: 'B53_Hira_xtsu', char: 'っ' }
+      ].map(item => `
+        <div style="display:flex;flex-direction:column;align-items:center;background:#f8fafc;border:2.5px solid #cbd5e1;border-radius:18px;padding:12px 10px;box-shadow:0 3px 10px rgba(0,0,0,0.04)">
+          <div class="k-canvas-wrap" id="kWrap${item.id}" style="width:130px;height:130px;border:3px solid #3b82f6;border-radius:14px;background:#fff;position:relative">
+            <div class="k-canvas-grid"></div>
+            <!-- 左下エリアのガイド文字 -->
+            <div class="k-canvas-guide-glyph" id="kGuide${item.id}" style="position:absolute;bottom:6px;left:8px;font-size:52px;opacity:0.25;color:#1e293b;pointer-events:none;font-weight:900">${item.char}</div>
+            <canvas class="k-canvas-elem" id="kCanvas${item.id}" width="260" height="260" style="width:100%;height:100%"></canvas>
+            <div class="k-canvas-slot-tag" style="position:absolute;top:2px;left:0;right:0;text-align:center;font-size:11px;font-weight:900;color:#2563eb;pointer-events:none">［ひだりしたに ${item.char}］</div>
+            <button type="button" class="k-strip-clear-btn" onclick="clearKanaCanvas('${item.id}')" title="けす">✕</button>
+            <div class="k-strip-eval-badge ${isCleared ? 'show' : ''}" id="kEval${item.id}">${isCleared ? '💮 100' : ''}</div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    <!-- ツールバー -->
+    <div class="k-rev-toolbar">
+      <div class="k-tools-row" style="margin:0;gap:6px">
+        <button type="button" class="k-tool-btn active" id="btnPen_b53_1" onclick="setB53GroupTool(1, 'pen')">✏️ えんぴつ</button>
+        <button type="button" class="k-tool-btn" id="btnEraser_b53_1" onclick="setB53GroupTool(1, 'eraser')">🧽 けしゴム</button>
+        <button type="button" class="k-tool-btn" onclick="clearB53Group(1)">🔄 ぜんぶけす</button>
+        <button type="button" class="k-tool-btn" onclick="autoTraceB53Group(1)" style="color:#2563eb">💡 おたすけ</button>
+      </div>
+      <button type="button" class="k-tool-btn k-judge-btn" onclick="judgeB53Group(1)" style="padding:8px 20px">💮 はんてい！</button>
+    </div>
+  `;
+  col.appendChild(c1);
+
+  // 大問2：よこがきの カタカナ「ヤ・ユ・ヨ・ッ」
+  const c2 = document.createElement('div');
+  c2.className = `k-card ${isCleared ? 'word-cleared' : ''}`;
+  c2.id = 'b53_card_2';
+  c2.style.marginTop = '20px';
+  c2.innerHTML = `
+    <div class="k-card-title-row">
+      <h3 class="k-card-title">
+        <span class="k-card-step-badge">2</span>
+        <span>よこがきの ちいさい「ヤ・ユ・ヨ・ッ」は <b>ひだりした</b> に かきます。□の もじを なぞりましょう。</span>
+      </h3>
+    </div>
+    <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin:16px 0">
+      ${[
+        { id: 'B53_Kata_xya', char: 'ヤ' },
+        { id: 'B53_Kata_xyu', char: 'ユ' },
+        { id: 'B53_Kata_xyo', char: 'ヨ' },
+        { id: 'B53_Kata_xtsu', char: 'ッ' }
+      ].map(item => `
+        <div style="display:flex;flex-direction:column;align-items:center;background:#f8fafc;border:2.5px solid #cbd5e1;border-radius:18px;padding:12px 10px;box-shadow:0 3px 10px rgba(0,0,0,0.04)">
+          <div class="k-canvas-wrap" id="kWrap${item.id}" style="width:130px;height:130px;border:3px solid #3b82f6;border-radius:14px;background:#fff;position:relative">
+            <div class="k-canvas-grid"></div>
+            <!-- 左下エリアのガイド文字 -->
+            <div class="k-canvas-guide-glyph" id="kGuide${item.id}" style="position:absolute;bottom:6px;left:8px;font-size:52px;opacity:0.25;color:#1e293b;pointer-events:none;font-weight:900">${item.char}</div>
+            <canvas class="k-canvas-elem" id="kCanvas${item.id}" width="260" height="260" style="width:100%;height:100%"></canvas>
+            <div class="k-canvas-slot-tag" style="position:absolute;top:2px;left:0;right:0;text-align:center;font-size:11px;font-weight:900;color:#2563eb;pointer-events:none">［ひだりしたに ${item.char}］</div>
+            <button type="button" class="k-strip-clear-btn" onclick="clearKanaCanvas('${item.id}')" title="けす">✕</button>
+            <div class="k-strip-eval-badge ${isCleared ? 'show' : ''}" id="kEval${item.id}">${isCleared ? '💮 100' : ''}</div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    <!-- ツールバー -->
+    <div class="k-rev-toolbar">
+      <div class="k-tools-row" style="margin:0;gap:6px">
+        <button type="button" class="k-tool-btn active" id="btnPen_b53_2" onclick="setB53GroupTool(2, 'pen')">✏️ えんぴつ</button>
+        <button type="button" class="k-tool-btn" id="btnEraser_b53_2" onclick="setB53GroupTool(2, 'eraser')">🧽 けしゴム</button>
+        <button type="button" class="k-tool-btn" onclick="clearB53Group(2)">🔄 ぜんぶけす</button>
+        <button type="button" class="k-tool-btn" onclick="autoTraceB53Group(2)" style="color:#2563eb">💡 おたすけ</button>
+      </div>
+      <button type="button" class="k-tool-btn k-judge-btn" onclick="judgeB53Group(2)" style="padding:8px 20px">💮 はんてい！</button>
+    </div>
+  `;
+  col.appendChild(c2);
+
+  // 大問3：ポッチャマの名前完成（横書き）
+  const c3 = document.createElement('div');
+  c3.className = `k-card ${isCleared ? 'word-cleared' : ''}`;
+  c3.id = 'b53_card_3';
+  c3.style.marginTop = '20px';
+  c3.innerHTML = `
+    <div class="k-card-title-row">
+      <h3 class="k-card-title">
+        <span class="k-card-step-badge">3</span>
+        <span>1 と 2 で かいた「っ・ッ」「ゃ・ャ」を □に かいて、ポケモンの なまえに しましょう！</span>
+      </h3>
+    </div>
+    <div style="display:flex;justify-content:center;align-items:center;gap:24px;flex-wrap:wrap;margin:16px 0">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <!-- ひらがな横書き「ぽ・[っ]・ち・[ゃ]・ま」 -->
+        <div style="background:#f8fafc;border:2px solid #cbd5e1;border-radius:18px;padding:12px 14px;box-shadow:0 2px 8px rgba(0,0,0,0.04)">
+          <div style="font-size:13px;font-weight:900;color:#2563eb;margin-bottom:6px">① ひらがな</div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <div style="width:70px;height:70px;background:#fff;border:2px solid #cbd5e1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:900;color:#1e293b">ぽ</div>
+            <div class="k-canvas-wrap" id="kWrapB53_Poccha_Hira_Xtsu" style="width:70px;height:70px;border:2.5px solid #3b82f6;border-radius:10px;background:#fff;position:relative">
+              <div class="k-canvas-grid"></div>
+              <div class="k-canvas-guide-glyph" id="kGuideB53_Poccha_Hira_Xtsu" style="position:absolute;bottom:2px;left:4px;font-size:28px;opacity:0.25;color:#1e293b;pointer-events:none;font-weight:900">っ</div>
+              <canvas class="k-canvas-elem" id="kCanvasB53_Poccha_Hira_Xtsu" width="140" height="140" style="width:100%;height:100%"></canvas>
+              <button type="button" class="k-strip-clear-btn" style="width:18px;height:18px;font-size:9px" onclick="clearKanaCanvas('B53_Poccha_Hira_Xtsu')">✕</button>
+              <div class="k-strip-eval-badge ${isCleared ? 'show' : ''}" id="kEvalB53_Poccha_Hira_Xtsu">${isCleared ? '💮' : ''}</div>
+            </div>
+            <div style="width:70px;height:70px;background:#fff;border:2px solid #cbd5e1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:900;color:#1e293b">ち</div>
+            <div class="k-canvas-wrap" id="kWrapB53_Poccha_Hira_Xya" style="width:70px;height:70px;border:2.5px solid #3b82f6;border-radius:10px;background:#fff;position:relative">
+              <div class="k-canvas-grid"></div>
+              <div class="k-canvas-guide-glyph" id="kGuideB53_Poccha_Hira_Xya" style="position:absolute;bottom:2px;left:4px;font-size:28px;opacity:0.25;color:#1e293b;pointer-events:none;font-weight:900">ゃ</div>
+              <canvas class="k-canvas-elem" id="kCanvasB53_Poccha_Hira_Xya" width="140" height="140" style="width:100%;height:100%"></canvas>
+              <button type="button" class="k-strip-clear-btn" style="width:18px;height:18px;font-size:9px" onclick="clearKanaCanvas('B53_Poccha_Hira_Xya')">✕</button>
+              <div class="k-strip-eval-badge ${isCleared ? 'show' : ''}" id="kEvalB53_Poccha_Hira_Xya">${isCleared ? '💮' : ''}</div>
+            </div>
+            <div style="width:70px;height:70px;background:#fff;border:2px solid #cbd5e1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:900;color:#1e293b">ま</div>
+          </div>
+        </div>
+
+        <!-- カタカナ横書き「ポ・[ッ]・チ・[ャ]・マ」 -->
+        <div style="background:#f8fafc;border:2px solid #cbd5e1;border-radius:18px;padding:12px 14px;box-shadow:0 2px 8px rgba(0,0,0,0.04)">
+          <div style="font-size:13px;font-weight:900;color:#2563eb;margin-bottom:6px">② カタカナ</div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <div style="width:70px;height:70px;background:#fff;border:2px solid #cbd5e1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:900;color:#1e293b">ポ</div>
+            <div class="k-canvas-wrap" id="kWrapB53_Poccha_Kata_Xtsu" style="width:70px;height:70px;border:2.5px solid #3b82f6;border-radius:10px;background:#fff;position:relative">
+              <div class="k-canvas-grid"></div>
+              <div class="k-canvas-guide-glyph" id="kGuideB53_Poccha_Kata_Xtsu" style="position:absolute;bottom:2px;left:4px;font-size:28px;opacity:0.25;color:#1e293b;pointer-events:none;font-weight:900">ッ</div>
+              <canvas class="k-canvas-elem" id="kCanvasB53_Poccha_Kata_Xtsu" width="140" height="140" style="width:100%;height:100%"></canvas>
+              <button type="button" class="k-strip-clear-btn" style="width:18px;height:18px;font-size:9px" onclick="clearKanaCanvas('B53_Poccha_Kata_Xtsu')">✕</button>
+              <div class="k-strip-eval-badge ${isCleared ? 'show' : ''}" id="kEvalB53_Poccha_Kata_Xtsu">${isCleared ? '💮' : ''}</div>
+            </div>
+            <div style="width:70px;height:70px;background:#fff;border:2px solid #cbd5e1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:900;color:#1e293b">チ</div>
+            <div class="k-canvas-wrap" id="kWrapB53_Poccha_Kata_Xya" style="width:70px;height:70px;border:2.5px solid #3b82f6;border-radius:10px;background:#fff;position:relative">
+              <div class="k-canvas-grid"></div>
+              <div class="k-canvas-guide-glyph" id="kGuideB53_Poccha_Kata_Xya" style="position:absolute;bottom:2px;left:4px;font-size:28px;opacity:0.25;color:#1e293b;pointer-events:none;font-weight:900">ャ</div>
+              <canvas class="k-canvas-elem" id="kCanvasB53_Poccha_Kata_Xya" width="140" height="140" style="width:100%;height:100%"></canvas>
+              <button type="button" class="k-strip-clear-btn" style="width:18px;height:18px;font-size:9px" onclick="clearKanaCanvas('B53_Poccha_Kata_Xya')">✕</button>
+              <div class="k-strip-eval-badge ${isCleared ? 'show' : ''}" id="kEvalB53_Poccha_Kata_Xya">${isCleared ? '💮' : ''}</div>
+            </div>
+            <div style="width:70px;height:70px;background:#fff;border:2px solid #cbd5e1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:900;color:#1e293b">マ</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ポッチャマの公式イラストとスペック -->
+      <div style="display:flex;flex-direction:column;align-items:center;background:#f0fdf4;border:2.5px solid #86efac;border-radius:22px;padding:16px 20px;box-shadow:0 4px 14px rgba(34,197,94,0.12);max-width:240px">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/393.png" alt="ポッチャマ" style="height:120px;object-fit:contain;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.12))">
+        <div style="font-size:18px;font-weight:900;color:#166534;margin:8px 0 2px">🌟 ポッチャマ</div>
+        <div style="font-size:12px;font-weight:700;color:#15803d;line-height:1.4;text-align:center">
+          ペンギンポケモン<br>
+          タイプ: みず<br>
+          たかさ: 0.4m / おもさ: 5.2kg
+        </div>
+      </div>
+    </div>
+
+    <!-- ツールバー -->
+    <div class="k-rev-toolbar">
+      <div class="k-tools-row" style="margin:0;gap:6px">
+        <button type="button" class="k-tool-btn active" id="btnPen_b53_3" onclick="setB53GroupTool(3, 'pen')">✏️ えんぴつ</button>
+        <button type="button" class="k-tool-btn" id="btnEraser_b53_3" onclick="setB53GroupTool(3, 'eraser')">🧽 けしゴム</button>
+        <button type="button" class="k-tool-btn" onclick="clearB53Group(3)">🔄 ぜんぶけす</button>
+        <button type="button" class="k-tool-btn" onclick="autoTraceB53Group(3)" style="color:#2563eb">💡 おたすけ</button>
+      </div>
+      <button type="button" class="k-tool-btn k-judge-btn" onclick="judgeB53Group(3)" style="padding:8px 20px">💮 はんてい！</button>
+    </div>
+  `;
+  col.appendChild(c3);
+
+  setTimeout(() => {
+    const list = [
+      { id: 'B53_Hira_xya', char: 'ゃ' },
+      { id: 'B53_Hira_xyu', char: 'ゅ' },
+      { id: 'B53_Hira_xyo', char: 'ょ' },
+      { id: 'B53_Hira_xtsu', char: 'っ' },
+      { id: 'B53_Kata_xya', char: 'ヤ' },
+      { id: 'B53_Kata_xyu', char: 'ユ' },
+      { id: 'B53_Kata_xyo', char: 'ヨ' },
+      { id: 'B53_Kata_xtsu', char: 'ッ' },
+      { id: 'B53_Poccha_Hira_Xtsu', char: 'っ' },
+      { id: 'B53_Poccha_Hira_Xya', char: 'ゃ' },
+      { id: 'B53_Poccha_Kata_Xtsu', char: 'ッ' },
+      { id: 'B53_Poccha_Kata_Xya', char: 'ャ' }
+    ];
+    list.forEach(item => {
+      initKanaCanvas(item.id, item.char, 2);
+      if (isCleared) {
+        autoDrawKanaText(item.id, item.char);
+      }
+    });
+  }, 50);
+}
+
+function setB53GroupTool(grp, tool) {
+  const ids = b53Canvases['g' + grp] || [];
+  ids.forEach(id => setCanvasTool(id, tool));
+  const pBtn = $(`btnPen_b53_${grp}`);
+  const eBtn = $(`btnEraser_b53_${grp}`);
+  if (pBtn && eBtn) {
+    pBtn.classList.toggle('active', tool === 'pen');
+    eBtn.classList.toggle('active', tool === 'eraser');
+  }
+}
+
+function clearB53Group(grp) {
+  const ids = b53Canvases['g' + grp] || [];
+  ids.forEach(id => {
+    clearKanaCanvas(id);
+    const b = $(`kEval${id}`);
+    if (b) { b.textContent = ''; b.classList.remove('show'); }
+  });
+}
+
+function autoTraceB53Group(grp) {
+  if (typeof playPikaanSound === 'function') playPikaanSound();
+  const ids = b53Canvases['g' + grp] || [];
+  ids.forEach(id => {
+    autoTraceCanvas(id);
+    const b = $(`kEval${id}`);
+    if (b) { b.textContent = '💮 100'; b.classList.add('show'); }
+  });
+  checkB53Pass();
+}
+
+function judgeB53Group(grp) {
+  const charMap = {
+    B53_Hira_xya: 'ゃ', B53_Hira_xyu: 'ゅ', B53_Hira_xyo: 'ょ', B53_Hira_xtsu: 'っ',
+    B53_Kata_xya: 'ヤ', B53_Kata_xyu: 'ユ', B53_Kata_xyo: 'ヨ', B53_Kata_xtsu: 'ッ',
+    B53_Poccha_Hira_Xtsu: 'っ', B53_Poccha_Hira_Xya: 'ゃ',
+    B53_Poccha_Kata_Xtsu: 'ッ', B53_Poccha_Kata_Xya: 'ャ'
+  };
+  const ids = b53Canvases['g' + grp] || [];
+  let allPass = true;
+  ids.forEach(id => {
+    const res = evaluateHandwritingEngine(id, charMap[id]);
+    const b = $(`kEval${id}`);
+    if (res && res.score >= 50) {
+      if (b) { b.textContent = `💮 ${res.score}`; b.classList.add('show'); }
+    } else {
+      allPass = false;
+      if (b) { b.textContent = res ? `${res.score}てん` : '0てん'; b.classList.add('show'); }
+    }
+  });
+
+  const card = $(`b53_card_${grp}`);
+  if (allPass) {
+    if (typeof playPikaanSound === 'function') playPikaanSound();
+    toast('💮 たいへん よくできました！', 2000);
+    if (card) card.classList.add('word-cleared');
+    checkB53Pass();
+  } else {
+    if (typeof playMarimbaPop === 'function') playMarimbaPop(0.7);
+    toast('もうすこし！ お手本を みて かいてみよう！', 2000);
+  }
+}
+
+function checkB53Pass() {
+  const allIds = [...b53Canvases.g1, ...b53Canvases.g2, ...b53Canvases.g3];
+  let ok = true;
+  allIds.forEach(id => {
+    const b = $(`kEval${id}`);
+    if (!b || !b.classList.contains('show') || b.textContent.includes('0てん')) ok = false;
+  });
+  if (ok) {
+    const btn = $('btnKokugoCatch');
+    if (btn) {
+      btn.disabled = false;
+      btn.style.pointerEvents = 'auto';
+      btn.style.opacity = '1';
+      btn.style.boxShadow = '0 0 20px #22c55e';
+    }
+  }
+}
+
+/* ===== バトル54（ボーマンダ）：のばす おん（長音） ===== */
+let b54Canvases = { g1: [], g2: [] };
+
+function renderBattle54WorkArea(r, idx, isCleared, col) {
+  b54Canvases = {
+    g1: ['B54_Pair1_Hira', 'B54_Pair1_Kata', 'B54_Pair2_Hira', 'B54_Pair2_Kata', 'B54_Pair3_Hira', 'B54_Pair3_Kata'],
+    g2: ['B54_Boman_Hira_O', 'B54_Boman_Kata_Bar']
+  };
+
+  // 全体ヘッダー
+  const headerCard = document.createElement('div');
+  headerCard.className = 'k-card';
+  headerCard.innerHTML = `
+    <div class="k-card-title-row">
+      <h3 class="k-card-title">
+        <span class="k-card-step-badge">54</span>
+        <span>のばす おん（ちょうおん）</span>
+      </h3>
+      <span style="background:#fee2e2;color:#b91c1c;padding:4px 12px;border-radius:12px;font-size:13px;font-weight:900">ドリル原本完全再現</span>
+    </div>
+    <p style="font-size:15px;color:#475569;margin-bottom:6px;font-weight:700">ボーマンダを つかまえよう！ ひらがなの のばすおと（あ・い・う・え・お）と カタカナの「ー」を マスターしよう！</p>
+  `;
+  col.appendChild(headerCard);
+
+  // 大問1：のばす音のペアなぞり
+  const c1 = document.createElement('div');
+  c1.className = `k-card ${isCleared ? 'word-cleared' : ''}`;
+  c1.id = 'b54_card_1';
+  c1.innerHTML = `
+    <div class="k-card-title-row">
+      <h3 class="k-card-title">
+        <span class="k-card-step-badge">1</span>
+        <span>ひらがなを なぞってから こえに だして よみましょう。よめたら したの カタカナを なぞりましょう。</span>
+      </h3>
+    </div>
+    <div style="display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin:16px 0">
+      ${[
+        { idH: 'B54_Pair1_Hira', charH: 'え', hiraWord: 'ほげえた', idK: 'B54_Pair1_Kata', charK: 'ー', kataWord: 'ホゲータ' },
+        { idH: 'B54_Pair2_Hira', charH: 'あ', hiraWord: 'さあないと', idK: 'B54_Pair2_Kata', charK: 'ー', kataWord: 'サーナイト' },
+        { idH: 'B54_Pair3_Hira', charH: 'い', hiraWord: 'うそっきい', idK: 'B54_Pair3_Kata', charK: 'ー', kataWord: 'ウソッキー' }
+      ].map(item => `
+        <div style="display:flex;flex-direction:column;align-items:center;background:#f8fafc;border:2.5px solid #cbd5e1;border-radius:20px;padding:14px;box-shadow:0 3px 10px rgba(0,0,0,0.05);width:170px">
+          <!-- 上段ひらがな -->
+          <div style="font-size:13px;font-weight:900;color:#2563eb;margin-bottom:4px">ひらがな「${item.charH}」</div>
+          <div class="k-canvas-wrap" id="kWrap${item.idH}" style="width:110px;height:110px;border:2.5px solid #3b82f6;border-radius:12px;background:#fff;position:relative">
+            <div class="k-canvas-grid"></div>
+            <div class="k-canvas-guide-glyph" id="kGuide${item.idH}" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:60px;opacity:0.25;color:#1e293b;pointer-events:none;font-weight:900">${item.charH}</div>
+            <canvas class="k-canvas-elem" id="kCanvas${item.idH}" width="220" height="220" style="width:100%;height:100%"></canvas>
+            <button type="button" class="k-strip-clear-btn" style="width:20px;height:20px;font-size:10px" onclick="clearKanaCanvas('${item.idH}')">✕</button>
+            <div class="k-strip-eval-badge ${isCleared ? 'show' : ''}" id="kEval${item.idH}">${isCleared ? '💮' : ''}</div>
+          </div>
+          <div style="font-size:14px;font-weight:900;color:#1e293b;margin:4px 0 10px">${item.hiraWord}</div>
+
+          <div style="width:100%;height:1px;border-top:2px dashed #cbd5e1;margin-bottom:10px"></div>
+
+          <!-- 下段カタカナ「ー」 -->
+          <div style="font-size:13px;font-weight:900;color:#dc2626;margin-bottom:4px">カタカナ「ー」</div>
+          <div class="k-canvas-wrap" id="kWrap${item.idK}" style="width:110px;height:110px;border:2.5px solid #ef4444;border-radius:12px;background:#fff;position:relative">
+            <div class="k-canvas-grid"></div>
+            <div class="k-canvas-guide-glyph" id="kGuide${item.idK}" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:60px;opacity:0.25;color:#1e293b;pointer-events:none;font-weight:900">ー</div>
+            <canvas class="k-canvas-elem" id="kCanvas${item.idK}" width="220" height="220" style="width:100%;height:100%"></canvas>
+            <button type="button" class="k-strip-clear-btn" style="width:20px;height:20px;font-size:10px" onclick="clearKanaCanvas('${item.idK}')">✕</button>
+            <div class="k-strip-eval-badge ${isCleared ? 'show' : ''}" id="kEval${item.idK}">${isCleared ? '💮' : ''}</div>
+          </div>
+          <div style="font-size:14px;font-weight:900;color:#1e293b;margin-top:4px">${item.kataWord}</div>
+        </div>
+      `).join('')}
+    </div>
+    <!-- ツールバー -->
+    <div class="k-rev-toolbar">
+      <div class="k-tools-row" style="margin:0;gap:6px">
+        <button type="button" class="k-tool-btn active" id="btnPen_b54_1" onclick="setB54GroupTool(1, 'pen')">✏️ えんぴつ</button>
+        <button type="button" class="k-tool-btn" id="btnEraser_b54_1" onclick="setB54GroupTool(1, 'eraser')">🧽 けしゴム</button>
+        <button type="button" class="k-tool-btn" onclick="clearB54Group(1)">🔄 ぜんぶけす</button>
+        <button type="button" class="k-tool-btn" onclick="autoTraceB54Group(1)" style="color:#2563eb">💡 おたすけ</button>
+      </div>
+      <button type="button" class="k-tool-btn k-judge-btn" onclick="judgeB54Group(1)" style="padding:8px 20px">💮 はんてい！</button>
+    </div>
+  `;
+  col.appendChild(c1);
+
+  // 大問2：ボーマンダの名前完成（縦書き短冊）
+  const c2 = document.createElement('div');
+  c2.className = `k-card ${isCleared ? 'word-cleared' : ''}`;
+  c2.id = 'b54_card_2';
+  c2.style.marginTop = '20px';
+  c2.innerHTML = `
+    <div class="k-card-title-row">
+      <h3 class="k-card-title">
+        <span class="k-card-step-badge">2</span>
+        <span>1 の あいている □に のばすおと を かいて、ボーマンダ の なまえを かんせいさせよう！</span>
+      </h3>
+    </div>
+    <div style="display:flex;justify-content:center;align-items:center;gap:32px;flex-wrap:wrap;margin:16px 0">
+      <!-- ひらがな短冊「ぼ・[お]・ま・ん・だ」 -->
+      <div class="k-rev-strip-unit">
+        <div style="font-size:14px;font-weight:900;color:#2563eb;margin-bottom:6px">① ひらがな</div>
+        <div class="k-authentic-strip">
+          <div class="k-strip-cell-fixed"><span>ぼ</span></div>
+          <div class="k-strip-cell-write ${isCleared ? 'cleared' : ''}" id="kRevBox_B54_Boman_Hira_O">
+            <div class="k-canvas-grid"></div>
+            <div class="k-canvas-guide-glyph" id="kGuideB54_Boman_Hira_O" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:75px;opacity:0.25;color:#1e293b;pointer-events:none;font-weight:900">お</div>
+            <canvas class="k-canvas-elem" id="kCanvasB54_Boman_Hira_O" width="260" height="260" style="width:100%;height:100%"></canvas>
+            <div class="k-canvas-slot-tag" style="position:absolute;bottom:2px;left:0;right:0;text-align:center;font-size:11px;font-weight:900;color:#2563eb;pointer-events:none">［お］</div>
+            <button type="button" class="k-strip-clear-btn" onclick="clearKanaCanvas('B54_Boman_Hira_O')">✕</button>
+            <div class="k-strip-eval-badge ${isCleared ? 'show' : ''}" id="kEvalB54_Boman_Hira_O">${isCleared ? '💮 100' : ''}</div>
+          </div>
+          <div class="k-strip-cell-fixed"><span>ま</span></div>
+          <div class="k-strip-cell-fixed"><span>ん</span></div>
+          <div class="k-strip-cell-fixed"><span>だ</span></div>
+        </div>
+      </div>
+
+      <!-- カタカナ短冊「ボ・[ー]・マ・ン・ダ」 -->
+      <div class="k-rev-strip-unit">
+        <div style="font-size:14px;font-weight:900;color:#dc2626;margin-bottom:6px">② カタカナ</div>
+        <div class="k-authentic-strip">
+          <div class="k-strip-cell-fixed"><span>ボ</span></div>
+          <div class="k-strip-cell-write ${isCleared ? 'cleared' : ''}" id="kRevBox_B54_Boman_Kata_Bar">
+            <div class="k-canvas-grid"></div>
+            <div class="k-canvas-guide-glyph" id="kGuideB54_Boman_Kata_Bar" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:80px;opacity:0.25;color:#1e293b;pointer-events:none;font-weight:900">ー</div>
+            <canvas class="k-canvas-elem" id="kCanvasB54_Boman_Kata_Bar" width="260" height="260" style="width:100%;height:100%"></canvas>
+            <div class="k-canvas-slot-tag" style="position:absolute;bottom:2px;left:0;right:0;text-align:center;font-size:11px;font-weight:900;color:#dc2626;pointer-events:none">［ー］</div>
+            <button type="button" class="k-strip-clear-btn" onclick="clearKanaCanvas('B54_Boman_Kata_Bar')">✕</button>
+            <div class="k-strip-eval-badge ${isCleared ? 'show' : ''}" id="kEvalB54_Boman_Kata_Bar">${isCleared ? '💮 100' : ''}</div>
+          </div>
+          <div class="k-strip-cell-fixed"><span>マ</span></div>
+          <div class="k-strip-cell-fixed"><span>ン</span></div>
+          <div class="k-strip-cell-fixed"><span>ダ</span></div>
+        </div>
+      </div>
+
+      <!-- ボーマンダの公式イラストとスペック -->
+      <div style="display:flex;flex-direction:column;align-items:center;background:#fff1f2;border:2.5px solid #fecdd3;border-radius:22px;padding:16px 20px;box-shadow:0 4px 14px rgba(244,63,94,0.12);max-width:260px">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/373.png" alt="ボーマンダ" style="height:120px;object-fit:contain;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.12))">
+        <div style="font-size:18px;font-weight:900;color:#9f1239;margin:8px 0 2px">🌟 ボーマンダ</div>
+        <div style="font-size:12px;font-weight:700;color:#be123c;line-height:1.4;text-align:center">
+          ドラゴンポケモン<br>
+          タイプ: ドラゴン・ひこう<br>
+          たかさ: 1.5m / おもさ: 102.6kg
+        </div>
+      </div>
+    </div>
+
+    <!-- ツールバー -->
+    <div class="k-rev-toolbar">
+      <div class="k-tools-row" style="margin:0;gap:6px">
+        <button type="button" class="k-tool-btn active" id="btnPen_b54_2" onclick="setB54GroupTool(2, 'pen')">✏️ えんぴつ</button>
+        <button type="button" class="k-tool-btn" id="btnEraser_b54_2" onclick="setB54GroupTool(2, 'eraser')">🧽 けしゴム</button>
+        <button type="button" class="k-tool-btn" onclick="clearB54Group(2)">🔄 ぜんぶけす</button>
+        <button type="button" class="k-tool-btn" onclick="autoTraceB54Group(2)" style="color:#2563eb">💡 おたすけ</button>
+      </div>
+      <button type="button" class="k-tool-btn k-judge-btn" onclick="judgeB54Group(2)" style="padding:8px 20px">💮 はんてい！</button>
+    </div>
+  `;
+  col.appendChild(c2);
+
+  setTimeout(() => {
+    const list = [
+      { id: 'B54_Pair1_Hira', char: 'え' },
+      { id: 'B54_Pair1_Kata', char: 'ー' },
+      { id: 'B54_Pair2_Hira', char: 'あ' },
+      { id: 'B54_Pair2_Kata', char: 'ー' },
+      { id: 'B54_Pair3_Hira', char: 'い' },
+      { id: 'B54_Pair3_Kata', char: 'ー' },
+      { id: 'B54_Boman_Hira_O', char: 'お' },
+      { id: 'B54_Boman_Kata_Bar', char: 'ー' }
+    ];
+    list.forEach(item => {
+      initKanaCanvas(item.id, item.char, 2);
+      if (isCleared) {
+        autoDrawKanaText(item.id, item.char);
+      }
+    });
+  }, 50);
+}
+
+function setB54GroupTool(grp, tool) {
+  const ids = b54Canvases['g' + grp] || [];
+  ids.forEach(id => setCanvasTool(id, tool));
+  const pBtn = $(`btnPen_b54_${grp}`);
+  const eBtn = $(`btnEraser_b54_${grp}`);
+  if (pBtn && eBtn) {
+    pBtn.classList.toggle('active', tool === 'pen');
+    eBtn.classList.toggle('active', tool === 'eraser');
+  }
+}
+
+function clearB54Group(grp) {
+  const ids = b54Canvases['g' + grp] || [];
+  ids.forEach(id => {
+    clearKanaCanvas(id);
+    const b = $(`kEval${id}`);
+    if (b) { b.textContent = ''; b.classList.remove('show'); }
+  });
+}
+
+function autoTraceB54Group(grp) {
+  if (typeof playPikaanSound === 'function') playPikaanSound();
+  const ids = b54Canvases['g' + grp] || [];
+  ids.forEach(id => {
+    autoTraceCanvas(id);
+    const b = $(`kEval${id}`);
+    if (b) { b.textContent = '💮 100'; b.classList.add('show'); }
+  });
+  checkB54Pass();
+}
+
+function judgeB54Group(grp) {
+  const charMap = {
+    B54_Pair1_Hira: 'え', B54_Pair1_Kata: 'ー',
+    B54_Pair2_Hira: 'あ', B54_Pair2_Kata: 'ー',
+    B54_Pair3_Hira: 'い', B54_Pair3_Kata: 'ー',
+    B54_Boman_Hira_O: 'お', B54_Boman_Kata_Bar: 'ー'
+  };
+  const ids = b54Canvases['g' + grp] || [];
+  let allPass = true;
+  ids.forEach(id => {
+    const res = evaluateHandwritingEngine(id, charMap[id]);
+    const b = $(`kEval${id}`);
+    if (res && res.score >= 50) {
+      if (b) { b.textContent = `💮 ${res.score}`; b.classList.add('show'); }
+    } else {
+      allPass = false;
+      if (b) { b.textContent = res ? `${res.score}てん` : '0てん'; b.classList.add('show'); }
+    }
+  });
+
+  const card = $(`b54_card_${grp}`);
+  if (allPass) {
+    if (typeof playPikaanSound === 'function') playPikaanSound();
+    toast('💮 たいへん よくできました！', 2000);
+    if (card) card.classList.add('word-cleared');
+    checkB54Pass();
+  } else {
+    if (typeof playMarimbaPop === 'function') playMarimbaPop(0.7);
+    toast('もうすこし！ お手本を みて かいてみよう！', 2000);
+  }
+}
+
+function checkB54Pass() {
+  const allIds = [...b54Canvases.g1, ...b54Canvases.g2];
+  let ok = true;
+  allIds.forEach(id => {
+    const b = $(`kEval${id}`);
+    if (!b || !b.classList.contains('show') || b.textContent.includes('0てん')) ok = false;
+  });
+  if (ok) {
+    const btn = $('btnKokugoCatch');
+    if (btn) {
+      btn.disabled = false;
+      btn.style.pointerEvents = 'auto';
+      btn.style.opacity = '1';
+      btn.style.boxShadow = '0 0 20px #22c55e';
+    }
+  }
+}
+
 
 function renderReviewWorkArea(r, idx, isCleared, col) {
   if (!r.reviewProblems || r.reviewProblems.length === 0) {
@@ -22707,8 +23583,10 @@ function initKanaCanvas(type, char, strokes) {
     s.drawing = true;
     cv.setPointerCapture(e.pointerId);
     const rect = cv.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    const scaleX = cv.width / (rect.width || 1);
+    const scaleY = cv.height / (rect.height || 1);
+    const x = (e.clientX - rect.left) * scaleX;
+    const y = (e.clientY - rect.top) * scaleY;
     s.currentStroke = [{ x, y }];
     s.ctx.beginPath();
     s.ctx.moveTo(x, y);
@@ -22718,12 +23596,14 @@ function initKanaCanvas(type, char, strokes) {
     const s = kanaCanvases[type];
     if (!s || !s.drawing) return;
     const rect = cv.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    const scaleX = cv.width / (rect.width || 1);
+    const scaleY = cv.height / (rect.height || 1);
+    const x = (e.clientX - rect.left) * scaleX;
+    const y = (e.clientY - rect.top) * scaleY;
     s.currentStroke.push({ x, y });
 
     s.ctx.strokeStyle = (s.tool === 'eraser') ? '#ffffff' : '#1e293b';
-    s.ctx.lineWidth = (s.tool === 'eraser') ? 22 : 10;
+    s.ctx.lineWidth = (s.tool === 'eraser') ? (24 * scaleX) : (10 * scaleX);
     s.ctx.lineTo(x, y);
     s.ctx.stroke();
   };

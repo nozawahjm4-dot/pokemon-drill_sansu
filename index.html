@@ -6106,338 +6106,441 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
   pointer-events: none;
 }
 
-/* ===== 縦書きドリル・まとめバトル用 スタイル ===== */
-.k-vert-flow-wrap {
-  display: flex;
-  justify-content: center;
-  margin: 12px 0 16px;
-  width: 100%;
-}
-.k-vert-word-strip {
+/*/* ===== 原本完全再現：縦書き短冊ドリル・まとめバトル用 スタイル ===== */
+.k-rev-container {
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  border: 3.5px solid #3b82f6;
-  border-radius: 18px;
-  background: #ffffff;
-  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.12);
-  overflow: hidden;
-  max-width: 600px;
+  gap: 24px;
   width: 100%;
 }
-.k-card.word-cleared .k-vert-word-strip {
-  border-color: #22c55e;
-  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.15);
-}
-.k-vert-strip-row {
-  display: flex;
-  align-items: center;
-  border-bottom: 2px dashed #cbd5e1;
-  padding: 8px 14px;
-  gap: 16px;
-  transition: background 0.2s ease;
-}
-.k-vert-strip-row:last-child {
-  border-bottom: none;
-}
-.k-vert-row-fixed {
-  background: #f8fafc;
-}
-.k-vert-row-write {
-  background: #f0f7ff;
-}
-.k-vert-tile-fixed {
-  width: 120px;
-  height: 68px;
+.k-rev-card {
   background: #ffffff;
-  border-radius: 12px;
   border: 2.5px solid #cbd5e1;
+  border-radius: 24px;
+  padding: 22px 20px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  position: relative;
+}
+.k-rev-card.word-cleared {
+  border-color: #22c55e;
+  box-shadow: 0 6px 22px rgba(34, 197, 94, 0.16);
+  background: #fbfdfb;
+}
+
+/* 複数短冊（大問1：文章問題）の横並び配置 */
+.k-rev-strips-flow {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 32px;
+  flex-wrap: wrap;
+  margin: 16px 0 20px;
+}
+.k-rev-strip-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 22px;
+  padding: 16px;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.04);
+  max-width: 320px;
+  width: 100%;
+  transition: all 0.2s ease;
+}
+.k-rev-strip-unit.cleared {
+  border-color: #86efac;
+  background: #f0fdf4;
+}
+
+/* 縦書き短冊本体：マス目が上から下へまっすぐ連なる！ */
+.k-authentic-strip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 3.5px solid #2563eb;
+  border-radius: 18px;
+  background: #ffffff;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.16);
+  width: 148px;
+}
+.k-rev-card.word-cleared .k-authentic-strip,
+.k-rev-strip-unit.cleared .k-authentic-strip {
+  border-color: #22c55e;
+  box-shadow: 0 6px 18px rgba(34, 197, 94, 0.2);
+}
+
+/* 短冊内の書き取りマス */
+.k-strip-cell-write {
+  width: 144px;
+  height: 144px;
+  position: relative;
+  background: #ffffff;
+  border-bottom: 2px dashed #93c5fd;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  flex-shrink: 0;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  touch-action: none;
+  box-sizing: border-box;
 }
-.k-vert-tile-fixed::before {
+.k-strip-cell-write:last-child {
+  border-bottom: none;
+}
+.k-strip-cell-write.cleared {
+  background: #f0fdf4;
+}
+
+/* 短冊内の固定文字セル */
+.k-strip-cell-fixed {
+  width: 144px;
+  height: 84px;
+  background: #f8fafc;
+  border-bottom: 2px dashed #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", sans-serif;
+  font-size: 52px;
+  font-weight: 900;
+  color: #0f172a;
+  position: relative;
+  box-sizing: border-box;
+}
+.k-strip-cell-fixed::before {
   content: "";
   position: absolute;
   top: 50%;
   left: 0;
   right: 0;
   height: 1px;
-  border-top: 1.5px dashed #e2e8f0;
+  border-top: 1.5px dashed #cbd5e1;
   pointer-events: none;
 }
-.k-vert-tile-fixed::after {
+.k-strip-cell-fixed::after {
   content: "";
   position: absolute;
   left: 50%;
   top: 0;
   bottom: 0;
   width: 1px;
-  border-left: 1.5px dashed #e2e8f0;
+  border-left: 1.5px dashed #cbd5e1;
   pointer-events: none;
 }
-.k-vert-char-fixed {
-  font-family: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", sans-serif;
-  font-size: 38px;
-  font-weight: 900;
-  color: #0f172a;
-  position: relative;
-  z-index: 2;
-}
-.k-vert-tile-write {
-  width: 120px;
-  height: 120px;
-  background: #ffffff;
-  border-radius: 14px;
-  border: 3px solid #3b82f6;
-  position: relative;
-  flex-shrink: 0;
-  box-shadow: 0 3px 12px rgba(59, 130, 246, 0.18);
-  transition: all 0.3s ease;
-}
-.k-vert-tile-write.word-cleared {
-  border-color: #22c55e;
-  box-shadow: 0 3px 12px rgba(34, 197, 94, 0.22);
-}
-.k-vert-tile-tools {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  flex: 1;
-}
-
-/* ミニゲーム8 専用スタイル */
-.mg8-container {
-  position: relative;
-  background: #ffffff;
-  border: 2.5px solid #cbd5e1;
-  border-radius: 20px;
-  padding: 16px 12px;
-  overflow: hidden;
-  user-select: none;
-}
-.mg8-row {
-  display: flex;
-  justify-content: space-around;
-  align-items: flex-start;
-  gap: 8px;
-}
-.mg8-col {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  flex: 1;
-  max-width: 110px;
-}
-.mg8-vert-name {
-  writing-mode: vertical-rl;
-  font-family: "Zen Maru Gothic", sans-serif;
-  font-size: 14px;
-  font-weight: 900;
-  letter-spacing: 2px;
-  background: #f1f5f9;
-  padding: 6px 4px;
-  border-radius: 8px;
-  border: 1.5px solid #cbd5e1;
-  color: #1e293b;
-  margin: 4px 0;
-}
-.mg8-dot {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: #0f172a;
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 15px;
-  font-weight: 900;
-  cursor: pointer;
-  border: 3px solid #ffffff;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.25);
-  transition: all 0.2s ease;
-  z-index: 10;
-  touch-action: none;
-}
-.mg8-dot:hover {
-  transform: scale(1.2);
-  background: #2563eb;
-}
-.mg8-dot.selected {
-  background: #f59e0b;
-  transform: scale(1.25);
-  box-shadow: 0 0 14px #f59e0b;
-}
-.mg8-dot.connected {
-  background: #22c55e;
-}
-
-.k-companion-char {
-  font-family: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", sans-serif;
-  font-size: 36px;
-  font-weight: 900;
-  color: #0f172a;
+.k-strip-cell-fixed span {
   position: relative;
   z-index: 1;
 }
-@media (max-width: 640px) {
-  .k-canvas-wrap.large-word-canvas {
-    width: 150px;
-    height: 150px;
-  }
-  .k-companion-box {
-    width: 52px;
-    height: 52px;
-  }
-  
-/* ===== 縦書きドリル・まとめバトル用 スタイル ===== */
-.k-vert-flow-wrap {
-  display: flex;
-  justify-content: center;
-  margin: 12px 0 16px;
-  width: 100%;
-}
-.k-vert-word-strip {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  border: 3.5px solid #3b82f6;
-  border-radius: 18px;
-  background: #ffffff;
-  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.12);
-  overflow: hidden;
-  max-width: 600px;
-  width: 100%;
-}
-.k-card.word-cleared .k-vert-word-strip {
-  border-color: #22c55e;
-  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.15);
-}
-.k-vert-strip-row {
-  display: flex;
-  align-items: center;
-  border-bottom: 2px dashed #cbd5e1;
-  padding: 8px 14px;
-  gap: 16px;
-  transition: background 0.2s ease;
-}
-.k-vert-strip-row:last-child {
+.k-strip-cell-fixed:last-child {
   border-bottom: none;
 }
-.k-vert-row-fixed {
-  background: #f8fafc;
+
+/* 短冊末尾の縦書きテキスト（ポケモンなど） */
+.k-strip-cell-text {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  font-family: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", sans-serif;
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: 6px;
+  padding: 12px 0;
+  color: #1e293b;
+  background: #f1f5f9;
+  width: 100%;
+  text-align: center;
+  border-top: 2px solid #cbd5e1;
+  box-sizing: border-box;
 }
-.k-vert-row-write {
-  background: #f0f7ff;
-}
-.k-vert-tile-fixed {
-  width: 120px;
-  height: 68px;
-  background: #ffffff;
-  border-radius: 12px;
-  border: 2.5px solid #cbd5e1;
+
+/* 各マスの右上 ✕（クリア）ボタン */
+.k-strip-clear-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1.5px solid #cbd5e1;
+  background: rgba(255, 255, 255, 0.9);
+  font-size: 11px;
+  color: #64748b;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  flex-shrink: 0;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  cursor: pointer;
+  z-index: 4;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  transition: all 0.2s;
 }
-.k-vert-tile-fixed::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  height: 1px;
-  border-top: 1.5px dashed #e2e8f0;
-  pointer-events: none;
-}
-.k-vert-tile-fixed::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 0;
-  bottom: 0;
-  width: 1px;
-  border-left: 1.5px dashed #e2e8f0;
-  pointer-events: none;
-}
-.k-vert-char-fixed {
-  font-family: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", sans-serif;
-  font-size: 38px;
-  font-weight: 900;
-  color: #0f172a;
-  position: relative;
-  z-index: 2;
-}
-.k-vert-tile-write {
-  width: 120px;
-  height: 120px;
-  background: #ffffff;
-  border-radius: 14px;
-  border: 3px solid #3b82f6;
-  position: relative;
-  flex-shrink: 0;
-  box-shadow: 0 3px 12px rgba(59, 130, 246, 0.18);
-  transition: all 0.3s ease;
-}
-.k-vert-tile-write.word-cleared {
-  border-color: #22c55e;
-  box-shadow: 0 3px 12px rgba(34, 197, 94, 0.22);
-}
-.k-vert-tile-tools {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  flex: 1;
+.k-strip-clear-btn:hover {
+  background: #ef4444;
+  color: #ffffff;
+  border-color: #ef4444;
 }
 
-/* ミニゲーム8 専用スタイル */
-.mg8-container {
-  position: relative;
+/* 採点合格バッジ */
+.k-strip-eval-badge {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  font-size: 12px;
+  font-weight: 900;
+  color: #dc2626;
+  background: rgba(254, 242, 242, 0.95);
+  border: 1.5px solid #ef4444;
+  border-radius: 8px;
+  padding: 1px 5px;
+  pointer-events: none;
+  z-index: 4;
+  box-shadow: 0 2px 6px rgba(220, 38, 38, 0.2);
+  display: none;
+}
+.k-strip-eval-badge.show {
+  display: block;
+}
+
+/* 短冊直下のポケモン情報バナー */
+.k-strip-poke-banner {
+  margin-top: 12px;
+  text-align: center;
+  width: 100%;
+}
+.k-strip-poke-banner img {
+  height: 85px;
+  max-width: 120px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+}
+.k-strip-poke-name {
+  font-size: 16px;
+  font-weight: 900;
+  color: #166534;
+  margin: 6px 0 2px;
+}
+.k-strip-poke-desc {
+  font-size: 12px;
+  font-weight: 700;
+  color: #15803d;
+  line-height: 1.45;
+}
+
+/* 大問2：絵を見て書く問題（絵＋直結縦短冊） */
+.k-rev-vocab-grid {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 16px 0 20px;
+}
+.k-rev-vocab-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   background: #ffffff;
-  border: 2.5px solid #cbd5e1;
+  border: 2.5px solid #e2e8f0;
   border-radius: 20px;
-  padding: 16px 12px;
+  padding: 12px 10px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+  width: 154px;
+  transition: all 0.2s ease;
+}
+.k-rev-vocab-card.cleared {
+  border-color: #86efac;
+  background: #f0fdf4;
+}
+.k-rev-vocab-img-box {
+  height: 85px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+.k-rev-vocab-img-box img {
+  max-height: 80px;
+  max-width: 125px;
+  object-fit: contain;
+}
+
+/* 問題ごとの共通操作バー */
+.k-rev-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 2px dashed #e2e8f0;
+  flex-wrap: wrap;
+}
+
+/* ===== ミニゲームモーダル＆ミニゲーム8 原本完全再現スタイル ===== */
+#mKokugoMinigame .mbox {
+  max-width: 1020px !important;
+  width: min(1000px, 96vw) !important;
+  max-height: 94vh;
+  padding: 22px;
+  border-radius: 28px;
+  overflow-y: auto;
+}
+.mg8-board {
+  position: relative;
+  background: #fefdf9;
+  border: 2.5px solid #fed7aa;
+  border-radius: 24px;
+  padding: 20px 14px 28px;
   overflow: hidden;
   user-select: none;
+  box-shadow: 0 4px 18px rgba(249, 115, 22, 0.08);
 }
-.mg8-row {
+.mg8-top-row {
   display: flex;
   justify-content: space-around;
   align-items: flex-start;
   gap: 8px;
+  margin-bottom: 60px;
 }
-.mg8-col {
+.mg8-col-unit {
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
   flex: 1;
-  max-width: 110px;
+  max-width: 180px;
 }
-.mg8-vert-name {
+.mg8-poke-pic {
+  height: 75px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 6px;
+}
+.mg8-poke-pic img {
+  max-height: 72px;
+  max-width: 120px;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,0.1));
+}
+/* 書き取りマスと名前の横並び（原本写真完全再現） */
+.mg8-box-and-name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.mg8-write-box {
+  width: 125px;
+  height: 125px;
+  background: #ffffff;
+  border-radius: 14px;
+  border: 3px solid #3b82f6;
+  position: relative;
+  box-shadow: 0 3px 10px rgba(59, 130, 246, 0.16);
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+.mg8-write-box.word-cleared {
+  border-color: #22c55e;
+  box-shadow: 0 3px 10px rgba(34, 197, 94, 0.22);
+  background: #f0fdf4;
+}
+/* 名前の縦短冊 */
+.mg8-name-strip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 4px 2px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+}
+.mg8-ruby {
+  font-size: 8.5px;
+  font-weight: 700;
+  color: #64748b;
+  line-height: 1.1;
+  margin-bottom: 2px;
+  writing-mode: vertical-rl;
+  letter-spacing: 1px;
+}
+.mg8-char-slot {
+  font-family: "Zen Maru Gothic", sans-serif;
+  font-size: 17px;
+  font-weight: 900;
+  line-height: 1.25;
+  color: #1e293b;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.mg8-char-slot.circled {
+  color: #dc2626;
+  font-weight: 900;
+}
+.mg8-char-slot.circled::after {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
+  border: 2px solid #ef4444;
+  border-radius: 50%;
+  pointer-events: none;
+}
+/* 下段の5体カード（原本配置完全再現） */
+.mg8-bot-row {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.mg8-bot-card {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 6px 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.mg8-bot-img {
+  height: 60px;
+  max-width: 65px;
+  object-fit: contain;
+}
+.mg8-bot-name-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.mg8-bot-ruby {
+  font-size: 8.5px;
+  color: #64748b;
+  font-weight: 700;
+  writing-mode: vertical-rl;
+}
+.mg8-bot-name {
   writing-mode: vertical-rl;
   font-family: "Zen Maru Gothic", sans-serif;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 900;
   letter-spacing: 2px;
-  background: #f1f5f9;
-  padding: 6px 4px;
-  border-radius: 8px;
-  border: 1.5px solid #cbd5e1;
   color: #1e293b;
-  margin: 4px 0;
 }
+
+/* 接続ドット */
 .mg8-dot {
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   background: #0f172a;
   color: #ffffff;
@@ -6452,9 +6555,10 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
   transition: all 0.2s ease;
   z-index: 10;
   touch-action: none;
+  margin: 10px auto;
 }
 .mg8-dot:hover {
-  transform: scale(1.2);
+  transform: scale(1.18);
   background: #2563eb;
 }
 .mg8-dot.selected {
@@ -6465,19 +6569,6 @@ header h1 small{display:block;font-size:.55em;opacity:.9}
 .mg8-dot.connected {
   background: #22c55e;
 }
-
-.k-companion-char {
-    font-size: 28px;
-  }
-}
-
-/* ミニゲームモーダル */
-#mKokugoMinigame .mbox {
-  max-width: 650px;
-  padding: 20px;
-  border-radius: 24px;
-}
-
 </style>
   <script src="https://www.youtube.com/iframe_api"></script>
 </head>
@@ -18672,10 +18763,10 @@ const KOKUGO_ROWS = [
       {
         "probNum": 1,
         "title": "もんだい 1",
-        "instruction": "ぶんを よんで ひらがなを かきましょう。",
+        "instruction": "フラベベの 大きさを あらわす ぶんを かんせいさせよう！",
         "pokeName": "フラベベ（あかいはな）",
         "pokeArt": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/669.png",
-        "sizeCallout": "たかさ 0.1m！ てのひらサイズ！ とても【ちいさい】ポケモン！「ちいさい ポケモン」の ぶんを かんせいさせよう！",
+        "sizeCallout": "たかさ 0.1m！ ポケモンの なかでも とっても「ちいさい」ポケモン！「ちいさい ポケモン」の ぶんを かんせいさせよう！",
         "items": [
           {
             "type": "write",
@@ -18718,10 +18809,10 @@ const KOKUGO_ROWS = [
       {
         "probNum": 2,
         "title": "もんだい 2",
-        "instruction": "ぶんを よんで ひらがなを かきましょう。",
+        "instruction": "ホエルオーの 大きさを あらわす ぶんを かんせいさせよう！",
         "pokeName": "ホエルオー",
         "pokeArt": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/321.png",
-        "sizeCallout": "たかさ 14.5m！ ビル4かいぶん！ とても【おおきい】ポケモン！「おおきい ポケモン」の ぶんを かんせいさせよう！",
+        "sizeCallout": "たかさ 14.5m！ ポケモンで いちばん「おおきい」ポケモン！「おおきい ポケモン」の ぶんを かんせいさせよう！",
         "items": [
           {
             "type": "write",
@@ -18766,7 +18857,7 @@ const KOKUGO_ROWS = [
       {
         "probNum": 3,
         "title": "もんだい 3",
-        "instruction": "えを みて ［ ］に ひらがなを かきましょう。",
+        "instruction": "えを みて ひらがなを かきましょう。",
         "img": "kokugo_drills/assets/b11/ashi.png",
         "imgAlt": "あし",
         "items": [
@@ -18785,7 +18876,7 @@ const KOKUGO_ROWS = [
       {
         "probNum": 4,
         "title": "もんだい 4",
-        "instruction": "えを みて ［ ］に ひらがなを かきましょう。",
+        "instruction": "えを みて ひらがなを かきましょう。",
         "img": "kokugo_drills/assets/b11/isu.png",
         "imgAlt": "いす",
         "items": [
@@ -18804,7 +18895,7 @@ const KOKUGO_ROWS = [
       {
         "probNum": 5,
         "title": "もんだい 5",
-        "instruction": "えを みて ［ ］に ひらがなを かきましょう。",
+        "instruction": "えを みて ひらがなを かきましょう。",
         "img": "kokugo_drills/assets/b11/ukiwa.png",
         "imgAlt": "うきわ",
         "items": [
@@ -18827,7 +18918,7 @@ const KOKUGO_ROWS = [
       {
         "probNum": 6,
         "title": "もんだい 6",
-        "instruction": "えを みて ［ ］に ひらがなを かきましょう。",
+        "instruction": "えを みて ひらがなを かきましょう。",
         "img": "kokugo_drills/assets/b11/eri.png",
         "imgAlt": "えり",
         "items": [
@@ -18846,7 +18937,7 @@ const KOKUGO_ROWS = [
       {
         "probNum": 7,
         "title": "もんだい 7",
-        "instruction": "えを みて ［ ］に ひらがなを かきましょう。",
+        "instruction": "えを みて ひらがなを かきましょう。",
         "img": "kokugo_drills/assets/b11/oukan.png",
         "imgAlt": "おうかん",
         "items": [
@@ -18857,10 +18948,8 @@ const KOKUGO_ROWS = [
             "id": "B11_P7_O"
           },
           {
-            "type": "write",
-            "char": "う",
-            "strokes": 2,
-            "id": "B11_P7_U"
+            "type": "fixed",
+            "char": "う"
           },
           {
             "type": "fixed",
@@ -19364,7 +19453,7 @@ const KOKUGO_ROWS = [
       {
         "probNum": 3,
         "title": "もんだい 3",
-        "instruction": "えを みて ［ ］に ひらがなを かきましょう。",
+        "instruction": "えを みて ひらがなを かきましょう。",
         "img": "kokugo_drills/assets/b22/saifu.png",
         "imgAlt": "さいふ",
         "items": [
@@ -19387,7 +19476,7 @@ const KOKUGO_ROWS = [
       {
         "probNum": 4,
         "title": "もんだい 4",
-        "instruction": "えを みて ［ ］に ひらがなを かきましょう。",
+        "instruction": "えを みて ひらがなを かきましょう。",
         "img": "kokugo_drills/assets/b22/shima.png",
         "imgAlt": "しま",
         "items": [
@@ -19406,7 +19495,7 @@ const KOKUGO_ROWS = [
       {
         "probNum": 5,
         "title": "もんだい 5",
-        "instruction": "えを みて ［ ］に ひらがなを かきましょう。",
+        "instruction": "えを みて ひらがなを かきましょう。",
         "img": "kokugo_drills/assets/b22/suika.png",
         "imgAlt": "すいか",
         "items": [
@@ -19429,7 +19518,7 @@ const KOKUGO_ROWS = [
       {
         "probNum": 6,
         "title": "もんだい 6",
-        "instruction": "えを みて ［ ］に ひらがなを かきましょう。",
+        "instruction": "えを みて ひらがなを かきましょう。",
         "img": "kokugo_drills/assets/b22/senro.png",
         "imgAlt": "せんろ",
         "items": [
@@ -19452,7 +19541,7 @@ const KOKUGO_ROWS = [
       {
         "probNum": 7,
         "title": "もんだい 7",
-        "instruction": "えを みて ［ ］に ひらがなを かきましょう。",
+        "instruction": "えを みて ひらがなを かきましょう。",
         "img": "kokugo_drills/assets/b22/sori.png",
         "imgAlt": "そり",
         "items": [
@@ -19876,6 +19965,215 @@ const KOKUGO_ROWS = [
       "ぬりえ",
       "ねじ",
       "のこぎり"
+    ],
+    "reviewProblems": [
+      {
+        "probNum": 1,
+        "title": "もんだい 1",
+        "instruction": "ポケモンの こえを よんで ひらがなを かきましょう。",
+        "pokeName": "ピカチュウ",
+        "pokeArt": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
+        "sizeCallout": "「ピカチュウ！」と げんきに なきごえを あげているよ！「ポケモンの なきごえ」を かんせいさせよう！",
+        "items": [
+          {
+            "type": "fixed",
+            "char": "ポ"
+          },
+          {
+            "type": "fixed",
+            "char": "ケ"
+          },
+          {
+            "type": "fixed",
+            "char": "モ"
+          },
+          {
+            "type": "fixed",
+            "char": "ン"
+          },
+          {
+            "type": "fixed",
+            "char": "の"
+          },
+          {
+            "type": "write",
+            "char": "な",
+            "strokes": 4,
+            "id": "B33_P1_Na"
+          },
+          {
+            "type": "fixed",
+            "char": "き"
+          },
+          {
+            "type": "fixed",
+            "char": "ご"
+          },
+          {
+            "type": "fixed",
+            "char": "え"
+          }
+        ]
+      },
+      {
+        "probNum": 2,
+        "title": "もんだい 2",
+        "instruction": "ドーブルが えがいた にがおえ！ ひらがなを かきましょう。",
+        "pokeName": "ドーブル",
+        "pokeArt": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/235.png",
+        "sizeCallout": "しっぽの さきから えのぐを だして えを かく「えかきポケモン」！「ポケモンの にがおえ」を かんせいさせよう！",
+        "items": [
+          {
+            "type": "fixed",
+            "char": "ポ"
+          },
+          {
+            "type": "fixed",
+            "char": "ケ"
+          },
+          {
+            "type": "fixed",
+            "char": "モ"
+          },
+          {
+            "type": "fixed",
+            "char": "ン"
+          },
+          {
+            "type": "fixed",
+            "char": "の"
+          },
+          {
+            "type": "write",
+            "char": "に",
+            "strokes": 3,
+            "id": "B33_P2_Ni"
+          },
+          {
+            "type": "fixed",
+            "char": "が"
+          },
+          {
+            "type": "fixed",
+            "char": "お"
+          },
+          {
+            "type": "fixed",
+            "char": "え"
+          }
+        ]
+      },
+      {
+        "probNum": 3,
+        "title": "もんだい 3",
+        "instruction": "えを みて ひらがなを かきましょう。",
+        "img": "kokugo_drills/assets/b33/nabe.png",
+        "imgAlt": "なべ",
+        "items": [
+          {
+            "type": "write",
+            "char": "な",
+            "strokes": 4,
+            "id": "B33_P3_Na"
+          },
+          {
+            "type": "fixed",
+            "char": "べ"
+          }
+        ]
+      },
+      {
+        "probNum": 4,
+        "title": "もんだい 4",
+        "instruction": "えを みて ひらがなを かきましょう。",
+        "img": "kokugo_drills/assets/b33/nimotsu.png",
+        "imgAlt": "にもつ",
+        "items": [
+          {
+            "type": "write",
+            "char": "に",
+            "strokes": 3,
+            "id": "B33_P4_Ni"
+          },
+          {
+            "type": "fixed",
+            "char": "も"
+          },
+          {
+            "type": "fixed",
+            "char": "つ"
+          }
+        ]
+      },
+      {
+        "probNum": 5,
+        "title": "もんだい 5",
+        "instruction": "えを みて ひらがなを かきましょう。",
+        "img": "kokugo_drills/assets/b33/nurie.png",
+        "imgAlt": "ぬりえ",
+        "items": [
+          {
+            "type": "write",
+            "char": "ぬ",
+            "strokes": 2,
+            "id": "B33_P5_Nu"
+          },
+          {
+            "type": "fixed",
+            "char": "り"
+          },
+          {
+            "type": "fixed",
+            "char": "え"
+          }
+        ]
+      },
+      {
+        "probNum": 6,
+        "title": "もんだい 6",
+        "instruction": "えを みて ひらがなを かきましょう。",
+        "img": "kokugo_drills/assets/b33/neji.png",
+        "imgAlt": "ねじ",
+        "items": [
+          {
+            "type": "write",
+            "char": "ね",
+            "strokes": 2,
+            "id": "B33_P6_Ne"
+          },
+          {
+            "type": "fixed",
+            "char": "じ"
+          }
+        ]
+      },
+      {
+        "probNum": 7,
+        "title": "もんだい 7",
+        "instruction": "えを みて ひらがなを かきましょう。",
+        "img": "kokugo_drills/assets/b33/nokogiri.png",
+        "imgAlt": "のこぎり",
+        "items": [
+          {
+            "type": "write",
+            "char": "の",
+            "strokes": 1,
+            "id": "B33_P7_No"
+          },
+          {
+            "type": "fixed",
+            "char": "こ"
+          },
+          {
+            "type": "fixed",
+            "char": "ぎ"
+          },
+          {
+            "type": "fixed",
+            "char": "り"
+          }
+        ]
+      }
     ]
   },
   {
@@ -20517,31 +20815,30 @@ const KOKUGO_ROWS = [
       {
         "probNum": 1,
         "title": "もんだい 1",
-        "instruction": "なぞって ひらがなを かきましょう。",
-        "sizeCallout": "「み・ず・う・み・や」を かんせいさせよう！",
+        "instruction": "みずうみや もりに ポケモンが いる えを みて、ひらがなを かこう！",
+        "img": "kokugo_drills/assets/b50/lake_forest_pokemon.png",
+        "imgAlt": "みずうみや もりに ポケモンが いる え",
+        "bannerTitle": "🏞️ みずうみや もりに ポケモンが いるよ！",
+        "bannerDesc": "みずうみには ラプラスや ピカチュウたちが いるね！「みずうみや」の［み］を かこう！",
         "items": [
           {
             "type": "write",
             "char": "み",
-            "strokes": 2,
+            "strokes": 3,
             "id": "B50_P1_Mi1"
           },
           {
-            "type": "write",
-            "char": "ず",
-            "strokes": 2,
-            "id": "B50_P1_Zu"
+            "type": "fixed",
+            "char": "ず"
           },
           {
-            "type": "write",
-            "char": "う",
-            "strokes": 2,
-            "id": "B50_P1_U"
+            "type": "fixed",
+            "char": "う"
           },
           {
             "type": "write",
             "char": "み",
-            "strokes": 2,
+            "strokes": 3,
             "id": "B50_P1_Mi2"
           },
           {
@@ -20553,10 +20850,11 @@ const KOKUGO_ROWS = [
       {
         "probNum": 2,
         "title": "もんだい 2",
-        "instruction": "ぶんを よんで ひらがなを かきましょう。",
-        "pokeName": "マギアナ",
-        "pokeArt": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/801.png",
-        "sizeCallout": "もりの なかに マギアナが いるよ！「もりに ポケモンが いる。」の ぶんを かんせいさせよう！",
+        "instruction": "もりには フシギダネや モクローたちが いるね！ ひらがなを かこう！",
+        "img": "kokugo_drills/assets/b50/lake_forest_pokemon.png",
+        "imgAlt": "みずうみや もりに ポケモンが いる え",
+        "bannerTitle": "🌲 もりに ポケモンが いる。",
+        "bannerDesc": "もりには フシギダネや モクロー、ナゾノクサたちが いるね！ ［も］と［い］を かこう！",
         "items": [
           {
             "type": "write",
@@ -20611,7 +20909,7 @@ const KOKUGO_ROWS = [
       {
         "probNum": 3,
         "title": "もんだい 3",
-        "instruction": "えを みて ［ ］に ひらがなを かきましょう。",
+        "instruction": "えを みて ひらがなを かきましょう。",
         "img": "kokugo_drills/assets/b50/mado.png",
         "imgAlt": "まど",
         "items": [
@@ -20630,14 +20928,14 @@ const KOKUGO_ROWS = [
       {
         "probNum": 4,
         "title": "もんだい 4",
-        "instruction": "えを みて ［ ］に ひらがなを かきましょう。",
+        "instruction": "えを みて ひらがなを かきましょう。",
         "img": "kokugo_drills/assets/b50/mimi.png",
         "imgAlt": "みみ",
         "items": [
           {
             "type": "write",
             "char": "み",
-            "strokes": 2,
+            "strokes": 3,
             "id": "B50_P4_Mi"
           },
           {
@@ -20649,7 +20947,7 @@ const KOKUGO_ROWS = [
       {
         "probNum": 5,
         "title": "もんだい 5",
-        "instruction": "えを みて ［ ］に ひらがなを かきましょう。",
+        "instruction": "えを みて ひらがなを かきましょう。",
         "img": "kokugo_drills/assets/b50/mushiba.png",
         "imgAlt": "むしば",
         "items": [
@@ -20672,7 +20970,7 @@ const KOKUGO_ROWS = [
       {
         "probNum": 6,
         "title": "もんだい 6",
-        "instruction": "えを みて ［ ］に ひらがなを かきましょう。",
+        "instruction": "えを みて ひらがなを かきましょう。",
         "img": "kokugo_drills/assets/b50/me.png",
         "imgAlt": "め",
         "items": [
@@ -20687,7 +20985,7 @@ const KOKUGO_ROWS = [
       {
         "probNum": 7,
         "title": "もんだい 7",
-        "instruction": "えを みて ［ ］に ひらがなを かきましょう。",
+        "instruction": "えを みて ひらがなを かきましょう。",
         "img": "kokugo_drills/assets/b50/mochi.png",
         "imgAlt": "もち",
         "items": [
@@ -20892,6 +21190,208 @@ const KOKUGO_ROWS = [
       "ムンナ",
       "レントラー",
       "レックウザ"
+    ],
+    "reviewProblems": [
+      {
+        "probNum": 1,
+        "title": "もんだい 1",
+        "instruction": "ポケモンの なまえの はじめの もじを ひらがなで かこう！",
+        "pokeName": "アブソル",
+        "pokeArt": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/359.png",
+        "sizeCallout": "バトル1で あった アブソル！「あぶそる」の［あ］を かこう！",
+        "items": [
+          {
+            "type": "write",
+            "char": "あ",
+            "strokes": 3,
+            "id": "B55_P1_A"
+          },
+          {
+            "type": "fixed",
+            "char": "ぶ"
+          },
+          {
+            "type": "fixed",
+            "char": "そ"
+          },
+          {
+            "type": "fixed",
+            "char": "る"
+          }
+        ]
+      },
+      {
+        "probNum": 2,
+        "title": "もんだい 2",
+        "instruction": "ポケモンの なまえの はじめの もじを ひらがなで かこう！",
+        "pokeName": "ニャオハ",
+        "pokeArt": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/906.png",
+        "sizeCallout": "くさねこポケモンの ニャオハ！「にゃおは」の［に］を かこう！",
+        "items": [
+          {
+            "type": "write",
+            "char": "に",
+            "strokes": 3,
+            "id": "B55_P2_Ni"
+          },
+          {
+            "type": "fixed",
+            "char": "ゃ"
+          },
+          {
+            "type": "fixed",
+            "char": "お"
+          },
+          {
+            "type": "fixed",
+            "char": "は"
+          }
+        ]
+      },
+      {
+        "probNum": 3,
+        "title": "もんだい 3",
+        "instruction": "ポケモンの なまえの はじめの もじを ひらがなで かこう！",
+        "pokeName": "ヌメラ",
+        "pokeArt": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/704.png",
+        "sizeCallout": "なんたいポケモンの ヌメラ！「ぬめら」の［ぬ］を かこう！",
+        "items": [
+          {
+            "type": "write",
+            "char": "ぬ",
+            "strokes": 2,
+            "id": "B55_P3_Nu"
+          },
+          {
+            "type": "fixed",
+            "char": "め"
+          },
+          {
+            "type": "fixed",
+            "char": "ら"
+          }
+        ]
+      },
+      {
+        "probNum": 4,
+        "title": "もんだい 4",
+        "instruction": "ポケモンの なまえの はじめの もじを カタカナで かこう！",
+        "pokeName": "クワッス",
+        "pokeArt": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/912.png",
+        "sizeCallout": "こがもポケモンの クワッス！「クワッス」の［ク］を かこう！",
+        "items": [
+          {
+            "type": "write",
+            "char": "ク",
+            "strokes": 2,
+            "id": "B55_P4_Ku"
+          },
+          {
+            "type": "fixed",
+            "char": "ワ"
+          },
+          {
+            "type": "fixed",
+            "char": "ッ"
+          },
+          {
+            "type": "fixed",
+            "char": "ス"
+          }
+        ]
+      },
+      {
+        "probNum": 5,
+        "title": "もんだい 5",
+        "instruction": "ポケモンの なまえの はじめの もじを カタカナで かこう！",
+        "pokeName": "フカマル",
+        "pokeArt": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/443.png",
+        "sizeCallout": "りくざめポケモンの フカマル！「フカマル」の［フ］を かこう！",
+        "items": [
+          {
+            "type": "write",
+            "char": "フ",
+            "strokes": 1,
+            "id": "B55_P5_Fu"
+          },
+          {
+            "type": "fixed",
+            "char": "カ"
+          },
+          {
+            "type": "fixed",
+            "char": "マ"
+          },
+          {
+            "type": "fixed",
+            "char": "ル"
+          }
+        ]
+      },
+      {
+        "probNum": 6,
+        "title": "もんだい 6",
+        "instruction": "ポケモンの なまえの はじめの もじを カタカナで かこう！",
+        "pokeName": "ポッチャマ",
+        "pokeArt": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/393.png",
+        "sizeCallout": "ペンギンポケモンの ポッチャマ！「ポッチャマ」の［ポ］を かこう！",
+        "items": [
+          {
+            "type": "write",
+            "char": "ポ",
+            "strokes": 5,
+            "id": "B55_P6_Po"
+          },
+          {
+            "type": "fixed",
+            "char": "ッ"
+          },
+          {
+            "type": "fixed",
+            "char": "チ"
+          },
+          {
+            "type": "fixed",
+            "char": "ャ"
+          },
+          {
+            "type": "fixed",
+            "char": "マ"
+          }
+        ]
+      },
+      {
+        "probNum": 7,
+        "title": "もんだい 7",
+        "instruction": "さいごの でんせつボス！ なまえを かんせいさせて レックウザを ゲットしよう！",
+        "pokeName": "レックウザ",
+        "pokeArt": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/384.png",
+        "sizeCallout": "てんくうポケモンの レックウザ！「レックウザ」の［レ］を かいて ボールを なげよう！",
+        "items": [
+          {
+            "type": "write",
+            "char": "レ",
+            "strokes": 1,
+            "id": "B55_P7_Re"
+          },
+          {
+            "type": "fixed",
+            "char": "ッ"
+          },
+          {
+            "type": "fixed",
+            "char": "ク"
+          },
+          {
+            "type": "fixed",
+            "char": "ウ"
+          },
+          {
+            "type": "fixed",
+            "char": "ザ"
+          }
+        ]
+      }
     ]
   }
 ];
@@ -21801,197 +22301,381 @@ function renderKokugoWorkArea(r, idx, isCleared) {
   }, 50);
 }
 
-// まとめバトルの描画（ボス仕様・縦書き文章／単語マス列・点数表示撤廃）
-function renderReviewWorkArea(r, idx, isCleared, col) {
-  // reviewProblemsが定義されている場合（バトル11、バトル22、バトル50など）
-  if (r.reviewProblems && r.reviewProblems.length > 0) {
-    const headerCard = document.createElement('div');
-    headerCard.className = 'k-card';
-    headerCard.innerHTML = `
-      <div class="k-card-title-row">
-        <h3 class="k-card-title">
-          <span class="k-card-step-badge">★</span>
-          <span>${r.reviewTitle || 'まとめ バトル！'}</span>
-        </h3>
-      </div>
-      <p style="font-size:14px;color:#475569;margin-bottom:8px">${r.reviewSummary || 'これまでに まなんだ もじを おおきな マスに かきいれて ボスに ちょうせんだ！'}</p>
-    `;
-    col.appendChild(headerCard);
+// まとめバトルの描画（ドリル原本完全再現・美しい縦書き短冊・大問グループ化）
+let currentRevGroups = { g1: [], g2: [] };
+let currentRevItemMap = {};
+let currentRevTools = { g1: 'pen', g2: 'pen' };
 
-    r.reviewProblems.forEach((p) => {
-      const pCard = document.createElement('div');
-      pCard.className = `k-card ${isCleared ? 'word-cleared' : ''}`;
-      pCard.id = `kRevProbCard_${p.probNum}`;
+function renderStripCells(items, isCleared) {
+  let html = '';
+  let pokeIdx = -1;
+  for (let i = items.length - 1; i >= 0; i--) {
+    if (items[i].char === 'ポ' && items.slice(i).map(x => x.char).join('') === 'ポケモン') {
+      pokeIdx = i;
+      break;
+    }
+  }
 
-      // 1. ポケモン情報または挿絵の表示
-      let artHtml = '';
-      if (p.sizeCallout || p.pokeArt) {
-        artHtml = `
-          <div style="background:linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);border:2.5px solid #86efac;border-radius:16px;padding:12px 18px;margin:8px 0 16px;display:flex;align-items:center;gap:18px;box-shadow:0 3px 10px rgba(34,197,94,0.08)">
-            ${p.pokeArt ? `<img src="${p.pokeArt}" style="height:85px;width:85px;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.1))">` : ''}
-            <div>
-              <div style="font-size:17px;font-weight:900;color:#166534;margin-bottom:4px">🌟 ${p.pokeName || ''}</div>
-              <div style="font-size:14px;font-weight:700;color:#15803d;line-height:1.5">${p.sizeCallout || ''}</div>
-            </div>
-          </div>
-        `;
-      } else if (p.img) {
-        artHtml = `
-          <div style="display:flex;justify-content:center;margin:8px 0 14px">
-            <div style="background:#fff;border:3px solid #cbd5e1;border-radius:16px;padding:8px 16px;box-shadow:0 4px 12px rgba(0,0,0,0.06);display:inline-flex;align-items:center;justify-content:center">
-              <img src="${p.img}" alt="${p.imgAlt || ''}" style="height:105px;object-fit:contain">
-            </div>
-          </div>
-        `;
-      }
+  let splitIdx = items.length;
+  let trailingText = '';
+  if (pokeIdx !== -1) {
+    splitIdx = pokeIdx;
+    trailingText = 'ポケモン';
+  }
 
-      // 2. 縦書きマス列の構築
-      let rowsHtml = '';
-      p.items.forEach((it) => {
-        if (it.type === 'fixed') {
-          rowsHtml += `
-            <div class="k-vert-strip-row k-vert-row-fixed">
-              <div class="k-vert-tile-fixed">
-                <span class="k-vert-char-fixed">${it.char}</span>
-              </div>
-            </div>
-          `;
-        } else if (it.type === 'write') {
-          rowsHtml += `
-            <div class="k-vert-strip-row k-vert-row-write" id="kRevRow_${it.id}">
-              <div class="k-vert-tile-write ${isCleared ? 'word-cleared' : ''}" id="kRevBox_${it.id}">
-                <div class="k-canvas-grid"></div>
-                <div class="k-canvas-start-dot"></div>
-                <!-- まとめ仕様：マスの中にお手本文字は入れない -->
-                <canvas class="k-canvas-elem" id="kCanvas${it.id}" width="200" height="200" style="width:100%;height:100%"></canvas>
-                <div class="k-canvas-slot-tag" style="position:absolute;bottom:2px;left:0;right:0;text-align:center;font-size:11px;font-weight:900;color:#2563eb;pointer-events:none">［${it.char}］を かこう</div>
-              </div>
-              <div class="k-vert-tile-tools">
-                <div class="k-tools-row" style="margin:0;gap:4px;flex-wrap:wrap">
-                  <button type="button" class="k-tool-btn active" id="btnPen${it.id}" onclick="setCanvasTool('${it.id}', 'pen')" style="padding:4px 8px;font-size:12px">✏️ えんぴつ</button>
-                  <button type="button" class="k-tool-btn" id="btnEraser${it.id}" onclick="setCanvasTool('${it.id}', 'eraser')" style="padding:4px 8px;font-size:12px">🧽 けしゴム</button>
-                  <button type="button" class="k-tool-btn" onclick="clearKanaCanvas('${it.id}')" style="padding:4px 8px;font-size:12px">🔄 ぜんぶけす</button>
-                  <button type="button" class="k-tool-btn k-judge-btn" onclick="judgeCanvas('${it.id}')" style="padding:4px 10px;font-size:12px">💮 はんてい！</button>
-                  <button type="button" class="k-tool-btn" onclick="autoTraceCanvas('${it.id}')" style="color:#2563eb;padding:4px 8px;font-size:12px">💡 おたすけ</button>
-                </div>
-                <div class="k-eval-result" id="kEval${it.id}" style="font-size:12px;margin:2px 0 0">
-                  ${isCleared ? '<span class="k-eval-pass">💮 ごうかく！ (100てん)</span>' : ''}
-                </div>
-              </div>
-            </div>
-          `;
-        }
-      });
-
-      pCard.innerHTML = `
-        <div class="k-card-title-row">
-          <h3 class="k-card-title">
-            <span class="k-card-step-badge">${p.probNum}</span>
-            <span>${p.instruction || 'ひらがなを かきましょう。'}</span>
-          </h3>
-        </div>
-        ${artHtml}
-        <div class="k-vert-flow-wrap">
-          <div class="k-vert-word-strip">
-            ${rowsHtml}
-          </div>
+  for (let i = 0; i < splitIdx; i++) {
+    const it = items[i];
+    if (it.type === 'write') {
+      currentRevItemMap[it.id] = it;
+      html += `
+        <div class="k-strip-cell-write ${isCleared ? 'cleared' : ''}" id="kRevBox_${it.id}">
+          <div class="k-canvas-grid"></div>
+          <div class="k-canvas-start-dot"></div>
+          <canvas class="k-canvas-elem" id="kCanvas${it.id}" width="260" height="260" style="width:100%;height:100%"></canvas>
+          <div class="k-canvas-slot-tag" style="position:absolute;bottom:4px;left:0;right:0;text-align:center;font-size:12px;font-weight:900;color:#2563eb;pointer-events:none">［${it.char}］を かこう</div>
+          <button type="button" class="k-strip-clear-btn" onclick="clearSingleRevCanvas('${it.id}')" title="けす">✕</button>
+          <div class="k-strip-eval-badge ${isCleared ? 'show' : ''}" id="kEval${it.id}">${isCleared ? '💮 100' : ''}</div>
         </div>
       `;
-      col.appendChild(pCard);
-    });
+    } else if (it.type === 'fixed') {
+      html += `
+        <div class="k-strip-cell-fixed">
+          <span>${it.char}</span>
+        </div>
+      `;
+    }
+  }
 
-    // ぜんもんおたすけボタン
-    const botCard = document.createElement('div');
-    botCard.style.textAlign = 'center';
-    botCard.style.margin = '20px 0 10px';
-    botCard.innerHTML = `
-      <button type="button" class="mbtn" style="font-size:16px;padding:10px 24px;background:#22c55e;color:#fff;border-radius:14px;font-weight:900" onclick="passReviewBattle()">
-        💮 ぜんぶ かけたよ！ (おたすけ はんてい)
-      </button>
+  if (trailingText) {
+    html += `
+      <div class="k-strip-cell-text">
+        ${trailingText}
+      </div>
     `;
-    col.appendChild(botCard);
+  }
 
-    setTimeout(() => {
-      r.reviewProblems.forEach(p => {
-        p.items.forEach(it => {
-          if (it.type === 'write') {
-            initKanaCanvas(it.id, it.char, it.strokes || 2);
-            if (kanaCanvases[it.id]) kanaCanvases[it.id].guideVisible = false;
-            if (isCleared) {
-              autoDrawKanaText(it.id, it.char);
-            }
-          }
-        });
-      });
-    }, 50);
+  return html;
+}
+
+function renderReviewWorkArea(r, idx, isCleared, col) {
+  if (!r.reviewProblems || r.reviewProblems.length === 0) {
     return;
   }
 
-  // フォールバック
-  const card = document.createElement('div');
-  card.className = 'k-card';
-  card.innerHTML = `
+  currentRevGroups = { g1: [], g2: [] };
+  currentRevItemMap = {};
+  currentRevTools = { g1: 'pen', g2: 'pen' };
+
+  // 全体ヘッダーカード
+  const headerCard = document.createElement('div');
+  headerCard.className = 'k-card';
+  headerCard.style.marginBottom = '20px';
+  headerCard.innerHTML = `
     <div class="k-card-title-row">
       <h3 class="k-card-title">
         <span class="k-card-step-badge">★</span>
-        <span>${r.reviewTitle || 'そうふくしゅう バトル！'}</span>
+        <span>${r.reviewTitle || 'まとめ バトル！'}</span>
       </h3>
     </div>
-    <p style="font-size:14px;color:#475569;margin-bottom:16px">${r.reviewSummary || 'これまでに まなんだ もじを おおきな マスに かきいれて ボスに ちょうせんだ！'}</p>
-
-    <!-- 単語書き取りチャレンジ -->
-    <div class="k-word-fill-grid">
-      ${(r.words || ['あさ', 'よる', 'やま']).slice(0, 3).map((w, wIdx) => {
-        const targetChar = w[0];
-        return `
-          <div class="k-word-card ${isCleared ? 'word-cleared' : ''}" id="kRevCard_${wIdx}">
-            <div class="k-word-card-header">
-              <div class="k-word-card-title">
-                <span class="k-word-type-badge review">もんだい ${wIdx + 1}</span>
-                <span class="k-word-target-prompt">「${targetChar}」を かこう！</span>
-              </div>
-              <button type="button" class="hbtn" style="font-size:12px;background:#e0f2fe;border-color:#38bdf8;color:#0369a1" onclick="speakText('${w}')">🔊 よむ</button>
-            </div>
-
-            <div class="k-word-display-area">
-              <div class="k-word-flow">
-                ${renderWordBoxesFlow(w, targetChar, 'Rev_' + wIdx, 2, isCleared)}
-              </div>
-            </div>
-
-            <div class="k-tools-row">
-              <button type="button" class="k-tool-btn active" id="btnPenRev_${wIdx}" onclick="setCanvasTool('Rev_${wIdx}', 'pen')">✏️ えんぴつ</button>
-              <button type="button" class="k-tool-btn" id="btnEraserRev_${wIdx}" onclick="setCanvasTool('Rev_${wIdx}', 'eraser')">🧽 けしゴム</button>
-              <button type="button" class="k-tool-btn" onclick="clearKanaCanvas('Rev_${wIdx}')">🔄 ぜんぶけす</button>
-              <button type="button" class="k-tool-btn" onclick="toggleGuideGlyph('Rev_${wIdx}')">👁️ おてほん</button>
-              <button type="button" class="k-tool-btn k-judge-btn" onclick="judgeCanvas('Rev_${wIdx}')">💮 はんてい！</button>
-              <button type="button" class="k-tool-btn" onclick="autoTraceCanvas('Rev_${wIdx}')" style="color:#2563eb">💡 おたすけ</button>
-            </div>
-            <div class="k-eval-result" id="kEvalRev_${wIdx}">${isCleared ? '<span class="k-eval-pass">💮 ごうかく！ (100てん)</span>' : ''}</div>
-          </div>
-        `;
-      }).join('')}
-    </div>
-
-    <!-- 一括おたすけ正解ボタン -->
-    <div style="text-align:center;margin-top:20px">
-      <button type="button" class="mbtn" style="font-size:16px;padding:10px 24px;background:#22c55e;color:#fff;border-radius:14px;font-weight:900" onclick="passReviewBattle()">
-        💮 ぜんぶ かけたよ！ (おたすけ はんてい)
-      </button>
-    </div>
+    <p style="font-size:15px;color:#475569;margin-bottom:6px;font-weight:700">${r.reviewSummary || 'これまでに まなんだ もじを おおきな マスに かきいれて ボスに ちょうせんだ！'}</p>
   `;
-  col.appendChild(card);
+  col.appendChild(headerCard);
 
+  // 大問1（文章問題）と大問2（絵を見て書く問題）の分類
+  const g1Problems = [];
+  const g2Problems = [];
+
+  r.reviewProblems.forEach((p) => {
+    if (p.img && !p.pokeArt && !p.bannerTitle && p.probNum >= 3) {
+      g2Problems.push(p);
+    } else {
+      g1Problems.push(p);
+    }
+  });
+
+  // 大問1 カード
+  if (g1Problems.length > 0) {
+    const card1 = document.createElement('div');
+    card1.className = `k-rev-card ${isCleared ? 'word-cleared' : ''}`;
+    card1.id = 'kRevCard_Group1';
+
+    // バナー（バトル50のみずうみと森のイラスト等）
+    let bannerHtml = '';
+    const firstBanner = g1Problems.find(p => p.bannerTitle || (p.img && p.probNum === 1));
+    if (firstBanner) {
+      bannerHtml = `
+        <div style="background:linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);border:2.5px solid #86efac;border-radius:18px;padding:16px 20px;margin:8px 0 16px;box-shadow:0 3px 12px rgba(34,197,94,0.08);text-align:center">
+          <div style="font-size:18px;font-weight:900;color:#166534;margin-bottom:4px">${firstBanner.bannerTitle || 'みずうみや もりに ポケモンが いるよ！'}</div>
+          <div style="font-size:14px;font-weight:700;color:#15803d;line-height:1.5;margin-bottom:10px">${firstBanner.bannerDesc || 'ただしい ひらがなを マスに かいて、ぶんを かんせいさせよう！'}</div>
+          ${firstBanner.img ? `
+            <div>
+              <img src="${firstBanner.img}" alt="${firstBanner.imgAlt || ''}" style="max-height:240px;max-width:100%;border-radius:14px;box-shadow:0 4px 16px rgba(0,0,0,0.12);object-fit:cover">
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }
+
+    card1.innerHTML = `
+      <div class="k-card-title-row">
+        <h3 class="k-card-title">
+          <span class="k-card-step-badge">1</span>
+          <span>□の ひらがなを なぞりましょう。（①、②）</span>
+        </h3>
+      </div>
+      ${bannerHtml}
+      <div class="k-rev-strips-flow">
+        ${g1Problems.map(p => {
+          p.items.forEach(it => {
+            if (it.type === 'write') currentRevGroups.g1.push(it.id);
+          });
+          return `
+            <div class="k-rev-strip-unit ${isCleared ? 'cleared' : ''}" id="kRevUnit_${p.probNum}">
+              <div class="k-authentic-strip">
+                ${renderStripCells(p.items, isCleared)}
+              </div>
+              ${(p.pokeArt || p.sizeCallout) ? `
+                <div class="k-strip-poke-banner">
+                  ${p.pokeArt ? `<img src="${p.pokeArt}" alt="${p.pokeName || ''}">` : ''}
+                  <div class="k-strip-poke-name">🌟 ${p.pokeName || ''}</div>
+                  <div class="k-strip-poke-desc">${p.sizeCallout || ''}</div>
+                </div>
+              ` : ''}
+            </div>
+          `;
+        }).join('')}
+      </div>
+
+      <!-- 大問1 操作ツールバー -->
+      <div class="k-rev-toolbar">
+        <div class="k-tools-row" style="margin:0;gap:8px;flex-wrap:wrap">
+          <button type="button" class="k-tool-btn active" id="btnPen_g1" onclick="setRevTool('g1', 'pen')">✏️ えんぴつ</button>
+          <button type="button" class="k-tool-btn" id="btnEraser_g1" onclick="setRevTool('g1', 'eraser')">🧽 けしゴム</button>
+          <button type="button" class="k-tool-btn" onclick="clearRevGroup('g1')">🔄 ぜんぶ けす</button>
+          <button type="button" class="k-tool-btn" onclick="autoTraceRevGroup('g1')" style="color:#2563eb">💡 おたすけ</button>
+        </div>
+        <button type="button" class="k-tool-btn k-judge-btn" onclick="judgeRevGroup('g1')" style="padding:10px 24px;font-size:16px">
+          💮 はんてい！
+        </button>
+      </div>
+    `;
+    col.appendChild(card1);
+  }
+
+  // 大問2 カード（絵を見て書く問題）
+  if (g2Problems.length > 0) {
+    const card2 = document.createElement('div');
+    card2.className = `k-rev-card ${isCleared ? 'word-cleared' : ''}`;
+    card2.id = 'kRevCard_Group2';
+    card2.style.marginTop = '24px';
+
+    card2.innerHTML = `
+      <div class="k-card-title-row">
+        <h3 class="k-card-title">
+          <span class="k-card-step-badge">2</span>
+          <span>えを みて □に ひらがなを かきましょう。（①〜⑤）</span>
+        </h3>
+      </div>
+      <div class="k-rev-vocab-grid">
+        ${g2Problems.map(p => {
+          p.items.forEach(it => {
+            if (it.type === 'write') currentRevGroups.g2.push(it.id);
+          });
+          return `
+            <div class="k-rev-vocab-card ${isCleared ? 'cleared' : ''}" id="kRevVocabCard_${p.probNum}">
+              <div class="k-rev-vocab-img-box">
+                <img src="${p.img}" alt="${p.imgAlt || ''}">
+              </div>
+              <div class="k-authentic-strip">
+                ${renderStripCells(p.items, isCleared)}
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+
+      <!-- 大問2 操作ツールバー -->
+      <div class="k-rev-toolbar">
+        <div class="k-tools-row" style="margin:0;gap:8px;flex-wrap:wrap">
+          <button type="button" class="k-tool-btn active" id="btnPen_g2" onclick="setRevTool('g2', 'pen')">✏️ えんぴつ</button>
+          <button type="button" class="k-tool-btn" id="btnEraser_g2" onclick="setRevTool('g2', 'eraser')">🧽 けしゴム</button>
+          <button type="button" class="k-tool-btn" onclick="clearRevGroup('g2')">🔄 ぜんぶ けす</button>
+          <button type="button" class="k-tool-btn" onclick="autoTraceRevGroup('g2')" style="color:#2563eb">💡 おたすけ</button>
+        </div>
+        <button type="button" class="k-tool-btn k-judge-btn" onclick="judgeRevGroup('g2')" style="padding:10px 24px;font-size:16px">
+          💮 はんてい！
+        </button>
+      </div>
+    `;
+    col.appendChild(card2);
+  }
+
+  // ぜんもんおたすけ正解ボタン
+  const botCard = document.createElement('div');
+  botCard.style.textAlign = 'center';
+  botCard.style.margin = '28px 0 16px';
+  botCard.innerHTML = `
+    <button type="button" class="mbtn" style="font-size:16px;padding:12px 32px;background:#22c55e;color:#fff;border-radius:18px;font-weight:900;box-shadow:0 4px 14px rgba(34,197,94,0.3)" onclick="passReviewBattle()">
+      💮 ぜんぶ かけたよ！ (おたすけ はんてい)
+    </button>
+  `;
+  col.appendChild(botCard);
+
+  // キャンバスの初期化
   setTimeout(() => {
-    (r.words || ['あさ', 'よる', 'やま']).slice(0, 3).forEach((w, wIdx) => {
-      initKanaCanvas('Rev_' + wIdx, w[0], 2);
-      if (isCleared) {
-        autoDrawKanaText('Rev_' + wIdx, w[0]);
-      }
+    r.reviewProblems.forEach(p => {
+      p.items.forEach(it => {
+        if (it.type === 'write') {
+          initKanaCanvas(it.id, it.char, it.strokes || 2);
+          if (kanaCanvases[it.id]) kanaCanvases[it.id].guideVisible = false;
+          if (isCleared) {
+            autoDrawKanaText(it.id, it.char);
+            const b = $(`kEval${it.id}`);
+            if (b) {
+              b.textContent = '💮 100';
+              b.classList.add('show');
+            }
+          }
+        }
+      });
     });
   }, 50);
 }
 
+// 単一マスのクリア
+function clearSingleRevCanvas(id) {
+  if (typeof playMarimbaPop === 'function') playMarimbaPop(0.9);
+  clearKanaCanvas(id);
+  const badge = $(`kEval${id}`);
+  if (badge) {
+    badge.textContent = '';
+    badge.classList.remove('show');
+  }
+  const box = $(`kRevBox_${id}`);
+  if (box) box.classList.remove('cleared', 'word-cleared');
+}
+
+// レビューグループのツール切り替え
+function setRevTool(group, tool) {
+  currentRevTools[group] = tool;
+  const pBtn = $(`btnPen_${group}`);
+  const eBtn = $(`btnEraser_${group}`);
+  if (pBtn && eBtn) {
+    if (tool === 'pen') {
+      pBtn.classList.add('active');
+      eBtn.classList.remove('active');
+    } else {
+      eBtn.classList.add('active');
+      pBtn.classList.remove('active');
+    }
+  }
+  const groupCanvases = currentRevGroups[group] || [];
+  groupCanvases.forEach(id => {
+    setCanvasTool(id, tool);
+  });
+}
+
+// レビューグループのクリア
+function clearRevGroup(group) {
+  if (typeof playMarimbaPop === 'function') playMarimbaPop(0.9);
+  const groupCanvases = currentRevGroups[group] || [];
+  groupCanvases.forEach(id => {
+    clearKanaCanvas(id);
+    const badge = $(`kEval${id}`);
+    if (badge) {
+      badge.textContent = '';
+      badge.classList.remove('show');
+    }
+    const box = $(`kRevBox_${id}`);
+    if (box) box.classList.remove('cleared', 'word-cleared');
+  });
+  const card = $(`kRevCard_${group === 'g1' ? 'Group1' : 'Group2'}`);
+  if (card) card.classList.remove('word-cleared');
+}
+
+// レビューグループのおたすけ
+function autoTraceRevGroup(group) {
+  if (typeof playPikaanSound === 'function') playPikaanSound();
+  const groupCanvases = currentRevGroups[group] || [];
+  groupCanvases.forEach(id => {
+    autoTraceCanvas(id);
+    const badge = $(`kEval${id}`);
+    if (badge) {
+      badge.textContent = '💮 100';
+      badge.classList.add('show');
+    }
+    const box = $(`kRevBox_${id}`);
+    if (box) box.classList.add('cleared');
+  });
+  const card = $(`kRevCard_${group === 'g1' ? 'Group1' : 'Group2'}`);
+  if (card) card.classList.add('word-cleared');
+  checkAllRevProblemsSolved();
+}
+
+// レビューグループの判定
+function judgeRevGroup(group) {
+  const groupCanvases = currentRevGroups[group] || [];
+  let allPass = true;
+
+  groupCanvases.forEach(id => {
+    const item = currentRevItemMap[id];
+    if (!item) return;
+
+    const res = evaluateHandwritingEngine(id, item.char);
+    const badge = $(`kEval${id}`);
+    const box = $(`kRevBox_${id}`);
+
+    if (res && res.score >= 50) {
+      if (badge) {
+        badge.textContent = `💮 ${res.score}`;
+        badge.classList.add('show');
+      }
+      if (box) box.classList.add('cleared');
+    } else {
+      allPass = false;
+      if (badge) {
+        badge.textContent = res ? `${res.score}てん` : '0てん';
+        badge.classList.add('show');
+      }
+      if (box) box.classList.remove('cleared');
+    }
+  });
+
+  const card = $(`kRevCard_${group === 'g1' ? 'Group1' : 'Group2'}`);
+  if (allPass && groupCanvases.length > 0) {
+    if (typeof playPikaanSound === 'function') playPikaanSound();
+    toast('💮 たいへん よく できました！', 2000);
+    if (card) card.classList.add('word-cleared');
+    checkAllRevProblemsSolved();
+  } else {
+    if (typeof playMarimbaPop === 'function') playMarimbaPop(0.7);
+    toast('もうすこし！ お手本を みて かきなおしてみよう！', 2000);
+    if (card) card.classList.remove('word-cleared');
+  }
+}
+
+// 全問クリア判定
+function checkAllRevProblemsSolved() {
+  const allIds = Object.keys(currentRevItemMap);
+  let allCleared = true;
+  for (const id of allIds) {
+    const box = $(`kRevBox_${id}`);
+    if (!box || !box.classList.contains('cleared')) {
+      allCleared = false;
+      break;
+    }
+  }
+  if (allCleared && allIds.length > 0) {
+    const catchBtn = $('btnKokugoCatch');
+    if (catchBtn) {
+      catchBtn.disabled = false;
+      catchBtn.classList.remove('disabled');
+      catchBtn.style.opacity = '1';
+      catchBtn.style.pointerEvents = 'auto';
+      catchBtn.style.boxShadow = '0 0 20px #22c55e';
+    }
+  }
+}
 // キャンバス管理
 const kanaCanvases = {};
 
@@ -22086,26 +22770,32 @@ function autoTraceCanvas(type) {
   const s = kanaCanvases[type];
   if (!s) return;
   clearKanaCanvas(type);
+  const W = s.canvas.width;
+  const H = s.canvas.height;
+  const fontSize = Math.round(W * 0.7);
   s.ctx.save();
-  s.ctx.font = 'bold 140px "Zen Maru Gothic", sans-serif';
+  s.ctx.font = 'bold ' + fontSize + 'px "Zen Maru Gothic", sans-serif';
   s.ctx.fillStyle = '#1e293b';
   s.ctx.textAlign = 'center';
   s.ctx.textBaseline = 'middle';
-  s.ctx.fillText(s.char, 100, 105);
+  s.ctx.fillText(s.char, W / 2, H / 2 + 5);
   s.ctx.restore();
-  s.strokes = Array(s.expectedStrokes || 2).fill([{ x: 100, y: 100 }]);
+  s.strokes = Array(s.expectedStrokes || 2).fill([{ x: W / 2, y: H / 2 }]);
   judgeCanvas(type);
 }
 
 function autoDrawKanaText(type, char) {
   const s = kanaCanvases[type];
   if (!s) return;
+  const W = s.canvas.width;
+  const H = s.canvas.height;
+  const fontSize = Math.round(W * 0.7);
   s.ctx.save();
-  s.ctx.font = 'bold 140px "Zen Maru Gothic", sans-serif';
+  s.ctx.font = 'bold ' + fontSize + 'px "Zen Maru Gothic", sans-serif';
   s.ctx.fillStyle = '#1e293b';
   s.ctx.textAlign = 'center';
   s.ctx.textBaseline = 'middle';
-  s.ctx.fillText(char, 100, 105);
+  s.ctx.fillText(char, W / 2, H / 2 + 5);
   s.ctx.restore();
 }
 
@@ -22134,7 +22824,7 @@ function judgeCanvas(type) {
       const revIdx = parseInt(type.replace('Rev_', ''), 10);
       const card = $(`kRevCard_${revIdx}`);
       if (card) card.classList.add('word-cleared');
-    } else if (type.startsWith('B11_') || type.startsWith('B22_') || type.startsWith('B50_') || type.startsWith('Mg8_')) {
+    } else {
       const box = $(`kRevBox_${type}`);
       if (box) box.classList.add('word-cleared');
     }
@@ -22152,7 +22842,7 @@ function judgeCanvas(type) {
       const revIdx = parseInt(type.replace('Rev_', ''), 10);
       const card = $(`kRevCard_${revIdx}`);
       if (card) card.classList.remove('word-cleared');
-    } else if (type.startsWith('B11_') || type.startsWith('B22_') || type.startsWith('B50_') || type.startsWith('Mg8_')) {
+    } else {
       const box = $(`kRevBox_${type}`);
       if (box) box.classList.remove('word-cleared');
     }
@@ -22161,7 +22851,6 @@ function judgeCanvas(type) {
   checkKokugoDrillProgress();
 }
 
-// 手書き文字の類似度判定エンジン
 function evaluateHandwritingEngine(canvas, drawnStrokesCount, targetChar, expectedStrokes) {
   const W = canvas.width, H = canvas.height;
   const drawnData = canvas.getContext('2d').getImageData(0, 0, W, H).data;
@@ -22170,7 +22859,7 @@ function evaluateHandwritingEngine(canvas, drawnStrokesCount, targetChar, expect
   const refCanvas = document.createElement('canvas');
   refCanvas.width = W; refCanvas.height = H;
   const refCtx = refCanvas.getContext('2d');
-  refCtx.font = 'bold 140px "Zen Maru Gothic", sans-serif';
+  refCtx.font = 'bold ' + Math.round(W * 0.7) + 'px "Zen Maru Gothic", sans-serif';
   refCtx.fillStyle = '#000000';
   refCtx.textAlign = 'center';
   refCtx.textBaseline = 'middle';
@@ -22635,64 +23324,79 @@ function openKokugoMinigame(mgId) {
       </div>
     `;
   }
-  // ミニゲーム8：おなじ もじは どこかな？ (ドリル原本完全再現)
+    // ミニゲーム8：おなじ もじは どこかな？ (ドリル原本完全再現)
   else if (mg.id === 8) {
     mg8SelectedTop = null;
     mg8Connections = {};
 
+    // 上段（ドリル原本通りの並び順：左から リキキリン、ルガルガン、ラビフット、レディバ、ロコン）
     const topPokes = [
-      { id: 'rokon', name: 'ロコン', kana: 'ロ', dex: 37, art: 'kokugo_drills/assets/mg8/rokon.png', strokes: 3 },
-      { id: 'rediba', name: 'レディバ', kana: 'レ', dex: 165, art: 'kokugo_drills/assets/mg8/ledyba.png', strokes: 1 },
-      { id: 'rabifutto', name: 'ラビフット', kana: 'ラ', dex: 814, art: 'kokugo_drills/assets/mg8/rabifutto.png', strokes: 2 },
-      { id: 'rugarugan', name: 'ルガルガン', kana: 'ル', dex: 745, art: 'kokugo_drills/assets/mg8/rugarugan.png', strokes: 2 },
-      { id: 'rikikirin', name: 'リキキリン', kana: 'リ', dex: 981, art: 'kokugo_drills/assets/mg8/rikikirin.png', strokes: 2 }
+      { id: 'rikikirin', name: 'リキキリン', kana: 'リ', ruby: 'りききりん', art: 'kokugo_drills/assets/mg8/rikikirin.png', chars: ['リ', 'キ', 'キ', 'リ', 'ン'], targetIdx: 0 },
+      { id: 'rugarugan', name: 'ルガルガン', kana: 'ル', ruby: 'るがるがん', art: 'kokugo_drills/assets/mg8/rugarugan.png', chars: ['ル', 'ガ', 'ル', 'ガ', 'ン'], targetIdx: 0 },
+      { id: 'rabifutto', name: 'ラビフット', kana: 'ラ', ruby: 'らびふっと', art: 'kokugo_drills/assets/mg8/rabifutto.png', chars: ['ラ', 'ビ', 'フ', 'ッ', 'ト'], targetIdx: 0 },
+      { id: 'rediba', name: 'レディバ', kana: 'レ', ruby: 'れでぃば', art: 'kokugo_drills/assets/mg8/ledyba.png', chars: ['レ', 'デ', 'ィ', 'バ'], targetIdx: 0 },
+      { id: 'rokon', name: 'ロコン', kana: 'ロ', ruby: 'ろこん', art: 'kokugo_drills/assets/mg8/rokon.png', chars: ['ロ', 'コ', 'ン'], targetIdx: 0 }
     ];
 
+    // 下段（原本通りの並び順：ギアル、コドラ、ボクレー、トロッゴン、リーフィア）
     const botPokes = [
-      { id: 'toroggon', name: 'トロッゴン', kana: 'ロ', dex: 838, art: 'kokugo_drills/assets/mg8/toroggon.png' },
-      { id: 'kodora', name: 'コドラ', kana: 'ラ', dex: 305, art: 'kokugo_drills/assets/mg8/kodora.png' },
-      { id: 'bokure', name: 'ボクレー', kana: 'レ', dex: 708, art: 'kokugo_drills/assets/mg8/bokure.png' },
-      { id: 'leafia', name: 'リーフィア', kana: 'リ', dex: 470, art: 'kokugo_drills/assets/mg8/leafia.png' },
-      { id: 'giaru', name: 'ギアル', kana: 'ル', dex: 599, art: 'kokugo_drills/assets/mg8/giaru.png' }
+      { id: 'giaru', name: 'ギアル', kana: 'ル', ruby: 'ぎある', art: 'kokugo_drills/assets/mg8/giaru.png', dotSide: 'right' },
+      { id: 'kodora', name: 'コドラ', kana: 'ラ', ruby: 'こどら', art: 'kokugo_drills/assets/mg8/kodora.png', dotSide: 'left' },
+      { id: 'bokure', name: 'ボクレー', kana: 'レ', ruby: 'ぼくれー', art: 'kokugo_drills/assets/mg8/bokure.png', dotSide: 'right' },
+      { id: 'toroggon', name: 'トロッゴン', kana: 'ロ', ruby: 'とろっこん', art: 'kokugo_drills/assets/mg8/toroggon.png', dotSide: 'right' },
+      { id: 'leafia', name: 'リーフィア', kana: 'リ', ruby: 'りーふぃあ', art: 'kokugo_drills/assets/mg8/leafia.png', dotSide: 'left' }
     ];
 
     box.innerHTML = `
-      <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #e2e8f0;padding-bottom:8px;margin-bottom:12px">
-        <h2 style="font-size:20px;color:#1e293b;margin:0">🎮 ミニゲーム 8：おなじ もじは どこかな？</h2>
-        <span style="background:#fef3c7;color:#b45309;padding:3px 10px;border-radius:12px;font-size:13px;font-weight:900">ドリル原本完全再現</span>
-      </div>
-      <div style="background:#f0fdf4;border:2px solid #86efac;border-radius:14px;padding:10px 14px;margin-bottom:14px;font-size:14px;font-weight:700;color:#166534;line-height:1.6">
-        <div><b>①</b> うえの ポケモンの なまえから <b>ラ・リ・ル・レ・ロ</b> を さがして、マスに かこう！</div>
-        <div><b>②</b> かいた カタカナと <b>おなじ じが ある ポケモン</b>を したから えらんで、せんで つなごう！</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:2.5px solid #fed7aa;padding-bottom:10px;margin-bottom:12px">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="width:36px;height:36px;border-radius:50%;background:#ea580c;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;box-shadow:0 2px 6px rgba(234,88,12,0.3)">⑧</div>
+          <h2 style="font-size:22px;color:#1e293b;margin:0;font-family:'Zen Maru Gothic',sans-serif;font-weight:900">おなじ もじは どこかな？</h2>
+        </div>
+        <span style="background:#ffedd5;color:#c2410c;padding:4px 12px;border-radius:14px;font-size:13px;font-weight:900;border:1.5px solid #fdba74">ドリル原本完全再現</span>
       </div>
 
-      <!-- 線つなぎ＆手書き プレイエリア -->
-      <div class="mg8-container" id="mg8Container">
-        <!-- SVG レイヤー -->
+      <!-- 原本通りの説明文バナー -->
+      <div style="background:#fff7ed;border:2px solid #fdba74;border-radius:16px;padding:12px 16px;margin-bottom:14px;font-size:14px;font-weight:700;color:#9a3412;line-height:1.6;box-shadow:0 2px 8px rgba(249,115,22,0.06)">
+        <div><b>1</b> うえの ポケモンの なまえの なかから <span style="background:#ea580c;color:#fff;padding:1px 6px;border-radius:6px;font-size:13px">ラ リ ル レ ロ</span> を さがして、<b>〇 で かこみましょう</b>。</div>
+        <div><b>2</b> <b>1</b> で かこんだ じを よこの <b>□ に かきましょう</b>。</div>
+        <div>👉 <b>□ に かいた カタカナと おなじ じが ある ポケモン</b>を したから えらんで、<b>せんで つなぎましょう</b>。</div>
+      </div>
+
+      <!-- メインエリア（SVGレイヤー + 上段5列 + 下段5体） -->
+      <div class="mg8-board" id="mg8Container">
+        <!-- SVG レイヤー（滑らかなベジェ曲線） -->
         <svg id="mg8Svg" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:5">
           <g id="mg8SvgLines"></g>
         </svg>
 
-        <!-- 上の段（5匹：イラスト・名前・手書きマス・接続点●） -->
-        <div class="mg8-row" style="margin-bottom:70px">
+        <!-- 上段（5匹：左から リキキリン、ルガルガン、ラビフット、レディバ、ロコン） -->
+        <div class="mg8-top-row">
           ${topPokes.map(p => `
-            <div class="mg8-col">
-              <img src="${p.art}" style="height:58px;object-fit:contain;margin-bottom:4px">
-              <div class="mg8-vert-name">${p.name}</div>
-              <div class="k-canvas-wrap" id="kWrapMg8_${p.id}" style="width:92px;height:92px;border:2.5px solid #3b82f6;border-radius:12px;background:#fff;position:relative;margin:4px 0">
-                <div class="k-canvas-grid"></div>
-                <div class="k-canvas-start-dot"></div>
-                <canvas class="k-canvas-elem" id="kCanvasMg8_${p.id}" width="160" height="160" style="width:100%;height:100%"></canvas>
+            <div class="mg8-col-unit">
+              <!-- ポケモンイラスト -->
+              <div class="mg8-poke-pic">
+                <img src="${p.art}" alt="${p.name}">
               </div>
-              <div class="k-tools-row" style="margin:2px 0 4px;gap:2px;flex-wrap:wrap;justify-content:center">
-                <button type="button" class="k-tool-btn active" id="btnPenMg8_${p.id}" onclick="setCanvasTool('Mg8_${p.id}', 'pen')" style="padding:2px 5px;font-size:10px">✏️</button>
-                <button type="button" class="k-tool-btn" id="btnEraserMg8_${p.id}" onclick="setCanvasTool('Mg8_${p.id}', 'eraser')" style="padding:2px 5px;font-size:10px">🧽</button>
-                <button type="button" class="k-tool-btn" onclick="clearKanaCanvas('Mg8_${p.id}')" style="padding:2px 5px;font-size:10px">🔄</button>
-                <button type="button" class="k-tool-btn k-judge-btn" onclick="judgeCanvas('Mg8_${p.id}')" style="padding:2px 6px;font-size:10px">💮</button>
-                <button type="button" class="k-tool-btn" onclick="autoTraceCanvas('Mg8_${p.id}')" style="color:#2563eb;padding:2px 5px;font-size:10px">💡</button>
+              <!-- 横並び：[左] 書き取りマス + [右] 名前の縦短冊 -->
+              <div class="mg8-box-and-name">
+                <div class="mg8-write-box" id="kRevBox_Mg8_${p.id}">
+                  <div class="k-canvas-grid"></div>
+                  <div class="k-canvas-start-dot"></div>
+                  <canvas class="k-canvas-elem" id="kCanvasMg8_${p.id}" width="260" height="260" style="width:100%;height:100%"></canvas>
+                  <button type="button" class="k-strip-clear-btn" onclick="clearSingleRevCanvas('Mg8_${p.id}')">✕</button>
+                  <div class="k-strip-eval-badge" id="kEvalMg8_${p.id}"></div>
+                  <div class="k-canvas-slot-tag" style="position:absolute;bottom:3px;left:0;right:0;text-align:center;font-size:11px;font-weight:900;color:#2563eb;pointer-events:none">［${p.kana}］</div>
+                </div>
+                <!-- 名前の縦短冊（該当文字に赤丸） -->
+                <div class="mg8-name-strip">
+                  <div class="mg8-ruby">${p.ruby}</div>
+                  ${p.chars.map((c, ci) => `
+                    <div class="mg8-char-slot ${ci === p.targetIdx ? 'circled' : ''}">${c}</div>
+                  `).join('')}
+                </div>
               </div>
-              <div class="k-eval-result" id="kEvalMg8_${p.id}" style="font-size:11px;min-height:16px;text-align:center"></div>
-              <!-- 接続ポイント -->
+              <!-- 接続ポイント●（マスの真下） -->
               <div class="mg8-dot mg8-top-dot" id="mg8_top_${p.id}" data-id="${p.id}" data-char="${p.kana}" onclick="handleMg8TopClick('${p.id}')">
                 ●
               </div>
@@ -22700,52 +23404,94 @@ function openKokugoMinigame(mgId) {
           `).join('')}
         </div>
 
-        <!-- 下の段（5匹：接続点●・イラスト・名前） -->
-        <div class="mg8-row">
+        <!-- 下段（5匹：原本写真完全再現：ギアル、コドラ、ボクレー、トロッゴン、リーフィア） -->
+        <div class="mg8-bot-row">
           ${botPokes.map(p => `
-            <div class="mg8-col">
-              <!-- 接続ポイント -->
-              <div class="mg8-dot mg8-bot-dot" id="mg8_bot_${p.id}" data-id="${p.id}" data-char="${p.kana}" onclick="handleMg8BotClick('${p.id}')" style="margin-bottom:8px">
-                ●
-              </div>
-              <img src="${p.art}" style="height:58px;object-fit:contain;margin-bottom:4px">
-              <div class="mg8-vert-name">${p.name}</div>
+            <div class="mg8-bot-card" id="mg8_bot_card_${p.id}">
+              ${p.dotSide === 'left' ? `
+                <div class="mg8-dot mg8-bot-dot" id="mg8_bot_${p.id}" data-id="${p.id}" data-char="${p.kana}" onclick="handleMg8BotClick('${p.id}')">●</div>
+                <div class="mg8-bot-name-col">
+                  <div class="mg8-bot-ruby">${p.ruby}</div>
+                  <div class="mg8-bot-name">${p.name}</div>
+                </div>
+                <img src="${p.art}" alt="${p.name}" class="mg8-bot-img">
+              ` : `
+                <img src="${p.art}" alt="${p.name}" class="mg8-bot-img">
+                <div class="mg8-dot mg8-bot-dot" id="mg8_bot_${p.id}" data-id="${p.id}" data-char="${p.kana}" onclick="handleMg8BotClick('${p.id}')">●</div>
+                <div class="mg8-bot-name-col">
+                  <div class="mg8-bot-ruby">${p.ruby}</div>
+                  <div class="mg8-bot-name">${p.name}</div>
+                </div>
+              `}
             </div>
           `).join('')}
         </div>
       </div>
 
-      <!-- アシスト＆ステータスバー -->
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin:12px 0;flex-wrap:wrap">
-        <div id="mg8Status" style="font-size:14px;font-weight:900;color:#1e40af">
+      <!-- 操作バー＆ステータス -->
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;flex-wrap:wrap">
+        <div id="mg8Status" style="font-size:14px;font-weight:900;color:#c2410c">
           👆 上の ● をタッチして、おなじ文字をもつ下の ● をタッチしよう！
         </div>
-        <div style="display:flex;gap:6px">
-          <button type="button" class="mbtn" style="background:#e0e7ff;color:#3730a3;font-size:12px;padding:6px 12px;font-weight:900" onclick="autoSolveMg8()">
-            💡 ぜんぶ つなぐ＆かく
-          </button>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <button type="button" class="k-tool-btn active" id="btnPen_mg8" onclick="setMg8Tool('pen')">✏️ えんぴつ</button>
+          <button type="button" class="k-tool-btn" id="btnEraser_mg8" onclick="setMg8Tool('eraser')">🧽 けしゴム</button>
+          <button type="button" class="k-tool-btn" onclick="clearMg8Canvases()">🔄 ぜんぶけす</button>
+          <button type="button" class="k-tool-btn" onclick="autoSolveMg8()" style="color:#2563eb">💡 おたすけ (ぜんぶ つなぐ＆かく)</button>
+          <button type="button" class="k-tool-btn k-judge-btn" onclick="judgeMg8All()" style="padding:8px 18px">💮 はんてい！</button>
         </div>
       </div>
 
-      <div style="text-align:center;margin-top:10px">
-        <button type="button" class="mbtn" id="btnMgClear" style="background:#22c55e;color:#fff;font-size:16px;padding:10px 28px;font-weight:900" onclick="clearMinigame(8)">
-          ⭐ クリア！ (10 pt ゲット)
-        </button>
+      <div style="text-align:center;margin-top:16px">
+        <button type="button" class="mbtn" id="btnMgClear" style="background:#cbd5e1;color:#64748b;font-size:16px;padding:10px 32px;font-weight:900;pointer-events:none" onclick="clearMinigame(8)">⭐ クリア！ (10 pt ゲット)</button>
       </div>
     `;
 
     setTimeout(() => {
       topPokes.forEach(p => {
-        initKanaCanvas('Mg8_' + p.id, p.kana, p.strokes || 2);
+        initKanaCanvas('Mg8_' + p.id, p.kana, 2);
         if (kanaCanvases['Mg8_' + p.id]) kanaCanvases['Mg8_' + p.id].guideVisible = false;
       });
-      updateMg8Lines();
+      window.addEventListener('resize', updateMg8Lines);
     }, 50);
   }
 }
 
-let mg8SelectedTop = null;
-let mg8Connections = {};
+// ミニゲーム8用ヘルパー関数群
+let mg8Tool = 'pen';
+function setMg8Tool(tool) {
+  mg8Tool = tool;
+  const pBtn = $('btnPen_mg8');
+  const eBtn = $('btnEraser_mg8');
+  if (pBtn && eBtn) {
+    if (tool === 'pen') {
+      pBtn.classList.add('active');
+      eBtn.classList.remove('active');
+    } else {
+      eBtn.classList.add('active');
+      pBtn.classList.remove('active');
+    }
+  }
+  const topIds = ['rikikirin', 'rugarugan', 'rabifutto', 'rediba', 'rokon'];
+  topIds.forEach(id => {
+    setCanvasTool('Mg8_' + id, tool);
+  });
+}
+
+function clearMg8Canvases() {
+  if (typeof playMarimbaPop === 'function') playMarimbaPop(0.9);
+  const topIds = ['rikikirin', 'rugarugan', 'rabifutto', 'rediba', 'rokon'];
+  topIds.forEach(id => {
+    clearKanaCanvas('Mg8_' + id);
+    const badge = $('kEvalMg8_' + id);
+    if (badge) {
+      badge.textContent = '';
+      badge.classList.remove('show');
+    }
+    const box = $('kRevBox_Mg8_' + id);
+    if (box) box.classList.remove('word-cleared');
+  });
+}
 
 function handleMg8TopClick(topId) {
   if (typeof playMarimbaPop === 'function') playMarimbaPop(1.1);
@@ -22754,7 +23500,7 @@ function handleMg8TopClick(topId) {
   const dot = $('mg8_top_' + topId);
   if (dot) dot.classList.add('selected');
   const status = $('mg8Status');
-  if (status) status.textContent = `🎯 上の ● をえらんだよ！ 下のおなじ文字の ● をタッチしてね！`;
+  if (status) status.textContent = '🎯 上の ● をえらんだよ！ 下のおなじ文字の ● をタッチしてね！';
 }
 
 function handleMg8BotClick(botId) {
@@ -22786,6 +23532,7 @@ function handleMg8BotClick(botId) {
       const status = $('mg8Status');
       if (status) status.innerHTML = '🎉 ぜんぶの ポケモンが せんで つながったよ！ マスにも かいてね！';
     }
+    checkMg8ClearReady();
   } else {
     if (typeof playMarimbaPop === 'function') playMarimbaPop(0.7);
     toast(`ちがうよ！「${topChar}」と「${botChar}」は ちがう文字だよ`, 1500);
@@ -22817,8 +23564,8 @@ function updateMg8Lines() {
     const cy2 = y2 - 35;
     linesHtml += `
       <path d="M ${x1} ${y1} C ${x1} ${cy1}, ${x2} ${cy2}, ${x2} ${y2}" 
-            stroke="#22c55e" stroke-width="4.5" fill="none" stroke-linecap="round" 
-            style="filter:drop-shadow(0 2px 4px rgba(34,197,94,0.4))" />
+            stroke="#ea580c" stroke-width="4.5" fill="none" stroke-linecap="round" 
+            style="filter:drop-shadow(0 2px 4px rgba(234,88,12,0.4))" />
     `;
   }
   svgGroup.innerHTML = linesHtml;
@@ -22827,24 +23574,104 @@ function updateMg8Lines() {
 function autoSolveMg8() {
   if (typeof playPikaanSound === 'function') playPikaanSound();
   const pairs = {
-    rokon: 'toroggon',
-    rediba: 'bokure',
-    rabifutto: 'kodora',
+    rikikirin: 'leafia',
     rugarugan: 'giaru',
-    rikikirin: 'leafia'
+    rabifutto: 'kodora',
+    rediba: 'bokure',
+    rokon: 'toroggon'
   };
   mg8Connections = { ...pairs };
   document.querySelectorAll('.mg8-top-dot, .mg8-bot-dot').forEach(el => el.classList.add('connected'));
   updateMg8Lines();
 
-  const keys = ['rokon', 'rediba', 'rabifutto', 'rugarugan', 'rikikirin'];
+  const keys = ['rikikirin', 'rugarugan', 'rabifutto', 'rediba', 'rokon'];
   keys.forEach(k => {
     autoTraceCanvas('Mg8_' + k);
+    const badge = $('kEvalMg8_' + k);
+    if (badge) {
+      badge.textContent = '💮 100';
+      badge.classList.add('show');
+    }
+    const box = $('kRevBox_Mg8_' + k);
+    if (box) box.classList.add('word-cleared');
   });
   const status = $('mg8Status');
   if (status) status.innerHTML = '💮 ぜんぶ つながって マスも かけたよ！ 「クリア！」を おそう！';
+  checkMg8ClearReady(true);
 }
 
+function judgeMg8All() {
+  const topList = [
+    { id: 'rikikirin', char: 'リ' },
+    { id: 'rugarugan', char: 'ル' },
+    { id: 'rabifutto', char: 'ラ' },
+    { id: 'rediba', char: 'レ' },
+    { id: 'rokon', char: 'ロ' }
+  ];
+
+  let allPass = true;
+  topList.forEach(p => {
+    const res = evaluateHandwritingEngine('Mg8_' + p.id, p.char);
+    const badge = $('kEvalMg8_' + p.id);
+    const box = $('kRevBox_Mg8_' + p.id);
+    if (res && res.score >= 50) {
+      if (badge) {
+        badge.textContent = `💮 ${res.score}`;
+        badge.classList.add('show');
+      }
+      if (box) box.classList.add('word-cleared');
+    } else {
+      allPass = false;
+      if (badge) {
+        badge.textContent = res ? `${res.score}てん` : '0てん';
+        badge.classList.add('show');
+      }
+      if (box) box.classList.remove('word-cleared');
+    }
+  });
+
+  if (allPass) {
+    if (typeof playPikaanSound === 'function') playPikaanSound();
+    toast('💮 ぜんぶのマスが ごうかく！', 2000);
+  } else {
+    if (typeof playMarimbaPop === 'function') playMarimbaPop(0.7);
+    toast('もうすこし！ お手本を みて かいてみよう！', 2000);
+  }
+  checkMg8ClearReady();
+}
+
+function checkMg8ClearReady(forcePass = false) {
+  const connectedCount = Object.keys(mg8Connections).length;
+  const topIds = ['rikikirin', 'rugarugan', 'rabifutto', 'rediba', 'rokon'];
+  let allCanvasesCleared = true;
+
+  if (!forcePass) {
+    topIds.forEach(id => {
+      const box = $('kRevBox_Mg8_' + id);
+      if (!box || !box.classList.contains('word-cleared')) {
+        allCanvasesCleared = false;
+      }
+    });
+  }
+
+  const btn = $('btnMgClear');
+  if (btn) {
+    if ((connectedCount >= 5 && allCanvasesCleared) || forcePass) {
+      btn.disabled = false;
+      btn.style.pointerEvents = 'auto';
+      btn.style.background = '#22c55e';
+      btn.style.color = '#fff';
+      btn.style.boxShadow = '0 4px 16px rgba(34,197,94,0.4)';
+      btn.innerHTML = '⭐ クリア！ (10 pt ゲット)';
+    } else {
+      btn.disabled = true;
+      btn.style.pointerEvents = 'none';
+      btn.style.background = '#cbd5e1';
+      btn.style.color = '#64748b';
+      btn.style.boxShadow = 'none';
+    }
+  }
+}
 function checkMg1Pick(num, isAns, btn) {
   if (isAns) {
     playPikaanSound();
